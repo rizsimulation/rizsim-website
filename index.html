@@ -12,7 +12,7 @@
 
   <meta
     name="theme-color"
-    content="#031c46"
+    content="#031d49"
   >
 
   <meta
@@ -22,7 +22,11 @@
 
   <title>RizSim | Explore. Decide. Grow.</title>
 
-  <!-- RizSim browser icon -->
+
+  <!-- =======================================================
+       RIZSIM FAVICON
+       ======================================================= -->
+
   <link
     rel="icon"
     type="image/png"
@@ -35,55 +39,73 @@
   >
 
 
+
   <style>
 
     /* =========================================================
        RIZSIM WEBSITE
-       VERSION 2
-       PREMIUM HORIZONTAL INTERFACE
+       VERSION 2.2
+
+       PREMIUM MULTI-PAGE HORIZONTAL INTERFACE
+
+       NAVIGATION:
+       Navigation-bar click only.
+
+       SCROLLING:
+       Normal vertical scrolling inside each page.
+
+       NO:
+       - horizontal swipe page changes
+       - mouse wheel page changes
+       - keyboard arrow page changes
+       - floating page arrows
+       - page indicator dots
        ========================================================= */
 
 
     :root {
 
-      --navy-1000: #010e27;
-      --navy-950: #021637;
+      --navy-1000: #010d25;
+      --navy-950: #021638;
       --navy-900: #031d49;
       --navy-850: #052653;
       --navy-800: #062e63;
-      --navy-700: #08427b;
+      --navy-700: #08437c;
 
       --teal-800: #006f79;
       --teal-700: #008792;
       --teal-600: #009ca8;
       --teal-500: #11aeb7;
-      --teal-400: #38bec7;
+      --teal-400: #39bec7;
+
       --aqua: #69dce0;
 
       --white: #ffffff;
+
       --ice: #eaf8fa;
       --mist: #f4f9fb;
       --pale: #f8fbfc;
 
       --text: #082b52;
-      --muted: #6b7d91;
+
+      --muted: #687d92;
 
       --line:
         rgba(4, 48, 100, 0.10);
 
-      --glass:
-        rgba(255, 255, 255, 0.80);
-
-      --header-height: 88px;
+      --header-height: 96px;
 
       --shadow-small:
-        0 12px 32px rgba(3, 29, 73, 0.08);
+        0 12px 32px
+        rgba(3, 29, 73, 0.07);
 
       --shadow-medium:
-        0 22px 60px rgba(3, 29, 73, 0.11);
+        0 22px 60px
+        rgba(3, 29, 73, 0.11);
 
       --shadow-large:
-        0 36px 100px rgba(2, 22, 55, 0.17);
+        0 38px 110px
+        rgba(2, 22, 55, 0.17);
 
     }
 
@@ -96,6 +118,7 @@
     * {
 
       box-sizing: border-box;
+
       margin: 0;
       padding: 0;
 
@@ -113,7 +136,8 @@
 
     html {
 
-      background: var(--navy-950);
+      background:
+        var(--navy-950);
 
     }
 
@@ -135,10 +159,11 @@
 
       overflow: hidden;
 
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing:
+        antialiased;
 
-      overscroll-behavior: none;
+      text-rendering:
+        optimizeLegibility;
 
     }
 
@@ -156,7 +181,8 @@
     button,
     a {
 
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:
+        transparent;
 
     }
 
@@ -171,6 +197,7 @@
     a {
 
       color: inherit;
+
       text-decoration: none;
 
     }
@@ -179,6 +206,7 @@
     img {
 
       display: block;
+
       max-width: 100%;
 
     }
@@ -197,31 +225,47 @@
       left: 0;
       right: 0;
 
-      z-index: 2000;
+      z-index: 3000;
 
-      height: var(--header-height);
+      height:
+        var(--header-height);
 
       display: flex;
       align-items: center;
 
       background:
-        rgba(255, 255, 255, 0.90);
+        rgba(
+          255,
+          255,
+          255,
+          0.92
+        );
 
       backdrop-filter:
-        blur(24px)
+        blur(26px)
         saturate(150%);
 
       -webkit-backdrop-filter:
-        blur(24px)
+        blur(26px)
         saturate(150%);
 
       border-bottom:
         1px solid
-        rgba(3, 29, 73, 0.07);
+        rgba(
+          3,
+          29,
+          73,
+          0.07
+        );
 
       box-shadow:
-        0 7px 30px
-        rgba(3, 29, 73, 0.035);
+        0 8px 32px
+        rgba(
+          3,
+          29,
+          73,
+          0.035
+        );
 
     }
 
@@ -230,53 +274,59 @@
 
       width:
         min(
-          1460px,
+          1480px,
           calc(100% - 48px)
         );
 
       height: 100%;
 
-      margin: 0 auto;
+      margin:
+        0 auto;
 
       display: flex;
       align-items: center;
 
-      gap: 28px;
+      gap: 30px;
 
     }
 
 
 
     /* =========================================================
-       BRAND
+       TOP LEFT RIZSIM BRAND
        ========================================================= */
 
     .brand-button {
 
-      flex: 0 0 auto;
+      flex:
+        0 0 auto;
 
       display: flex;
       align-items: center;
 
-      gap: 12px;
+      gap: 15px;
+
+      padding: 0;
 
       cursor: pointer;
 
-      background: transparent;
+      background:
+        transparent;
 
     }
 
 
     .brand-icon {
 
-      width: 55px;
-      height: 55px;
+      width: 66px;
+      height: 66px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      flex: 0 0 auto;
+      flex:
+        0 0 auto;
 
     }
 
@@ -286,18 +336,35 @@
       width: 100%;
       height: 100%;
 
-      object-fit: contain;
+      object-fit:
+        contain;
 
       filter:
         drop-shadow(
-          0 10px 16px
-          rgba(3, 29, 73, 0.14)
+          0 9px 17px
+          rgba(
+            3,
+            29,
+            73,
+            0.13
+          )
         );
 
     }
 
 
     .brand-copy {
+
+      display: flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        flex-start;
+
+      justify-content:
+        center;
 
       line-height: 1;
 
@@ -306,30 +373,44 @@
 
     .brand-name {
 
-      font-size: 24px;
+      color:
+        var(--navy-900);
+
+      font-size: 32px;
 
       font-weight: 900;
 
-      letter-spacing: -0.8px;
+      letter-spacing:
+        -1.35px;
 
-      color: var(--navy-900);
+      line-height:
+        0.95;
 
     }
 
 
     .brand-tagline {
 
-      margin-top: 6px;
+      margin-top: 8px;
+      margin-left: 1px;
 
-      color: var(--teal-700);
+      color:
+        var(--teal-700);
 
-      font-size: 8px;
+      font-size: 9px;
 
       font-weight: 900;
 
-      letter-spacing: 1.6px;
+      letter-spacing:
+        1.45px;
 
-      text-transform: uppercase;
+      line-height: 1;
+
+      text-transform:
+        uppercase;
+
+      white-space:
+        nowrap;
 
     }
 
@@ -347,9 +428,11 @@
       align-items: center;
       justify-content: center;
 
-      gap: 3px;
+      gap: 4px;
 
       overflow-x: auto;
+
+      overflow-y: hidden;
 
       scrollbar-width: none;
 
@@ -369,35 +452,51 @@
 
       position: relative;
 
-      flex: 0 0 auto;
+      flex:
+        0 0 auto;
 
-      padding: 14px 17px;
+      padding:
+        14px
+        18px;
 
-      border-radius: 12px;
+      border-radius:
+        13px;
 
-      background: transparent;
+      background:
+        transparent;
 
-      color: #597086;
+      color:
+        #586f85;
 
       cursor: pointer;
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      font-weight: 750;
+      font-weight:
+        750;
 
       transition:
-        color 0.25s ease,
-        background 0.25s ease;
+        color
+        0.25s ease,
+        background
+        0.25s ease;
 
     }
 
 
     .nav-tab:hover {
 
-      color: var(--navy-900);
+      color:
+        var(--navy-900);
 
       background:
-        rgba(0, 156, 168, 0.05);
+        rgba(
+          0,
+          156,
+          168,
+          0.05
+        );
 
     }
 
@@ -408,13 +507,15 @@
 
       position: absolute;
 
-      left: 24%;
-      right: 24%;
+      left: 23%;
+      right: 23%;
+
       bottom: 4px;
 
       height: 2px;
 
-      border-radius: 100px;
+      border-radius:
+        100px;
 
       background:
         linear-gradient(
@@ -423,95 +524,43 @@
           var(--teal-500)
         );
 
-      transform: scaleX(0);
+      transform:
+        scaleX(0);
 
       transition:
-        transform 0.28s ease;
+        transform
+        0.28s ease;
 
     }
 
 
     .nav-tab.active {
 
-      color: var(--navy-900);
+      color:
+        var(--navy-900);
 
     }
 
 
     .nav-tab.active::after {
 
-      transform: scaleX(1);
-
-    }
-
-
-
-    /* =========================================================
-       HEADER CTA
-       ========================================================= */
-
-    .header-cta {
-
-      flex: 0 0 auto;
-
-      height: 47px;
-
-      padding: 0 21px;
-
-      border-radius: 14px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      cursor: pointer;
-
-      color: white;
-
-      background:
-        linear-gradient(
-          120deg,
-          var(--navy-800),
-          var(--teal-600)
-        );
-
-      font-size: 12px;
-
-      font-weight: 850;
-
-      box-shadow:
-        0 13px 30px
-        rgba(0, 135, 146, 0.17);
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
-    }
-
-
-    .header-cta:hover {
-
       transform:
-        translateY(-2px);
-
-      box-shadow:
-        0 17px 38px
-        rgba(0, 135, 146, 0.24);
+        scaleX(1);
 
     }
 
 
 
     /* =========================================================
-       HORIZONTAL VIEWPORT
+       WEBSITE VIEWPORT
        ========================================================= */
 
     .website-viewport {
 
       position: fixed;
 
-      top: var(--header-height);
+      top:
+        var(--header-height);
 
       left: 0;
       right: 0;
@@ -524,6 +573,11 @@
     }
 
 
+
+    /* =========================================================
+       HORIZONTAL PAGE TRACK
+       ========================================================= */
+
     .page-track {
 
       width: 100%;
@@ -532,11 +586,15 @@
       display: flex;
 
       transform:
-        translate3d(0, 0, 0);
+        translate3d(
+          0,
+          0,
+          0
+        );
 
       transition:
         transform
-        720ms
+        760ms
         cubic-bezier(
           0.22,
           0.9,
@@ -544,40 +602,113 @@
           1
         );
 
-      will-change: transform;
-
-    }
-
-
-    .page {
-
-      position: relative;
-
-      width: 100vw;
-      height: 100%;
-
-      flex: 0 0 100vw;
-
-      overflow: hidden;
-
-      isolation: isolate;
+      will-change:
+        transform;
 
     }
 
 
 
     /* =========================================================
-       COMMON PAGE BACKGROUNDS
+       INDIVIDUAL PAGE
+
+       IMPORTANT:
+       Vertical scrolling is enabled.
+       ========================================================= */
+
+    .page {
+
+      position: relative;
+
+      width:
+        100vw;
+
+      height:
+        100%;
+
+      flex:
+        0 0 100vw;
+
+      overflow-x:
+        hidden;
+
+      overflow-y:
+        auto;
+
+      -webkit-overflow-scrolling:
+        touch;
+
+      overscroll-behavior-y:
+        contain;
+
+      isolation:
+        isolate;
+
+    }
+
+
+
+    /* =========================================================
+       PAGE SHELL
+       ========================================================= */
+
+    .page-shell {
+
+      position: relative;
+
+      width:
+        min(
+          1390px,
+          calc(
+            100% - 100px
+          )
+        );
+
+      min-height:
+        100%;
+
+      margin:
+        0 auto;
+
+      padding:
+        70px
+        0
+        95px;
+
+      display: flex;
+
+      align-items:
+        center;
+
+    }
+
+
+
+    /* =========================================================
+       LIGHT PAGE
        ========================================================= */
 
     .light-page {
 
       background:
+
         radial-gradient(
-          circle at 90% 12%,
-          rgba(48, 190, 199, 0.12),
-          transparent 28%
+          circle
+          at
+          90%
+          12%,
+
+          rgba(
+            48,
+            190,
+            199,
+            0.12
+          ),
+
+          transparent
+          28%
         ),
+
         linear-gradient(
           180deg,
           white,
@@ -599,13 +730,20 @@
       right: -320px;
       top: -370px;
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       border:
         82px solid
-        rgba(24, 174, 183, 0.10);
+        rgba(
+          24,
+          174,
+          183,
+          0.10
+        );
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
       z-index: -3;
 
@@ -624,7 +762,8 @@
       left: -420px;
       bottom: -190px;
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       transform:
         rotate(15deg);
@@ -636,28 +775,59 @@
           var(--teal-500)
         );
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
       z-index: -3;
 
     }
 
 
+
+    /* =========================================================
+       DARK PAGE
+       ========================================================= */
+
     .dark-page {
 
       color: white;
 
       background:
+
         radial-gradient(
-          circle at 82% 20%,
-          rgba(40, 195, 203, 0.20),
-          transparent 32%
+          circle
+          at
+          82%
+          20%,
+
+          rgba(
+            40,
+            195,
+            203,
+            0.20
+          ),
+
+          transparent
+          32%
         ),
+
         radial-gradient(
-          circle at 20% 90%,
-          rgba(0, 156, 168, 0.10),
-          transparent 26%
+          circle
+          at
+          20%
+          90%,
+
+          rgba(
+            0,
+            156,
+            168,
+            0.10
+          ),
+
+          transparent
+          26%
         ),
+
         linear-gradient(
           125deg,
           var(--navy-1000),
@@ -679,13 +849,20 @@
       right: -190px;
       top: -300px;
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       border:
         72px solid
-        rgba(105, 220, 224, 0.10);
+        rgba(
+          105,
+          220,
+          224,
+          0.10
+        );
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
       z-index: -3;
 
@@ -704,7 +881,8 @@
       left: -390px;
       bottom: -190px;
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       transform:
         rotate(17deg);
@@ -712,11 +890,22 @@
       background:
         linear-gradient(
           110deg,
-          rgba(0, 156, 168, 0.32),
-          rgba(105, 220, 224, 0.12)
+          rgba(
+            0,
+            156,
+            168,
+            0.32
+          ),
+          rgba(
+            105,
+            220,
+            224,
+            0.12
+          )
         );
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
       z-index: -3;
 
@@ -725,32 +914,7 @@
 
 
     /* =========================================================
-       PAGE SHELL
-       ========================================================= */
-
-    .page-shell {
-
-      position: relative;
-
-      width:
-        min(
-          1390px,
-          calc(100% - 100px)
-        );
-
-      height: 100%;
-
-      margin: 0 auto;
-
-      display: flex;
-      align-items: center;
-
-    }
-
-
-
-    /* =========================================================
-       BRAND WATERMARK
+       WATERMARK
        ========================================================= */
 
     .brand-watermark {
@@ -758,29 +922,34 @@
       position: absolute;
 
       right: 4%;
-      bottom: 4%;
+      bottom: 5%;
 
       width:
         clamp(
-          145px,
+          150px,
           13vw,
-          230px
+          235px
         );
 
-      opacity: 0.035;
+      opacity:
+        0.035;
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
-      user-select: none;
+      user-select:
+        none;
 
       z-index: -1;
 
     }
 
 
-    .dark-page .brand-watermark {
+    .dark-page
+    .brand-watermark {
 
-      opacity: 0.055;
+      opacity:
+        0.055;
 
       filter:
         brightness(0)
@@ -802,61 +971,86 @@
       right: 38px;
 
       color:
-        rgba(8, 65, 122, 0.28);
+        rgba(
+          8,
+          65,
+          122,
+          0.28
+        );
 
-      font-size: 9px;
+      font-size:
+        9px;
 
-      font-weight: 900;
+      font-weight:
+        900;
 
-      letter-spacing: 2px;
+      letter-spacing:
+        2px;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
 
     }
 
 
-    .dark-page .page-label {
+    .dark-page
+    .page-label {
 
       color:
-        rgba(255, 255, 255, 0.25);
+        rgba(
+          255,
+          255,
+          255,
+          0.25
+        );
 
     }
 
 
 
     /* =========================================================
-       COMMON TYPOGRAPHY
+       TYPOGRAPHY
        ========================================================= */
 
     .kicker {
 
-      color: var(--teal-700);
+      color:
+        var(--teal-700);
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 900;
+      font-weight:
+        900;
 
-      letter-spacing: 2px;
+      letter-spacing:
+        2px;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
 
     }
 
 
-    .dark-page .kicker {
+    .dark-page
+    .kicker {
 
-      color: #78e1e4;
+      color:
+        #78e1e4;
 
     }
 
 
     .display-title {
 
-      max-width: 850px;
+      max-width:
+        850px;
 
-      margin-top: 14px;
+      margin-top:
+        14px;
 
-      color: var(--navy-900);
+      color:
+        var(--navy-900);
 
       font-size:
         clamp(
@@ -865,23 +1059,28 @@
           78px
         );
 
-      line-height: 0.98;
+      line-height:
+        0.98;
 
-      letter-spacing: -3.6px;
+      letter-spacing:
+        -3.6px;
 
     }
 
 
-    .dark-page .display-title {
+    .dark-page
+    .display-title {
 
       color: white;
 
     }
 
 
-    .display-title .accent {
+    .display-title
+    .accent {
 
-      color: var(--teal-600);
+      color:
+        var(--teal-600);
 
     }
 
@@ -890,18 +1089,22 @@
     .display-title
     .accent {
 
-      color: var(--aqua);
+      color:
+        var(--aqua);
 
     }
 
 
     .lead {
 
-      max-width: 700px;
+      max-width:
+        700px;
 
-      margin-top: 22px;
+      margin-top:
+        22px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       font-size:
         clamp(
@@ -910,12 +1113,14 @@
           19px
         );
 
-      line-height: 1.72;
+      line-height:
+        1.72;
 
     }
 
 
-    .dark-page .lead {
+    .dark-page
+    .lead {
 
       color:
         rgba(
@@ -930,130 +1135,30 @@
 
 
     /* =========================================================
-       BUTTONS
-       ========================================================= */
-
-    .button-row {
-
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 11px;
-
-      margin-top: 29px;
-
-    }
-
-
-    .primary-btn,
-    .secondary-btn {
-
-      min-height: 51px;
-
-      padding: 0 23px;
-
-      border-radius: 15px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      white-space: nowrap;
-
-      cursor: pointer;
-
-      font-size: 12px;
-
-      font-weight: 850;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
-    }
-
-
-    .primary-btn {
-
-      color: white;
-
-      background:
-        linear-gradient(
-          125deg,
-          var(--navy-900),
-          var(--teal-600)
-        );
-
-      box-shadow:
-        0 15px 34px
-        rgba(3, 29, 73, 0.17);
-
-    }
-
-
-    .secondary-btn {
-
-      color: var(--navy-900);
-
-      background:
-        rgba(255, 255, 255, 0.90);
-
-      border:
-        1px solid var(--line);
-
-      box-shadow:
-        0 10px 25px
-        rgba(3, 29, 73, 0.06);
-
-    }
-
-
-    .dark-page .secondary-btn {
-
-      color: white;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
-
-      border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.15
-        );
-
-    }
-
-
-    .primary-btn:hover,
-    .secondary-btn:hover {
-
-      transform:
-        translateY(-2px);
-
-    }
-
-
-
-    /* =========================================================
        HOME PAGE
        ========================================================= */
 
     .home-page {
 
       background:
+
         radial-gradient(
-          circle at 90% 5%,
-          rgba(61, 194, 203, 0.10),
-          transparent 24%
+          circle
+          at
+          90%
+          5%,
+
+          rgba(
+            61,
+            194,
+            203,
+            0.10
+          ),
+
+          transparent
+          24%
         ),
+
         linear-gradient(
           180deg,
           #ffffff,
@@ -1068,17 +1173,29 @@
       width:
         min(
           1400px,
-          calc(100% - 84px)
+          calc(
+            100% - 84px
+          )
         );
 
-      height: 100%;
+      min-height:
+        100%;
 
-      margin: 0 auto;
+      margin:
+        0 auto;
+
+      padding:
+        60px
+        0
+        90px;
 
       display: flex;
-      flex-direction: column;
 
-      justify-content: center;
+      flex-direction:
+        column;
+
+      justify-content:
+        center;
 
     }
 
@@ -1089,13 +1206,14 @@
 
       width: 100%;
 
-      max-height: 62vh;
+      border-radius:
+        35px;
 
-      border-radius: 34px;
+      overflow:
+        hidden;
 
-      overflow: hidden;
-
-      background: white;
+      background:
+        white;
 
       border:
         1px solid
@@ -1115,72 +1233,129 @@
     .brand-banner img {
 
       width: 100%;
-      height: 100%;
 
-      max-height: 62vh;
+      object-fit:
+        cover;
 
-      object-fit: cover;
-
-      object-position: center;
+      object-position:
+        center;
 
     }
 
 
     .home-bottom {
 
-      width: 94%;
+      width:
+        94%;
 
       margin:
-        clamp(
-          20px,
-          3vh,
-          34px
-        )
+        32px
         auto
         0;
 
       display: grid;
 
       grid-template-columns:
-        1.2fr auto;
+        1.25fr
+        0.75fr;
 
-      gap: 35px;
+      gap: 50px;
 
-      align-items: center;
+      align-items:
+        center;
 
     }
 
 
     .home-message {
 
-      max-width: 850px;
+      max-width:
+        860px;
 
-      color: var(--navy-800);
+      color:
+        var(--navy-800);
 
       font-size:
         clamp(
-          17px,
-          1.4vw,
-          22px
+          18px,
+          1.45vw,
+          23px
         );
 
-      line-height: 1.46;
+      line-height:
+        1.48;
 
-      font-weight: 630;
+      font-weight:
+        630;
 
     }
 
 
-    .home-message span {
+    .home-message
+    span {
 
-      color: var(--teal-600);
+      color:
+        var(--teal-600);
+
+    }
+
+
+    .home-philosophy {
+
+      padding:
+        18px
+        21px;
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.75
+        );
+
+      border:
+        1px solid
+        var(--line);
+
+      box-shadow:
+        var(--shadow-small);
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.65;
+
+    }
+
+
+    .home-philosophy
+    strong {
+
+      display: block;
+
+      margin-bottom:
+        5px;
+
+      color:
+        var(--navy-800);
+
+      font-size:
+        12px;
 
     }
 
 
 
     /* =========================================================
-       SIMULATION PAGE
+       SIMULATIONS PAGE
        ========================================================= */
 
     .simulation-layout {
@@ -1200,14 +1375,17 @@
           95px
         );
 
-      align-items: center;
+      align-items:
+        center;
 
     }
 
 
-    .simulation-intro .lead {
+    .simulation-intro
+    .lead {
 
-      max-width: 470px;
+      max-width:
+        470px;
 
     }
 
@@ -1222,7 +1400,8 @@
           1fr
         );
 
-      gap: 15px;
+      gap:
+        16px;
 
     }
 
@@ -1231,13 +1410,17 @@
 
       position: relative;
 
-      min-height: 172px;
+      min-height:
+        178px;
 
-      padding: 23px;
+      padding:
+        24px;
 
-      border-radius: 25px;
+      border-radius:
+        25px;
 
-      overflow: hidden;
+      overflow:
+        hidden;
 
       border:
         1px solid
@@ -1253,14 +1436,14 @@
           255,
           255,
           255,
-          0.85
+          0.87
         );
 
       backdrop-filter:
-        blur(14px);
+        blur(15px);
 
       -webkit-backdrop-filter:
-        blur(14px);
+        blur(15px);
 
       box-shadow:
         0 16px 45px
@@ -1271,12 +1454,13 @@
           0.065
         );
 
-      cursor: pointer;
-
       transition:
-        transform 0.24s ease,
-        box-shadow 0.24s ease,
-        border-color 0.24s ease;
+        transform
+        0.24s ease,
+        box-shadow
+        0.24s ease,
+        border-color
+        0.24s ease;
 
     }
 
@@ -1308,13 +1492,14 @@
 
     .sim-icon {
 
-      width: 45px;
-      height: 45px;
+      width: 46px;
+      height: 46px;
 
       display: grid;
       place-items: center;
 
-      border-radius: 14px;
+      border-radius:
+        14px;
 
       color: white;
 
@@ -1325,37 +1510,50 @@
           var(--teal-500)
         );
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 900;
+      font-weight:
+        900;
 
-      letter-spacing: 0.5px;
-
-    }
-
-
-    .simulation-card h3 {
-
-      margin-top: 18px;
-
-      color: var(--navy-900);
-
-      font-size: 18px;
+      letter-spacing:
+        0.5px;
 
     }
 
 
-    .simulation-card p {
+    .simulation-card
+    h3 {
 
-      max-width: 88%;
+      margin-top:
+        18px;
 
-      margin-top: 7px;
+      color:
+        var(--navy-900);
 
-      color: var(--muted);
+      font-size:
+        19px;
 
-      font-size: 12px;
+    }
 
-      line-height: 1.55;
+
+    .simulation-card
+    p {
+
+      max-width:
+        88%;
+
+      margin-top:
+        7px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.58;
 
     }
 
@@ -1367,19 +1565,23 @@
       right: 19px;
       bottom: 18px;
 
-      width: 34px;
-      height: 34px;
+      width: 35px;
+      height: 35px;
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       display: grid;
       place-items: center;
 
-      color: var(--teal-700);
+      color:
+        var(--teal-700);
 
-      background: var(--ice);
+      background:
+        var(--ice);
 
-      font-weight: 900;
+      font-weight:
+        900;
 
     }
 
@@ -1399,9 +1601,11 @@
         0.85fr
         1.15fr;
 
-      gap: 75px;
+      gap:
+        78px;
 
-      align-items: center;
+      align-items:
+        center;
 
     }
 
@@ -1410,7 +1614,8 @@
 
       display: grid;
 
-      gap: 14px;
+      gap:
+        14px;
 
     }
 
@@ -1420,16 +1625,21 @@
       display: grid;
 
       grid-template-columns:
-        65px
+        66px
         1fr;
 
-      gap: 20px;
+      gap:
+        20px;
 
-      align-items: center;
+      align-items:
+        center;
 
-      padding: 20px 23px;
+      padding:
+        21px
+        24px;
 
-      border-radius: 22px;
+      border-radius:
+        22px;
 
       border:
         1px solid
@@ -1459,10 +1669,11 @@
 
     .step-number {
 
-      width: 56px;
-      height: 56px;
+      width: 57px;
+      height: 57px;
 
-      border-radius: 17px;
+      border-radius:
+        17px;
 
       display: grid;
       place-items: center;
@@ -1476,21 +1687,26 @@
           var(--aqua)
         );
 
-      font-weight: 900;
+      font-weight:
+        900;
 
     }
 
 
-    .learning-step h3 {
+    .learning-step
+    h3 {
 
-      font-size: 18px;
+      font-size:
+        18px;
 
     }
 
 
-    .learning-step p {
+    .learning-step
+    p {
 
-      margin-top: 4px;
+      margin-top:
+        5px;
 
       color:
         rgba(
@@ -1500,9 +1716,11 @@
           0.62
         );
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      line-height: 1.55;
+      line-height:
+        1.58;
 
     }
 
@@ -1522,9 +1740,11 @@
         0.75fr
         1.25fr;
 
-      gap: 80px;
+      gap:
+        82px;
 
-      align-items: center;
+      align-items:
+        center;
 
     }
 
@@ -1539,29 +1759,34 @@
           1fr
         );
 
-      gap: 15px;
+      gap:
+        16px;
 
     }
 
 
     .research-card {
 
-      min-height: 176px;
+      min-height:
+        180px;
 
-      padding: 25px;
+      padding:
+        26px;
 
-      border-radius: 24px;
+      border-radius:
+        24px;
 
       background:
         rgba(
           255,
           255,
           255,
-          0.90
+          0.91
         );
 
       border:
-        1px solid var(--line);
+        1px solid
+        var(--line);
 
       box-shadow:
         0 15px 40px
@@ -1577,37 +1802,50 @@
 
     .research-number {
 
-      color: var(--teal-600);
+      color:
+        var(--teal-600);
 
-      font-size: 29px;
+      font-size:
+        30px;
 
-      font-weight: 900;
+      font-weight:
+        900;
 
-      line-height: 1;
-
-    }
-
-
-    .research-card h3 {
-
-      margin-top: 16px;
-
-      color: var(--navy-900);
-
-      font-size: 18px;
+      line-height:
+        1;
 
     }
 
 
-    .research-card p {
+    .research-card
+    h3 {
 
-      margin-top: 7px;
+      margin-top:
+        16px;
 
-      color: var(--muted);
+      color:
+        var(--navy-900);
 
-      font-size: 12px;
+      font-size:
+        18px;
 
-      line-height: 1.55;
+    }
+
+
+    .research-card
+    p {
+
+      margin-top:
+        7px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.58;
 
     }
 
@@ -1627,9 +1865,11 @@
         1fr
         0.92fr;
 
-      gap: 85px;
+      gap:
+        88px;
 
-      align-items: center;
+      align-items:
+        center;
 
     }
 
@@ -1638,13 +1878,17 @@
 
       position: relative;
 
-      padding: 43px;
+      padding:
+        44px;
 
-      border-radius: 30px;
+      border-radius:
+        30px;
 
-      overflow: hidden;
+      overflow:
+        hidden;
 
-      color: white;
+      color:
+        white;
 
       background:
         linear-gradient(
@@ -1671,7 +1915,8 @@
       right: -70px;
       top: -70px;
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       border:
         34px solid
@@ -1696,27 +1941,34 @@
           39px
         );
 
-      line-height: 1.17;
+      line-height:
+        1.17;
 
-      letter-spacing: -1.2px;
+      letter-spacing:
+        -1.2px;
 
-      font-weight: 760;
-
-    }
-
-
-    .about-quote span {
-
-      color: var(--aqua);
+      font-weight:
+        760;
 
     }
 
 
-    .about-panel p {
+    .about-quote
+    span {
+
+      color:
+        var(--aqua);
+
+    }
+
+
+    .about-panel
+    p {
 
       position: relative;
 
-      margin-top: 24px;
+      margin-top:
+        24px;
 
       color:
         rgba(
@@ -1726,9 +1978,11 @@
           0.66
         );
 
-      font-size: 14px;
+      font-size:
+        14px;
 
-      line-height: 1.7;
+      line-height:
+        1.72;
 
     }
 
@@ -1748,25 +2002,29 @@
         0.85fr
         1.15fr;
 
-      gap: 75px;
+      gap:
+        78px;
 
-      align-items: center;
+      align-items:
+        center;
 
     }
 
 
     .contact-panel {
 
-      padding: 34px;
+      padding:
+        35px;
 
-      border-radius: 30px;
+      border-radius:
+        30px;
 
       background:
         rgba(
           255,
           255,
           255,
-          0.88
+          0.89
         );
 
       backdrop-filter:
@@ -1776,7 +2034,8 @@
         blur(18px);
 
       border:
-        1px solid var(--line);
+        1px solid
+        var(--line);
 
       box-shadow:
         var(--shadow-medium);
@@ -1786,38 +2045,49 @@
 
     .contact-field {
 
-      margin-bottom: 15px;
+      margin-bottom:
+        15px;
 
     }
 
 
-    .contact-field label {
+    .contact-field
+    label {
 
       display: block;
 
-      margin-bottom: 7px;
+      margin-bottom:
+        7px;
 
-      color: var(--navy-800);
+      color:
+        var(--navy-800);
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 850;
+      font-weight:
+        850;
 
-      letter-spacing: 0.5px;
+      letter-spacing:
+        0.5px;
 
     }
 
 
-    .contact-field input,
-    .contact-field textarea {
+    .contact-field
+    input,
+    .contact-field
+    textarea {
 
-      width: 100%;
+      width:
+        100%;
 
       padding:
         14px
         15px;
 
-      color: var(--text);
+      color:
+        var(--text);
 
       background:
         rgba(
@@ -1836,28 +2106,37 @@
           0.10
         );
 
-      border-radius: 13px;
+      border-radius:
+        13px;
 
-      outline: none;
+      outline:
+        none;
 
       transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        border-color
+        0.2s ease,
+        box-shadow
+        0.2s ease;
 
     }
 
 
-    .contact-field textarea {
+    .contact-field
+    textarea {
 
-      min-height: 115px;
+      min-height:
+        125px;
 
-      resize: vertical;
+      resize:
+        vertical;
 
     }
 
 
-    .contact-field input:focus,
-    .contact-field textarea:focus {
+    .contact-field
+    input:focus,
+    .contact-field
+    textarea:focus {
 
       border-color:
         rgba(
@@ -1879,207 +2158,61 @@
     }
 
 
-    .contact-note {
+    .send-button {
 
-      margin-top: 15px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      line-height: 1.55;
-
-    }
-
-
-
-    /* =========================================================
-       PAGE ARROWS
-       ========================================================= */
-
-    .page-arrow {
-
-      position: fixed;
-
-      top: 50%;
-
-      z-index: 1500;
-
-      width: 54px;
-      height: 54px;
-
-      margin-top: 18px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 50%;
-
-      cursor: pointer;
-
-      color: var(--navy-900);
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.86
-        );
-
-      border:
-        1px solid var(--line);
-
-      backdrop-filter:
-        blur(16px);
-
-      -webkit-backdrop-filter:
-        blur(16px);
-
-      box-shadow:
-        0 12px 35px
-        rgba(
-          3,
-          29,
-          73,
-          0.09
-        );
-
-      font-size: 21px;
-
-      transition:
-        transform 0.2s ease,
-        opacity 0.2s ease;
-
-    }
-
-
-    .page-arrow:hover {
-
-      transform:
-        scale(1.06);
-
-    }
-
-
-    .page-arrow.left {
-
-      left: 18px;
-
-    }
-
-
-    .page-arrow.right {
-
-      right: 18px;
-
-    }
-
-
-    .page-arrow.hidden {
-
-      opacity: 0;
-
-      pointer-events: none;
-
-    }
-
-
-
-    /* =========================================================
-       PAGE DOT INDICATOR
-       ========================================================= */
-
-    .page-indicator {
-
-      position: fixed;
-
-      left: 50%;
-
-      bottom:
-        calc(
-          16px
-          +
-          env(
-            safe-area-inset-bottom
-          )
-        );
-
-      z-index: 1500;
-
-      transform:
-        translateX(-50%);
-
-      display: flex;
-
-      gap: 7px;
+      min-height:
+        50px;
 
       padding:
-        8px
-        11px;
+        0 24px;
 
-      border-radius: 100px;
+      border-radius:
+        15px;
 
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.78
-        );
+      cursor:
+        pointer;
 
-      backdrop-filter:
-        blur(15px);
-
-      -webkit-backdrop-filter:
-        blur(15px);
-
-      box-shadow:
-        0 8px 28px
-        rgba(
-          3,
-          29,
-          73,
-          0.07
-        );
-
-    }
-
-
-    .page-dot {
-
-      width: 7px;
-      height: 7px;
-
-      border-radius: 100px;
-
-      cursor: pointer;
-
-      background:
-        rgba(
-          8,
-          65,
-          122,
-          0.20
-        );
-
-      transition:
-        width 0.25s ease,
-        background 0.25s ease;
-
-    }
-
-
-    .page-dot.active {
-
-      width: 24px;
+      color:
+        white;
 
       background:
         linear-gradient(
-          90deg,
-          var(--navy-700),
+          125deg,
+          var(--navy-900),
           var(--teal-600)
         );
+
+      box-shadow:
+        0 15px 34px
+        rgba(
+          3,
+          29,
+          73,
+          0.15
+        );
+
+      font-size:
+        12px;
+
+      font-weight:
+        850;
+
+    }
+
+
+    .contact-note {
+
+      margin-top:
+        15px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.55;
 
     }
 
@@ -2090,11 +2223,15 @@
        ========================================================= */
 
     @media
-    (max-width: 1080px) {
+    (
+      max-width:
+      1080px
+    ) {
 
       :root {
 
-        --header-height: 80px;
+        --header-height:
+          88px;
 
       }
 
@@ -2106,29 +2243,35 @@
             100% - 28px
           );
 
-        gap: 14px;
-
-      }
-
-
-      .brand-copy {
-
-        display: none;
+        gap:
+          15px;
 
       }
 
 
       .brand-icon {
 
-        width: 45px;
-        height: 45px;
+        width:
+          57px;
+
+        height:
+          57px;
 
       }
 
 
-      .header-cta {
+      .brand-name {
 
-        display: none;
+        font-size:
+          28px;
+
+      }
+
+
+      .brand-tagline {
+
+        font-size:
+          8px;
 
       }
 
@@ -2149,7 +2292,8 @@
       .about-layout,
       .contact-layout {
 
-        gap: 40px;
+        gap:
+          42px;
 
       }
 
@@ -2158,15 +2302,19 @@
 
 
     /* =========================================================
-       RESPONSIVE MOBILE
+       MOBILE
        ========================================================= */
 
     @media
-    (max-width: 760px) {
+    (
+      max-width:
+      760px
+    ) {
 
       :root {
 
-        --header-height: 72px;
+        --header-height:
+          78px;
 
       }
 
@@ -2178,15 +2326,52 @@
             100% - 18px
           );
 
-        gap: 7px;
+        gap:
+          8px;
+
+      }
+
+
+      .brand-button {
+
+        gap:
+          8px;
 
       }
 
 
       .brand-icon {
 
-        width: 40px;
-        height: 40px;
+        width:
+          47px;
+
+        height:
+          47px;
+
+      }
+
+
+      .brand-name {
+
+        font-size:
+          22px;
+
+        letter-spacing:
+          -0.8px;
+
+      }
+
+
+      .brand-tagline {
+
+        margin-top:
+          5px;
+
+        font-size:
+          6.5px;
+
+        letter-spacing:
+          0.85px;
 
       }
 
@@ -2205,19 +2390,8 @@
           10px
           11px;
 
-        font-size: 11px;
-
-      }
-
-
-      .page {
-
-        overflow-y: auto;
-
-        overflow-x: hidden;
-
-        -webkit-overflow-scrolling:
-          touch;
+        font-size:
+          11px;
 
       }
 
@@ -2229,16 +2403,16 @@
             100% - 38px
           );
 
-        height: auto;
-
-        min-height: 100%;
+        min-height:
+          100%;
 
         padding:
-          38px
+          45px
           0
-          78px;
+          80px;
 
-        align-items: center;
+        align-items:
+          flex-start;
 
       }
 
@@ -2250,61 +2424,52 @@
             100% - 26px
           );
 
-        min-height: 100%;
-
-        height: auto;
+        min-height:
+          100%;
 
         padding:
-          25px
+          38px
           0
-          75px;
+          80px;
 
       }
 
 
       .brand-banner {
 
-        border-radius: 22px;
+        border-radius:
+          22px;
 
       }
 
 
-      .brand-banner img {
+      .brand-banner
+      img {
 
-        object-fit: contain;
+        object-fit:
+          contain;
 
       }
 
 
       .home-bottom {
 
-        width: 100%;
+        width:
+          100%;
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
 
-        gap: 19px;
+        gap:
+          18px;
 
       }
 
 
       .home-message {
 
-        font-size: 16px;
-
-      }
-
-
-      .button-row {
-
-        width: 100%;
-
-      }
-
-
-      .primary-btn,
-      .secondary-btn {
-
-        flex: 1;
+        font-size:
+          17px;
 
       }
 
@@ -2318,7 +2483,8 @@
             62px
           );
 
-        letter-spacing: -2.5px;
+        letter-spacing:
+          -2.5px;
 
       }
 
@@ -2350,45 +2516,55 @@
       .simulation-card,
       .research-card {
 
-        min-height: 145px;
+        min-height:
+          150px;
 
-        padding: 18px;
+        padding:
+          19px;
 
       }
 
 
-      .simulation-card p,
-      .research-card p {
+      .simulation-card
+      p,
+      .research-card
+      p {
 
-        display: none;
+        display:
+          none;
 
       }
 
 
       .learning-step {
 
-        padding: 16px;
+        padding:
+          17px;
 
       }
 
 
-      .page-arrow {
+      .about-panel,
+      .contact-panel {
 
-        display: none;
+        padding:
+          30px;
 
       }
 
 
       .page-label {
 
-        display: none;
+        display:
+          none;
 
       }
 
 
       .brand-watermark {
 
-        width: 150px;
+        width:
+          150px;
 
       }
 
@@ -2397,40 +2573,44 @@
 
 
     /* =========================================================
-       SMALL PHONES
+       SMALL MOBILE
        ========================================================= */
 
     @media
-    (max-width: 500px) {
+    (
+      max-width:
+      500px
+    ) {
+
+      .brand-copy {
+
+        min-width:
+          88px;
+
+      }
+
+
+      .brand-name {
+
+        font-size:
+          20px;
+
+      }
+
+
+      .brand-tagline {
+
+        font-size:
+          5.8px;
+
+        letter-spacing:
+          0.55px;
+
+      }
+
 
       .simulation-grid,
       .research-cards {
-
-        grid-template-columns: 1fr;
-
-      }
-
-
-      .simulation-card,
-      .research-card {
-
-        min-height: 125px;
-
-      }
-
-
-      .about-panel,
-      .contact-panel {
-
-        padding: 27px;
-
-      }
-
-
-      .home-bottom
-      .button-row {
-
-        display: grid;
 
         grid-template-columns:
           1fr;
@@ -2438,10 +2618,20 @@
       }
 
 
-      .primary-btn,
-      .secondary-btn {
+      .simulation-card,
+      .research-card {
 
-        width: 100%;
+        min-height:
+          128px;
+
+      }
+
+
+      .about-panel,
+      .contact-panel {
+
+        padding:
+          27px;
 
       }
 
@@ -2461,7 +2651,8 @@
 
       .page-track {
 
-        transition: none;
+        transition:
+          none;
 
       }
 
@@ -2480,20 +2671,31 @@
        HEADER
        ======================================================= -->
 
-  <header class="site-header">
+  <header
+    class="site-header"
+  >
 
-    <div class="header-inner">
+
+    <div
+      class="header-inner"
+    >
 
 
-      <!-- Real RizSim logo mark -->
+      <!-- =====================================================
+           RIZSIM BRAND
+           ===================================================== -->
 
       <button
         class="brand-button"
+        type="button"
         data-page-target="0"
         aria-label="RizSim Home"
       >
 
-        <div class="brand-icon">
+
+        <div
+          class="brand-icon"
+        >
 
           <img
             src="rizsim-r.png"
@@ -2503,94 +2705,115 @@
         </div>
 
 
-        <div class="brand-copy">
+        <div
+          class="brand-copy"
+        >
 
-          <div class="brand-name">
+
+          <div
+            class="brand-name"
+          >
             RizSim
           </div>
 
-          <div class="brand-tagline">
+
+          <div
+            class="brand-tagline"
+          >
             Explore. Decide. Grow.
           </div>
 
+
         </div>
+
 
       </button>
 
 
 
-      <!-- Navigation tabs -->
+      <!-- =====================================================
+           NAVIGATION
+
+           These tabs are the ONLY page-switching controls.
+           ===================================================== -->
 
       <nav
         class="tab-strip"
         aria-label="Primary navigation"
       >
 
+
         <button
           class="nav-tab active"
+          type="button"
           data-page-target="0"
         >
           Home
         </button>
 
+
         <button
           class="nav-tab"
+          type="button"
           data-page-target="1"
         >
           Simulations
         </button>
 
+
         <button
           class="nav-tab"
+          type="button"
           data-page-target="2"
         >
           Learning
         </button>
 
+
         <button
           class="nav-tab"
+          type="button"
           data-page-target="3"
         >
           Research
         </button>
 
+
         <button
           class="nav-tab"
+          type="button"
           data-page-target="4"
         >
           About
         </button>
 
+
         <button
           class="nav-tab"
+          type="button"
           data-page-target="5"
         >
           Contact
         </button>
 
+
       </nav>
 
 
-
-      <button
-        class="header-cta"
-        data-page-target="1"
-      >
-        Explore Simulations →
-      </button>
-
-
     </div>
+
 
   </header>
 
 
 
   <!-- =======================================================
-       WEBSITE VIEWPORT
+       WEBSITE
        ======================================================= -->
 
-  <div class="website-viewport">
+  <div
+    class="website-viewport"
+  >
 
 
     <main
@@ -2601,7 +2824,6 @@
 
 
       <!-- ===================================================
-           PAGE 1
            HOME
            =================================================== -->
 
@@ -2611,29 +2833,42 @@
       >
 
 
-        <div class="page-label">
+        <div
+          class="page-label"
+        >
           RizSim / Home
         </div>
 
 
-        <div class="home-shell">
+
+        <div
+          class="home-shell"
+        >
 
 
-          <div class="brand-banner">
+          <div
+            class="brand-banner"
+          >
+
 
             <img
               src="RizSim%20finalized%20logo.png"
               alt="RizSim - Explore. Decide. Grow."
             >
 
+
           </div>
 
 
 
-          <div class="home-bottom">
+          <div
+            class="home-bottom"
+          >
 
 
-            <div class="home-message">
+            <div
+              class="home-message"
+            >
 
               Transforming learning from passive
               consumption into
@@ -2646,21 +2881,17 @@
 
 
 
-            <div class="button-row">
+            <div
+              class="home-philosophy"
+            >
 
-              <button
-                class="primary-btn"
-                data-page-target="1"
-              >
-                Explore Simulations →
-              </button>
+              <strong>
+                Where Learning Becomes Experience
+              </strong>
 
-              <button
-                class="secondary-btn"
-                data-page-target="2"
-              >
-                Discover Learning
-              </button>
+              Explore ideas. Make decisions.
+              Reflect on consequences.
+              Grow through experience.
 
             </div>
 
@@ -2676,7 +2907,6 @@
 
 
       <!-- ===================================================
-           PAGE 2
            SIMULATIONS
            =================================================== -->
 
@@ -2694,204 +2924,291 @@
         >
 
 
-        <div class="page-label">
+        <div
+          class="page-label"
+        >
           RizSim / Simulations
         </div>
 
 
 
-        <div class="page-shell">
+        <div
+          class="page-shell"
+        >
 
 
-          <div class="simulation-layout">
+          <div
+            class="simulation-layout"
+          >
 
 
-            <div class="simulation-intro">
+
+            <div
+              class="simulation-intro"
+            >
 
 
-              <div class="kicker">
+              <div
+                class="kicker"
+              >
                 RizSim Experiences
               </div>
 
 
-              <h1 class="display-title">
+              <h1
+                class="display-title"
+              >
 
                 Learning through
 
-                <span class="accent">
+                <span
+                  class="accent"
+                >
                   decisions.
                 </span>
 
               </h1>
 
 
-              <p class="lead">
+              <p
+                class="lead"
+              >
 
-                Interactive learning experiences built
-                around uncertainty, judgment,
-                reflection and measurable change.
+                Interactive learning experiences
+                built around uncertainty,
+                judgment, reflection and
+                measurable change.
 
               </p>
-
-
-              <div class="button-row">
-
-                <button
-                  class="primary-btn"
-                  data-page-target="2"
-                >
-                  How RizSim Learning Works →
-                </button>
-
-              </div>
 
 
             </div>
 
 
 
-            <div class="simulation-grid">
+            <div
+              class="simulation-grid"
+            >
 
 
-              <article class="simulation-card">
 
-                <div class="sim-icon">
+              <article
+                class="simulation-card"
+              >
+
+
+                <div
+                  class="sim-icon"
+                >
                   DM
                 </div>
+
 
                 <h3>
                   Decision Making
                 </h3>
 
+
                 <p>
+
                   Judgment, uncertainty,
                   cognitive bias and
                   consequential choices.
+
                 </p>
 
-                <div class="sim-arrow">
+
+                <div
+                  class="sim-arrow"
+                >
                   →
                 </div>
+
 
               </article>
 
 
 
-              <article class="simulation-card">
+              <article
+                class="simulation-card"
+              >
 
-                <div class="sim-icon">
+
+                <div
+                  class="sim-icon"
+                >
                   RM
                 </div>
+
 
                 <h3>
                   Responsible Marketing
                 </h3>
 
+
                 <p>
+
                   Value, responsibility,
                   consumer autonomy and
                   stakeholder impact.
+
                 </p>
 
-                <div class="sim-arrow">
+
+                <div
+                  class="sim-arrow"
+                >
                   →
                 </div>
+
 
               </article>
 
 
 
-              <article class="simulation-card">
+              <article
+                class="simulation-card"
+              >
 
-                <div class="sim-icon">
+
+                <div
+                  class="sim-icon"
+                >
                   NI
                 </div>
+
 
                 <h3>
                   Neuro Insights
                 </h3>
 
+
                 <p>
+
                   Attention, emotion,
                   salience and
-                  decision processes.
+                  neuro-informed decisions.
+
                 </p>
 
-                <div class="sim-arrow">
+
+                <div
+                  class="sim-arrow"
+                >
                   →
                 </div>
+
 
               </article>
 
 
 
-              <article class="simulation-card">
+              <article
+                class="simulation-card"
+              >
 
-                <div class="sim-icon">
+
+                <div
+                  class="sim-icon"
+                >
                   BR
                 </div>
+
 
                 <h3>
                   Boardroom
                 </h3>
 
+
                 <p>
+
                   Executive judgment,
                   leadership, strategy
-                  and organizational tensions.
+                  and organizational tension.
+
                 </p>
 
-                <div class="sim-arrow">
+
+                <div
+                  class="sim-arrow"
+                >
                   →
                 </div>
+
 
               </article>
 
 
 
-              <article class="simulation-card">
+              <article
+                class="simulation-card"
+              >
 
-                <div class="sim-icon">
+
+                <div
+                  class="sim-icon"
+                >
                   RS
                 </div>
+
 
                 <h3>
                   Research Simulations
                 </h3>
 
+
                 <p>
+
                   Experimental reasoning,
-                  evidence and analytical
-                  judgment.
+                  evidence and
+                  analytical judgment.
+
                 </p>
 
-                <div class="sim-arrow">
+
+                <div
+                  class="sim-arrow"
+                >
                   →
                 </div>
+
 
               </article>
 
 
 
-              <article class="simulation-card">
+              <article
+                class="simulation-card"
+              >
 
-                <div class="sim-icon">
+
+                <div
+                  class="sim-icon"
+                >
                   TL
                 </div>
+
 
                 <h3>
                   Be Thought Leader
                 </h3>
 
+
                 <p>
+
                   Challenge assumptions
                   and develop greater
                   independence of thought.
+
                 </p>
 
-                <div class="sim-arrow">
+
+                <div
+                  class="sim-arrow"
+                >
                   →
                 </div>
+
 
               </article>
 
@@ -2910,7 +3227,6 @@
 
 
       <!-- ===================================================
-           PAGE 3
            LEARNING
            =================================================== -->
 
@@ -2928,44 +3244,61 @@
         >
 
 
-        <div class="page-label">
+        <div
+          class="page-label"
+        >
           RizSim / Learning
         </div>
 
 
 
-        <div class="page-shell">
+        <div
+          class="page-shell"
+        >
 
 
-          <div class="learning-layout">
+          <div
+            class="learning-layout"
+          >
+
 
 
             <div>
 
 
-              <div class="kicker">
+              <div
+                class="kicker"
+              >
                 The RizSim Learning Model
               </div>
 
 
-              <h1 class="display-title">
+              <h1
+                class="display-title"
+              >
 
                 Explore.<br>
+
                 Decide.<br>
 
-                <span class="accent">
+                <span
+                  class="accent"
+                >
                   Grow.
                 </span>
 
               </h1>
 
 
-              <p class="lead">
+              <p
+                class="lead"
+              >
 
                 Learners move beyond knowing concepts
-                toward applying judgment, experiencing
-                consequences and reflecting on how
-                their thinking changes.
+                toward applying judgment,
+                experiencing consequences and
+                reflecting on how their thinking
+                changes.
 
               </p>
 
@@ -2974,28 +3307,40 @@
 
 
 
-            <div class="learning-steps">
+            <div
+              class="learning-steps"
+            >
 
 
-              <article class="learning-step">
+
+              <article
+                class="learning-step"
+              >
 
 
-                <div class="step-number">
+                <div
+                  class="step-number"
+                >
                   01
                 </div>
 
 
                 <div>
 
+
                   <h3>
                     Explore
                   </h3>
 
+
                   <p>
+
                     Enter situations with competing
-                    perspectives, uncertainty and
-                    meaningful ambiguity.
+                    perspectives, uncertainty
+                    and meaningful ambiguity.
+
                   </p>
+
 
                 </div>
 
@@ -3004,25 +3349,34 @@
 
 
 
-              <article class="learning-step">
+              <article
+                class="learning-step"
+              >
 
 
-                <div class="step-number">
+                <div
+                  class="step-number"
+                >
                   02
                 </div>
 
 
                 <div>
 
+
                   <h3>
                     Decide
                   </h3>
 
+
                   <p>
+
                     Make consequential choices
                     without relying on obvious
                     right-answer cues.
+
                   </p>
+
 
                 </div>
 
@@ -3031,25 +3385,34 @@
 
 
 
-              <article class="learning-step">
+              <article
+                class="learning-step"
+              >
 
 
-                <div class="step-number">
+                <div
+                  class="step-number"
+                >
                   03
                 </div>
 
 
                 <div>
 
+
                   <h3>
                     Reflect
                   </h3>
 
+
                   <p>
+
                     Examine assumptions,
                     reasoning and consequences
                     of initial judgment.
+
                   </p>
+
 
                 </div>
 
@@ -3058,24 +3421,34 @@
 
 
 
-              <article class="learning-step">
+              <article
+                class="learning-step"
+              >
 
 
-                <div class="step-number">
+                <div
+                  class="step-number"
+                >
                   04
                 </div>
 
 
                 <div>
 
+
                   <h3>
                     Grow
                   </h3>
 
+
                   <p>
-                    Reconsider decisions and
-                    make learning gain visible.
+
+                    Reconsider decisions
+                    and make learning gain
+                    visible.
+
                   </p>
+
 
                 </div>
 
@@ -3097,7 +3470,6 @@
 
 
       <!-- ===================================================
-           PAGE 4
            RESEARCH
            =================================================== -->
 
@@ -3115,43 +3487,58 @@
         >
 
 
-        <div class="page-label">
+        <div
+          class="page-label"
+        >
           RizSim / Research
         </div>
 
 
 
-        <div class="page-shell">
+        <div
+          class="page-shell"
+        >
 
 
-          <div class="research-layout">
+          <div
+            class="research-layout"
+          >
+
 
 
             <div>
 
 
-              <div class="kicker">
+              <div
+                class="kicker"
+              >
                 Evidence-Informed Learning
               </div>
 
 
-              <h1 class="display-title">
+              <h1
+                class="display-title"
+              >
 
                 Beyond performance.
 
-                <span class="accent">
+                <span
+                  class="accent"
+                >
                   Toward learning.
                 </span>
 
               </h1>
 
 
-              <p class="lead">
+              <p
+                class="lead"
+              >
 
-                RizSim is designed to make learning
-                visible through judgment,
-                reconsideration, reflection
-                and measurable change.
+                RizSim is designed to make
+                learning visible through
+                judgment, reconsideration,
+                reflection and measurable change.
 
               </p>
 
@@ -3160,13 +3547,20 @@
 
 
 
-            <div class="research-cards">
+            <div
+              class="research-cards"
+            >
 
 
-              <article class="research-card">
+
+              <article
+                class="research-card"
+              >
 
 
-                <div class="research-number">
+                <div
+                  class="research-number"
+                >
                   01
                 </div>
 
@@ -3177,9 +3571,11 @@
 
 
                 <p>
+
                   Compare initial and revised
                   understanding to identify
                   meaningful learning.
+
                 </p>
 
 
@@ -3187,10 +3583,14 @@
 
 
 
-              <article class="research-card">
+              <article
+                class="research-card"
+              >
 
 
-                <div class="research-number">
+                <div
+                  class="research-number"
+                >
                   02
                 </div>
 
@@ -3201,9 +3601,11 @@
 
 
                 <p>
+
                   Make assumptions,
                   reasoning and reconsideration
                   visible.
+
                 </p>
 
 
@@ -3211,10 +3613,14 @@
 
 
 
-              <article class="research-card">
+              <article
+                class="research-card"
+              >
 
 
-                <div class="research-number">
+                <div
+                  class="research-number"
+                >
                   03
                 </div>
 
@@ -3225,8 +3631,11 @@
 
 
                 <p>
-                  Assess judgment and reasoning
-                  rather than simple recall.
+
+                  Assess judgment and
+                  reasoning rather than
+                  simple recall.
+
                 </p>
 
 
@@ -3234,10 +3643,14 @@
 
 
 
-              <article class="research-card">
+              <article
+                class="research-card"
+              >
 
 
-                <div class="research-number">
+                <div
+                  class="research-number"
+                >
                   04
                 </div>
 
@@ -3248,9 +3661,11 @@
 
 
                 <p>
+
                   Transform participant responses
-                  into evidence for teaching
-                  and research.
+                  into meaningful evidence
+                  for teaching and research.
+
                 </p>
 
 
@@ -3271,7 +3686,6 @@
 
 
       <!-- ===================================================
-           PAGE 5
            ABOUT
            =================================================== -->
 
@@ -3289,44 +3703,59 @@
         >
 
 
-        <div class="page-label">
+        <div
+          class="page-label"
+        >
           RizSim / About
         </div>
 
 
 
-        <div class="page-shell">
+        <div
+          class="page-shell"
+        >
 
 
-          <div class="about-layout">
+          <div
+            class="about-layout"
+          >
+
 
 
             <div>
 
 
-              <div class="kicker">
+              <div
+                class="kicker"
+              >
                 About RizSim
               </div>
 
 
-              <h1 class="display-title">
+              <h1
+                class="display-title"
+              >
 
                 Learning becomes meaningful
                 when thinking becomes
 
-                <span class="accent">
+                <span
+                  class="accent"
+                >
                   active.
                 </span>
 
               </h1>
 
 
-              <p class="lead">
+              <p
+                class="lead"
+              >
 
-                RizSim develops interactive learning
-                experiences that place learners
-                inside decisions rather than
-                outside them.
+                RizSim develops interactive
+                learning experiences that place
+                learners inside decisions
+                rather than outside them.
 
               </p>
 
@@ -3335,10 +3764,14 @@
 
 
 
-            <div class="about-panel">
+            <div
+              class="about-panel"
+            >
 
 
-              <div class="about-quote">
+              <div
+                class="about-quote"
+              >
 
                 Where learning becomes
 
@@ -3351,21 +3784,22 @@
 
               <p>
 
-                Our simulations encourage curiosity,
-                judgment, reflection and deeper
-                engagement with complex ideas.
+                Our simulations encourage
+                curiosity, judgment, reflection
+                and deeper engagement with
+                complex ideas.
 
               </p>
 
 
               <p>
 
-                The aim is not merely to produce
-                the correct answer. It is to help
-                learners examine how they think,
-                why they decide and how
-                understanding changes through
-                experience.
+                The aim is not merely to
+                produce the correct answer.
+                It is to help learners examine
+                how they think, why they decide
+                and how understanding changes
+                through experience.
 
               </p>
 
@@ -3384,7 +3818,6 @@
 
 
       <!-- ===================================================
-           PAGE 6
            CONTACT
            =================================================== -->
 
@@ -3402,42 +3835,57 @@
         >
 
 
-        <div class="page-label">
+        <div
+          class="page-label"
+        >
           RizSim / Contact
         </div>
 
 
 
-        <div class="page-shell">
+        <div
+          class="page-shell"
+        >
 
 
-          <div class="contact-layout">
+          <div
+            class="contact-layout"
+          >
+
 
 
             <div>
 
 
-              <div class="kicker">
+              <div
+                class="kicker"
+              >
                 Connect With RizSim
               </div>
 
 
-              <h1 class="display-title">
+              <h1
+                class="display-title"
+              >
 
                 Let's create better
 
-                <span class="accent">
+                <span
+                  class="accent"
+                >
                   learning experiences.
                 </span>
 
               </h1>
 
 
-              <p class="lead">
+              <p
+                class="lead"
+              >
 
                 Interested in simulations,
-                research collaboration,
-                educator resources or
+                educator resources,
+                research collaboration or
                 institutional partnerships?
 
               </p>
@@ -3447,57 +3895,88 @@
 
 
 
-            <div class="contact-panel">
+            <div
+              class="contact-panel"
+            >
 
 
-              <div class="contact-field">
 
-                <label>
+              <div
+                class="contact-field"
+              >
+
+
+                <label
+                  for="contactName"
+                >
                   NAME
                 </label>
 
+
                 <input
+                  id="contactName"
                   type="text"
                   placeholder="Your name"
                 >
 
+
               </div>
 
 
-              <div class="contact-field">
 
-                <label>
+              <div
+                class="contact-field"
+              >
+
+
+                <label
+                  for="contactEmail"
+                >
                   EMAIL
                 </label>
 
+
                 <input
+                  id="contactEmail"
                   type="email"
                   placeholder="Your email address"
                 >
 
+
               </div>
 
 
-              <div class="contact-field">
 
-                <label>
+              <div
+                class="contact-field"
+              >
+
+
+                <label
+                  for="contactMessage"
+                >
                   MESSAGE
                 </label>
 
+
                 <textarea
+                  id="contactMessage"
                   placeholder="How can RizSim help?"
                 ></textarea>
+
 
               </div>
 
 
+
               <button
-                class="primary-btn"
+                class="send-button"
                 type="button"
-                onclick="showContactMessage()"
+                id="sendMessageButton"
               >
                 Send Message →
               </button>
+
 
 
               <div
@@ -3505,9 +3984,9 @@
                 id="contactNote"
               >
 
-                The visual form is ready.
-                We can connect actual email delivery
-                in the next development stage.
+                Contact form interface.
+                Email delivery will be connected
+                during a later development stage.
 
               </div>
 
@@ -3531,93 +4010,26 @@
 
 
 
-  <!-- =======================================================
-       LEFT / RIGHT NAVIGATION
-       ======================================================= -->
-
-  <button
-    class="page-arrow left hidden"
-    id="previousPage"
-    aria-label="Previous page"
-  >
-    ←
-  </button>
-
-
-  <button
-    class="page-arrow right"
-    id="nextPage"
-    aria-label="Next page"
-  >
-    →
-  </button>
-
-
-
-  <!-- =======================================================
-       PAGE DOTS
-       ======================================================= -->
-
-  <div
-    class="page-indicator"
-    aria-label="Page navigation"
-  >
-
-
-    <button
-      class="page-dot active"
-      data-page-target="0"
-      aria-label="Home"
-    ></button>
-
-
-    <button
-      class="page-dot"
-      data-page-target="1"
-      aria-label="Simulations"
-    ></button>
-
-
-    <button
-      class="page-dot"
-      data-page-target="2"
-      aria-label="Learning"
-    ></button>
-
-
-    <button
-      class="page-dot"
-      data-page-target="3"
-      aria-label="Research"
-    ></button>
-
-
-    <button
-      class="page-dot"
-      data-page-target="4"
-      aria-label="About"
-    ></button>
-
-
-    <button
-      class="page-dot"
-      data-page-target="5"
-      aria-label="Contact"
-    ></button>
-
-
-  </div>
-
-
-
   <script>
 
     /* =========================================================
-       RIZSIM HORIZONTAL PAGE ENGINE
+       RIZSIM WEBSITE
+       VERSION 2.2
+
+       NAVIGATION BAR ONLY.
+
+       No swipe navigation.
+       No mouse wheel navigation.
+       No keyboard page navigation.
+       No page arrows.
+       No bottom dots.
+
+       Normal vertical scrolling remains enabled.
        ========================================================= */
 
 
-    const track =
+
+    const pageTrack =
       document.getElementById(
         "pageTrack"
       );
@@ -3631,7 +4043,7 @@
       );
 
 
-    const tabs =
+    const navigationTabs =
       Array.from(
         document.querySelectorAll(
           ".nav-tab"
@@ -3639,23 +4051,9 @@
       );
 
 
-    const dots =
-      Array.from(
-        document.querySelectorAll(
-          ".page-dot"
-        )
-      );
-
-
-    const previousPage =
-      document.getElementById(
-        "previousPage"
-      );
-
-
-    const nextPage =
-      document.getElementById(
-        "nextPage"
+    const brandButton =
+      document.querySelector(
+        ".brand-button"
       );
 
 
@@ -3663,10 +4061,15 @@
     const pageSlugs = [
 
       "home",
+
       "simulations",
+
       "learning",
+
       "research",
+
       "about",
+
       "contact"
 
     ];
@@ -3691,30 +4094,35 @@
 
 
 
-    let currentPage = 0;
-
-
-    let wheelLocked = false;
+    let currentPage =
+      0;
 
 
 
     /* =========================================================
-       PAGE CHANGE
+       CHANGE PAGE
        ========================================================= */
 
     function goToPage(
-      requestedIndex,
+      requestedPage,
       updateURL = true
     ) {
 
 
-      const pageIndex = Math.max(
-        0,
-        Math.min(
-          requestedIndex,
-          pages.length - 1
-        )
-      );
+      const pageIndex =
+        Math.max(
+
+          0,
+
+          Math.min(
+
+            requestedPage,
+
+            pages.length - 1
+
+          )
+
+        );
 
 
       currentPage =
@@ -3722,7 +4130,11 @@
 
 
 
-      track.style.transform =
+      /*
+        Slide the complete website horizontally.
+      */
+
+      pageTrack.style.transform =
         "translate3d(-" +
         (
           currentPage * 100
@@ -3731,51 +4143,35 @@
 
 
 
-      tabs.forEach(
-        function (
+      /*
+        Highlight only the active tab.
+      */
+
+      navigationTabs.forEach(
+
+        function(
           tab,
           index
         ) {
 
           tab.classList.toggle(
+
             "active",
-            index === currentPage
+
+            index ===
+            currentPage
+
           );
 
         }
+
       );
 
 
 
-      dots.forEach(
-        function (
-          dot,
-          index
-        ) {
-
-          dot.classList.toggle(
-            "active",
-            index === currentPage
-          );
-
-        }
-      );
-
-
-
-      previousPage.classList.toggle(
-        "hidden",
-        currentPage === 0
-      );
-
-
-      nextPage.classList.toggle(
-        "hidden",
-        currentPage ===
-        pages.length - 1
-      );
-
-
+      /*
+        Change browser title.
+      */
 
       document.title =
         pageTitles[
@@ -3784,10 +4180,16 @@
 
 
 
+      /*
+        Update URL.
+
+        Example:
+        rizsim.com/#research
+      */
+
       if (
         updateURL
       ) {
-
 
         history.pushState(
 
@@ -3809,17 +4211,50 @@
 
 
 
-      const selectedTab =
-        tabs[
+      /*
+        When a different tab opens,
+        start that page from the top.
+      */
+
+      if (
+        pages[
+          currentPage
+        ]
+      ) {
+
+        pages[
+          currentPage
+        ].scrollTo({
+
+          top: 0,
+
+          left: 0,
+
+          behavior:
+            "instant"
+
+        });
+
+      }
+
+
+
+      /*
+        On phones, keep active navigation
+        tab visible in the header.
+      */
+
+      const activeTab =
+        navigationTabs[
           currentPage
         ];
 
 
       if (
-        selectedTab
+        activeTab
       ) {
 
-        selectedTab.scrollIntoView({
+        activeTab.scrollIntoView({
 
           behavior:
             "smooth",
@@ -3839,424 +4274,88 @@
 
 
     /* =========================================================
-       ALL BUTTONS WITH PAGE TARGETS
+       NAVIGATION TABS
+
+       ONLY these tabs change pages.
        ========================================================= */
 
-    document
-      .querySelectorAll(
-        "[data-page-target]"
-      )
-      .forEach(
+    navigationTabs.forEach(
 
-        function (
-          element
-        ) {
+      function(
+        tab,
+        index
+      ) {
 
 
-          element.addEventListener(
+        tab.addEventListener(
 
-            "click",
+          "click",
 
-            function () {
-
-
-              const targetPage =
-                Number(
-                  element
-                    .dataset
-                    .pageTarget
-                );
+          function() {
 
 
-              goToPage(
-                targetPage
-              );
+            goToPage(
+              index
+            );
 
-            }
 
-          );
+          }
 
-        }
+        );
 
-      );
+
+      }
+
+    );
 
 
 
     /* =========================================================
-       SIDE ARROWS
+       RIZSIM LOGO RETURNS HOME
+
+       The RizSim brand itself acts as Home.
        ========================================================= */
 
-    previousPage
-      .addEventListener(
+    brandButton.addEventListener(
 
-        "click",
+      "click",
 
-        function () {
-
-          goToPage(
-            currentPage - 1
-          );
-
-        }
-
-      );
+      function() {
 
 
-    nextPage
-      .addEventListener(
+        goToPage(
+          0
+        );
 
-        "click",
 
-        function () {
+      }
 
-          goToPage(
-            currentPage + 1
-          );
-
-        }
-
-      );
+    );
 
 
 
     /* =========================================================
-       KEYBOARD ARROWS
-       ========================================================= */
-
-    document
-      .addEventListener(
-
-        "keydown",
-
-        function (
-          event
-        ) {
-
-
-          if (
-            event.key ===
-            "ArrowRight"
-          ) {
-
-            goToPage(
-              currentPage + 1
-            );
-
-          }
-
-
-          if (
-            event.key ===
-            "ArrowLeft"
-          ) {
-
-            goToPage(
-              currentPage - 1
-            );
-
-          }
-
-        }
-
-      );
-
-
-
-    /* =========================================================
-       MOUSE WHEEL
-       Turns vertical wheel movement into horizontal page moves.
-       ========================================================= */
-
-    window
-      .addEventListener(
-
-        "wheel",
-
-        function (
-          event
-        ) {
-
-
-          /*
-            On phones/tablets where a page itself
-            may need vertical scrolling,
-            we do not force page navigation.
-          */
-
-          if (
-            window.innerWidth <= 760
-          ) {
-
-            return;
-
-          }
-
-
-          if (
-            wheelLocked
-          ) {
-
-            return;
-
-          }
-
-
-          if (
-            event.target.closest(
-              ".tab-strip"
-            )
-          ) {
-
-            return;
-
-          }
-
-
-
-          const movement =
-            Math.abs(
-              event.deltaX
-            )
-            >
-            Math.abs(
-              event.deltaY
-            )
-
-            ?
-            event.deltaX
-
-            :
-            event.deltaY;
-
-
-
-          if (
-            Math.abs(
-              movement
-            ) < 40
-          ) {
-
-            return;
-
-          }
-
-
-
-          wheelLocked =
-            true;
-
-
-
-          if (
-            movement > 0
-          ) {
-
-            goToPage(
-              currentPage + 1
-            );
-
-          }
-
-          else {
-
-            goToPage(
-              currentPage - 1
-            );
-
-          }
-
-
-
-          window.setTimeout(
-
-            function () {
-
-              wheelLocked =
-                false;
-
-            },
-
-            760
-
-          );
-
-        },
-
-        {
-          passive: true
-        }
-
-      );
-
-
-
-    /* =========================================================
-       MOBILE SWIPE
-       ========================================================= */
-
-    let touchStartX = 0;
-
-    let touchStartY = 0;
-
-
-    let touchEndX = 0;
-
-    let touchEndY = 0;
-
-
-
-    window
-      .addEventListener(
-
-        "touchstart",
-
-        function (
-          event
-        ) {
-
-
-          const touch =
-            event.changedTouches[
-              0
-            ];
-
-
-          touchStartX =
-            touch.clientX;
-
-
-          touchStartY =
-            touch.clientY;
-
-        },
-
-        {
-          passive: true
-        }
-
-      );
-
-
-
-    window
-      .addEventListener(
-
-        "touchend",
-
-        function (
-          event
-        ) {
-
-
-          const touch =
-            event.changedTouches[
-              0
-            ];
-
-
-          touchEndX =
-            touch.clientX;
-
-
-          touchEndY =
-            touch.clientY;
-
-
-
-          const distanceX =
-            touchEndX -
-            touchStartX;
-
-
-          const distanceY =
-            touchEndY -
-            touchStartY;
-
-
-
-          const horizontalGesture =
-            Math.abs(
-              distanceX
-            )
-            >
-            Math.abs(
-              distanceY
-            ) * 1.25;
-
-
-
-          if (
-            !horizontalGesture
-          ) {
-
-            return;
-
-          }
-
-
-
-          if (
-            Math.abs(
-              distanceX
-            ) < 55
-          ) {
-
-            return;
-
-          }
-
-
-
-          if (
-            distanceX < 0
-          ) {
-
-            goToPage(
-              currentPage + 1
-            );
-
-          }
-
-          else {
-
-            goToPage(
-              currentPage - 1
-            );
-
-          }
-
-        },
-
-        {
-          passive: true
-        }
-
-      );
-
-
-
-    /* =========================================================
-       BROWSER BACK / FORWARD
+       HASH DETECTION
        ========================================================= */
 
     function getPageFromHash() {
 
 
-      const hash =
-        window
-          .location
-          .hash
+      const currentHash =
+        window.location.hash
+
           .replace(
             "#",
             ""
           )
+
           .toLowerCase();
 
 
 
       const pageIndex =
         pageSlugs.indexOf(
-          hash
+          currentHash
         );
 
 
@@ -4270,55 +4369,77 @@
       }
 
 
+
       return 0;
 
     }
 
 
 
-    window
-      .addEventListener(
+    /* =========================================================
+       BROWSER BACK/FORWARD
+       ========================================================= */
 
-        "popstate",
+    window.addEventListener(
 
-        function () {
+      "popstate",
 
-          goToPage(
-            getPageFromHash(),
-            false
-          );
+      function() {
 
-        }
 
-      );
+        goToPage(
+
+          getPageFromHash(),
+
+          false
+
+        );
+
+
+      }
+
+    );
 
 
 
     /* =========================================================
-       CONTACT PLACEHOLDER
+       CONTACT DEMONSTRATION
        ========================================================= */
 
-    function showContactMessage() {
+    const sendMessageButton =
+      document.getElementById(
+        "sendMessageButton"
+      );
 
 
-      const note =
-        document.getElementById(
-          "contactNote"
-        );
+    const contactNote =
+      document.getElementById(
+        "contactNote"
+      );
 
 
-      note.textContent =
-        "The website interface is working. We will connect this form to actual email delivery in the next stage.";
+    sendMessageButton.addEventListener(
+
+      "click",
+
+      function() {
 
 
-      note.style.color =
-        "#008792";
+        contactNote.textContent =
+          "The contact interface is working. We will connect actual email delivery in a later stage.";
 
 
-      note.style.fontWeight =
-        "750";
+        contactNote.style.color =
+          "#008792";
 
-    }
+
+        contactNote.style.fontWeight =
+          "750";
+
+
+      }
+
+    );
 
 
 
@@ -4327,8 +4448,11 @@
        ========================================================= */
 
     goToPage(
+
       getPageFromHash(),
+
       false
+
     );
 
   </script>
