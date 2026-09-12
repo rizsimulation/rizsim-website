@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>RizSim | Secure Simulation Test</title>
+
+<link
+  rel="icon"
+  type="image/png"
+  href="rizsim-r.png"
+>
+
+<style>
+
+:root {
+  --navy:#031d49;
+  --navy2:#062e63;
+  --teal:#009ca8;
+  --aqua:#69dce0;
+  --white:#fff;
+  --muted:#6e8194;
+  --line:rgba(3,29,73,.10);
+  --success:#007b83;
+  --danger:#b42318;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  color:var(--navy);
+
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(105,220,224,.20),
+      transparent 28%
+    ),
+    #f7fbfc;
+}
+
+header {
+  height:82px;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 5%;
+
+  background:rgba(255,255,255,.94);
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.brand img {
+  width:52px;
+  height:52px;
+  object-fit:contain;
+}
+
+.brand-name {
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.brand-tag {
+  margin-top:3px;
+  color:var(--teal);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+main {
+  width:min(900px,calc(100% - 30px));
+  margin:42px auto 80px;
+}
+
+.card {
+  padding:30px;
+
+  border-radius:25px;
+
+  background:white;
+
+  border:
+    1px solid var(--line);
+
+  box-shadow:
+    0 22px 65px
+    rgba(3,29,73,.08);
+}
+
+.kicker {
+  color:var(--teal);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.3px;
+  text-transform:uppercase;
+}
+
+h1 {
+  margin:9px 0 0;
+
+  font-size:
+    clamp(30px,5vw,48px);
+
+  letter-spacing:-1.8px;
+}
+
+.description {
+  margin-top:13px;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.security-grid {
+  display:grid;
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:12px;
+
+  margin-top:25px;
+}
+
+.security-item {
+  padding:15px;
+
+  border-radius:14px;
+
+  background:#f5fafb;
+
+  border:
+    1px solid var(--line);
+}
+
+.security-label {
+  color:var(--teal);
+
+  font-size:9px;
+  font-weight:900;
+
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.security-value {
+  margin-top:5px;
+
+  font-size:13px;
+  font-weight:700;
+
+  overflow-wrap:anywhere;
+}
+
+.button {
+  min-height:50px;
+
+  padding:0 22px;
+
+  border:0;
+  border-radius:14px;
+
+  cursor:pointer;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      120deg,
+      var(--navy2),
+      var(--teal)
+    );
+
+  font-weight:850;
+}
+
+.button:disabled {
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.google-button {
+  width:100%;
+
+  margin-top:24px;
+
+  background:white;
+
+  color:var(--navy);
+
+  border:
+    1px solid var(--line);
+}
+
+.simulation {
+  display:none;
+  margin-top:22px;
+}
+
+.simulation.show {
+  display:block;
+}
+
+.question {
+  margin-top:17px;
+
+  padding:22px;
+
+  border-radius:18px;
+
+  border:
+    1px solid var(--line);
+
+  background:#fbfdfe;
+}
+
+.question h3 {
+  margin:0 0 15px;
+  font-size:16px;
+}
+
+.option {
+  display:block;
+
+  margin-top:9px;
+
+  padding:13px 14px;
+
+  border-radius:12px;
+
+  background:white;
+
+  border:
+    1px solid var(--line);
+
+  cursor:pointer;
+}
+
+.option input {
+  margin-right:8px;
+}
+
+.progress-shell {
+  height:9px;
+
+  margin-top:20px;
+
+  overflow:hidden;
+
+  border-radius:100px;
+
+  background:#e8f1f3;
+}
+
+.progress-bar {
+  width:0%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--navy2),
+      var(--teal)
+    );
+
+  transition:width .3s ease;
+}
+
+.progress-text {
+  margin-top:7px;
+
+  color:var(--muted);
+
+  font-size:11px;
+}
+
+.status {
+  margin-top:18px;
+
+  padding:15px;
+
+  border-radius:14px;
+
+  background:#f5fafb;
+
+  color:var(--navy);
+
+  font-size:13px;
+
+  line-height:1.55;
+}
+
+.success {
+  color:var(--success);
+  font-weight:750;
+}
+
+.error {
+  color:var(--danger);
+  font-weight:750;
+}
+
+.action-row {
+  display:flex;
+  gap:10px;
+
+  margin-top:22px;
+}
+
+.hidden {
+  display:none !important;
+}
+
+@media(max-width:650px) {
+
+  .security-grid {
+    grid-template-columns:1fr;
+  }
+
+  .action-row {
+    flex-direction:column;
+  }
+
+  .button {
+    width:100%;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="brand">
+
+    <img
+      src="rizsim-r.png"
+      alt="RizSim"
+    >
+
+    <div>
+
+      <div class="brand-name">
+        RizSim
+      </div>
+
+      <div class="brand-tag">
+        Explore. Decide. Grow.
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <section class="card">
+
+    <div class="kicker">
+      Secure Simulation Test
+    </div>
+
+    <h1 id="productTitle">
+      Loading simulation…
+    </h1>
+
+    <p
+      id="productDescription"
+      class="description"
+    >
+      Verifying RizSim product.
+    </p>
+
+
+    <div class="security-grid">
+
+      <div class="security-item">
+
+        <div class="security-label">
+          Signed-In User
+        </div>
+
+        <div
+          id="userName"
+          class="security-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div class="security-label">
+          Attempt UUID
+        </div>
+
+        <div
+          id="attemptUUID"
+          class="security-value"
+        >
+          Not started
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div class="security-label">
+          Attempt Status
+        </div>
+
+        <div
+          id="attemptStatus"
+          class="security-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div class="security-label">
+          Product Access
+        </div>
+
+        <div
+          id="accessStatus"
+          class="security-value"
+        >
+          Checking…
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <button
+      id="googleLogin"
+      class="button google-button"
+      type="button"
+    >
+      G &nbsp; Continue with Google
+    </button>
+
+
+    <div
+      id="statusBox"
+      class="status"
+    >
+      Checking authentication…
+    </div>
+
+
+    <section
+      id="simulation"
+      class="simulation"
+    >
+
+
+      <div class="progress-shell">
+
+        <div
+          id="progressBar"
+          class="progress-bar"
+        ></div>
+
+      </div>
+
+      <div
+        id="progressText"
+        class="progress-text"
+      >
+        Progress: 0%
+      </div>
+
+
+
+      <!-- QUESTION 1 -->
+
+      <div
+        class="question"
+        data-question="q1"
+      >
+
+        <h3>
+          1. A project deadline suddenly moves forward.
+          What would you do first?
+        </h3>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q1"
+            value="review_priorities"
+          >
+          Review priorities before reallocating effort
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q1"
+            value="work_faster"
+          >
+          Immediately increase the pace of all work
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q1"
+            value="delegate"
+          >
+          Delegate the most urgent activities
+        </label>
+
+      </div>
+
+
+
+      <!-- QUESTION 2 -->
+
+      <div
+        class="question"
+        data-question="q2"
+      >
+
+        <h3>
+          2. When information is incomplete,
+          which approach best describes you?
+        </h3>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q2"
+            value="wait"
+          >
+          Wait until more information becomes available
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q2"
+            value="provisional"
+          >
+          Make a provisional decision and reassess
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q2"
+            value="intuition"
+          >
+          Rely primarily on intuition
+        </label>
+
+      </div>
+
+
+
+      <!-- QUESTION 3 -->
+
+      <div
+        class="question"
+        data-question="q3"
+      >
+
+        <h3>
+          3. After making an important decision,
+          what is most useful?
+        </h3>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q3"
+            value="outcome"
+          >
+          Focus mainly on whether the outcome was successful
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q3"
+            value="process"
+          >
+          Review both the reasoning process and outcome
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="q3"
+            value="move_on"
+          >
+          Move immediately to the next decision
+        </label>
+
+      </div>
+
+
+      <div class="action-row">
+
+        <button
+          id="submitButton"
+          class="button"
+          type="button"
+          disabled
+        >
+          Submit Simulation
+        </button>
+
+
+        <button
+          id="signOutButton"
+          class="button"
+          type="button"
+        >
+          Sign Out
+        </button>
+
+      </div>
+
+
+    </section>
+
+  </section>
+
+</main>
+
+
+
+<script type="module">
+
+import {
+  createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+/* =========================================================
+   CHANGE ONLY THESE TWO VALUES
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://rvmumpvtvjvvuyimeybc.supabase.co";
+  // ↑ CHANGE THIS
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
+  // ↑ CHANGE THIS
+
+
+/* =========================================================
+   DO NOT CHANGE BELOW
+   ========================================================= */
+
+const supabase =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const PRODUCT_SLUG =
+  "rizsim-secure-submission-test";
+
+
+let currentUser = null;
+
+let currentProduct = null;
+
+let currentAttempt = null;
+
+
+const totalQuestions = 3;
+
+
+
+const loginButton =
+  document.getElementById(
+    "googleLogin"
+  );
+
+
+const simulation =
+  document.getElementById(
+    "simulation"
+  );
+
+
+const statusBox =
+  document.getElementById(
+    "statusBox"
+  );
+
+
+const submitButton =
+  document.getElementById(
+    "submitButton"
+  );
+
+
+
+function setStatus(
+  message,
+  type = ""
+) {
+
+  statusBox.textContent =
+    message;
+
+
+  statusBox.className =
+    "status";
+
+
+  if (
+    type
+  ) {
+
+    statusBox.classList.add(
+      type
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   GOOGLE LOGIN
+   ========================================================= */
+
+async function signInWithGoogle() {
+
+
+  const redirectURL =
+    window.location.origin +
+    "/simulation-test.html";
+
+
+  const {
+    error
+  } =
+    await supabase.auth.signInWithOAuth({
+
+      provider:
+        "google",
+
+      options: {
+
+        redirectTo:
+          redirectURL
+
+      }
+
+    });
+
+
+  if (
+    error
+  ) {
+
+    setStatus(
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   LOAD USER
+   ========================================================= */
+
+async function loadUser() {
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase.auth.getUser();
+
+
+  if (
+    error ||
+    !data.user
+  ) {
+
+    currentUser = null;
+
+    loginButton.classList.remove(
+      "hidden"
+    );
+
+    setStatus(
+      "Please sign in to continue."
+    );
+
+    return false;
+
+  }
+
+
+  currentUser =
+    data.user;
+
+
+  loginButton.classList.add(
+    "hidden"
+  );
+
+
+  const {
+    data: profile
+  } =
+    await supabase
+
+      .from("profiles")
+
+      .select(
+        "display_name,email"
+      )
+
+      .eq(
+        "id",
+        currentUser.id
+      )
+
+      .single();
+
+
+  document.getElementById(
+    "userName"
+  ).textContent =
+
+    profile?.display_name ||
+    currentUser.email;
+
+
+  return true;
+
+}
+
+
+
+/* =========================================================
+   LOAD PRODUCT
+   ========================================================= */
+
+async function loadProduct() {
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase
+
+      .from("products")
+
+      .select(`
+        id,
+        title,
+        short_description,
+        price,
+        currency,
+        access_type,
+        status
+      `)
+
+      .eq(
+        "slug",
+        PRODUCT_SLUG
+      )
+
+      .single();
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    setStatus(
+      "Simulation product could not be loaded.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  currentProduct =
+    data;
+
+
+  document.getElementById(
+    "productTitle"
+  ).textContent =
+    data.title;
+
+
+  document.getElementById(
+    "productDescription"
+  ).textContent =
+    data.short_description;
+
+
+  return true;
+
+}
+
+
+
+/* =========================================================
+   FIND EXISTING ACTIVE ATTEMPT
+   ========================================================= */
+
+async function findExistingAttempt() {
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase
+
+      .from(
+        "simulation_attempts"
+      )
+
+      .select(`
+        id,
+        product_id,
+        status,
+        progress_percent,
+        started_at,
+        submitted_at
+      `)
+
+      .eq(
+        "product_id",
+        currentProduct.id
+      )
+
+      .eq(
+        "status",
+        "in_progress"
+      )
+
+      .order(
+        "started_at",
+        {
+          ascending:false
+        }
+      )
+
+      .limit(1)
+
+      .maybeSingle();
+
+
+  if (
+    error
+  ) {
+
+    setStatus(
+      "Could not check existing attempts: " +
+      error.message,
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  if (
+    data
+  ) {
+
+    currentAttempt =
+      data;
+
+    return true;
+
+  }
+
+
+  return false;
+
+}
+
+
+
+/* =========================================================
+   CREATE ATTEMPT
+
+   IMPORTANT:
+   We submit only product_id.
+
+   The database determines the user UUID
+   and verifies entitlement through RLS.
+   ========================================================= */
+
+async function createAttempt() {
+
+
+  setStatus(
+    "Creating secure simulation attempt…"
+  );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase
+
+      .from(
+        "simulation_attempts"
+      )
+
+      .insert({
+
+        product_id:
+          currentProduct.id
+
+      })
+
+      .select(`
+        id,
+        product_id,
+        status,
+        progress_percent,
+        started_at
+      `)
+
+      .single();
+
+
+  if (
+    error
+  ) {
+
+    document.getElementById(
+      "accessStatus"
+    ).textContent =
+      "Denied";
+
+
+    setStatus(
+      "Access denied. RizSim did not authorize this account to launch the simulation.",
+      "error"
+    );
+
+
+    return false;
+
+  }
+
+
+  currentAttempt =
+    data;
+
+
+  document.getElementById(
+    "accessStatus"
+  ).textContent =
+    "Authorized";
+
+
+  return true;
+
+}
+
+
+
+/* =========================================================
+   LOAD EXISTING RESPONSES
+   ========================================================= */
+
+async function loadResponses() {
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase
+
+      .from(
+        "simulation_responses"
+      )
+
+      .select(`
+        id,
+        question_key,
+        response_data
+      `)
+
+      .eq(
+        "attempt_id",
+        currentAttempt.id
+      );
+
+
+  if (
+    error
+  ) {
+
+    setStatus(
+      "Responses could not be loaded.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  for (
+    const response
+    of
+    data
+  ) {
+
+
+    const value =
+      response.response_data?.value;
+
+
+    if (
+      !value
+    ) {
+      continue;
+    }
+
+
+    const input =
+      document.querySelector(
+
+        'input[name="' +
+        response.question_key +
+        '"][value="' +
+        value +
+        '"]'
+
+      );
+
+
+    if (
+      input
+    ) {
+
+      input.checked =
+        true;
+
+    }
+
+  }
+
+
+  await updateProgress();
+
+}
+
+
+
+/* =========================================================
+   SAVE ONE RESPONSE
+   ========================================================= */
+
+async function saveResponse(
+  questionKey,
+  value
+) {
+
+
+  if (
+    !currentAttempt
+  ) {
+    return;
+  }
+
+
+  setStatus(
+    "Saving response…"
+  );
+
+
+  const {
+    data: existing,
+    error: lookupError
+  } =
+    await supabase
+
+      .from(
+        "simulation_responses"
+      )
+
+      .select(
+        "id"
+      )
+
+      .eq(
+        "attempt_id",
+        currentAttempt.id
+      )
+
+      .eq(
+        "question_key",
+        questionKey
+      )
+
+      .maybeSingle();
+
+
+  if (
+    lookupError
+  ) {
+
+    setStatus(
+      "Could not check response.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+
+  let saveError = null;
+
+
+  if (
+    existing
+  ) {
+
+
+    const {
+      error
+    } =
+      await supabase
+
+        .from(
+          "simulation_responses"
+        )
+
+        .update({
+
+          response_data:{
+            value:value
+          }
+
+        })
+
+        .eq(
+          "id",
+          existing.id
+        );
+
+
+    saveError =
+      error;
+
+  }
+
+
+  else {
+
+
+    const {
+      error
+    } =
+      await supabase
+
+        .from(
+          "simulation_responses"
+        )
+
+        .insert({
+
+          attempt_id:
+            currentAttempt.id,
+
+          question_key:
+            questionKey,
+
+          response_data:{
+            value:value
+          }
+
+        });
+
+
+    saveError =
+      error;
+
+  }
+
+
+
+  if (
+    saveError
+  ) {
+
+    setStatus(
+      "Response could not be saved: " +
+      saveError.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  await updateProgress();
+
+
+  setStatus(
+    "Response securely saved.",
+    "success"
+  );
+
+}
+
+
+
+/* =========================================================
+   CALCULATE AND SAVE PROGRESS
+   ========================================================= */
+
+async function updateProgress() {
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase
+
+      .from(
+        "simulation_responses"
+      )
+
+      .select(
+        "question_key"
+      )
+
+      .eq(
+        "attempt_id",
+        currentAttempt.id
+      );
+
+
+  if (
+    error
+  ) {
+    return;
+  }
+
+
+  const answered =
+    data.length;
+
+
+  const percent =
+    Math.round(
+      (
+        answered /
+        totalQuestions
+      )
+      *
+      100
+    );
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    percent + "%";
+
+
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    "Progress: " +
+    percent +
+    "% (" +
+    answered +
+    "/" +
+    totalQuestions +
+    " responses saved)";
+
+
+  await supabase
+
+    .from(
+      "simulation_attempts"
+    )
+
+    .update({
+
+      progress_percent:
+        percent
+
+    })
+
+    .eq(
+      "id",
+      currentAttempt.id
+    );
+
+
+  currentAttempt.progress_percent =
+    percent;
+
+
+  submitButton.disabled =
+    answered !==
+    totalQuestions;
+
+}
+
+
+
+/* =========================================================
+   FINAL SUBMISSION
+   ========================================================= */
+
+async function submitSimulation() {
+
+
+  if (
+    !currentAttempt
+  ) {
+    return;
+  }
+
+
+  const confirmed =
+    window.confirm(
+
+      "Submit this simulation?\n\nAfter submission, your responses will be locked."
+
+    );
+
+
+  if (
+    !confirmed
+  ) {
+    return;
+  }
+
+
+  submitButton.disabled =
+    true;
+
+
+  setStatus(
+    "Securely submitting simulation…"
+  );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase
+
+      .rpc(
+        "submit_simulation_attempt",
+        {
+
+          p_attempt_id:
+            currentAttempt.id
+
+        }
+      );
+
+
+  if (
+    error
+  ) {
+
+    setStatus(
+      "Submission failed: " +
+      error.message,
+      "error"
+    );
+
+    submitButton.disabled =
+      false;
+
+    return;
+
+  }
+
+
+  currentAttempt =
+    data;
+
+
+  document.getElementById(
+    "attemptStatus"
+  ).textContent =
+    "submitted";
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    "100%";
+
+
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    "Progress: 100% — Submitted";
+
+
+  document
+    .querySelectorAll(
+      'input[type="radio"]'
+    )
+    .forEach(
+
+      function(input) {
+
+        input.disabled =
+          true;
+
+      }
+
+    );
+
+
+  setStatus(
+    "✓ Simulation submitted securely. Responses are now locked.",
+    "success"
+  );
+
+}
+
+
+
+/* =========================================================
+   DISPLAY ATTEMPT
+   ========================================================= */
+
+function showAttempt() {
+
+
+  document.getElementById(
+    "attemptUUID"
+  ).textContent =
+    currentAttempt.id;
+
+
+  document.getElementById(
+    "attemptStatus"
+  ).textContent =
+    currentAttempt.status;
+
+
+  document.getElementById(
+    "accessStatus"
+  ).textContent =
+    "Authorized";
+
+
+  simulation.classList.add(
+    "show"
+  );
+
+}
+
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+async function initialize() {
+
+
+  setStatus(
+    "Checking RizSim security…"
+  );
+
+
+  const loggedIn =
+    await loadUser();
+
+
+  if (
+    !loggedIn
+  ) {
+    return;
+  }
+
+
+  const productLoaded =
+    await loadProduct();
+
+
+  if (
+    !productLoaded
+  ) {
+    return;
+  }
+
+
+  const hasAttempt =
+    await findExistingAttempt();
+
+
+  if (
+    !hasAttempt
+  ) {
+
+
+    const created =
+      await createAttempt();
+
+
+    if (
+      !created
+    ) {
+      return;
+    }
+
+  }
+
+
+  showAttempt();
+
+
+  await loadResponses();
+
+
+  setStatus(
+    "Secure simulation session ready.",
+    "success"
+  );
+
+}
+
+
+
+/* =========================================================
+   RESPONSE EVENTS
+   ========================================================= */
+
+document
+  .querySelectorAll(
+    'input[type="radio"]'
+  )
+  .forEach(
+
+    function(input) {
+
+
+      input.addEventListener(
+
+        "change",
+
+        async function() {
+
+
+          await saveResponse(
+
+            input.name,
+
+            input.value
+
+          );
+
+        }
+
+      );
+
+
+    }
+
+  );
+
+
+
+/* =========================================================
+   BUTTON EVENTS
+   ========================================================= */
+
+loginButton.addEventListener(
+
+  "click",
+
+  signInWithGoogle
+
+);
+
+
+submitButton.addEventListener(
+
+  "click",
+
+  submitSimulation
+
+);
+
+
+document
+  .getElementById(
+    "signOutButton"
+  )
+  .addEventListener(
+
+    "click",
+
+    async function() {
+
+
+      await supabase.auth.signOut();
+
+
+      window.location.replace(
+        "/simulation-test.html"
+      );
+
+    }
+
+  );
+
+
+
+/* =========================================================
+   AUTH CHANGES
+   ========================================================= */
+
+supabase.auth.onAuthStateChange(
+
+  function(
+    event
+  ) {
+
+
+    if (
+      event ===
+      "SIGNED_IN"
+    ) {
+
+      initialize();
+
+    }
+
+  }
+
+);
+
+
+
+initialize();
+
+</script>
+
+</body>
+</html>
