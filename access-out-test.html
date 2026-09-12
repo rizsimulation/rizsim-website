@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>RizSim | Access OUT Security Test</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="rizsim-r.png"
+  >
+
+
+  <style>
+
+    :root {
+
+      --navy: #031d49;
+      --navy2: #062e63;
+
+      --teal: #009ca8;
+      --aqua: #69dce0;
+
+      --white: #ffffff;
+
+      --muted: #6d8093;
+
+      --line:
+        rgba(3, 29, 73, 0.10);
+
+      --danger: #b42318;
+      --danger-bg: #fff2f0;
+
+      --success: #007b83;
+      --success-bg: #e8fafa;
+
+    }
+
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+      padding: 0;
+
+    }
+
+
+    body {
+
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 28px;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      color: var(--navy);
+
+      background:
+
+        radial-gradient(
+          circle at 85% 10%,
+          rgba(105,220,224,.20),
+          transparent 28%
+        ),
+
+        linear-gradient(
+          145deg,
+          #f8fcfd,
+          #ffffff
+        );
+
+    }
+
+
+    .shell {
+
+      width:
+        min(
+          620px,
+          100%
+        );
+
+      padding: 42px;
+
+      border-radius: 30px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .95
+        );
+
+      border:
+        1px solid
+        var(--line);
+
+      box-shadow:
+        0 35px 100px
+        rgba(
+          3,
+          29,
+          73,
+          .14
+        );
+
+    }
+
+
+    .brand {
+
+      display: flex;
+      align-items: center;
+
+      gap: 15px;
+
+    }
+
+
+    .logo {
+
+      width: 72px;
+      height: 72px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 10px 18px
+          rgba(3,29,73,.12)
+        );
+
+    }
+
+
+    .brand-copy h1 {
+
+      font-size: 34px;
+
+      letter-spacing: -1.2px;
+
+    }
+
+
+    .tagline {
+
+      margin-top: 6px;
+
+      color: var(--teal);
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      letter-spacing: 1.3px;
+
+      text-transform: uppercase;
+
+    }
+
+
+    .title {
+
+      margin-top: 30px;
+
+      font-size: 25px;
+
+      letter-spacing: -.5px;
+
+    }
+
+
+    .intro {
+
+      margin-top: 11px;
+
+      color: var(--muted);
+
+      line-height: 1.65;
+
+    }
+
+
+    .login-button {
+
+      width: 100%;
+
+      min-height: 56px;
+
+      margin-top: 28px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 16px;
+
+      background: white;
+
+      color: var(--navy);
+
+      font-size: 15px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 30px
+        rgba(3,29,73,.07);
+
+    }
+
+
+    .login-button:hover {
+
+      background: #f7fbfc;
+
+    }
+
+
+    .status-box {
+
+      margin-top: 25px;
+
+      padding: 20px;
+
+      border-radius: 18px;
+
+      background: #f5fafb;
+
+      border:
+        1px solid var(--line);
+
+    }
+
+
+    .status-label {
+
+      color: var(--teal);
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+    }
+
+
+    .status-text {
+
+      margin-top: 6px;
+
+      color: var(--navy);
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      line-height: 1.55;
+
+    }
+
+
+    .access-panel {
+
+      display: none;
+
+      margin-top: 22px;
+
+      padding: 25px;
+
+      border-radius: 21px;
+
+    }
+
+
+    .access-panel.show {
+
+      display: block;
+
+    }
+
+
+    .granted {
+
+      background:
+        var(--success-bg);
+
+      border:
+        1px solid
+        rgba(0,156,168,.20);
+
+    }
+
+
+    .denied {
+
+      background:
+        var(--danger-bg);
+
+      border:
+        1px solid
+        rgba(180,35,24,.17);
+
+    }
+
+
+    .access-title {
+
+      font-size: 22px;
+
+      font-weight: 900;
+
+    }
+
+
+    .granted
+    .access-title {
+
+      color:
+        var(--success);
+
+    }
+
+
+    .denied
+    .access-title {
+
+      color:
+        var(--danger);
+
+    }
+
+
+    .access-copy {
+
+      margin-top: 8px;
+
+      color: var(--muted);
+
+      line-height: 1.6;
+
+      font-size: 14px;
+
+    }
+
+
+    .details {
+
+      margin-top: 22px;
+
+      display: grid;
+
+      gap: 13px;
+
+    }
+
+
+    .detail {
+
+      padding-bottom: 12px;
+
+      border-bottom:
+        1px solid
+        rgba(3,29,73,.07);
+
+    }
+
+
+    .detail:last-child {
+
+      border-bottom: 0;
+
+      padding-bottom: 0;
+
+    }
+
+
+    .detail-label {
+
+      color: var(--teal);
+
+      font-size: 9px;
+
+      font-weight: 900;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+    }
+
+
+    .detail-value {
+
+      margin-top: 3px;
+
+      color: var(--navy);
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      overflow-wrap: anywhere;
+
+    }
+
+
+    .owner-panel {
+
+      margin-top: 22px;
+
+      padding: 22px;
+
+      border-radius: 18px;
+
+      color: white;
+
+      background:
+
+        linear-gradient(
+          130deg,
+          var(--navy),
+          var(--navy2),
+          var(--teal)
+        );
+
+    }
+
+
+    .owner-panel h2 {
+
+      font-size: 20px;
+
+    }
+
+
+    .owner-panel p {
+
+      margin-top: 7px;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          .75
+        );
+
+      font-size: 13px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .signout-button {
+
+      width: 100%;
+
+      min-height: 48px;
+
+      margin-top: 22px;
+
+      border: 0;
+
+      border-radius: 14px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          120deg,
+          var(--navy2),
+          var(--teal)
+        );
+
+      font-weight: 850;
+
+      cursor: pointer;
+
+    }
+
+
+    .hidden {
+
+      display: none !important;
+
+    }
+
+
+    @media
+    (
+      max-width: 600px
+    ) {
+
+      .shell {
+
+        padding: 28px;
+
+      }
+
+
+      .logo {
+
+        width: 58px;
+        height: 58px;
+
+      }
+
+
+      .brand-copy h1 {
+
+        font-size: 28px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+  <main
+    class="shell"
+  >
+
+
+    <div
+      class="brand"
+    >
+
+
+      <img
+        class="logo"
+        src="rizsim-r.png"
+        alt="RizSim"
+      >
+
+
+      <div
+        class="brand-copy"
+      >
+
+
+        <h1>
+          RizSim
+        </h1>
+
+
+        <div
+          class="tagline"
+        >
+          Explore. Decide. Grow.
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
+    <h2
+      class="title"
+    >
+      Access OUT Security Test
+    </h2>
+
+
+    <p
+      class="intro"
+    >
+
+      This page verifies whether the authenticated
+      RizSim account has explicit permission to enter
+      the publisher and administration environment.
+
+    </p>
+
+
+
+    <button
+      id="googleLogin"
+      class="login-button"
+      type="button"
+    >
+      G &nbsp; Continue with Google
+    </button>
+
+
+
+    <div
+      class="status-box"
+    >
+
+      <div
+        class="status-label"
+      >
+        Security Status
+      </div>
+
+
+      <div
+        id="statusText"
+        class="status-text"
+      >
+        Checking authentication…
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ACCESS GRANTED
+         ===================================================== -->
+
+    <section
+      id="accessGranted"
+      class="access-panel granted"
+    >
+
+
+      <div
+        class="access-title"
+      >
+        ✓ Access OUT Granted
+      </div>
+
+
+      <p
+        class="access-copy"
+      >
+
+        This authenticated account has an active
+        Access OUT membership in the RizSim database.
+
+      </p>
+
+
+
+      <div
+        class="details"
+      >
+
+
+        <div
+          class="detail"
+        >
+
+          <div
+            class="detail-label"
+          >
+            Display Name
+          </div>
+
+          <div
+            id="grantedName"
+            class="detail-value"
+          ></div>
+
+        </div>
+
+
+        <div
+          class="detail"
+        >
+
+          <div
+            class="detail-label"
+          >
+            Email
+          </div>
+
+          <div
+            id="grantedEmail"
+            class="detail-value"
+          ></div>
+
+        </div>
+
+
+        <div
+          class="detail"
+        >
+
+          <div
+            class="detail-label"
+          >
+            RizSim UUID
+          </div>
+
+          <div
+            id="grantedUUID"
+            class="detail-value"
+          ></div>
+
+        </div>
+
+
+        <div
+          class="detail"
+        >
+
+          <div
+            class="detail-label"
+          >
+            Access OUT Role
+          </div>
+
+          <div
+            id="grantedRole"
+            class="detail-value"
+          ></div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <div
+        id="ownerPanel"
+        class="owner-panel hidden"
+      >
+
+        <h2>
+          RizSim Owner
+        </h2>
+
+        <p>
+
+          Full platform authority is associated with
+          this account. The final Access OUT dashboard
+          will be built on top of this verified
+          database identity.
+
+        </p>
+
+      </div>
+
+
+
+      <button
+        id="signOutGranted"
+        class="signout-button"
+        type="button"
+      >
+        Sign Out
+      </button>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ACCESS DENIED
+         ===================================================== -->
+
+    <section
+      id="accessDenied"
+      class="access-panel denied"
+    >
+
+
+      <div
+        class="access-title"
+      >
+        ✕ Access OUT Denied
+      </div>
+
+
+      <p
+        id="deniedReason"
+        class="access-copy"
+      >
+
+        This RizSim account does not have permission
+        to access the administration environment.
+
+      </p>
+
+
+      <button
+        id="signOutDenied"
+        class="signout-button"
+        type="button"
+      >
+        Sign Out
+      </button>
+
+
+    </section>
+
+
+  </main>
+
+
+
+  <script
+    type="module"
+  >
+
+
+    import {
+      createClient
+    }
+
+    from
+
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+
+    /* ========================================================
+       CHANGE ONLY THESE TWO VALUES
+       ======================================================== */
+
+
+    const SUPABASE_URL =
+      "https://rvmumpvtvjvvuyimeybc.supabase.co";
+      // ↑ CHANGE THIS
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
+      // ↑ CHANGE THIS
+
+
+
+    /* ========================================================
+       DO NOT CHANGE BELOW THIS LINE
+       ======================================================== */
+
+
+    const supabase =
+      createClient(
+
+        SUPABASE_URL,
+
+        SUPABASE_PUBLISHABLE_KEY
+
+      );
+
+
+
+    const loginButton =
+      document.getElementById(
+        "googleLogin"
+      );
+
+
+    const statusText =
+      document.getElementById(
+        "statusText"
+      );
+
+
+    const accessGranted =
+      document.getElementById(
+        "accessGranted"
+      );
+
+
+    const accessDenied =
+      document.getElementById(
+        "accessDenied"
+      );
+
+
+    const deniedReason =
+      document.getElementById(
+        "deniedReason"
+      );
+
+
+    const ownerPanel =
+      document.getElementById(
+        "ownerPanel"
+      );
+
+
+
+    /* ========================================================
+       GOOGLE LOGIN
+       ======================================================== */
+
+    async function signInWithGoogle() {
+
+
+      statusText.textContent =
+        "Opening secure Google sign-in…";
+
+
+      const redirectURL =
+
+        window.location.origin +
+
+        "/access-out-test.html";
+
+
+
+      const {
+        error
+      } =
+
+        await supabase
+          .auth
+          .signInWithOAuth({
+
+            provider:
+              "google",
+
+            options: {
+
+              redirectTo:
+                redirectURL
+
+            }
+
+          });
+
+
+
+      if (
+        error
+      ) {
+
+        statusText.textContent =
+
+          "Authentication error: " +
+
+          error.message;
+
+      }
+
+    }
+
+
+
+    /* ========================================================
+       VERIFY ACCESS OUT
+       ======================================================== */
+
+    async function verifyAccessOut() {
+
+
+      statusText.textContent =
+        "Verifying RizSim identity…";
+
+
+      accessGranted
+        .classList
+        .remove(
+          "show"
+        );
+
+
+      accessDenied
+        .classList
+        .remove(
+          "show"
+        );
+
+
+
+      /*
+        STEP 1:
+        Verify the authenticated user.
+      */
+
+      const {
+
+        data:
+          userData,
+
+        error:
+          userError
+
+      } =
+
+        await supabase
+          .auth
+          .getUser();
+
+
+
+      const user =
+        userData?.user;
+
+
+
+      if (
+        userError ||
+        !user
+      ) {
+
+
+        loginButton
+          .classList
+          .remove(
+            "hidden"
+          );
+
+
+        statusText.textContent =
+          "Not signed in.";
+
+
+        return;
+
+      }
+
+
+
+      loginButton
+        .classList
+        .add(
+          "hidden"
+        );
+
+
+
+      /*
+        STEP 2:
+        Load the user's own RizSim profile.
+
+        RLS prevents retrieval of another
+        person's profile.
+      */
+
+      const {
+
+        data:
+          profile,
+
+        error:
+          profileError
+
+      } =
+
+        await supabase
+
+          .from(
+            "profiles"
+          )
+
+          .select(`
+            id,
+            display_name,
+            email,
+            account_status
+          `)
+
+          .eq(
+            "id",
+            user.id
+          )
+
+          .single();
+
+
+
+      if (
+        profileError ||
+        !profile
+      ) {
+
+
+        statusText.textContent =
+          "RizSim profile verification failed.";
+
+
+        showDenied(
+          "Your authenticated Google account does not have a valid RizSim profile."
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+        Suspended / closed Access IN accounts
+        should not enter Access OUT either.
+      */
+
+      if (
+        profile.account_status
+        !==
+        "active"
+      ) {
+
+
+        statusText.textContent =
+          "Account is not active.";
+
+
+        showDenied(
+
+          "This RizSim account is currently " +
+
+          profile.account_status +
+
+          "."
+
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+        STEP 3:
+        Ask for this user's Access OUT membership.
+
+        The database RLS policy allows the user
+        to read only the membership row matching
+        their own UUID.
+
+        A normal Access IN user receives no row.
+      */
+
+      const {
+
+        data:
+          membership,
+
+        error:
+          membershipError
+
+      } =
+
+        await supabase
+
+          .from(
+            "access_out_members"
+          )
+
+          .select(`
+            user_id,
+            role,
+            active,
+            created_at
+          `)
+
+          .eq(
+            "user_id",
+            user.id
+          )
+
+          .maybeSingle();
+
+
+
+      if (
+        membershipError
+      ) {
+
+
+        statusText.textContent =
+          "Access OUT permission verification failed.";
+
+
+        showDenied(
+
+          "RizSim could not verify administrative permission."
+
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+        No membership row:
+        ordinary Access IN user.
+      */
+
+      if (
+        !membership
+      ) {
+
+
+        statusText.textContent =
+          "Authenticated — Access OUT permission not found.";
+
+
+        showDenied(
+
+          "Your Google account is a valid RizSim account, but it has not been authorized for Access OUT."
+
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+        Membership exists but was revoked.
+      */
+
+      if (
+        membership.active
+        !==
+        true
+      ) {
+
+
+        statusText.textContent =
+          "Access OUT membership revoked.";
+
+
+        showDenied(
+
+          "Your Access OUT membership exists but is currently disabled."
+
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+        ACCESS GRANTED
+      */
+
+      statusText.textContent =
+        "Identity verified. Access OUT authorized.";
+
+
+      document.getElementById(
+        "grantedName"
+      ).textContent =
+
+        profile.display_name;
+
+
+      document.getElementById(
+        "grantedEmail"
+      ).textContent =
+
+        profile.email;
+
+
+      document.getElementById(
+        "grantedUUID"
+      ).textContent =
+
+        profile.id;
+
+
+      document.getElementById(
+        "grantedRole"
+      ).textContent =
+
+        membership.role;
+
+
+      if (
+        membership.role
+        ===
+        "owner"
+      ) {
+
+
+        ownerPanel
+          .classList
+          .remove(
+            "hidden"
+          );
+
+      }
+
+      else {
+
+
+        ownerPanel
+          .classList
+          .add(
+            "hidden"
+          );
+
+      }
+
+
+      accessGranted
+        .classList
+        .add(
+          "show"
+        );
+
+    }
+
+
+
+    /* ========================================================
+       ACCESS DENIED UI
+       ======================================================== */
+
+    function showDenied(
+      message
+    ) {
+
+
+      deniedReason.textContent =
+        message;
+
+
+      accessDenied
+        .classList
+        .add(
+          "show"
+        );
+
+    }
+
+
+
+    /* ========================================================
+       SIGN OUT
+       ======================================================== */
+
+    async function signOut() {
+
+
+      await supabase
+        .auth
+        .signOut();
+
+
+      window.location.replace(
+        "/access-out-test.html"
+      );
+
+    }
+
+
+
+    /* ========================================================
+       EVENTS
+       ======================================================== */
+
+    loginButton
+      .addEventListener(
+
+        "click",
+
+        signInWithGoogle
+
+      );
+
+
+    document
+      .getElementById(
+        "signOutGranted"
+      )
+      .addEventListener(
+
+        "click",
+
+        signOut
+
+      );
+
+
+    document
+      .getElementById(
+        "signOutDenied"
+      )
+      .addEventListener(
+
+        "click",
+
+        signOut
+
+      );
+
+
+
+    /* ========================================================
+       AUTH STATE
+       ======================================================== */
+
+    supabase
+      .auth
+      .onAuthStateChange(
+
+        function(
+          event
+        ) {
+
+
+          if (
+            event ===
+            "SIGNED_IN"
+            ||
+            event ===
+            "INITIAL_SESSION"
+          ) {
+
+
+            verifyAccessOut();
+
+          }
+
+
+          if (
+            event ===
+            "SIGNED_OUT"
+          ) {
+
+
+            accessGranted
+              .classList
+              .remove(
+                "show"
+              );
+
+
+            accessDenied
+              .classList
+              .remove(
+                "show"
+              );
+
+
+            loginButton
+              .classList
+              .remove(
+                "hidden"
+              );
+
+
+            statusText.textContent =
+              "Signed out.";
+
+          }
+
+        }
+
+      );
+
+
+
+    /* ========================================================
+       INITIAL SECURITY CHECK
+       ======================================================== */
+
+    verifyAccessOut();
+
+
+  </script>
+
+
+</body>
+
+</html>
