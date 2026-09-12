@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>RizSim | Authentication Test</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="rizsim-r.png"
+  >
+
+  <style>
+
+    :root {
+      --navy: #031d49;
+      --navy2: #062e63;
+      --teal: #009ca8;
+      --aqua: #69dce0;
+      --white: #ffffff;
+      --muted: #708297;
+      --line: rgba(3, 29, 73, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 30px;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 85% 10%,
+          rgba(105, 220, 224, 0.22),
+          transparent 30%
+        ),
+        linear-gradient(
+          145deg,
+          #f8fcfd,
+          #ffffff
+        );
+
+      color: var(--navy);
+    }
+
+    .card {
+      width: min(520px, 100%);
+
+      padding: 42px;
+
+      border-radius: 30px;
+
+      background: rgba(255,255,255,.94);
+
+      border: 1px solid var(--line);
+
+      box-shadow:
+        0 30px 90px rgba(3,29,73,.14);
+
+      text-align: center;
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+
+      margin: 0 auto 18px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 12px 22px
+          rgba(3,29,73,.13)
+        );
+    }
+
+    h1 {
+      font-size: 38px;
+      letter-spacing: -1.5px;
+    }
+
+    .tagline {
+      margin-top: 7px;
+
+      color: var(--teal);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+    }
+
+    .intro {
+      margin: 25px auto 0;
+
+      max-width: 400px;
+
+      color: var(--muted);
+
+      line-height: 1.65;
+    }
+
+    .google-button {
+      width: 100%;
+
+      min-height: 56px;
+
+      margin-top: 30px;
+
+      border: 1px solid var(--line);
+
+      border-radius: 16px;
+
+      background: white;
+
+      color: var(--navy);
+
+      font-size: 15px;
+      font-weight: 750;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 30px rgba(3,29,73,.07);
+    }
+
+    .google-button:hover {
+      background: #f8fbfc;
+    }
+
+    .profile {
+      display: none;
+
+      margin-top: 28px;
+
+      padding: 25px;
+
+      text-align: left;
+
+      border-radius: 20px;
+
+      background: #f5fafb;
+
+      border: 1px solid var(--line);
+    }
+
+    .profile.show {
+      display: block;
+    }
+
+    .avatar {
+      width: 70px;
+      height: 70px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+
+      margin-bottom: 18px;
+    }
+
+    .field {
+      margin-top: 13px;
+    }
+
+    .label {
+      color: var(--teal);
+
+      font-size: 10px;
+      font-weight: 850;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+    }
+
+    .value {
+      margin-top: 3px;
+
+      overflow-wrap: anywhere;
+
+      color: var(--navy);
+
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .success {
+      margin-top: 18px;
+
+      padding: 13px;
+
+      border-radius: 12px;
+
+      background: rgba(0,156,168,.09);
+
+      color: #007781;
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .sign-out {
+      width: 100%;
+
+      min-height: 48px;
+
+      margin-top: 20px;
+
+      border: 0;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          120deg,
+          var(--navy2),
+          var(--teal)
+        );
+
+      color: white;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .status {
+      margin-top: 18px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .error {
+      color: #b42318;
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <main class="card">
+
+    <img
+      class="logo"
+      src="rizsim-r.png"
+      alt="RizSim"
+    >
+
+    <h1>RizSim</h1>
+
+    <div class="tagline">
+      Explore. Decide. Grow.
+    </div>
+
+    <p class="intro">
+      Authentication foundation test.
+      Sign in securely with your Google account.
+    </p>
+
+
+    <button
+      id="googleLogin"
+      class="google-button"
+      type="button"
+    >
+      G &nbsp; Continue with Google
+    </button>
+
+
+    <section
+      id="profile"
+      class="profile"
+    >
+
+      <img
+        id="avatar"
+        class="avatar"
+        alt=""
+      >
+
+      <div class="field">
+        <div class="label">Display Name</div>
+        <div id="displayName" class="value"></div>
+      </div>
+
+      <div class="field">
+        <div class="label">Email</div>
+        <div id="email" class="value"></div>
+      </div>
+
+      <div class="field">
+        <div class="label">RizSim User UUID</div>
+        <div id="uuid" class="value"></div>
+      </div>
+
+      <div class="field">
+        <div class="label">Account Status</div>
+        <div id="accountStatus" class="value"></div>
+      </div>
+
+      <div class="success">
+        ✓ Google authentication and RizSim profile are working.
+      </div>
+
+      <button
+        id="signOut"
+        class="sign-out"
+        type="button"
+      >
+        Sign Out
+      </button>
+
+    </section>
+
+
+    <div
+      id="status"
+      class="status"
+    >
+      Checking authentication…
+    </div>
+
+  </main>
+
+
+
+  <script type="module">
+
+    import {
+      createClient
+    } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+    /* ========================================================
+       INSERT ONLY YOUR PUBLIC SUPABASE VALUES BELOW
+
+       SAFE FOR BROWSER:
+       - Project URL
+       - sb_publishable_... key
+
+       NEVER PUT:
+       - sb_secret_
+       - service_role
+       - database password
+       - Google Client Secret
+       ======================================================== */
+
+    const SUPABASE_URL =
+      "https://rvmumpvtvjvvuyimeybc.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
+
+
+    const supabase =
+      createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    const loginButton =
+      document.getElementById("googleLogin");
+
+    const profileBox =
+      document.getElementById("profile");
+
+    const statusBox =
+      document.getElementById("status");
+
+    const signOutButton =
+      document.getElementById("signOut");
+
+
+    async function signInWithGoogle() {
+
+      statusBox.textContent =
+        "Opening Google sign-in…";
+
+
+      const redirectURL =
+        window.location.origin +
+        "/auth-test.html";
+
+
+      const {
+        error
+      } =
+        await supabase.auth.signInWithOAuth({
+
+          provider: "google",
+
+          options: {
+            redirectTo: redirectURL
+          }
+
+        });
+
+
+      if (error) {
+
+        statusBox.textContent =
+          "Login error: " +
+          error.message;
+
+        statusBox.classList.add("error");
+
+      }
+
+    }
+
+
+
+    async function loadRizSimUser() {
+
+      statusBox.textContent =
+        "Checking authentication…";
+
+
+      const {
+        data: userData,
+        error: userError
+      } =
+        await supabase.auth.getUser();
+
+
+      const user =
+        userData?.user;
+
+
+      if (
+        userError ||
+        !user
+      ) {
+
+        loginButton.style.display =
+          "block";
+
+        profileBox.classList.remove(
+          "show"
+        );
+
+        statusBox.textContent =
+          "Not signed in.";
+
+        return;
+
+      }
+
+
+      /*
+        Retrieve ONLY this user's RizSim profile.
+
+        Your Row Level Security policy prevents
+        the user from reading another user's profile.
+      */
+
+      const {
+        data: profile,
+        error: profileError
+      } =
+        await supabase
+
+          .from("profiles")
+
+          .select(`
+            id,
+            display_name,
+            email,
+            avatar_url,
+            account_status,
+            created_at
+          `)
+
+          .eq(
+            "id",
+            user.id
+          )
+
+          .single();
+
+
+      if (profileError) {
+
+        statusBox.textContent =
+          "Signed in, but profile could not be loaded: " +
+          profileError.message;
+
+        statusBox.classList.add("error");
+
+        return;
+
+      }
+
+
+      loginButton.style.display =
+        "none";
+
+
+      profileBox.classList.add(
+        "show"
+      );
+
+
+      document.getElementById(
+        "displayName"
+      ).textContent =
+        profile.display_name;
+
+
+      document.getElementById(
+        "email"
+      ).textContent =
+        profile.email;
+
+
+      document.getElementById(
+        "uuid"
+      ).textContent =
+        profile.id;
+
+
+      document.getElementById(
+        "accountStatus"
+      ).textContent =
+        profile.account_status;
+
+
+      const avatar =
+        document.getElementById(
+          "avatar"
+        );
+
+
+      if (
+        profile.avatar_url
+      ) {
+
+        avatar.src =
+          profile.avatar_url;
+
+        avatar.style.display =
+          "block";
+
+      }
+
+      else {
+
+        avatar.style.display =
+          "none";
+
+      }
+
+
+      statusBox.textContent =
+        "Authenticated successfully.";
+
+      statusBox.classList.remove(
+        "error"
+      );
+
+    }
+
+
+
+    async function signOut() {
+
+      await supabase.auth.signOut();
+
+      window.location.replace(
+        "/auth-test.html"
+      );
+
+    }
+
+
+
+    loginButton.addEventListener(
+      "click",
+      signInWithGoogle
+    );
+
+
+    signOutButton.addEventListener(
+      "click",
+      signOut
+    );
+
+
+    /*
+      Supabase automatically initializes browser
+      authentication state and detects OAuth redirects.
+    */
+
+    supabase.auth.onAuthStateChange(
+      function(event, session) {
+
+        if (
+          event === "SIGNED_IN" ||
+          event === "INITIAL_SESSION"
+        ) {
+
+          loadRizSimUser();
+
+        }
+
+
+        if (
+          event === "SIGNED_OUT"
+        ) {
+
+          loginButton.style.display =
+            "block";
+
+          profileBox.classList.remove(
+            "show"
+          );
+
+          statusBox.textContent =
+            "Signed out.";
+
+        }
+
+      }
+    );
+
+
+    loadRizSimUser();
+
+  </script>
+
+</body>
+</html>
