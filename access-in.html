@@ -93,13 +93,11 @@ body {
   color:var(--text);
 
   background:
-
     radial-gradient(
       circle at 94% 3%,
       rgba(105,220,224,.18),
       transparent 25%
     ),
-
     var(--bg);
 
 }
@@ -126,7 +124,7 @@ button {
 
 
 /* ============================================================
-   AUTH GATE
+   AUTH
    ============================================================ */
 
 .auth-gate {
@@ -134,7 +132,6 @@ button {
   min-height:100vh;
 
   display:flex;
-
   align-items:center;
   justify-content:center;
 
@@ -144,10 +141,7 @@ button {
 
 .auth-card {
 
-  width:min(
-    560px,
-    100%
-  );
+  width:min(560px,100%);
 
   padding:46px;
 
@@ -263,15 +257,6 @@ button {
 
   font-weight:850;
 
-  box-shadow:
-    0 10px 30px rgba(3,29,73,.05);
-
-}
-
-.google-button:hover {
-
-  background:var(--soft);
-
 }
 
 .auth-status {
@@ -326,12 +311,10 @@ button {
 
   z-index:1200;
 
-  height:82px;
+  min-height:82px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 
   gap:20px;
@@ -343,14 +326,11 @@ button {
       calc((100vw - 1380px) / 2)
     );
 
-  background:
-    rgba(255,255,255,.93);
+  background:rgba(255,255,255,.94);
 
-  backdrop-filter:
-    blur(18px);
+  backdrop-filter:blur(18px);
 
-  border-bottom:
-    1px solid var(--line);
+  border-bottom:1px solid var(--line);
 
 }
 
@@ -401,7 +381,6 @@ button {
 .main-nav {
 
   display:flex;
-
   align-items:center;
 
   gap:5px;
@@ -412,9 +391,7 @@ button {
 
   min-height:41px;
 
-  padding:
-    0
-    14px;
+  padding:0 14px;
 
   border:0;
 
@@ -427,14 +404,6 @@ button {
   font-size:12px;
 
   font-weight:800;
-
-}
-
-.nav-button:hover {
-
-  color:var(--navy);
-
-  background:var(--soft);
 
 }
 
@@ -454,7 +423,6 @@ button {
 .account-menu {
 
   display:flex;
-
   align-items:center;
 
   gap:11px;
@@ -467,7 +435,6 @@ button {
   height:42px;
 
   display:grid;
-
   place-items:center;
 
   overflow:hidden;
@@ -522,9 +489,7 @@ button {
 
   min-height:38px;
 
-  padding:
-    0
-    12px;
+  padding:0 12px;
 
   border-radius:11px;
 
@@ -566,10 +531,7 @@ button {
 
   margin:0 auto;
 
-  padding:
-    38px
-    0
-    80px;
+  padding:38px 0 80px;
 
 }
 
@@ -582,10 +544,6 @@ button {
 
   min-height:340px;
 
-  position:relative;
-
-  overflow:hidden;
-
   display:grid;
 
   grid-template-columns:
@@ -596,16 +554,13 @@ button {
 
   align-items:center;
 
-  padding:
-    48px
-    52px;
+  padding:48px 52px;
 
   border-radius:30px;
 
   color:white;
 
   background:
-
     radial-gradient(
       circle at 90% 15%,
       rgba(105,220,224,.25),
@@ -668,8 +623,7 @@ button {
 
   margin-top:19px;
 
-  color:
-    rgba(255,255,255,.72);
+  color:rgba(255,255,255,.72);
 
   line-height:1.7;
 
@@ -680,7 +634,6 @@ button {
 .hero-actions {
 
   display:flex;
-
   flex-wrap:wrap;
 
   gap:10px;
@@ -693,9 +646,7 @@ button {
 
   min-height:48px;
 
-  padding:
-    0
-    19px;
+  padding:0 19px;
 
   border:0;
 
@@ -719,11 +670,9 @@ button {
 
   color:white;
 
-  background:
-    rgba(255,255,255,.08);
+  background:rgba(255,255,255,.08);
 
-  border:
-    1px solid rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.13);
 
 }
 
@@ -731,9 +680,7 @@ button {
 
   display:grid;
 
-  grid-template-columns:
-    1fr
-    1fr;
+  grid-template-columns:1fr 1fr;
 
   gap:13px;
 
@@ -744,22 +691,16 @@ button {
   min-height:130px;
 
   display:flex;
-
   flex-direction:column;
-
   justify-content:flex-end;
 
   padding:21px;
 
   border-radius:20px;
 
-  background:
-    rgba(255,255,255,.08);
+  background:rgba(255,255,255,.08);
 
-  border:
-    1px solid rgba(255,255,255,.10);
-
-  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.10);
 
 }
 
@@ -775,12 +716,58 @@ button {
 
   margin-top:5px;
 
-  color:
-    rgba(255,255,255,.62);
+  color:rgba(255,255,255,.62);
 
   font-size:10px;
 
   font-weight:750;
+
+}
+
+
+/* ============================================================
+   SYSTEM MESSAGE
+   ============================================================ */
+
+.system-message {
+
+  display:none;
+
+  margin-top:20px;
+
+  padding:16px 18px;
+
+  border-radius:15px;
+
+  font-size:12px;
+
+  line-height:1.55;
+
+}
+
+.system-message.show {
+
+  display:block;
+
+}
+
+.system-message.error {
+
+  color:var(--danger);
+
+  background:var(--danger-soft);
+
+  border:1px solid rgba(180,35,24,.14);
+
+}
+
+.system-message.success {
+
+  color:var(--success);
+
+  background:var(--success-soft);
+
+  border:1px solid rgba(0,123,131,.12);
 
 }
 
@@ -798,9 +785,7 @@ button {
 .section-head {
 
   display:flex;
-
   align-items:flex-end;
-
   justify-content:space-between;
 
   gap:20px;
@@ -860,7 +845,6 @@ button {
 .category-tabs {
 
   display:flex;
-
   flex-wrap:wrap;
 
   gap:8px;
@@ -873,14 +857,11 @@ button {
 
   min-height:41px;
 
-  padding:
-    0
-    15px;
+  padding:0 15px;
 
   border-radius:100px;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   background:white;
 
@@ -902,7 +883,7 @@ button {
 
 
 /* ============================================================
-   PRODUCT GRID
+   PRODUCTS
    ============================================================ */
 
 .product-grid {
@@ -921,22 +902,18 @@ button {
 
 .product-card {
 
-  position:relative;
+  min-height:395px;
 
   overflow:hidden;
 
-  min-height:395px;
-
   display:flex;
-
   flex-direction:column;
 
   border-radius:24px;
 
   background:white;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   box-shadow:var(--shadow);
 
@@ -948,8 +925,7 @@ button {
 
 .product-card:hover {
 
-  transform:
-    translateY(-4px);
+  transform:translateY(-4px);
 
   box-shadow:
     0 25px 65px rgba(3,29,73,.13);
@@ -963,13 +939,11 @@ button {
   padding:22px;
 
   display:flex;
-
   align-items:flex-end;
 
   color:white;
 
   background:
-
     radial-gradient(
       circle at 90% 15%,
       rgba(105,220,224,.30),
@@ -987,17 +961,13 @@ button {
 
 .product-art-category {
 
-  padding:
-    7px
-    10px;
+  padding:7px 10px;
 
   border-radius:100px;
 
-  background:
-    rgba(255,255,255,.12);
+  background:rgba(255,255,255,.12);
 
-  border:
-    1px solid rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.15);
 
   color:#eaffff;
 
@@ -1016,7 +986,6 @@ button {
   flex:1;
 
   display:flex;
-
   flex-direction:column;
 
   padding:22px;
@@ -1072,7 +1041,6 @@ button {
 .product-price-row {
 
   display:flex;
-
   align-items:center;
   justify-content:space-between;
 
@@ -1092,9 +1060,7 @@ button {
 
 .access-chip {
 
-  padding:
-    6px
-    9px;
+  padding:6px 9px;
 
   border-radius:100px;
 
@@ -1134,9 +1100,7 @@ button {
 
   display:grid;
 
-  grid-template-columns:
-    1fr
-    auto;
+  grid-template-columns:1fr auto;
 
   gap:8px;
 
@@ -1171,8 +1135,7 @@ button {
 
   min-width:44px;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   border-radius:12px;
 
@@ -1194,8 +1157,7 @@ button {
 
   background:white;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   color:var(--muted);
 
@@ -1232,8 +1194,7 @@ button {
 
   background:white;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   box-shadow:var(--shadow);
 
@@ -1242,7 +1203,6 @@ button {
 .learning-top {
 
   display:flex;
-
   justify-content:space-between;
 
   gap:14px;
@@ -1303,7 +1263,6 @@ button {
 .progress-meta {
 
   display:flex;
-
   justify-content:space-between;
 
   gap:15px;
@@ -1351,8 +1310,7 @@ button {
 
   background:white;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   box-shadow:var(--shadow);
 
@@ -1364,7 +1322,6 @@ button {
   height:76px;
 
   display:grid;
-
   place-items:center;
 
   overflow:hidden;
@@ -1433,8 +1390,7 @@ button {
 
   background:var(--soft);
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
 }
 
@@ -1482,11 +1438,9 @@ button {
 
   padding:24px;
 
-  background:
-    rgba(1,13,37,.68);
+  background:rgba(1,13,37,.68);
 
-  backdrop-filter:
-    blur(8px);
+  backdrop-filter:blur(8px);
 
 }
 
@@ -1498,10 +1452,7 @@ button {
 
 .modal {
 
-  width:min(
-    720px,
-    100%
-  );
+  width:min(720px,100%);
 
   max-height:
     calc(100vh - 48px);
@@ -1526,13 +1477,11 @@ button {
   padding:28px;
 
   display:flex;
-
   align-items:flex-end;
 
   color:white;
 
   background:
-
     radial-gradient(
       circle at 90% 10%,
       rgba(105,220,224,.28),
@@ -1563,8 +1512,7 @@ button {
 
   color:white;
 
-  background:
-    rgba(255,255,255,.10);
+  background:rgba(255,255,255,.10);
 
   font-size:19px;
 
@@ -1615,10 +1563,7 @@ button {
   display:grid;
 
   grid-template-columns:
-    repeat(
-      3,
-      1fr
-    );
+    repeat(3,1fr);
 
   gap:10px;
 
@@ -1634,8 +1579,7 @@ button {
 
   background:var(--soft);
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
 }
 
@@ -1700,14 +1644,11 @@ button {
 
   min-height:48px;
 
-  padding:
-    0
-    18px;
+  padding:0 18px;
 
   border-radius:13px;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   background:white;
 
@@ -1721,7 +1662,7 @@ button {
 
 
 /* ============================================================
-   CHECKOUT PLACEHOLDER
+   CHECKOUT
    ============================================================ */
 
 .checkout-box {
@@ -1739,8 +1680,7 @@ button {
       #eefafb
     );
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
 }
 
@@ -1767,7 +1707,6 @@ button {
 .payment-methods {
 
   display:flex;
-
   flex-wrap:wrap;
 
   gap:7px;
@@ -1778,9 +1717,7 @@ button {
 
 .payment-pill {
 
-  padding:
-    7px
-    10px;
+  padding:7px 10px;
 
   border-radius:100px;
 
@@ -1788,8 +1725,7 @@ button {
 
   background:white;
 
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 
   font-size:8px;
 
@@ -1815,11 +1751,9 @@ button {
   align-items:center;
   justify-content:center;
 
-  background:
-    rgba(255,255,255,.80);
+  background:rgba(255,255,255,.80);
 
-  backdrop-filter:
-    blur(7px);
+  backdrop-filter:blur(7px);
 
 }
 
@@ -1834,15 +1768,13 @@ button {
   width:52px;
   height:52px;
 
-  border:
-    4px solid #dcebed;
+  border:4px solid #dcebed;
 
   border-top-color:var(--teal);
 
   border-radius:50%;
 
-  animation:
-    spin .8s linear infinite;
+  animation:spin .8s linear infinite;
 
 }
 
@@ -1850,8 +1782,7 @@ button {
 
   to {
 
-    transform:
-      rotate(360deg);
+    transform:rotate(360deg);
 
   }
 
@@ -1867,10 +1798,7 @@ button {
   .product-grid {
 
     grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
+      repeat(2,1fr);
 
   }
 
@@ -1892,22 +1820,13 @@ button {
 
   .site-header {
 
-    height:auto;
-
     min-height:74px;
 
-    padding:
-      10px
-      17px;
+    padding:10px 17px;
 
   }
 
-  .brand-copy {
-
-    display:none;
-
-  }
-
+  .brand-copy,
   .account-copy {
 
     display:none;
@@ -1932,8 +1851,7 @@ button {
 
     border-radius:18px;
 
-    background:
-      rgba(3,29,73,.96);
+    background:rgba(3,29,73,.96);
 
     box-shadow:
       0 18px 55px rgba(3,29,73,.22);
@@ -1944,28 +1862,13 @@ button {
 
     flex:1;
 
-    color:
-      rgba(255,255,255,.65);
-
-    padding:
-      0
-      8px;
-
-  }
-
-  .nav-button.active {
-
-    color:white;
-
-    background:
-      rgba(105,220,224,.16);
+    color:rgba(255,255,255,.65);
 
   }
 
   .page-shell {
 
-    width:
-      calc(100% - 26px);
+    width:calc(100% - 26px);
 
     padding-bottom:110px;
 
@@ -1989,17 +1892,9 @@ button {
 
   .hero {
 
-    padding:
-      34px
-      25px;
+    padding:34px 25px;
 
     border-radius:24px;
-
-  }
-
-  .hero h1 {
-
-    letter-spacing:-2px;
 
   }
 
@@ -2012,9 +1907,7 @@ button {
 
   .hero-visual {
 
-    grid-template-columns:
-      1fr
-      1fr;
+    grid-template-columns:1fr 1fr;
 
   }
 
@@ -2058,7 +1951,6 @@ button {
 >
 
 <div class="auth-card">
-
 
   <div class="auth-brand">
 
@@ -2113,7 +2005,6 @@ button {
   >
     Checking your RizSim account…
   </div>
-
 
 </div>
 
@@ -2193,14 +2084,12 @@ button {
 
   <div class="account-menu">
 
-
     <div
       id="headerAvatar"
       class="avatar"
     >
       R
     </div>
-
 
     <div class="account-copy">
 
@@ -2217,7 +2106,6 @@ button {
 
     </div>
 
-
     <button
       id="signOutButton"
       class="signout"
@@ -2225,7 +2113,6 @@ button {
     >
       Sign Out
     </button>
-
 
   </div>
 
@@ -2252,11 +2139,9 @@ button {
 
     <div>
 
-
       <div class="hero-kicker">
         RIZSIM LEARNING
       </div>
-
 
       <h1>
         Explore.<br>
@@ -2264,16 +2149,13 @@ button {
         Grow.
       </h1>
 
-
       <p>
-        Interactive learning experiences designed to move beyond
-        passive content into decisions, reflection and applied
-        learning.
+        Interactive learning experiences designed to move
+        beyond passive content into decisions, reflection
+        and applied learning.
       </p>
 
-
       <div class="hero-actions">
-
 
         <button
           id="exploreButton"
@@ -2283,7 +2165,6 @@ button {
           Explore Simulations
         </button>
 
-
         <button
           id="myLearningHeroButton"
           class="hero-button secondary"
@@ -2292,9 +2173,7 @@ button {
           My Learning
         </button>
 
-
       </div>
-
 
     </div>
 
@@ -2319,7 +2198,6 @@ button {
       </div>
 
 
-
       <div class="hero-stat">
 
         <div
@@ -2336,7 +2214,6 @@ button {
       </div>
 
 
-
       <div class="hero-stat">
 
         <div
@@ -2351,7 +2228,6 @@ button {
         </div>
 
       </div>
-
 
 
       <div class="hero-stat">
@@ -2376,6 +2252,12 @@ button {
   </section>
 
 
+  <div
+    id="systemMessage"
+    class="system-message"
+  ></div>
+
+
 
   <section
     id="catalogueSection"
@@ -2384,7 +2266,6 @@ button {
 
 
     <div class="section-head">
-
 
       <div>
 
@@ -2398,22 +2279,18 @@ button {
 
       </div>
 
-
       <div class="section-copy">
         Browse published simulations and learning products.
         Access is determined securely by your RizSim account.
       </div>
 
-
     </div>
-
 
 
     <div
       id="categoryTabs"
       class="category-tabs"
     ></div>
-
 
 
     <div
@@ -2446,7 +2323,6 @@ button {
 
   <div class="section-head">
 
-
     <div>
 
       <div class="section-kicker">
@@ -2459,15 +2335,12 @@ button {
 
     </div>
 
-
     <div class="section-copy">
-      Products you can access, learning progress and completed
-      simulation activity.
+      Products currently authorized for this learner account,
+      with progress and completion information.
     </div>
 
-
   </div>
-
 
 
   <div
@@ -2497,7 +2370,6 @@ button {
 
   <div class="section-head">
 
-
     <div>
 
       <div class="section-kicker">
@@ -2510,12 +2382,10 @@ button {
 
     </div>
 
-
     <div class="section-copy">
-      Your RizSim identity is linked securely to your authenticated
-      Google account.
+      Your RizSim identity is linked securely to your
+      authenticated Google account.
     </div>
-
 
   </div>
 
@@ -2526,14 +2396,12 @@ button {
 
     <div class="profile-card">
 
-
       <div
         id="profileAvatar"
         class="profile-avatar"
       >
         R
       </div>
-
 
       <div
         id="profileName"
@@ -2542,14 +2410,12 @@ button {
         —
       </div>
 
-
       <div
         id="profileEmail"
         class="profile-email"
       >
         —
       </div>
-
 
     </div>
 
@@ -2577,7 +2443,6 @@ button {
         </div>
 
 
-
         <div class="info-row">
 
           <div class="info-label">
@@ -2594,7 +2459,6 @@ button {
         </div>
 
 
-
         <div class="info-row">
 
           <div class="info-label">
@@ -2609,7 +2473,6 @@ button {
           </div>
 
         </div>
-
 
 
         <div class="info-row">
@@ -2661,7 +2524,6 @@ button {
 
   <div class="modal-hero">
 
-
     <button
       id="closeProductModal"
       class="modal-close"
@@ -2669,7 +2531,6 @@ button {
     >
       ×
     </button>
-
 
     <div>
 
@@ -2680,7 +2541,6 @@ button {
         —
       </div>
 
-
       <div
         id="modalProductTitle"
         class="modal-title"
@@ -2690,19 +2550,16 @@ button {
 
     </div>
 
-
   </div>
 
 
 
   <div class="modal-body">
 
-
     <div
       id="modalDescription"
       class="modal-copy"
     ></div>
-
 
 
     <div class="modal-meta">
@@ -2724,7 +2581,6 @@ button {
       </div>
 
 
-
       <div class="modal-meta-card">
 
         <div class="modal-meta-label">
@@ -2739,7 +2595,6 @@ button {
         </div>
 
       </div>
-
 
 
       <div class="modal-meta-card">
@@ -2767,19 +2622,15 @@ button {
       class="checkout-box hidden"
     >
 
-
       <div class="checkout-title">
         Secure RizSim Checkout
       </div>
 
-
       <div class="checkout-copy">
         Payment integration is the next development step.
-        Clicking Buy Access will never grant learning access until
-        RizSim receives a verified payment confirmation from the
-        payment provider.
+        RizSim will grant access only after a payment is
+        independently verified by the secure backend.
       </div>
-
 
       <div class="payment-methods">
 
@@ -2805,13 +2656,11 @@ button {
 
       </div>
 
-
     </div>
 
 
 
     <div class="modal-actions">
-
 
       <button
         id="modalPrimaryButton"
@@ -2821,7 +2670,6 @@ button {
         —
       </button>
 
-
       <button
         id="modalCloseButton"
         class="modal-secondary"
@@ -2829,7 +2677,6 @@ button {
       >
         Close
       </button>
-
 
     </div>
 
@@ -2867,6 +2714,7 @@ from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
+
 /* ============================================================
    CHANGE ONLY THESE TWO VALUES
    ============================================================ */
@@ -2879,22 +2727,17 @@ const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
 
 
-/* ============================================================
-   IMPORTANT
+/*
+  Use ONLY the Project URL and sb_publishable_ key here.
 
-   Use ONLY:
-   - Supabase Project URL
-   - sb_publishable_... key
-
-   NEVER place:
-   - service_role
-   - sb_secret_
-   - database password
-   - payment secret keys
-   - Google Client Secret
-   in this file.
-   ============================================================ */
-
+  NEVER place:
+  - service_role
+  - sb_secret_
+  - database password
+  - Google Client Secret
+  - payment gateway secret keys
+  in this file.
+*/
 
 
 const supabase =
@@ -2912,30 +2755,23 @@ const supabase =
 let currentUser =
   null;
 
-
 let currentProfile =
   null;
-
 
 let categories =
   [];
 
-
 let products =
   [];
-
-
-let productAccess =
-  new Map();
-
 
 let attempts =
   [];
 
+let productAccess =
+  new Map();
 
 let selectedCategory =
   "all";
-
 
 let selectedProduct =
   null;
@@ -2943,15 +2779,8 @@ let selectedProduct =
 
 
 /* ============================================================
-   CURRENT LAUNCH ROUTES
+   LAUNCH ROUTES
    ============================================================ */
-
-/*
-  For our current secure test product we already have a runner.
-
-  As RizSim grows, we will replace this temporary map with
-  the permanent RizSim protected runner architecture.
-*/
 
 const LAUNCH_ROUTES = {
 
@@ -2968,7 +2797,6 @@ const LAUNCH_ROUTES = {
 
 function showLoading() {
 
-
   document
     .getElementById(
       "loading"
@@ -2983,7 +2811,6 @@ function showLoading() {
 
 function hideLoading() {
 
-
   document
     .getElementById(
       "loading"
@@ -2996,8 +2823,44 @@ function hideLoading() {
 }
 
 
-function escapeHTML(value) {
+function showSystemMessage(
+  message,
+  type = "error"
+) {
 
+  const box =
+    document.getElementById(
+      "systemMessage"
+    );
+
+  box.textContent =
+    message;
+
+  box.className =
+    "system-message show "
+    +
+    type;
+
+}
+
+
+function clearSystemMessage() {
+
+  const box =
+    document.getElementById(
+      "systemMessage"
+    );
+
+  box.textContent =
+    "";
+
+  box.className =
+    "system-message";
+
+}
+
+
+function escapeHTML(value) {
 
   if(
     value === null
@@ -3008,7 +2871,6 @@ function escapeHTML(value) {
     return "—";
 
   }
-
 
   return String(value)
 
@@ -3042,13 +2904,11 @@ function escapeHTML(value) {
 
 function getInitials(name) {
 
-
   if(!name) {
 
     return "R";
 
   }
-
 
   return name
 
@@ -3056,18 +2916,13 @@ function getInitials(name) {
 
     .split(/\s+/)
 
-    .slice(
-      0,
-      2
-    )
+    .slice(0,2)
 
     .map(
-
       item =>
         item
           .charAt(0)
           .toUpperCase()
-
     )
 
     .join("");
@@ -3076,7 +2931,6 @@ function getInitials(name) {
 
 
 function prettyType(type) {
-
 
   const map = {
 
@@ -3091,10 +2945,38 @@ function prettyType(type) {
 
   };
 
-
   return map[type]
     ||
-    type;
+    type
+    ||
+    "Learning Product";
+
+}
+
+
+function getProductDescription(product) {
+
+  return (
+
+    product.short_description
+
+    ||
+
+    product.description
+
+    ||
+
+    product.long_description
+
+    ||
+
+    product.details
+
+    ||
+
+    "Interactive RizSim learning experience."
+
+  );
 
 }
 
@@ -3104,12 +2986,10 @@ function formatMoney(
   currency = "PKR"
 ) {
 
-
   const value =
     Number(
       amount || 0
     );
-
 
   if(value === 0) {
 
@@ -3117,22 +2997,16 @@ function formatMoney(
 
   }
 
-
   try {
 
-
     return new Intl.NumberFormat(
-
       "en-PK",
-
       {
-        style:
-          "currency",
-
+        style:"currency",
         currency:
-          currency
+          currency || "PKR",
+        maximumFractionDigits:0
       }
-
     ).format(
       value
     );
@@ -3141,9 +3015,8 @@ function formatMoney(
 
   catch {
 
-
     return (
-      currency
+      (currency || "PKR")
       +
       " "
       +
@@ -3157,66 +3030,47 @@ function formatMoney(
 
 function formatDate(value) {
 
-
   if(!value) {
 
     return "—";
 
   }
 
-
   return new Date(value)
 
     .toLocaleDateString(
-
       undefined,
-
       {
-        dateStyle:
-          "medium"
+        dateStyle:"medium"
       }
-
     );
 
 }
 
 
-function getCategory(
-  categoryId
-) {
-
+function getCategory(categoryId) {
 
   return categories.find(
-
     item =>
       item.id ===
       categoryId
-
   );
 
 }
 
 
-function getProduct(
-  productId
-) {
-
+function getProduct(productId) {
 
   return products.find(
-
     item =>
       item.id ===
       productId
-
   );
 
 }
 
 
-function hasAccess(
-  productId
-) {
-
+function hasAccess(productId) {
 
   return productAccess.get(
     productId
@@ -3225,32 +3079,23 @@ function hasAccess(
 }
 
 
-function getAttemptsForProduct(
-  productId
-) {
-
+function getAttemptsForProduct(productId) {
 
   return attempts.filter(
-
     attempt =>
       attempt.product_id ===
       productId
-
   );
 
 }
 
 
-function getLatestAttempt(
-  productId
-) {
-
+function getLatestAttempt(productId) {
 
   const list =
     getAttemptsForProduct(
       productId
     );
-
 
   if(
     list.length ===
@@ -3261,35 +3106,23 @@ function getLatestAttempt(
 
   }
 
-
   return list
-
     .slice()
-
     .sort(
-
-      (
-        a,
-        b
-      ) =>
-
+      (a,b) =>
         new Date(
           b.started_at
         )
-
         -
-
         new Date(
           a.started_at
         )
-
     )[0];
 
 }
 
 
 function getLaunchURL(product) {
-
 
   return LAUNCH_ROUTES[
     product.slug
@@ -3300,20 +3133,15 @@ function getLaunchURL(product) {
 
 
 /* ============================================================
-   AUTH
+   GOOGLE LOGIN
    ============================================================ */
 
 async function signInWithGoogle() {
 
-
   const redirectURL =
-
     window.location.origin
-
     +
-
     "/access-in.html";
-
 
   const {
     error
@@ -3322,21 +3150,16 @@ async function signInWithGoogle() {
       .auth
       .signInWithOAuth({
 
-        provider:
-          "google",
+        provider:"google",
 
-        options: {
-
+        options:{
           redirectTo:
             redirectURL
-
         }
 
       });
 
-
   if(error) {
-
 
     document.getElementById(
       "authStatus"
@@ -3350,11 +3173,9 @@ async function signInWithGoogle() {
 
 async function signOut() {
 
-
   await supabase
     .auth
     .signOut();
-
 
   window.location.replace(
     "/access-in.html"
@@ -3370,16 +3191,25 @@ async function signOut() {
 
 async function initialize() {
 
-
   showLoading();
 
-
   const {
-    data:userResult
+    data:userResult,
+    error:userError
   } =
     await supabase
       .auth
       .getUser();
+
+
+  if(userError) {
+
+    console.error(
+      "Auth error:",
+      userError
+    );
+
+  }
 
 
   currentUser =
@@ -3390,21 +3220,17 @@ async function initialize() {
 
   if(!currentUser) {
 
-
     hideLoading();
-
 
     document.getElementById(
       "googleLogin"
     ).style.display =
       "block";
 
-
     document.getElementById(
       "authStatus"
     ).textContent =
       "Continue with Google to enter RizSim.";
-
 
     return;
 
@@ -3427,14 +3253,7 @@ async function initialize() {
         "profiles"
       )
 
-      .select(`
-        id,
-        display_name,
-        email,
-        avatar_url,
-        account_status,
-        created_at
-      `)
+      .select("*")
 
       .eq(
         "id",
@@ -3450,15 +3269,16 @@ async function initialize() {
     !profile
   ) {
 
-
     hideLoading();
-
 
     document.getElementById(
       "authStatus"
     ).textContent =
       "Your RizSim profile could not be loaded.";
 
+    console.error(
+      profileError
+    );
 
     return;
 
@@ -3470,15 +3290,12 @@ async function initialize() {
     "active"
   ) {
 
-
     hideLoading();
-
 
     document.getElementById(
       "authStatus"
     ).textContent =
       "This RizSim account is not currently active.";
-
 
     return;
 
@@ -3487,15 +3304,6 @@ async function initialize() {
 
   currentProfile =
     profile;
-
-
-  await loadPlatformData();
-
-
-  setProfileUI();
-
-
-  renderAll();
 
 
   document.getElementById(
@@ -3511,6 +3319,15 @@ async function initialize() {
   );
 
 
+  setProfileUI();
+
+
+  await loadPlatformData();
+
+
+  renderAll();
+
+
   hideLoading();
 
 }
@@ -3518,27 +3335,29 @@ async function initialize() {
 
 
 /* ============================================================
-   DATA
+   LOAD PLATFORM DATA
    ============================================================ */
 
 async function loadPlatformData() {
 
+  clearSystemMessage();
 
-  const categoryResult =
 
+  /* ----------------------------------------------------------
+     CATEGORIES
+     ---------------------------------------------------------- */
+
+  const {
+    data:categoryData,
+    error:categoryError
+  } =
     await supabase
 
       .from(
         "categories"
       )
 
-      .select(`
-        id,
-        name,
-        slug,
-        description,
-        active
-      `)
+      .select("*")
 
       .eq(
         "active",
@@ -3553,34 +3372,54 @@ async function loadPlatformData() {
       );
 
 
-  categories =
-    categoryResult.data
-    ||
-    [];
+  if(categoryError) {
+
+    console.error(
+      "Category query failed:",
+      categoryError
+    );
+
+    showSystemMessage(
+      "RizSim could not load the learning categories: "
+      +
+      categoryError.message
+    );
+
+    categories =
+      [];
+
+  }
+
+  else {
+
+    categories =
+      categoryData
+      ||
+      [];
+
+  }
 
 
-  const productResult =
 
+  /* ----------------------------------------------------------
+     PRODUCTS
+
+     IMPORTANT:
+     We use select("*") so optional description columns cannot
+     break the entire catalogue query.
+     ---------------------------------------------------------- */
+
+  const {
+    data:productData,
+    error:productError
+  } =
     await supabase
 
       .from(
         "products"
       )
 
-      .select(`
-        id,
-        category_id,
-        product_type,
-        title,
-        slug,
-        short_description,
-        description,
-        price,
-        currency,
-        access_type,
-        status,
-        created_at
-      `)
+      .select("*")
 
       .eq(
         "status",
@@ -3595,14 +3434,46 @@ async function loadPlatformData() {
       );
 
 
-  products =
-    productResult.data
-    ||
-    [];
+  if(productError) {
+
+    console.error(
+      "Product query failed:",
+      productError
+    );
+
+    showSystemMessage(
+      "RizSim could not load the published catalogue: "
+      +
+      productError.message
+    );
+
+    products =
+      [];
+
+  }
+
+  else {
+
+    products =
+      productData
+      ||
+      [];
+
+  }
 
 
-  await loadAccess();
 
+  /* ----------------------------------------------------------
+     PRODUCT ACCESS
+     ---------------------------------------------------------- */
+
+  await loadProductAccess();
+
+
+
+  /* ----------------------------------------------------------
+     LEARNER ATTEMPTS
+     ---------------------------------------------------------- */
 
   await loadAttempts();
 
@@ -3614,21 +3485,29 @@ async function loadPlatformData() {
    ACCESS CHECKS
    ============================================================ */
 
-async function loadAccess() {
-
+async function loadProductAccess() {
 
   productAccess =
     new Map();
 
 
-  const checks =
+  if(
+    products.length ===
+    0
+  ) {
+
+    return;
+
+  }
+
+
+  const results =
 
     await Promise.all(
 
       products.map(
 
         async product => {
-
 
           const {
             data,
@@ -3639,13 +3518,24 @@ async function loadAccess() {
               "can_access_rizsim_product",
 
               {
-
                 product_id:
                   product.id
-
               }
 
             );
+
+
+          if(error) {
+
+            console.error(
+
+              "Access check failed for",
+              product.title,
+              error
+
+            );
+
+          }
 
 
           return {
@@ -3654,9 +3544,9 @@ async function loadAccess() {
               product.id,
 
             allowed:
-              !error
-              &&
-              data === true
+              error
+                ? false
+                : data === true
 
           };
 
@@ -3667,17 +3557,13 @@ async function loadAccess() {
     );
 
 
-  checks.forEach(
+  results.forEach(
 
     result => {
 
-
       productAccess.set(
-
         result.productId,
-
         result.allowed
-
       );
 
     }
@@ -3694,7 +3580,6 @@ async function loadAccess() {
 
 async function loadAttempts() {
 
-
   const {
     data,
     error
@@ -3705,15 +3590,7 @@ async function loadAttempts() {
         "simulation_attempts"
       )
 
-      .select(`
-        id,
-        product_id,
-        status,
-        progress_percent,
-        started_at,
-        submitted_at,
-        last_activity_at
-      `)
+      .select("*")
 
       .order(
         "started_at",
@@ -3723,32 +3600,47 @@ async function loadAttempts() {
       );
 
 
+  if(error) {
+
+    console.error(
+      "Attempt query failed:",
+      error
+    );
+
+    attempts =
+      [];
+
+    return;
+
+  }
+
+
   attempts =
-    error
-      ? []
-      : (
-          data
-          ||
-          []
-        );
+    data
+    ||
+    [];
 
 }
 
 
 
 /* ============================================================
-   PROFILE
+   PROFILE UI
    ============================================================ */
 
 function setProfileUI() {
 
-
   const name =
+
     currentProfile.display_name
 
     ||
 
-    currentProfile.email;
+    currentProfile.email
+
+    ||
+
+    "RizSim Learner";
 
 
   document.getElementById(
@@ -3766,7 +3658,11 @@ function setProfileUI() {
   document.getElementById(
     "profileEmail"
   ).textContent =
-    currentProfile.email;
+    currentProfile.email
+    ||
+    currentUser.email
+    ||
+    "—";
 
 
   document.getElementById(
@@ -3803,31 +3699,34 @@ function setProfileUI() {
     currentProfile.avatar_url
   ) {
 
+    const imageHTML =
 
-    const image =
-      `<img
-        src="${escapeHTML(
-          currentProfile.avatar_url
-        )}"
-        alt=""
-      >`;
+      '<img src="'
+
+      +
+
+      escapeHTML(
+        currentProfile.avatar_url
+      )
+
+      +
+
+      '" alt="">';
 
 
     headerAvatar.innerHTML =
-      image;
+      imageHTML;
 
 
     profileAvatar.innerHTML =
-      image;
+      imageHTML;
 
   }
 
   else {
 
-
     headerAvatar.textContent =
       initials;
-
 
     profileAvatar.textContent =
       initials;
@@ -3839,20 +3738,16 @@ function setProfileUI() {
 
 
 /* ============================================================
-   RENDER EVERYTHING
+   RENDER ALL
    ============================================================ */
 
 function renderAll() {
 
-
   renderCategoryTabs();
-
 
   renderProducts();
 
-
   renderMyLearning();
-
 
   renderStats();
 
@@ -3866,7 +3761,6 @@ function renderAll() {
 
 function renderCategoryTabs() {
 
-
   const container =
     document.getElementById(
       "categoryTabs"
@@ -3879,9 +3773,7 @@ function renderCategoryTabs() {
       class="category-button ${
         selectedCategory ===
         "all"
-
           ? "active"
-
           : ""
       }"
       data-category-filter="all"
@@ -3903,9 +3795,7 @@ function renderCategoryTabs() {
           class="category-button ${
             selectedCategory ===
             category.id
-
               ? "active"
-
               : ""
           }"
           data-category-filter="${
@@ -3940,7 +3830,6 @@ function renderCategoryTabs() {
 
 function renderProducts() {
 
-
   const visible =
 
     products.filter(
@@ -3969,7 +3858,6 @@ function renderProducts() {
     0
   ) {
 
-
     grid.innerHTML = `
 
       <div class="empty-state">
@@ -3978,7 +3866,6 @@ function renderProducts() {
       </div>
 
     `;
-
 
     return;
 
@@ -3990,7 +3877,6 @@ function renderProducts() {
     visible.map(
 
       product => {
-
 
         const category =
           getCategory(
@@ -4012,7 +3898,7 @@ function renderProducts() {
           ||
 
           Number(
-            product.price
+            product.price || 0
           ) === 0;
 
 
@@ -4030,14 +3916,11 @@ function renderProducts() {
 
         if(access) {
 
-
           chipText =
             "Available";
 
-
           chipClass =
             "owned";
-
 
           primaryText =
             "Launch";
@@ -4046,14 +3929,11 @@ function renderProducts() {
 
         else if(isFree) {
 
-
           chipText =
             "Free";
 
-
           chipClass =
             "free";
-
 
           primaryText =
             "Open";
@@ -4108,11 +3988,9 @@ function renderProducts() {
               <div class="product-description">
 
                 ${escapeHTML(
-                  product.short_description
-                  ||
-                  product.description
-                  ||
-                  "Interactive RizSim learning experience."
+                  getProductDescription(
+                    product
+                  )
                 )}
 
               </div>
@@ -4127,12 +4005,10 @@ function renderProducts() {
                 <div class="product-price">
 
                   ${escapeHTML(
-
                     formatMoney(
                       product.price,
                       product.currency
                     )
-
                   )}
 
                 </div>
@@ -4141,9 +4017,7 @@ function renderProducts() {
                 <span
                   class="access-chip ${chipClass}"
                 >
-
                   ${chipText}
-
                 </span>
 
 
@@ -4163,9 +4037,7 @@ function renderProducts() {
                   }"
                   type="button"
                 >
-
                   ${primaryText}
-
                 </button>
 
 
@@ -4177,7 +4049,7 @@ function renderProducts() {
                     )
                   }"
                   type="button"
-                  aria-label="Product details"
+                  aria-label="View product details"
                 >
                   +
                 </button>
@@ -4207,7 +4079,6 @@ function renderProducts() {
 
 function renderMyLearning() {
 
-
   const available =
 
     products.filter(
@@ -4231,16 +4102,15 @@ function renderMyLearning() {
     0
   ) {
 
-
     grid.innerHTML = `
 
       <div class="empty-state">
-        You do not yet have any RizSim learning products.
-        Explore the catalogue to begin.
+        You do not currently have access to a RizSim learning
+        product. Purchased, complimentary and institutional
+        access will appear here automatically.
       </div>
 
     `;
-
 
     return;
 
@@ -4252,7 +4122,6 @@ function renderMyLearning() {
     available.map(
 
       product => {
-
 
         const category =
           getCategory(
@@ -4283,14 +4152,12 @@ function renderMyLearning() {
           "submitted"
         ) {
 
-
           status =
             "Completed";
 
         }
 
         else if(latest) {
-
 
           status =
             "In Progress";
@@ -4309,22 +4176,17 @@ function renderMyLearning() {
               <div>
 
                 <div class="learning-title">
-
                   ${escapeHTML(
                     product.title
                   )}
-
                 </div>
 
-
                 <div class="learning-category">
-
                   ${escapeHTML(
                     category?.name
                     ||
                     "RizSim"
                   )}
-
                 </div>
 
               </div>
@@ -4332,16 +4194,13 @@ function renderMyLearning() {
 
               <span
                 class="access-chip ${
-                  status === "Completed"
-
+                  status ===
+                  "Completed"
                     ? "owned"
-
                     : "free"
                 }"
               >
-
                 ${status}
-
               </span>
 
 
@@ -4376,15 +4235,15 @@ function renderMyLearning() {
               </span>
 
               <span>
+
                 ${
                   latest
-
                     ? formatDate(
                         latest.started_at
                       )
-
                     : "Not started"
                 }
+
               </span>
 
             </div>
@@ -4392,7 +4251,6 @@ function renderMyLearning() {
 
 
             <div class="learning-actions">
-
 
               <button
                 class="product-primary"
@@ -4433,7 +4291,6 @@ function renderMyLearning() {
                 +
               </button>
 
-
             </div>
 
 
@@ -4454,7 +4311,6 @@ function renderMyLearning() {
    ============================================================ */
 
 function renderStats() {
-
 
   const accessCount =
 
@@ -4525,10 +4381,7 @@ function renderStats() {
    PRODUCT DETAILS
    ============================================================ */
 
-function openProductDetails(
-  productId
-) {
-
+function openProductDetails(productId) {
 
   const product =
     getProduct(
@@ -4567,7 +4420,7 @@ function openProductDetails(
     ||
 
     Number(
-      product.price
+      product.price || 0
     ) === 0;
 
 
@@ -4588,16 +4441,9 @@ function openProductDetails(
   document.getElementById(
     "modalDescription"
   ).textContent =
-
-    product.description
-
-    ||
-
-    product.short_description
-
-    ||
-
-    "Interactive RizSim learning experience.";
+    getProductDescription(
+      product
+    );
 
 
   document.getElementById(
@@ -4646,10 +4492,8 @@ function openProductDetails(
 
   if(access) {
 
-
     button.textContent =
       "Launch";
-
 
     checkout.classList.add(
       "hidden"
@@ -4659,10 +4503,8 @@ function openProductDetails(
 
   else if(isFree) {
 
-
     button.textContent =
       "Open";
-
 
     checkout.classList.add(
       "hidden"
@@ -4672,10 +4514,8 @@ function openProductDetails(
 
   else {
 
-
     button.textContent =
       "Buy Access";
-
 
     checkout.classList.remove(
       "hidden"
@@ -4695,13 +4535,10 @@ function openProductDetails(
 
 
 /* ============================================================
-   PRIMARY PRODUCT ACTION
+   PRODUCT ACTION
    ============================================================ */
 
-async function handleProductAction(
-  productId
-) {
-
+async function handleProductAction(productId) {
 
   const product =
     getProduct(
@@ -4720,19 +4557,15 @@ async function handleProductAction(
     product;
 
 
-  const access =
+  if(
     hasAccess(
       product.id
-    );
-
-
-  if(access) {
-
+    )
+  ) {
 
     launchProduct(
       product
     );
-
 
     return;
 
@@ -4747,20 +4580,11 @@ async function handleProductAction(
     ||
 
     Number(
-      product.price
+      product.price || 0
     ) === 0;
 
 
   if(isFree) {
-
-
-    /*
-      The database access function should normally return TRUE
-      for a free published product.
-
-      We check again before launching so access is never based
-      purely on the browser UI.
-    */
 
     showLoading();
 
@@ -4774,10 +4598,8 @@ async function handleProductAction(
         "can_access_rizsim_product",
 
         {
-
           product_id:
             product.id
-
         }
 
       );
@@ -4792,20 +4614,16 @@ async function handleProductAction(
       data === true
     ) {
 
-
       productAccess.set(
         product.id,
         true
       );
 
-
       renderAll();
-
 
       launchProduct(
         product
       );
-
 
       return;
 
@@ -4813,9 +4631,8 @@ async function handleProductAction(
 
 
     alert(
-      "RizSim could not authorize this product."
+      "RizSim could not authorize access to this product."
     );
-
 
     return;
 
@@ -4836,7 +4653,6 @@ async function handleProductAction(
 
 function launchProduct(product) {
 
-
   const route =
     getLaunchURL(
       product
@@ -4845,11 +4661,9 @@ function launchProduct(product) {
 
   if(!route) {
 
-
     alert(
-      "This RizSim product is published, but its secure learning runner has not yet been connected."
+      "This learning product is published, but its RizSim runner has not yet been connected."
     );
-
 
     return;
 
@@ -4864,11 +4678,10 @@ function launchProduct(product) {
 
 
 /* ============================================================
-   CHECKOUT
+   CHECKOUT PLACEHOLDER
    ============================================================ */
 
 function beginCheckout() {
-
 
   if(!selectedProduct) {
 
@@ -4878,22 +4691,23 @@ function beginCheckout() {
 
 
   /*
-    IMPORTANT SECURITY RULE:
+    IMPORTANT:
 
-    This browser function must NEVER create an entitlement.
+    The browser will NEVER create an entitlement.
 
-    Step 2 will:
-    1. create a server-side payment order
-    2. redirect to the payment provider
-    3. verify provider callback/webhook
-    4. record verified payment
-    5. create content_entitlement server-side
+    Payment Step 2 will use a secure server-side workflow:
+      payment order
+      -> provider
+      -> verified callback/webhook
+      -> payment record
+      -> entitlement
+      -> learner access
   */
 
 
   alert(
 
-    "RizSim secure checkout is ready for the payment integration step.\n\nNo access has been granted and no payment has been charged."
+    "Secure RizSim checkout will be connected in the next step.\n\nNo payment has been charged and no access has been granted."
 
   );
 
@@ -4905,10 +4719,7 @@ function beginCheckout() {
    NAVIGATION
    ============================================================ */
 
-function showPage(
-  pageName
-) {
-
+function showPage(pageName) {
 
   document
     .querySelectorAll(
@@ -4960,11 +4771,8 @@ function showPage(
 
 
   window.scrollTo({
-
     top:0,
-
     behavior:"smooth"
-
   });
 
 }
@@ -4978,22 +4786,16 @@ function showPage(
 document.getElementById(
   "googleLogin"
 ).addEventListener(
-
   "click",
-
   signInWithGoogle
-
 );
 
 
 document.getElementById(
   "signOutButton"
 ).addEventListener(
-
   "click",
-
   signOut
-
 );
 
 
@@ -5005,13 +4807,11 @@ document
 
     button => {
 
-
       button.addEventListener(
 
         "click",
 
         function() {
-
 
           showPage(
             button.dataset.page
@@ -5034,15 +4834,11 @@ document.getElementById(
 
   function() {
 
-
     document.getElementById(
       "catalogueSection"
     ).scrollIntoView({
-
       behavior:"smooth",
-
       block:"start"
-
     });
 
   }
@@ -5057,7 +4853,6 @@ document.getElementById(
   "click",
 
   function() {
-
 
     showPage(
       "learning"
@@ -5076,7 +4871,6 @@ document.addEventListener(
 
 
     const categoryButton =
-
       event.target.closest(
         "[data-category-filter]"
       );
@@ -5084,18 +4878,14 @@ document.addEventListener(
 
     if(categoryButton) {
 
-
       selectedCategory =
         categoryButton
           .dataset
           .categoryFilter;
 
-
       renderCategoryTabs();
 
-
       renderProducts();
-
 
       return;
 
@@ -5104,7 +4894,6 @@ document.addEventListener(
 
 
     const primaryButton =
-
       event.target.closest(
         "[data-primary-product]"
       );
@@ -5112,13 +4901,11 @@ document.addEventListener(
 
     if(primaryButton) {
 
-
       handleProductAction(
         primaryButton
           .dataset
           .primaryProduct
       );
-
 
       return;
 
@@ -5127,14 +4914,12 @@ document.addEventListener(
 
 
     const detailsButton =
-
       event.target.closest(
         "[data-details-product]"
       );
 
 
     if(detailsButton) {
-
 
       openProductDetails(
         detailsButton
@@ -5157,7 +4942,6 @@ document.getElementById(
 
   function() {
 
-
     document.getElementById(
       "productModal"
     ).classList.remove(
@@ -5176,7 +4960,6 @@ document.getElementById(
   "click",
 
   function() {
-
 
     document.getElementById(
       "productModal"
@@ -5197,12 +4980,10 @@ document.getElementById(
 
   function(event) {
 
-
     if(
       event.target.id ===
       "productModal"
     ) {
-
 
       event.currentTarget
         .classList
@@ -5225,7 +5006,6 @@ document.getElementById(
 
   function() {
 
-
     if(!selectedProduct) {
 
       return;
@@ -5239,11 +5019,9 @@ document.getElementById(
       )
     ) {
 
-
       launchProduct(
         selectedProduct
       );
-
 
       return;
 
@@ -5258,17 +5036,15 @@ document.getElementById(
       ||
 
       Number(
-        selectedProduct.price
+        selectedProduct.price || 0
       ) === 0;
 
 
     if(isFree) {
 
-
       handleProductAction(
         selectedProduct.id
       );
-
 
       return;
 
