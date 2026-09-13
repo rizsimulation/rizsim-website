@@ -407,6 +407,14 @@ button {
 
 }
 
+.nav-button:hover {
+
+  color:var(--navy);
+
+  background:var(--soft);
+
+}
+
 .nav-button.active {
 
   color:white;
@@ -1420,7 +1428,7 @@ button {
 
 
 /* ============================================================
-   MODAL
+   PRODUCT MODAL
    ============================================================ */
 
 .modal-backdrop {
@@ -1640,6 +1648,14 @@ button {
 
 }
 
+.modal-primary:disabled {
+
+  opacity:.55;
+
+  cursor:not-allowed;
+
+}
+
 .modal-secondary {
 
   min-height:48px;
@@ -1709,15 +1725,15 @@ button {
   display:flex;
   flex-wrap:wrap;
 
-  gap:7px;
+  gap:8px;
 
-  margin-top:13px;
+  margin-top:14px;
 
 }
 
 .payment-pill {
 
-  padding:7px 10px;
+  padding:9px 13px;
 
   border-radius:100px;
 
@@ -1727,9 +1743,73 @@ button {
 
   border:1px solid var(--line);
 
-  font-size:8px;
+  font-size:9px;
 
   font-weight:900;
+
+  cursor:pointer;
+
+  transition:
+    .18s ease;
+
+}
+
+.payment-pill:hover {
+
+  border-color:var(--teal);
+
+  transform:translateY(-1px);
+
+}
+
+.payment-pill.selected {
+
+  color:white;
+
+  background:
+    linear-gradient(
+      120deg,
+      var(--navy2),
+      var(--teal)
+    );
+
+  border-color:transparent;
+
+}
+
+.payment-order-status {
+
+  margin-top:14px;
+
+  padding:13px;
+
+  border-radius:12px;
+
+  background:white;
+
+  border:1px solid var(--line);
+
+  color:var(--muted);
+
+  font-size:11px;
+
+  line-height:1.6;
+
+}
+
+.payment-order-status.success {
+
+  color:var(--success);
+
+  background:var(--success-soft);
+
+}
+
+.payment-order-status.error {
+
+  color:var(--danger);
+
+  background:var(--danger-soft);
 
 }
 
@@ -1985,8 +2065,10 @@ button {
 
 
   <div class="auth-copy">
+
     Sign in securely to explore RizSim learning experiences,
     access your simulations and continue your learning.
+
   </div>
 
 
@@ -2050,7 +2132,6 @@ button {
 
   <nav class="main-nav">
 
-
     <button
       class="nav-button active"
       data-page="discover"
@@ -2058,7 +2139,6 @@ button {
     >
       Discover
     </button>
-
 
     <button
       class="nav-button"
@@ -2068,7 +2148,6 @@ button {
       My Learning
     </button>
 
-
     <button
       class="nav-button"
       data-page="profile"
@@ -2076,7 +2155,6 @@ button {
     >
       Profile
     </button>
-
 
   </nav>
 
@@ -2150,9 +2228,11 @@ button {
       </h1>
 
       <p>
+
         Interactive learning experiences designed to move
         beyond passive content into decisions, reflection
         and applied learning.
+
       </p>
 
       <div class="hero-actions">
@@ -2252,6 +2332,7 @@ button {
   </section>
 
 
+
   <div
     id="systemMessage"
     class="system-message"
@@ -2280,8 +2361,10 @@ button {
       </div>
 
       <div class="section-copy">
+
         Browse published simulations and learning products.
         Access is determined securely by your RizSim account.
+
       </div>
 
     </div>
@@ -2336,8 +2419,10 @@ button {
     </div>
 
     <div class="section-copy">
+
       Products currently authorized for this learner account,
       with progress and completion information.
+
     </div>
 
   </div>
@@ -2383,8 +2468,10 @@ button {
     </div>
 
     <div class="section-copy">
+
       Your RizSim identity is linked securely to your
       authenticated Google account.
+
     </div>
 
   </div>
@@ -2556,10 +2643,12 @@ button {
 
   <div class="modal-body">
 
+
     <div
       id="modalDescription"
       class="modal-copy"
     ></div>
+
 
 
     <div class="modal-meta">
@@ -2622,45 +2711,88 @@ button {
       class="checkout-box hidden"
     >
 
+
       <div class="checkout-title">
         Secure RizSim Checkout
       </div>
 
+
       <div class="checkout-copy">
-        Payment integration is the next development step.
-        RizSim will grant access only after a payment is
-        independently verified by the secure backend.
+
+        Select a payment method. RizSim will create a secure
+        payment order using the product price stored in the
+        database.
+
       </div>
+
+
 
       <div class="payment-methods">
 
-        <span class="payment-pill">
+
+        <button
+          class="payment-pill"
+          data-payment-method="card"
+          type="button"
+        >
           Card
-        </span>
+        </button>
 
-        <span class="payment-pill">
+
+        <button
+          class="payment-pill"
+          data-payment-method="bank"
+          type="button"
+        >
           Bank
-        </span>
+        </button>
 
-        <span class="payment-pill">
+
+        <button
+          class="payment-pill"
+          data-payment-method="raast"
+          type="button"
+        >
           Raast
-        </span>
+        </button>
 
-        <span class="payment-pill">
+
+        <button
+          class="payment-pill"
+          data-payment-method="easypaisa"
+          type="button"
+        >
           Easypaisa
-        </span>
+        </button>
 
-        <span class="payment-pill">
+
+        <button
+          class="payment-pill"
+          data-payment-method="jazzcash"
+          type="button"
+        >
           JazzCash
-        </span>
+        </button>
+
 
       </div>
+
+
+
+      <div
+        id="paymentOrderStatus"
+        class="payment-order-status"
+      >
+        Select a payment method to continue.
+      </div>
+
 
     </div>
 
 
 
     <div class="modal-actions">
+
 
       <button
         id="modalPrimaryButton"
@@ -2670,6 +2802,7 @@ button {
         —
       </button>
 
+
       <button
         id="modalCloseButton"
         class="modal-secondary"
@@ -2677,6 +2810,7 @@ button {
       >
         Close
       </button>
+
 
     </div>
 
@@ -2716,7 +2850,7 @@ from
 
 
 /* ============================================================
-   CHANGE ONLY THESE TWO VALUES
+   ENTER YOUR TWO EXISTING VALUES HERE
    ============================================================ */
 
 const SUPABASE_URL =
@@ -2727,17 +2861,22 @@ const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
 
 
-/*
-  Use ONLY the Project URL and sb_publishable_ key here.
 
-  NEVER place:
-  - service_role
+/*
+  SAFE IN THE BROWSER:
+  - Supabase Project URL
+  - sb_publishable_ key
+
+  NEVER PUT HERE:
   - sb_secret_
+  - service_role
   - database password
   - Google Client Secret
-  - payment gateway secret keys
-  in this file.
+  - PayFast secret
+  - Easypaisa secret
+  - JazzCash secret
 */
+
 
 
 const supabase =
@@ -2755,25 +2894,36 @@ const supabase =
 let currentUser =
   null;
 
+
 let currentProfile =
   null;
+
 
 let categories =
   [];
 
+
 let products =
   [];
+
 
 let attempts =
   [];
 
+
 let productAccess =
   new Map();
+
 
 let selectedCategory =
   "all";
 
+
 let selectedProduct =
+  null;
+
+
+let selectedPaymentMethod =
   null;
 
 
@@ -2950,6 +3100,36 @@ function prettyType(type) {
     type
     ||
     "Learning Product";
+
+}
+
+
+function prettyPaymentMethod(method) {
+
+  const map = {
+
+    card:
+      "Card",
+
+    bank:
+      "Bank",
+
+    raast:
+      "Raast",
+
+    easypaisa:
+      "Easypaisa",
+
+    jazzcash:
+      "JazzCash"
+
+  };
+
+  return map[method]
+    ||
+    method
+    ||
+    "—";
 
 }
 
@@ -3133,7 +3313,7 @@ function getLaunchURL(product) {
 
 
 /* ============================================================
-   GOOGLE LOGIN
+   AUTH
    ============================================================ */
 
 async function signInWithGoogle() {
@@ -3142,6 +3322,7 @@ async function signInWithGoogle() {
     window.location.origin
     +
     "/access-in.html";
+
 
   const {
     error
@@ -3158,6 +3339,7 @@ async function signInWithGoogle() {
         }
 
       });
+
 
   if(error) {
 
@@ -3177,6 +3359,7 @@ async function signOut() {
     .auth
     .signOut();
 
+
   window.location.replace(
     "/access-in.html"
   );
@@ -3193,6 +3376,7 @@ async function initialize() {
 
   showLoading();
 
+
   const {
     data:userResult,
     error:userError
@@ -3205,7 +3389,6 @@ async function initialize() {
   if(userError) {
 
     console.error(
-      "Auth error:",
       userError
     );
 
@@ -3276,10 +3459,6 @@ async function initialize() {
     ).textContent =
       "Your RizSim profile could not be loaded.";
 
-    console.error(
-      profileError
-    );
-
     return;
 
   }
@@ -3343,10 +3522,6 @@ async function loadPlatformData() {
   clearSystemMessage();
 
 
-  /* ----------------------------------------------------------
-     CATEGORIES
-     ---------------------------------------------------------- */
-
   const {
     data:categoryData,
     error:categoryError
@@ -3374,19 +3549,14 @@ async function loadPlatformData() {
 
   if(categoryError) {
 
-    console.error(
-      "Category query failed:",
-      categoryError
-    );
+    categories =
+      [];
 
     showSystemMessage(
-      "RizSim could not load the learning categories: "
+      "RizSim could not load categories: "
       +
       categoryError.message
     );
-
-    categories =
-      [];
 
   }
 
@@ -3400,14 +3570,6 @@ async function loadPlatformData() {
   }
 
 
-
-  /* ----------------------------------------------------------
-     PRODUCTS
-
-     IMPORTANT:
-     We use select("*") so optional description columns cannot
-     break the entire catalogue query.
-     ---------------------------------------------------------- */
 
   const {
     data:productData,
@@ -3436,19 +3598,14 @@ async function loadPlatformData() {
 
   if(productError) {
 
-    console.error(
-      "Product query failed:",
-      productError
-    );
+    products =
+      [];
 
     showSystemMessage(
-      "RizSim could not load the published catalogue: "
+      "RizSim could not load the catalogue: "
       +
       productError.message
     );
-
-    products =
-      [];
 
   }
 
@@ -3462,18 +3619,8 @@ async function loadPlatformData() {
   }
 
 
-
-  /* ----------------------------------------------------------
-     PRODUCT ACCESS
-     ---------------------------------------------------------- */
-
   await loadProductAccess();
 
-
-
-  /* ----------------------------------------------------------
-     LEARNER ATTEMPTS
-     ---------------------------------------------------------- */
 
   await loadAttempts();
 
@@ -3482,7 +3629,7 @@ async function loadPlatformData() {
 
 
 /* ============================================================
-   ACCESS CHECKS
+   ACCESS
    ============================================================ */
 
 async function loadProductAccess() {
@@ -3509,6 +3656,7 @@ async function loadProductAccess() {
 
         async product => {
 
+
           const {
             data,
             error
@@ -3525,28 +3673,15 @@ async function loadProductAccess() {
             );
 
 
-          if(error) {
-
-            console.error(
-
-              "Access check failed for",
-              product.title,
-              error
-
-            );
-
-          }
-
-
           return {
 
             productId:
               product.id,
 
             allowed:
-              error
-                ? false
-                : data === true
+              !error
+              &&
+              data === true
 
           };
 
@@ -3600,32 +3735,21 @@ async function loadAttempts() {
       );
 
 
-  if(error) {
-
-    console.error(
-      "Attempt query failed:",
-      error
-    );
-
-    attempts =
-      [];
-
-    return;
-
-  }
-
-
   attempts =
-    data
-    ||
-    [];
+    error
+      ? []
+      : (
+          data
+          ||
+          []
+        );
 
 }
 
 
 
 /* ============================================================
-   PROFILE UI
+   PROFILE
    ============================================================ */
 
 function setProfileUI() {
@@ -3738,7 +3862,7 @@ function setProfileUI() {
 
 
 /* ============================================================
-   RENDER ALL
+   RENDER
    ============================================================ */
 
 function renderAll() {
@@ -3825,7 +3949,7 @@ function renderCategoryTabs() {
 
 
 /* ============================================================
-   PRODUCT CARDS
+   PRODUCTS
    ============================================================ */
 
 function renderProducts() {
@@ -3877,6 +4001,7 @@ function renderProducts() {
     visible.map(
 
       product => {
+
 
         const category =
           getCategory(
@@ -4049,7 +4174,6 @@ function renderProducts() {
                     )
                   }"
                   type="button"
-                  aria-label="View product details"
                 >
                   +
                 </button>
@@ -4105,9 +4229,11 @@ function renderMyLearning() {
     grid.innerHTML = `
 
       <div class="empty-state">
+
         You do not currently have access to a RizSim learning
         product. Purchased, complimentary and institutional
         access will appear here automatically.
+
       </div>
 
     `;
@@ -4122,6 +4248,7 @@ function renderMyLearning() {
     available.map(
 
       product => {
+
 
         const category =
           getCategory(
@@ -4176,17 +4303,21 @@ function renderMyLearning() {
               <div>
 
                 <div class="learning-title">
+
                   ${escapeHTML(
                     product.title
                   )}
+
                 </div>
 
                 <div class="learning-category">
+
                   ${escapeHTML(
                     category?.name
                     ||
                     "RizSim"
                   )}
+
                 </div>
 
               </div>
@@ -4362,7 +4493,6 @@ function renderStats() {
   document.getElementById(
     "profileAccessCount"
   ).textContent =
-
     accessCount
     +
     " product(s)";
@@ -4372,6 +4502,56 @@ function renderStats() {
     "profileCompletionCount"
   ).textContent =
     completedCount;
+
+}
+
+
+
+/* ============================================================
+   RESET CHECKOUT
+   ============================================================ */
+
+function resetCheckout() {
+
+  selectedPaymentMethod =
+    null;
+
+
+  document
+    .querySelectorAll(
+      "[data-payment-method]"
+    )
+    .forEach(
+
+      button => {
+
+        button.classList.remove(
+          "selected"
+        );
+
+      }
+
+    );
+
+
+  const status =
+    document.getElementById(
+      "paymentOrderStatus"
+    );
+
+
+  status.className =
+    "payment-order-status";
+
+
+  status.textContent =
+    "Select a payment method to continue.";
+
+
+  document.getElementById(
+    "modalPrimaryButton"
+  ).disabled =
+    false;
 
 }
 
@@ -4398,6 +4578,9 @@ function openProductDetails(productId) {
 
   selectedProduct =
     product;
+
+
+  resetCheckout();
 
 
   const category =
@@ -4678,10 +4861,66 @@ function launchProduct(product) {
 
 
 /* ============================================================
-   CHECKOUT PLACEHOLDER
+   PAYMENT METHOD
    ============================================================ */
 
-function beginCheckout() {
+function selectPaymentMethod(button) {
+
+  selectedPaymentMethod =
+    button.dataset.paymentMethod;
+
+
+  document
+    .querySelectorAll(
+      "[data-payment-method]"
+    )
+    .forEach(
+
+      item => {
+
+        item.classList.toggle(
+          "selected",
+          item === button
+        );
+
+      }
+
+    );
+
+
+  const status =
+    document.getElementById(
+      "paymentOrderStatus"
+    );
+
+
+  status.className =
+    "payment-order-status";
+
+
+  status.textContent =
+
+    "Selected: "
+
+    +
+
+    prettyPaymentMethod(
+      selectedPaymentMethod
+    )
+
+    +
+
+    ". Press Buy Access to create your secure payment order.";
+
+}
+
+
+
+/* ============================================================
+   CREATE SECURE PAYMENT ORDER
+   ============================================================ */
+
+async function beginCheckout() {
 
   if(!selectedProduct) {
 
@@ -4690,26 +4929,207 @@ function beginCheckout() {
   }
 
 
-  /*
-    IMPORTANT:
-
-    The browser will NEVER create an entitlement.
-
-    Payment Step 2 will use a secure server-side workflow:
-      payment order
-      -> provider
-      -> verified callback/webhook
-      -> payment record
-      -> entitlement
-      -> learner access
-  */
+  const status =
+    document.getElementById(
+      "paymentOrderStatus"
+    );
 
 
-  alert(
+  const buyButton =
+    document.getElementById(
+      "modalPrimaryButton"
+    );
 
-    "Secure RizSim checkout will be connected in the next step.\n\nNo payment has been charged and no access has been granted."
 
-  );
+  if(!selectedPaymentMethod) {
+
+    status.className =
+      "payment-order-status error";
+
+
+    status.textContent =
+      "Please select Card, Bank, Raast, Easypaisa or JazzCash.";
+
+    return;
+
+  }
+
+
+  status.className =
+    "payment-order-status";
+
+
+  status.textContent =
+    "Creating secure RizSim payment order…";
+
+
+  buyButton.disabled =
+    true;
+
+
+  showLoading();
+
+
+  const {
+    data,
+    error
+  } =
+    await supabase.rpc(
+
+      "create_rizsim_payment_order",
+
+      {
+
+        p_product_id:
+          selectedProduct.id,
+
+        p_payment_method:
+          selectedPaymentMethod
+
+      }
+
+    );
+
+
+  hideLoading();
+
+
+  if(error) {
+
+    buyButton.disabled =
+      false;
+
+
+    status.className =
+      "payment-order-status error";
+
+
+    status.textContent =
+
+      "Payment order could not be created: "
+
+      +
+
+      error.message;
+
+
+    return;
+
+  }
+
+
+  const orderId =
+    data?.order_id
+    ||
+    "—";
+
+
+  const amount =
+
+    data?.amount
+
+    ??
+
+    selectedProduct.price;
+
+
+  const currency =
+
+    data?.currency
+
+    ||
+
+    selectedProduct.currency
+
+    ||
+
+    "PKR";
+
+
+  const reused =
+    data?.reused === true;
+
+
+  status.className =
+    "payment-order-status success";
+
+
+  status.innerHTML =
+
+    "<strong>"
+    +
+    (
+      reused
+        ? "Existing payment order restored."
+        : "Payment order created successfully."
+    )
+    +
+    "</strong>"
+
+    +
+
+    "<br><br>"
+
+    +
+
+    "<strong>Order:</strong> "
+    +
+    escapeHTML(
+      orderId
+    )
+
+    +
+
+    "<br>"
+
+    +
+
+    "<strong>Amount:</strong> "
+    +
+    escapeHTML(
+      formatMoney(
+        amount,
+        currency
+      )
+    )
+
+    +
+
+    "<br>"
+
+    +
+
+    "<strong>Method:</strong> "
+    +
+    escapeHTML(
+      prettyPaymentMethod(
+        selectedPaymentMethod
+      )
+    )
+
+    +
+
+    "<br>"
+
+    +
+
+    "<strong>Status:</strong> Created"
+
+    +
+
+    "<br><br>"
+
+    +
+
+    "No payment has been charged and no learning access has been granted yet.";
+
+
+  buyButton.textContent =
+    "Payment Order Created";
+
+
+  buyButton.disabled =
+    true;
 
 }
 
@@ -4868,6 +5288,24 @@ document.addEventListener(
   "click",
 
   function(event) {
+
+
+    const paymentButton =
+      event.target.closest(
+        "[data-payment-method]"
+      );
+
+
+    if(paymentButton) {
+
+      selectPaymentMethod(
+        paymentButton
+      );
+
+      return;
+
+    }
+
 
 
     const categoryButton =
