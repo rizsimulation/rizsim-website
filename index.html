@@ -1,4463 +1,3658 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="RizSim is an interactive learning platform for simulation-based learning, applied decision making, and learning-gain experiences for students, educators, institutions, and professionals." />
+  <meta name="theme-color" content="#071a2b" />
+  <meta property="og:title" content="RizSim — From Knowing to Doing" />
+  <meta property="og:description" content="Interactive learning through decisions, simulations and applied experience." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rizsim.com/" />
 
-  <meta charset="UTF-8">
+  <title>RizSim — From Knowing to Doing</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <meta
-    name="theme-color"
-    content="#031d49"
-  >
-
-  <meta
-    name="description"
-    content="RizSim - Explore. Decide. Grow. Interactive learning experiences."
-  >
-
-  <title>RizSim | Explore. Decide. Grow.</title>
-
-
-  <!-- =======================================================
-       RIZSIM FAVICON
-       ======================================================= -->
-
-  <link
-    rel="icon"
-    type="image/png"
-    href="rizsim-r.png"
-  >
-
-  <link
-    rel="apple-touch-icon"
-    href="rizsim-r.png"
-  >
-
-
+  <link rel="icon" href="rizsim-r.png" type="image/png" />
 
   <style>
-
-    /* =========================================================
-       RIZSIM WEBSITE
-       VERSION 2.2
-
-       PREMIUM MULTI-PAGE HORIZONTAL INTERFACE
-
-       NAVIGATION:
-       Navigation-bar click only.
-
-       SCROLLING:
-       Normal vertical scrolling inside each page.
-
-       NO:
-       - horizontal swipe page changes
-       - mouse wheel page changes
-       - keyboard arrow page changes
-       - floating page arrows
-       - page indicator dots
-       ========================================================= */
-
-
-    :root {
-
-      --navy-1000: #010d25;
-      --navy-950: #021638;
-      --navy-900: #031d49;
-      --navy-850: #052653;
-      --navy-800: #062e63;
-      --navy-700: #08437c;
-
-      --teal-800: #006f79;
-      --teal-700: #008792;
-      --teal-600: #009ca8;
-      --teal-500: #11aeb7;
-      --teal-400: #39bec7;
-
-      --aqua: #69dce0;
-
-      --white: #ffffff;
-
-      --ice: #eaf8fa;
-      --mist: #f4f9fb;
-      --pale: #f8fbfc;
-
-      --text: #082b52;
-
-      --muted: #687d92;
-
-      --line:
-        rgba(4, 48, 100, 0.10);
-
-      --header-height: 96px;
-
-      --shadow-small:
-        0 12px 32px
-        rgba(3, 29, 73, 0.07);
-
-      --shadow-medium:
-        0 22px 60px
-        rgba(3, 29, 73, 0.11);
-
-      --shadow-large:
-        0 38px 110px
-        rgba(2, 22, 55, 0.17);
-
+    :root{
+      --navy:#061827;
+      --navy-2:#0a2236;
+      --navy-3:#10314a;
+      --teal:#0aa7a2;
+      --aqua:#3bd5cf;
+      --aqua-soft:#dff8f6;
+      --blue:#2b77ff;
+      --gold:#f1bd49;
+      --white:#ffffff;
+      --ink:#102338;
+      --muted:#667789;
+      --line:#dce7ee;
+      --surface:#f6f9fb;
+      --surface-2:#edf4f7;
+      --success:#1f9b72;
+      --shadow:0 18px 45px rgba(6,24,39,.12);
+      --shadow-soft:0 10px 26px rgba(6,24,39,.08);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1200px;
     }
 
-
-
-    /* =========================================================
-       RESET
-       ========================================================= */
-
-    * {
-
-      box-sizing: border-box;
-
-      margin: 0;
-      padding: 0;
-
+    *{
+      box-sizing:border-box;
     }
 
-
-    html,
-    body {
-
-      width: 100%;
-      height: 100%;
-
+    html{
+      scroll-behavior:smooth;
     }
 
-
-    html {
-
-      background:
-        var(--navy-950);
-
-    }
-
-
-    body {
-
+    body{
+      margin:0;
+      color:var(--ink);
+      background:var(--white);
       font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
         sans-serif;
-
-      color: var(--text);
-
-      background: white;
-
-      overflow: hidden;
-
-      -webkit-font-smoothing:
-        antialiased;
-
-      text-rendering:
-        optimizeLegibility;
-
+      line-height:1.55;
+      overflow-x:hidden;
     }
 
+    body.nav-transition main{
+      animation:navSlide .34s ease both;
+    }
+
+    @keyframes navSlide{
+      0%{
+        opacity:.55;
+        transform:translateX(18px);
+      }
+      100%{
+        opacity:1;
+        transform:translateX(0);
+      }
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
 
     button,
     input,
-    textarea,
-    select {
-
-      font: inherit;
-
+    select,
+    textarea{
+      font:inherit;
     }
 
-
-    button,
-    a {
-
-      -webkit-tap-highlight-color:
-        transparent;
-
+    button{
+      cursor:pointer;
     }
 
-
-    button {
-
-      border: none;
-
+    :focus-visible{
+      outline:3px solid rgba(43,119,255,.34);
+      outline-offset:3px;
     }
 
-
-    a {
-
-      color: inherit;
-
-      text-decoration: none;
-
+    .shell{
+      width:min(var(--max), calc(100% - 40px));
+      margin-inline:auto;
     }
 
-
-    img {
-
-      display: block;
-
-      max-width: 100%;
-
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:.76rem;
+      color:var(--teal);
     }
 
+    .eyebrow::before{
+      content:"";
+      width:28px;
+      height:2px;
+      background:var(--gold);
+      border-radius:99px;
+    }
 
+    .section-head{
+      max-width:760px;
+      margin-bottom:34px;
+    }
 
-    /* =========================================================
+    .section-head h2{
+      font-size:clamp(2rem,4vw,3.2rem);
+      line-height:1.05;
+      margin:10px 0 12px;
+      letter-spacing:-.04em;
+    }
+
+    .section-head p{
+      color:var(--muted);
+      font-size:1.06rem;
+      margin:0;
+    }
+
+    /* ======================================================
        HEADER
-       ========================================================= */
+    ====================================================== */
 
-    .site-header {
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-      right: 0;
-
-      z-index: 3000;
-
-      height:
-        var(--header-height);
-
-      display: flex;
-      align-items: center;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.92
-        );
-
-      backdrop-filter:
-        blur(26px)
-        saturate(150%);
-
-      -webkit-backdrop-filter:
-        blur(26px)
-        saturate(150%);
-
-      border-bottom:
-        1px solid
-        rgba(
-          3,
-          29,
-          73,
-          0.07
-        );
-
-      box-shadow:
-        0 8px 32px
-        rgba(
-          3,
-          29,
-          73,
-          0.035
-        );
-
-    }
-
-
-    .header-inner {
-
-      width:
-        min(
-          1480px,
-          calc(100% - 48px)
-        );
-
-      height: 100%;
-
-      margin:
-        0 auto;
-
-      display: flex;
-      align-items: center;
-
-      gap: 30px;
-
-    }
-
-
-
-    /* =========================================================
-       TOP LEFT RIZSIM BRAND
-       ========================================================= */
-
-    .brand-button {
-
-      flex:
-        0 0 auto;
-
-      display: flex;
-      align-items: center;
-
-      gap: 15px;
-
-      padding: 0;
-
-      cursor: pointer;
-
-      background:
-        transparent;
-
-    }
-
-
-    .brand-icon {
-
-      width: 66px;
-      height: 66px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      flex:
-        0 0 auto;
-
-    }
-
-
-    .brand-icon img {
-
-      width: 100%;
-      height: 100%;
-
-      object-fit:
-        contain;
-
-      filter:
-        drop-shadow(
-          0 9px 17px
-          rgba(
-            3,
-            29,
-            73,
-            0.13
-          )
-        );
-
-    }
-
-
-    .brand-copy {
-
-      display: flex;
-
-      flex-direction:
-        column;
-
-      align-items:
-        flex-start;
-
-      justify-content:
-        center;
-
-      line-height: 1;
-
-    }
-
-
-    .brand-name {
-
-      color:
-        var(--navy-900);
-
-      font-size: 32px;
-
-      font-weight: 900;
-
-      letter-spacing:
-        -1.35px;
-
-      line-height:
-        0.95;
-
-    }
-
-
-    .brand-tagline {
-
-      margin-top: 8px;
-      margin-left: 1px;
-
-      color:
-        var(--teal-700);
-
-      font-size: 9px;
-
-      font-weight: 900;
-
-      letter-spacing:
-        1.45px;
-
-      line-height: 1;
-
-      text-transform:
-        uppercase;
-
-      white-space:
-        nowrap;
-
-    }
-
-
-
-    /* =========================================================
-       TOP NAVIGATION
-       ========================================================= */
-
-    .tab-strip {
-
-      flex: 1;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 4px;
-
-      overflow-x: auto;
-
-      overflow-y: hidden;
-
-      scrollbar-width: none;
-
-      -ms-overflow-style: none;
-
-    }
-
-
-    .tab-strip::-webkit-scrollbar {
-
-      display: none;
-
-    }
-
-
-    .nav-tab {
-
-      position: relative;
-
-      flex:
-        0 0 auto;
-
-      padding:
-        14px
-        18px;
-
-      border-radius:
-        13px;
-
-      background:
-        transparent;
-
-      color:
-        #586f85;
-
-      cursor: pointer;
-
-      font-size:
-        13px;
-
-      font-weight:
-        750;
-
-      transition:
-        color
-        0.25s ease,
-        background
-        0.25s ease;
-
-    }
-
-
-    .nav-tab:hover {
-
-      color:
-        var(--navy-900);
-
-      background:
-        rgba(
-          0,
-          156,
-          168,
-          0.05
-        );
-
-    }
-
-
-    .nav-tab::after {
-
-      content: "";
-
-      position: absolute;
-
-      left: 23%;
-      right: 23%;
-
-      bottom: 4px;
-
-      height: 2px;
-
-      border-radius:
-        100px;
-
-      background:
-        linear-gradient(
-          90deg,
-          var(--navy-700),
-          var(--teal-500)
-        );
-
-      transform:
-        scaleX(0);
-
-      transition:
-        transform
-        0.28s ease;
-
-    }
-
-
-    .nav-tab.active {
-
-      color:
-        var(--navy-900);
-
-    }
-
-
-    .nav-tab.active::after {
-
-      transform:
-        scaleX(1);
-
-    }
-
-
-
-    /* =========================================================
-       WEBSITE VIEWPORT
-       ========================================================= */
-
-    .website-viewport {
-
-      position: fixed;
-
-      top:
-        var(--header-height);
-
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      overflow: hidden;
-
-      background: white;
-
-    }
-
-
-
-    /* =========================================================
-       HORIZONTAL PAGE TRACK
-       ========================================================= */
-
-    .page-track {
-
-      width: 100%;
-      height: 100%;
-
-      display: flex;
-
-      transform:
-        translate3d(
-          0,
-          0,
-          0
-        );
-
-      transition:
-        transform
-        760ms
-        cubic-bezier(
-          0.22,
-          0.9,
-          0.27,
-          1
-        );
-
-      will-change:
-        transform;
-
-    }
-
-
-
-    /* =========================================================
-       INDIVIDUAL PAGE
-
-       IMPORTANT:
-       Vertical scrolling is enabled.
-       ========================================================= */
-
-    .page {
-
-      position: relative;
-
-      width:
-        100vw;
-
-      height:
-        100%;
-
-      flex:
-        0 0 100vw;
-
-      overflow-x:
-        hidden;
-
-      overflow-y:
-        auto;
-
-      -webkit-overflow-scrolling:
-        touch;
-
-      overscroll-behavior-y:
-        contain;
-
-      isolation:
-        isolate;
-
-    }
-
-
-
-    /* =========================================================
-       PAGE SHELL
-       ========================================================= */
-
-    .page-shell {
-
-      position: relative;
-
-      width:
-        min(
-          1390px,
-          calc(
-            100% - 100px
-          )
-        );
-
-      min-height:
-        100%;
-
-      margin:
-        0 auto;
-
-      padding:
-        70px
-        0
-        95px;
-
-      display: flex;
-
-      align-items:
-        center;
-
-    }
-
-
-
-    /* =========================================================
-       LIGHT PAGE
-       ========================================================= */
-
-    .light-page {
-
-      background:
-
-        radial-gradient(
-          circle
-          at
-          90%
-          12%,
-
-          rgba(
-            48,
-            190,
-            199,
-            0.12
-          ),
-
-          transparent
-          28%
-        ),
-
-        linear-gradient(
-          180deg,
-          white,
-          #f8fbfc
-        );
-
-    }
-
-
-    .light-page::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 600px;
-      height: 600px;
-
-      right: -320px;
-      top: -370px;
-
-      border-radius:
-        50%;
-
-      border:
-        82px solid
-        rgba(
-          24,
-          174,
-          183,
-          0.10
-        );
-
-      pointer-events:
-        none;
-
-      z-index: -3;
-
-    }
-
-
-    .light-page::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 710px;
-      height: 310px;
-
-      left: -420px;
-      bottom: -190px;
-
-      border-radius:
-        50%;
-
-      transform:
-        rotate(15deg);
-
-      background:
-        linear-gradient(
-          110deg,
-          var(--navy-900),
-          var(--teal-500)
-        );
-
-      pointer-events:
-        none;
-
-      z-index: -3;
-
-    }
-
-
-
-    /* =========================================================
-       DARK PAGE
-       ========================================================= */
-
-    .dark-page {
-
-      color: white;
-
-      background:
-
-        radial-gradient(
-          circle
-          at
-          82%
-          20%,
-
-          rgba(
-            40,
-            195,
-            203,
-            0.20
-          ),
-
-          transparent
-          32%
-        ),
-
-        radial-gradient(
-          circle
-          at
-          20%
-          90%,
-
-          rgba(
-            0,
-            156,
-            168,
-            0.10
-          ),
-
-          transparent
-          26%
-        ),
-
-        linear-gradient(
-          125deg,
-          var(--navy-1000),
-          var(--navy-800)
-        );
-
-    }
-
-
-    .dark-page::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 530px;
-      height: 530px;
-
-      right: -190px;
-      top: -300px;
-
-      border-radius:
-        50%;
-
-      border:
-        72px solid
-        rgba(
-          105,
-          220,
-          224,
-          0.10
-        );
-
-      pointer-events:
-        none;
-
-      z-index: -3;
-
-    }
-
-
-    .dark-page::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 700px;
-      height: 300px;
-
-      left: -390px;
-      bottom: -190px;
-
-      border-radius:
-        50%;
-
-      transform:
-        rotate(17deg);
-
-      background:
-        linear-gradient(
-          110deg,
-          rgba(
-            0,
-            156,
-            168,
-            0.32
-          ),
-          rgba(
-            105,
-            220,
-            224,
-            0.12
-          )
-        );
-
-      pointer-events:
-        none;
-
-      z-index: -3;
-
-    }
-
-
-
-    /* =========================================================
-       WATERMARK
-       ========================================================= */
-
-    .brand-watermark {
-
-      position: absolute;
-
-      right: 4%;
-      bottom: 5%;
-
-      width:
-        clamp(
-          150px,
-          13vw,
-          235px
-        );
-
-      opacity:
-        0.035;
-
-      pointer-events:
-        none;
-
-      user-select:
-        none;
-
-      z-index: -1;
-
-    }
-
-
-    .dark-page
-    .brand-watermark {
-
-      opacity:
-        0.055;
-
-      filter:
-        brightness(0)
-        invert(1);
-
-    }
-
-
-
-    /* =========================================================
-       PAGE LABEL
-       ========================================================= */
-
-    .page-label {
-
-      position: absolute;
-
-      top: 28px;
-      right: 38px;
-
-      color:
-        rgba(
-          8,
-          65,
-          122,
-          0.28
-        );
-
-      font-size:
-        9px;
-
-      font-weight:
-        900;
-
-      letter-spacing:
-        2px;
-
-      text-transform:
-        uppercase;
-
-    }
-
-
-    .dark-page
-    .page-label {
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.25
-        );
-
-    }
-
-
-
-    /* =========================================================
-       TYPOGRAPHY
-       ========================================================= */
-
-    .kicker {
-
-      color:
-        var(--teal-700);
-
-      font-size:
-        11px;
-
-      font-weight:
-        900;
-
-      letter-spacing:
-        2px;
-
-      text-transform:
-        uppercase;
-
-    }
-
-
-    .dark-page
-    .kicker {
-
-      color:
-        #78e1e4;
-
-    }
-
-
-    .display-title {
-
-      max-width:
-        850px;
-
-      margin-top:
-        14px;
-
-      color:
-        var(--navy-900);
-
-      font-size:
-        clamp(
-          46px,
-          5.2vw,
-          78px
-        );
-
-      line-height:
-        0.98;
-
-      letter-spacing:
-        -3.6px;
-
-    }
-
-
-    .dark-page
-    .display-title {
-
-      color: white;
-
-    }
-
-
-    .display-title
-    .accent {
-
-      color:
-        var(--teal-600);
-
-    }
-
-
-    .dark-page
-    .display-title
-    .accent {
-
-      color:
-        var(--aqua);
-
-    }
-
-
-    .lead {
-
-      max-width:
-        700px;
-
-      margin-top:
-        22px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        clamp(
-          16px,
-          1.3vw,
-          19px
-        );
-
-      line-height:
-        1.72;
-
-    }
-
-
-    .dark-page
-    .lead {
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.67
-        );
-
-    }
-
-
-
-    /* =========================================================
-       HOME PAGE
-       ========================================================= */
-
-    .home-page {
-
-      background:
-
-        radial-gradient(
-          circle
-          at
-          90%
-          5%,
-
-          rgba(
-            61,
-            194,
-            203,
-            0.10
-          ),
-
-          transparent
-          24%
-        ),
-
-        linear-gradient(
-          180deg,
-          #ffffff,
-          #f8fbfc
-        );
-
-    }
-
-
-    .home-shell {
-
-      width:
-        min(
-          1400px,
-          calc(
-            100% - 84px
-          )
-        );
-
-      min-height:
-        100%;
-
-      margin:
-        0 auto;
-
-      padding:
-        60px
-        0
-        90px;
-
-      display: flex;
-
-      flex-direction:
-        column;
-
-      justify-content:
-        center;
-
-    }
-
-
-    .brand-banner {
-
-      position: relative;
-
-      width: 100%;
-
-      border-radius:
-        35px;
-
-      overflow:
-        hidden;
-
-      background:
-        white;
-
-      border:
-        1px solid
-        rgba(
-          3,
-          29,
-          73,
-          0.07
-        );
-
-      box-shadow:
-        var(--shadow-large);
-
-    }
-
-
-    .brand-banner img {
-
-      width: 100%;
-
-      object-fit:
-        cover;
-
-      object-position:
-        center;
-
-    }
-
-
-    .home-bottom {
-
-      width:
-        94%;
-
-      margin:
-        32px
-        auto
-        0;
-
-      display: grid;
-
-      grid-template-columns:
-        1.25fr
-        0.75fr;
-
-      gap: 50px;
-
-      align-items:
-        center;
-
-    }
-
-
-    .home-message {
-
-      max-width:
-        860px;
-
-      color:
-        var(--navy-800);
-
-      font-size:
-        clamp(
-          18px,
-          1.45vw,
-          23px
-        );
-
-      line-height:
-        1.48;
-
-      font-weight:
-        630;
-
-    }
-
-
-    .home-message
-    span {
-
-      color:
-        var(--teal-600);
-
-    }
-
-
-    .home-philosophy {
-
-      padding:
-        18px
-        21px;
-
-      border-radius:
-        18px;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.75
-        );
-
-      border:
-        1px solid
-        var(--line);
-
-      box-shadow:
-        var(--shadow-small);
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-      line-height:
-        1.65;
-
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,.93);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(220,231,238,.9);
     }
-
-
-    .home-philosophy
-    strong {
-
-      display: block;
-
-      margin-bottom:
-        5px;
-
-      color:
-        var(--navy-800);
 
-      font-size:
-        12px;
-
+    .nav-wrap{
+      min-height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
     }
-
-
-
-    /* =========================================================
-       SIMULATIONS PAGE
-       ========================================================= */
-
-    .simulation-layout {
-
-      width: 100%;
-
-      display: grid;
-
-      grid-template-columns:
-        0.67fr
-        1.33fr;
 
-      gap:
-        clamp(
-          45px,
-          6vw,
-          95px
-        );
-
-      align-items:
-        center;
-
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:max-content;
     }
-
-
-    .simulation-intro
-    .lead {
 
-      max-width:
-        470px;
-
+    .brand-mark{
+      width:42px;
+      height:42px;
+      object-fit:contain;
     }
-
-
-    .simulation-grid {
-
-      display: grid;
 
-      grid-template-columns:
-        repeat(
-          2,
-          1fr
-        );
-
-      gap:
-        16px;
-
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1;
     }
-
-
-    .simulation-card {
-
-      position: relative;
-
-      min-height:
-        178px;
-
-      padding:
-        24px;
-
-      border-radius:
-        25px;
 
-      overflow:
-        hidden;
-
-      border:
-        1px solid
-        rgba(
-          4,
-          48,
-          100,
-          0.09
-        );
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.87
-        );
-
-      backdrop-filter:
-        blur(15px);
-
-      -webkit-backdrop-filter:
-        blur(15px);
-
-      box-shadow:
-        0 16px 45px
-        rgba(
-          3,
-          29,
-          73,
-          0.065
-        );
-
-      transition:
-        transform
-        0.24s ease,
-        box-shadow
-        0.24s ease,
-        border-color
-        0.24s ease;
-
+    .brand-name{
+      font-size:1.55rem;
+      font-weight:900;
+      letter-spacing:-.04em;
+      color:var(--navy);
     }
-
 
-    .simulation-card:hover {
-
-      transform:
-        translateY(-5px);
-
-      border-color:
-        rgba(
-          0,
-          156,
-          168,
-          0.25
-        );
-
-      box-shadow:
-        0 25px 60px
-        rgba(
-          3,
-          29,
-          73,
-          0.12
-        );
-
+    .brand-tag{
+      font-size:.68rem;
+      color:var(--muted);
+      margin-top:5px;
+      letter-spacing:.03em;
     }
-
-
-    .sim-icon {
-
-      width: 46px;
-      height: 46px;
-
-      display: grid;
-      place-items: center;
 
-      border-radius:
-        14px;
-
-      color: white;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--navy-800),
-          var(--teal-500)
-        );
-
-      font-size:
-        11px;
-
-      font-weight:
-        900;
-
-      letter-spacing:
-        0.5px;
-
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:6px;
     }
-
-
-    .simulation-card
-    h3 {
 
-      margin-top:
-        18px;
-
-      color:
-        var(--navy-900);
-
-      font-size:
-        19px;
-
+    .nav-links a{
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:700;
+      font-size:.92rem;
+      color:#33485a;
     }
-
-
-    .simulation-card
-    p {
-
-      max-width:
-        88%;
-
-      margin-top:
-        7px;
-
-      color:
-        var(--muted);
 
-      font-size:
-        12px;
-
-      line-height:
-        1.58;
-
+    .nav-links a:hover{
+      background:var(--surface);
+      color:var(--navy);
     }
-
-
-    .sim-arrow {
-
-      position: absolute;
-
-      right: 19px;
-      bottom: 18px;
-
-      width: 35px;
-      height: 35px;
-
-      border-radius:
-        50%;
 
-      display: grid;
-      place-items: center;
-
-      color:
-        var(--teal-700);
-
-      background:
-        var(--ice);
-
-      font-weight:
-        900;
-
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      position:relative;
     }
-
-
-
-    /* =========================================================
-       LEARNING PAGE
-       ========================================================= */
-
-    .learning-layout {
 
-      width: 100%;
-
-      display: grid;
-
-      grid-template-columns:
-        0.85fr
-        1.15fr;
-
-      gap:
-        78px;
-
-      align-items:
-        center;
-
+    .btn{
+      border:0;
+      border-radius:13px;
+      padding:11px 16px;
+      font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s ease;
     }
-
-
-    .learning-steps {
-
-      display: grid;
 
-      gap:
-        14px;
-
+    .btn:hover{
+      transform:translateY(-1px);
     }
-
-
-    .learning-step {
-
-      display: grid;
-
-      grid-template-columns:
-        66px
-        1fr;
-
-      gap:
-        20px;
-
-      align-items:
-        center;
-
-      padding:
-        21px
-        24px;
 
-      border-radius:
-        22px;
-
-      border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.11
-        );
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.065
-        );
-
-      backdrop-filter:
-        blur(12px);
-
-      -webkit-backdrop-filter:
-        blur(12px);
-
+    .btn-primary{
+      background:linear-gradient(
+        135deg,
+        var(--teal),
+        #087f98
+      );
+      color:#fff;
+      box-shadow:0 10px 22px rgba(10,167,162,.22);
     }
-
-
-    .step-number {
-
-      width: 57px;
-      height: 57px;
 
-      border-radius:
-        17px;
-
-      display: grid;
-      place-items: center;
-
-      color: white;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--teal-600),
-          var(--aqua)
-        );
-
-      font-weight:
-        900;
-
+    .btn-dark{
+      background:var(--navy);
+      color:#fff;
     }
-
-
-    .learning-step
-    h3 {
-
-      font-size:
-        18px;
 
+    .btn-light{
+      background:#fff;
+      color:var(--navy);
+      border:1px solid var(--line);
     }
 
-
-    .learning-step
-    p {
-
-      margin-top:
-        5px;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.62
-        );
-
-      font-size:
-        12px;
-
-      line-height:
-        1.58;
-
+    .btn-ghost{
+      background:transparent;
+      color:var(--navy);
+      border:1px solid var(--line);
     }
-
-
 
-    /* =========================================================
-       RESEARCH PAGE
-       ========================================================= */
-
-    .research-layout {
-
-      width: 100%;
-
-      display: grid;
-
-      grid-template-columns:
-        0.75fr
-        1.25fr;
-
-      gap:
-        82px;
-
-      align-items:
-        center;
-
+    .login-menu{
+      position:absolute;
+      right:0;
+      top:calc(100% + 10px);
+      width:280px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:10px;
+      display:none;
     }
-
 
-    .research-cards {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          2,
-          1fr
-        );
-
-      gap:
-        16px;
-
+    .login-menu.open{
+      display:block;
     }
 
-
-    .research-card {
-
-      min-height:
-        180px;
+    .login-menu a{
+      display:block;
+      padding:13px 14px;
+      border-radius:12px;
+    }
 
-      padding:
-        26px;
+    .login-menu a:hover{
+      background:var(--surface);
+    }
 
-      border-radius:
-        24px;
+    .login-menu strong{
+      display:block;
+      color:var(--navy);
+    }
 
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.91
-        );
+    .login-menu span{
+      display:block;
+      color:var(--muted);
+      font-size:.82rem;
+      margin-top:2px;
+    }
 
-      border:
-        1px solid
-        var(--line);
+    .menu-toggle{
+      display:none;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      width:44px;
+      height:44px;
+      font-size:1.2rem;
+    }
 
-      box-shadow:
-        0 15px 40px
-        rgba(
-          3,
-          29,
-          73,
-          0.06
-        );
+    /* ======================================================
+       HERO
+    ====================================================== */
 
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(
+        145deg,
+        var(--navy) 0%,
+        #0b2b42 60%,
+        #0d394b 100%
+      );
+      color:#fff;
+      padding:86px 0 72px;
     }
-
 
-    .research-number {
+    .hero::before,
+    .hero::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      filter:blur(4px);
+      pointer-events:none;
+    }
 
-      color:
-        var(--teal-600);
+    .hero::before{
+      width:460px;
+      height:460px;
+      background:rgba(59,213,207,.11);
+      right:-120px;
+      top:-150px;
+    }
 
-      font-size:
-        30px;
+    .hero::after{
+      width:340px;
+      height:340px;
+      background:rgba(241,189,73,.10);
+      left:-100px;
+      bottom:-190px;
+    }
 
-      font-weight:
-        900;
+    .hero-grid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:64px;
+      align-items:center;
+    }
 
-      line-height:
-        1;
+    .hero-kicker{
+      display:inline-flex;
+      gap:9px;
+      align-items:center;
+      color:#ccebea;
+      font-weight:800;
+      font-size:.9rem;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:8px 12px;
+    }
 
+    .hero h1{
+      font-size:clamp(3.4rem,7.5vw,6.7rem);
+      line-height:.88;
+      margin:22px 0 18px;
+      letter-spacing:-.065em;
     }
 
+    .hero h1 span{
+      color:var(--aqua);
+    }
 
-    .research-card
-    h3 {
+    .hero-copy{
+      font-size:1.2rem;
+      color:#d7e4eb;
+      max-width:660px;
+      margin:0 0 28px;
+    }
 
-      margin-top:
-        16px;
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
 
-      color:
-        var(--navy-900);
+    .hero .btn-primary{
+      padding:14px 20px;
+    }
 
-      font-size:
-        18px;
+    .hero .btn-light{
+      padding:14px 20px;
+      background:#fff;
+      border-color:#fff;
+    }
 
+    .hero-proof{
+      display:flex;
+      gap:24px;
+      flex-wrap:wrap;
+      margin-top:34px;
+      color:#bcd0da;
     }
 
+    .hero-proof b{
+      color:#fff;
+      display:block;
+      font-size:1.05rem;
+    }
 
-    .research-card
-    p {
+    .hero-visual{
+      position:relative;
+      min-height:480px;
+    }
 
-      margin-top:
-        7px;
+    .visual-card{
+      position:absolute;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.08);
+      backdrop-filter:blur(14px);
+      border-radius:24px;
+      box-shadow:0 22px 60px rgba(0,0,0,.2);
+    }
 
-      color:
-        var(--muted);
+    .visual-main{
+      inset:35px 0 30px 54px;
+      padding:28px;
+    }
 
-      font-size:
-        12px;
+    .visual-main h3{
+      margin:0 0 8px;
+      font-size:1.45rem;
+    }
 
-      line-height:
-        1.58;
+    .visual-main p{
+      margin:0;
+      color:#bed0da;
+    }
 
+    .decision-flow{
+      display:grid;
+      gap:12px;
+      margin-top:26px;
     }
 
+    .flow-step{
+      display:grid;
+      grid-template-columns:42px 1fr auto;
+      gap:12px;
+      align-items:center;
+      background:rgba(255,255,255,.07);
+      padding:13px;
+      border-radius:15px;
+    }
 
+    .flow-icon{
+      width:42px;
+      height:42px;
+      border-radius:13px;
+      display:grid;
+      place-items:center;
+      background:rgba(59,213,207,.14);
+      color:var(--aqua);
+      font-weight:900;
+    }
 
-    /* =========================================================
-       ABOUT PAGE
-       ========================================================= */
+    .flow-step strong{
+      display:block;
+    }
 
-    .about-layout {
+    .flow-step small{
+      display:block;
+      color:#b9ccd6;
+      margin-top:2px;
+    }
 
-      width: 100%;
+    .flow-status{
+      font-size:.72rem;
+      font-weight:900;
+      color:#9ce7cb;
+      background:rgba(31,155,114,.14);
+      padding:5px 8px;
+      border-radius:999px;
+    }
 
-      display: grid;
+    .visual-float-a{
+      width:170px;
+      right:-25px;
+      top:0;
+      padding:16px;
+    }
 
-      grid-template-columns:
-        1fr
-        0.92fr;
+    .visual-float-b{
+      width:200px;
+      left:0;
+      bottom:0;
+      padding:16px;
+    }
 
-      gap:
-        88px;
+    .metric{
+      font-size:1.9rem;
+      font-weight:900;
+      color:#fff;
+      line-height:1;
+    }
 
-      align-items:
-        center;
+    .metric-label{
+      font-size:.78rem;
+      color:#bed0da;
+      margin-top:6px;
+    }
 
+    .mini-bars{
+      display:flex;
+      gap:5px;
+      align-items:end;
+      height:42px;
+      margin-top:12px;
     }
 
+    .mini-bars span{
+      flex:1;
+      background:linear-gradient(
+        to top,
+        var(--teal),
+        var(--aqua)
+      );
+      border-radius:5px 5px 2px 2px;
+      opacity:.9;
+    }
 
-    .about-panel {
+    /* ======================================================
+       TRUST STRIP
+    ====================================================== */
 
-      position: relative;
+    .trust-strip{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+    }
 
-      padding:
-        44px;
+    .trust-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+    }
 
-      border-radius:
-        30px;
+    .trust-item{
+      padding:22px 24px;
+      border-right:1px solid var(--line);
+    }
 
-      overflow:
-        hidden;
+    .trust-item:last-child{
+      border-right:0;
+    }
 
-      color:
-        white;
+    .trust-item b{
+      display:block;
+      color:var(--navy);
+      font-size:.95rem;
+    }
 
-      background:
-        linear-gradient(
-          140deg,
-          var(--navy-950),
-          var(--navy-800)
-        );
+    .trust-item span{
+      display:block;
+      color:var(--muted);
+      font-size:.82rem;
+      margin-top:3px;
+    }
 
-      box-shadow:
-        var(--shadow-large);
+    /* ======================================================
+       SECTIONS
+    ====================================================== */
 
+    section{
+      scroll-margin-top:90px;
     }
 
-
-    .about-panel::before {
+    .section{
+      padding:86px 0;
+    }
 
-      content: "";
+    .section-alt{
+      background:var(--surface);
+    }
 
-      position: absolute;
+    /* ======================================================
+       PATHWAYS
+    ====================================================== */
 
-      width: 210px;
-      height: 210px;
+    .pathways{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
 
-      right: -70px;
-      top: -70px;
+    .pathway{
+      padding:28px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+    }
 
-      border-radius:
-        50%;
+    .pathway::after{
+      content:"";
+      position:absolute;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:var(--aqua-soft);
+      right:-44px;
+      top:-48px;
+    }
 
-      border:
-        34px solid
-        rgba(
-          105,
-          220,
-          224,
-          0.14
-        );
+    .path-icon{
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      background:var(--navy);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-size:1.35rem;
+      font-weight:900;
+      position:relative;
+      z-index:1;
+    }
 
+    .pathway h3{
+      margin:20px 0 8px;
+      font-size:1.35rem;
     }
 
+    .pathway p{
+      color:var(--muted);
+      margin:0 0 18px;
+    }
 
-    .about-quote {
+    .pathway a{
+      color:var(--teal);
+      font-weight:800;
+    }
 
-      position: relative;
+    /* ======================================================
+       PRODUCTS
+    ====================================================== */
 
-      font-size:
-        clamp(
-          27px,
-          2.5vw,
-          39px
-        );
+    .catalog-toolbar{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:end;
+      margin-bottom:24px;
+      flex-wrap:wrap;
+    }
 
-      line-height:
-        1.17;
+    .filter-tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
 
-      letter-spacing:
-        -1.2px;
+    .filter-tab{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:9px 13px;
+      border-radius:999px;
+      font-weight:800;
+      color:#53687a;
+    }
 
-      font-weight:
-        760;
+    .filter-tab.active,
+    .filter-tab:hover{
+      background:var(--navy);
+      color:#fff;
+      border-color:var(--navy);
+    }
 
+    .catalog-note{
+      font-size:.84rem;
+      color:var(--muted);
+      max-width:420px;
     }
 
+    .products{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
 
-    .about-quote
-    span {
+    .product{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow-soft);
+      display:flex;
+      flex-direction:column;
+      transition:.22s ease;
+    }
 
-      color:
-        var(--aqua);
+    .product:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--shadow);
+    }
 
+    .product-art{
+      height:145px;
+      padding:18px;
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      background:linear-gradient(
+        145deg,
+        #0b263a,
+        #0d5560
+      );
+      color:#fff;
+      overflow:hidden;
     }
 
+    .product-art::before{
+      content:"";
+      position:absolute;
+      width:110px;
+      height:110px;
+      border-radius:40% 60% 65% 35%;
+      background:rgba(59,213,207,.18);
+      right:-15px;
+      top:-18px;
+      transform:rotate(18deg);
+    }
 
-    .about-panel
-    p {
+    .product-art::after{
+      content:"";
+      position:absolute;
+      width:95px;
+      height:95px;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:24px;
+      left:-22px;
+      top:18px;
+      transform:rotate(18deg);
+    }
 
-      position: relative;
+    .product-art .art-icon{
+      position:relative;
+      z-index:1;
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:rgba(255,255,255,.12);
+      display:grid;
+      place-items:center;
+      font-size:1.25rem;
+      font-weight:900;
+    }
 
-      margin-top:
-        24px;
+    .product-body{
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+    }
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.66
-        );
+    .product-meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:10px;
+    }
 
-      font-size:
-        14px;
+    .pill{
+      font-size:.7rem;
+      font-weight:900;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      padding:5px 8px;
+      border-radius:999px;
+      background:var(--aqua-soft);
+      color:#087a78;
+    }
 
-      line-height:
-        1.72;
+    .product-type{
+      font-size:.72rem;
+      color:var(--muted);
+      font-weight:800;
+    }
 
+    .product h3{
+      font-size:1.08rem;
+      line-height:1.25;
+      margin:0 0 8px;
     }
 
+    .product p{
+      color:var(--muted);
+      font-size:.89rem;
+      margin:0 0 18px;
+      flex:1;
+    }
 
+    .product-price{
+      font-weight:900;
+      color:var(--navy);
+      font-size:1.13rem;
+      margin-bottom:14px;
+    }
 
-    /* =========================================================
-       CONTACT PAGE
-       ========================================================= */
+    .product-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
 
-    .contact-layout {
+    .product-actions .btn{
+      padding:10px 9px;
+      font-size:.84rem;
+    }
 
-      width: 100%;
+    /* ======================================================
+       HOW IT WORKS
+    ====================================================== */
 
-      display: grid;
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+      position:relative;
+    }
 
-      grid-template-columns:
-        0.85fr
-        1.15fr;
+    .step{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:20px;
+      position:relative;
+    }
 
-      gap:
-        78px;
+    .step-num{
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      background:var(--navy);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      margin-bottom:14px;
+    }
 
-      align-items:
-        center;
+    .step h3{
+      font-size:1rem;
+      margin:0 0 6px;
+    }
 
+    .step p{
+      font-size:.84rem;
+      color:var(--muted);
+      margin:0;
     }
 
+    /* ======================================================
+       RESEARCH
+    ====================================================== */
 
-    .contact-panel {
+    .research-grid{
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:46px;
+      align-items:center;
+    }
 
-      padding:
-        35px;
+    .research-card{
+      background:linear-gradient(
+        145deg,
+        var(--navy),
+        #103c50
+      );
+      color:#fff;
+      border-radius:28px;
+      padding:32px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
 
-      border-radius:
-        30px;
+    .research-card::before{
+      content:"";
+      position:absolute;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      background:rgba(59,213,207,.12);
+      right:-100px;
+      top:-100px;
+    }
 
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.89
-        );
+    .research-card h3{
+      font-size:1.4rem;
+      margin:0 0 18px;
+    }
 
-      backdrop-filter:
-        blur(18px);
+    .gain-chart{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+      align-items:end;
+      height:220px;
+      margin-top:12px;
+    }
 
-      -webkit-backdrop-filter:
-        blur(18px);
+    .gain-col{
+      height:100%;
+      display:flex;
+      align-items:end;
+      gap:10px;
+      position:relative;
+    }
 
-      border:
-        1px solid
-        var(--line);
+    .gain-bar{
+      width:50%;
+      border-radius:10px 10px 4px 4px;
+      background:rgba(255,255,255,.18);
+      position:relative;
+      min-height:40px;
+    }
 
-      box-shadow:
-        var(--shadow-medium);
+    .gain-bar.final{
+      background:linear-gradient(
+        to top,
+        var(--teal),
+        var(--aqua)
+      );
+    }
 
+    .gain-label{
+      position:absolute;
+      bottom:-30px;
+      width:100%;
+      text-align:center;
+      color:#c5d6df;
+      font-size:.76rem;
     }
 
+    .gain-value{
+      position:absolute;
+      top:-26px;
+      left:0;
+      right:0;
+      text-align:center;
+      font-size:.78rem;
+      font-weight:900;
+    }
 
-    .contact-field {
+    .research-list{
+      display:grid;
+      gap:14px;
+    }
 
-      margin-bottom:
-        15px;
+    .research-point{
+      display:grid;
+      grid-template-columns:42px 1fr;
+      gap:12px;
+      align-items:start;
+    }
 
+    .research-point .dot{
+      width:42px;
+      height:42px;
+      border-radius:13px;
+      background:var(--aqua-soft);
+      color:var(--teal);
+      display:grid;
+      place-items:center;
+      font-weight:900;
     }
 
+    .research-point h4{
+      margin:2px 0 4px;
+    }
 
-    .contact-field
-    label {
+    .research-point p{
+      margin:0;
+      color:var(--muted);
+      font-size:.92rem;
+    }
 
-      display: block;
+    /* ======================================================
+       AUDIENCES
+    ====================================================== */
 
-      margin-bottom:
-        7px;
+    .audience-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
 
-      color:
-        var(--navy-800);
+    .audience{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:22px;
+      background:#fff;
+    }
 
-      font-size:
-        11px;
+    .audience strong{
+      display:block;
+      font-size:1rem;
+      margin-bottom:6px;
+    }
 
-      font-weight:
-        850;
+    .audience span{
+      color:var(--muted);
+      font-size:.86rem;
+    }
 
-      letter-spacing:
-        0.5px;
+    /* ======================================================
+       ABOUT / CONTACT
+    ====================================================== */
 
+    .about-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:46px;
     }
 
-
-    .contact-field
-    input,
-    .contact-field
-    textarea {
+    .about-panel{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:30px;
+    }
 
-      width:
-        100%;
+    .about-panel h3{
+      margin-top:0;
+    }
 
-      padding:
-        14px
-        15px;
+    .principles{
+      display:grid;
+      gap:11px;
+      margin-top:18px;
+    }
 
-      color:
-        var(--text);
+    .principle{
+      display:flex;
+      gap:12px;
+      align-items:start;
+      color:#405568;
+    }
 
-      background:
-        rgba(
-          247,
-          251,
-          252,
-          0.95
-        );
+    .principle i{
+      width:24px;
+      height:24px;
+      border-radius:8px;
+      background:var(--aqua-soft);
+      color:var(--teal);
+      font-style:normal;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      flex:0 0 auto;
+    }
 
-      border:
-        1px solid
-        rgba(
-          4,
-          48,
-          100,
-          0.10
-        );
+    .contact-wrap{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:34px;
+      align-items:start;
+    }
 
-      border-radius:
-        13px;
+    .contact-card{
+      background:var(--navy);
+      color:#fff;
+      border-radius:26px;
+      padding:30px;
+      box-shadow:var(--shadow);
+    }
 
-      outline:
-        none;
+    .contact-card h3{
+      margin-top:0;
+    }
 
-      transition:
-        border-color
-        0.2s ease,
-        box-shadow
-        0.2s ease;
+    .contact-item{
+      padding:14px 0;
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
 
+    .contact-item:last-child{
+      border-bottom:0;
     }
 
+    .contact-item small{
+      display:block;
+      color:#9fbbc7;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      font-size:.68rem;
+    }
 
-    .contact-field
-    textarea {
+    .contact-item span{
+      display:block;
+      margin-top:4px;
+    }
 
-      min-height:
-        125px;
+    .contact-note{
+      background:#fff7e3;
+      border:1px solid #f7df9f;
+      border-radius:16px;
+      padding:14px 16px;
+      color:#765817;
+      font-size:.86rem;
+      margin-top:18px;
+    }
 
-      resize:
-        vertical;
+    .policy-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
 
+    .policy-link{
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+      font-weight:800;
+      color:var(--navy);
     }
 
+    .policy-link span{
+      display:block;
+      color:var(--muted);
+      font-weight:600;
+      font-size:.8rem;
+      margin-top:3px;
+    }
 
-    .contact-field
-    input:focus,
-    .contact-field
-    textarea:focus {
+    /* ======================================================
+       CTA
+    ====================================================== */
 
-      border-color:
-        rgba(
-          0,
-          156,
-          168,
-          0.55
-        );
+    .cta-band{
+      padding:36px 0 80px;
+    }
 
-      box-shadow:
-        0 0 0 4px
-        rgba(
-          0,
-          156,
-          168,
-          0.08
-        );
+    .cta-box{
+      background:linear-gradient(
+        120deg,
+        var(--teal),
+        #0d778d
+      );
+      border-radius:30px;
+      color:#fff;
+      padding:38px;
+      display:flex;
+      justify-content:space-between;
+      gap:30px;
+      align-items:center;
+      box-shadow:var(--shadow);
+    }
 
+    .cta-box h2{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem,4vw,2.8rem);
+      letter-spacing:-.04em;
     }
 
+    .cta-box p{
+      margin:0;
+      color:#dff8f6;
+    }
 
-    .send-button {
+    .cta-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      min-width:max-content;
+    }
 
-      min-height:
-        50px;
+    /* ======================================================
+       FOOTER
+    ====================================================== */
 
-      padding:
-        0 24px;
+    footer{
+      background:#04131f;
+      color:#bfd0d9;
+      padding:48px 0 24px;
+    }
 
-      border-radius:
-        15px;
+    .footer-grid{
+      display:grid;
+      grid-template-columns:1.6fr 1fr 1fr 1fr;
+      gap:34px;
+    }
 
-      cursor:
-        pointer;
+    .footer-brand p{
+      max-width:390px;
+      color:#8eabb8;
+      font-size:.9rem;
+    }
 
-      color:
-        white;
+    .footer-col h4{
+      color:#fff;
+      margin:0 0 12px;
+    }
 
-      background:
-        linear-gradient(
-          125deg,
-          var(--navy-900),
-          var(--teal-600)
-        );
+    .footer-col a{
+      display:block;
+      padding:5px 0;
+      color:#9eb5c1;
+      font-size:.88rem;
+    }
 
-      box-shadow:
-        0 15px 34px
-        rgba(
-          3,
-          29,
-          73,
-          0.15
-        );
+    .footer-col a:hover{
+      color:#fff;
+    }
 
-      font-size:
-        12px;
+    .footer-bottom{
+      margin-top:34px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.1);
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      font-size:.8rem;
+      color:#7793a1;
+    }
 
-      font-weight:
-        850;
+    /* ======================================================
+       PRODUCT MODAL
+    ====================================================== */
 
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(2,12,20,.72);
+      z-index:2000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
     }
 
+    .modal-backdrop.open{
+      display:flex;
+    }
 
-    .contact-note {
+    .modal{
+      width:min(720px,100%);
+      max-height:88vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:26px;
+      box-shadow:0 28px 90px rgba(0,0,0,.34);
+    }
 
-      margin-top:
-        15px;
+    .modal-top{
+      padding:24px 26px;
+      background:linear-gradient(
+        140deg,
+        var(--navy),
+        #0f485a
+      );
+      color:#fff;
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      align-items:start;
+    }
 
-      color:
-        var(--muted);
+    .modal-top h3{
+      margin:8px 0 0;
+      font-size:1.7rem;
+    }
 
-      font-size:
-        11px;
+    .modal-close{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      font-size:1.2rem;
+    }
 
-      line-height:
-        1.55;
+    .modal-body{
+      padding:26px;
+    }
 
+    .modal-body p{
+      color:var(--muted);
     }
 
+    .modal-facts{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin:18px 0;
+    }
 
+    .modal-fact{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
 
-    /* =========================================================
-       RESPONSIVE TABLET
-       ========================================================= */
+    .modal-fact small{
+      display:block;
+      color:var(--muted);
+      font-size:.72rem;
+      text-transform:uppercase;
+      font-weight:900;
+      letter-spacing:.05em;
+    }
 
-    @media
-    (
-      max-width:
-      1080px
-    ) {
+    .modal-fact strong{
+      display:block;
+      margin-top:4px;
+    }
 
-      :root {
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
 
-        --header-height:
-          88px;
+    /* ======================================================
+       RESPONSIVE
+    ====================================================== */
 
+    @media (max-width:1050px){
+      .nav-links{
+        display:none;
       }
 
-
-      .header-inner {
-
-        width:
-          calc(
-            100% - 28px
-          );
-
-        gap:
-          15px;
-
+      .menu-toggle{
+        display:grid;
+        place-items:center;
       }
 
-
-      .brand-icon {
-
-        width:
-          57px;
-
-        height:
-          57px;
-
+      .nav-links.mobile-open{
+        display:flex;
+        position:absolute;
+        left:20px;
+        right:20px;
+        top:72px;
+        background:#fff;
+        border:1px solid var(--line);
+        border-radius:18px;
+        box-shadow:var(--shadow);
+        padding:10px;
+        flex-direction:column;
+        align-items:stretch;
       }
 
-
-      .brand-name {
-
-        font-size:
-          28px;
-
+      .nav-links.mobile-open a{
+        padding:12px 14px;
       }
 
-
-      .brand-tagline {
-
-        font-size:
-          8px;
-
+      .hero-grid,
+      .research-grid,
+      .about-grid,
+      .contact-wrap{
+        grid-template-columns:1fr;
       }
 
-
-      .page-shell {
-
-        width:
-          calc(
-            100% - 70px
-          );
-
+      .hero-visual{
+        min-height:420px;
+        max-width:680px;
+        width:100%;
+        margin-inline:auto;
       }
 
-
-      .simulation-layout,
-      .learning-layout,
-      .research-layout,
-      .about-layout,
-      .contact-layout {
-
-        gap:
-          42px;
-
+      .products{
+        grid-template-columns:repeat(2,1fr);
       }
 
+      .steps{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .audience-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .footer-grid{
+        grid-template-columns:1.5fr 1fr 1fr;
+      }
+
+      .footer-brand{
+        grid-column:1/-1;
+      }
     }
 
-
-
-    /* =========================================================
-       MOBILE
-       ========================================================= */
-
-    @media
-    (
-      max-width:
-      760px
-    ) {
-
-      :root {
-
-        --header-height:
-          78px;
-
+    @media (max-width:720px){
+      .shell{
+        width:min(var(--max), calc(100% - 26px));
       }
 
-
-      .header-inner {
-
-        width:
-          calc(
-            100% - 18px
-          );
-
-        gap:
-          8px;
-
+      .site-header .btn-ghost{
+        display:none;
       }
 
-
-      .brand-button {
-
-        gap:
-          8px;
-
+      .brand-tag{
+        display:none;
       }
 
-
-      .brand-icon {
-
-        width:
-          47px;
-
-        height:
-          47px;
-
+      .hero{
+        padding:58px 0 52px;
       }
 
-
-      .brand-name {
-
-        font-size:
-          22px;
-
-        letter-spacing:
-          -0.8px;
-
+      .hero h1{
+        font-size:clamp(3rem,16vw,4.8rem);
       }
 
-
-      .brand-tagline {
-
-        margin-top:
-          5px;
-
-        font-size:
-          6.5px;
-
-        letter-spacing:
-          0.85px;
-
+      .hero-visual{
+        min-height:390px;
       }
 
-
-      .tab-strip {
-
-        justify-content:
-          flex-start;
-
+      .visual-main{
+        inset:34px 8px 32px 20px;
+        padding:20px;
       }
 
-
-      .nav-tab {
-
-        padding:
-          10px
-          11px;
-
-        font-size:
-          11px;
-
+      .visual-float-a{
+        right:0;
+        width:145px;
       }
 
-
-      .page-shell {
-
-        width:
-          calc(
-            100% - 38px
-          );
-
-        min-height:
-          100%;
-
-        padding:
-          45px
-          0
-          80px;
-
-        align-items:
-          flex-start;
-
+      .visual-float-b{
+        left:0;
+        width:170px;
       }
 
-
-      .home-shell {
-
-        width:
-          calc(
-            100% - 26px
-          );
-
-        min-height:
-          100%;
-
-        padding:
-          38px
-          0
-          80px;
-
+      .trust-grid{
+        grid-template-columns:repeat(2,1fr);
       }
 
-
-      .brand-banner {
-
-        border-radius:
-          22px;
-
+      .trust-item:nth-child(2){
+        border-right:0;
       }
 
-
-      .brand-banner
-      img {
-
-        object-fit:
-          contain;
-
+      .trust-item:nth-child(-n+2){
+        border-bottom:1px solid var(--line);
       }
 
-
-      .home-bottom {
-
-        width:
-          100%;
-
-        grid-template-columns:
-          1fr;
-
-        gap:
-          18px;
-
+      .pathways,
+      .products,
+      .steps,
+      .audience-grid{
+        grid-template-columns:1fr;
       }
 
-
-      .home-message {
-
-        font-size:
-          17px;
-
+      .section{
+        padding:64px 0;
       }
 
-
-      .display-title {
-
-        font-size:
-          clamp(
-            42px,
-            13vw,
-            62px
-          );
-
-        letter-spacing:
-          -2.5px;
-
+      .product-actions{
+        grid-template-columns:1fr;
       }
 
-
-      .simulation-layout,
-      .learning-layout,
-      .research-layout,
-      .about-layout,
-      .contact-layout {
-
-        grid-template-columns:
-          1fr;
-
+      .policy-grid{
+        grid-template-columns:1fr;
       }
 
-
-      .simulation-grid,
-      .research-cards {
-
-        grid-template-columns:
-          repeat(
-            2,
-            1fr
-          );
-
+      .modal-facts{
+        grid-template-columns:1fr;
       }
 
-
-      .simulation-card,
-      .research-card {
-
-        min-height:
-          150px;
-
-        padding:
-          19px;
-
+      .cta-box{
+        align-items:flex-start;
+        flex-direction:column;
       }
 
-
-      .simulation-card
-      p,
-      .research-card
-      p {
-
-        display:
-          none;
-
+      .cta-actions{
+        min-width:0;
       }
 
-
-      .learning-step {
-
-        padding:
-          17px;
-
+      .footer-grid{
+        grid-template-columns:1fr 1fr;
       }
 
-
-      .about-panel,
-      .contact-panel {
-
-        padding:
-          30px;
-
+      .footer-brand{
+        grid-column:1/-1;
       }
-
-
-      .page-label {
-
-        display:
-          none;
-
-      }
-
-
-      .brand-watermark {
-
-        width:
-          150px;
-
-      }
-
     }
 
-
-
-    /* =========================================================
-       SMALL MOBILE
-       ========================================================= */
-
-    @media
-    (
-      max-width:
-      500px
-    ) {
-
-      .brand-copy {
-
-        min-width:
-          88px;
-
+    @media (max-width:480px){
+      .nav-actions .btn-primary{
+        padding:10px 12px;
+        font-size:.84rem;
       }
 
-
-      .brand-name {
-
-        font-size:
-          20px;
-
+      .brand-mark{
+        width:36px;
+        height:36px;
       }
 
-
-      .brand-tagline {
-
-        font-size:
-          5.8px;
-
-        letter-spacing:
-          0.55px;
-
+      .brand-name{
+        font-size:1.35rem;
       }
 
-
-      .simulation-grid,
-      .research-cards {
-
-        grid-template-columns:
-          1fr;
-
+      .hero-proof{
+        gap:14px;
       }
 
-
-      .simulation-card,
-      .research-card {
-
-        min-height:
-          128px;
-
+      .hero-proof > div{
+        width:45%;
       }
 
-
-      .about-panel,
-      .contact-panel {
-
-        padding:
-          27px;
-
+      .visual-float-a,
+      .visual-float-b{
+        display:none;
       }
 
+      .visual-main{
+        inset:0;
+      }
+
+      .hero-visual{
+        min-height:350px;
+      }
+
+      .trust-grid{
+        grid-template-columns:1fr;
+      }
+
+      .trust-item{
+        border-right:0;
+        border-bottom:1px solid var(--line);
+      }
+
+      .trust-item:last-child{
+        border-bottom:0;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
     }
 
-
-
-    /* =========================================================
-       REDUCED MOTION
-       ========================================================= */
-
-    @media
-    (
-      prefers-reduced-motion:
-      reduce
-    ) {
-
-      .page-track {
-
-        transition:
-          none;
-
+    @media (prefers-reduced-motion:reduce){
+      html{
+        scroll-behavior:auto;
       }
 
+      *,
+      *::before,
+      *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
     }
-
   </style>
-
 </head>
-
-
 
 <body>
 
-
-  <!-- =======================================================
+  <!-- ====================================================
        HEADER
-       ======================================================= -->
+  ===================================================== -->
 
-  <header
-    class="site-header"
-  >
+  <header class="site-header">
+    <div class="shell nav-wrap">
 
+      <a class="brand" href="#home" aria-label="RizSim home">
+        <img
+          class="brand-mark"
+          src="rizsim-r.png"
+          alt="RizSim mark"
+          onerror="this.style.display='none'"
+        />
 
-    <div
-      class="header-inner"
-    >
-
-
-      <!-- =====================================================
-           RIZSIM BRAND
-           ===================================================== -->
-
-      <button
-        class="brand-button"
-        type="button"
-        data-page-target="0"
-        aria-label="RizSim Home"
-      >
-
-
-        <div
-          class="brand-icon"
-        >
-
-          <img
-            src="rizsim-r.png"
-            alt="RizSim"
-          >
-
-        </div>
-
-
-        <div
-          class="brand-copy"
-        >
-
-
-          <div
-            class="brand-name"
-          >
-            RizSim
-          </div>
-
-
-          <div
-            class="brand-tagline"
-          >
-            Explore. Decide. Grow.
-          </div>
-
-
-        </div>
-
-
-      </button>
-
-
-
-      <!-- =====================================================
-           NAVIGATION
-
-           These tabs are the ONLY page-switching controls.
-           ===================================================== -->
+        <span class="brand-text">
+          <span class="brand-name">RizSim</span>
+          <span class="brand-tag">From Knowing to Doing</span>
+        </span>
+      </a>
 
       <nav
-        class="tab-strip"
+        class="nav-links"
+        id="mainNav"
         aria-label="Primary navigation"
       >
-
-
-        <button
-          class="nav-tab active"
-          type="button"
-          data-page-target="0"
-        >
-          Home
-        </button>
-
-
-        <button
-          class="nav-tab"
-          type="button"
-          data-page-target="1"
-        >
-          Simulations
-        </button>
-
-
-        <button
-          class="nav-tab"
-          type="button"
-          data-page-target="2"
-        >
-          Learning
-        </button>
-
-
-        <button
-          class="nav-tab"
-          type="button"
-          data-page-target="3"
-        >
-          Research
-        </button>
-
-
-        <button
-          class="nav-tab"
-          type="button"
-          data-page-target="4"
-        >
-          About
-        </button>
-
-
-        <button
-          class="nav-tab"
-          type="button"
-          data-page-target="5"
-        >
-          Contact
-        </button>
-
-
+        <a href="#home">Home</a>
+        <a href="#simulations">Simulations</a>
+        <a href="#learning">Learning</a>
+        <a href="#research">Research</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
       </nav>
 
+      <div class="nav-actions">
+
+        <a
+          class="btn btn-ghost"
+          href="access-out.html"
+        >
+          Access OUT
+        </a>
+
+        <button
+          class="btn btn-primary"
+          id="loginBtn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="loginMenu"
+        >
+          Login
+        </button>
+
+        <button
+          class="menu-toggle"
+          id="menuToggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+        <div
+          class="login-menu"
+          id="loginMenu"
+        >
+          <a href="access-in.html">
+            <strong>My Learning / Access IN</strong>
+            <span>
+              Sign in to buy, launch and continue learning.
+            </span>
+          </a>
+
+          <a href="access-out.html">
+            <strong>Faculty / Institution / Access OUT</strong>
+            <span>
+              Role-based access for authorized educators and managers.
+            </span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================
+       MAIN CONTENT
+  ===================================================== -->
+
+  <main>
+
+    <!-- HERO -->
+
+    <section
+      class="hero"
+      id="home"
+    >
+      <div class="shell hero-grid">
+
+        <div>
+          <span class="hero-kicker">
+            Interactive learning built for application
+          </span>
+
+          <h1>
+            From <span>Knowing</span><br />
+            to Doing.
+          </h1>
+
+          <p class="hero-copy">
+            RizSim turns concepts into decisions.
+            Learners explore scenarios, make choices,
+            receive structured feedback and develop
+            transferable understanding through applied
+            simulation.
+          </p>
+
+          <div class="hero-actions">
+
+            <a
+              class="btn btn-primary"
+              href="#simulations"
+            >
+              Explore Simulations
+            </a>
+
+            <a
+              class="btn btn-light"
+              href="#learning"
+            >
+              How RizSim Works
+            </a>
+
+          </div>
+
+          <div
+            class="hero-proof"
+            aria-label="Platform highlights"
+          >
+            <div>
+              <b>Applied</b>
+              <span>Decision-based learning</span>
+            </div>
+
+            <div>
+              <b>Measurable</b>
+              <span>Learning-gain tracking</span>
+            </div>
+
+            <div>
+              <b>Flexible</b>
+              <span>Students to professionals</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="hero-visual"
+          aria-hidden="true"
+        >
+
+          <div class="visual-card visual-main">
+
+            <h3>Learning in motion</h3>
+
+            <p>
+              Structured practice that moves beyond
+              passive content.
+            </p>
+
+            <div class="decision-flow">
+
+              <div class="flow-step">
+
+                <div class="flow-icon">
+                  1
+                </div>
+
+                <div>
+                  <strong>Explore</strong>
+                  <small>Understand the situation</small>
+                </div>
+
+                <span class="flow-status">
+                  LIVE
+                </span>
+
+              </div>
+
+              <div class="flow-step">
+
+                <div class="flow-icon">
+                  2
+                </div>
+
+                <div>
+                  <strong>Decide</strong>
+                  <small>Commit to a judgment</small>
+                </div>
+
+                <span class="flow-status">
+                  ACT
+                </span>
+
+              </div>
+
+              <div class="flow-step">
+
+                <div class="flow-icon">
+                  3
+                </div>
+
+                <div>
+                  <strong>Reflect</strong>
+                  <small>Compare, revise and learn</small>
+                </div>
+
+                <span class="flow-status">
+                  GAIN
+                </span>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="visual-card visual-float-a">
+
+            <div class="metric">
+              +37%
+            </div>
+
+            <div class="metric-label">
+              Illustrative correction gain
+            </div>
+
+            <div class="mini-bars">
+              <span style="height:30%"></span>
+              <span style="height:44%"></span>
+              <span style="height:62%"></span>
+              <span style="height:88%"></span>
+            </div>
+
+          </div>
+
+          <div class="visual-card visual-float-b">
+
+            <div class="metric">
+              4 stages
+            </div>
+
+            <div class="metric-label">
+              Explore → Decide → Feedback → Apply
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+
+    <div class="trust-strip">
+      <div class="shell trust-grid">
+
+        <div class="trust-item">
+          <b>Public catalogue</b>
+          <span>
+            Browse without creating an account.
+          </span>
+        </div>
+
+        <div class="trust-item">
+          <b>Secure access</b>
+          <span>
+            Login only when personal access is needed.
+          </span>
+        </div>
+
+        <div class="trust-item">
+          <b>Digital delivery</b>
+          <span>
+            No physical shipping is required.
+          </span>
+        </div>
+
+        <div class="trust-item">
+          <b>Role-aware platform</b>
+          <span>
+            Learner and authorized faculty experiences.
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ====================================================
+         LEARNING PATHWAYS
+    ===================================================== -->
+
+    <section
+      class="section"
+      id="learning"
+    >
+      <div class="shell">
+
+        <div class="section-head">
+
+          <span class="eyebrow">
+            Explore RizSim
+          </span>
+
+          <h2>
+            Learning experiences for different stages
+            and contexts.
+          </h2>
+
+          <p>
+            RizSim is organized around three pathways
+            so learners and institutions can find
+            experiences relevant to their needs.
+          </p>
+
+        </div>
+
+        <div class="pathways">
+
+          <article class="pathway">
+
+            <div class="path-icon">
+              C
+            </div>
+
+            <h3>Children</h3>
+
+            <p>
+              Age-appropriate inquiry, observation,
+              prediction and discovery experiences
+              designed to make learning active and
+              engaging.
+            </p>
+
+            <a
+              href="#simulations"
+              data-filter-jump="Children"
+            >
+              Explore Children →
+            </a>
+
+          </article>
+
+          <article class="pathway">
+
+            <div class="path-icon">
+              L
+            </div>
+
+            <h3>Learning</h3>
+
+            <p>
+              Applied simulations that help students
+              move from conceptual understanding to
+              judgment, reflection and transfer.
+            </p>
+
+            <a
+              href="#simulations"
+              data-filter-jump="Learning"
+            >
+              Explore Learning →
+            </a>
+
+          </article>
+
+          <article class="pathway">
+
+            <div class="path-icon">
+              S
+            </div>
+
+            <h3>Skills</h3>
+
+            <p>
+              Practice environments for decision making,
+              critical thinking, professional judgment
+              and real-world application.
+            </p>
+
+            <a
+              href="#simulations"
+              data-filter-jump="Skills"
+            >
+              Explore Skills →
+            </a>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PUBLIC PRODUCT CATALOGUE
+    ===================================================== -->
+
+    <section
+      class="section section-alt"
+      id="simulations"
+    >
+      <div class="shell">
+
+        <div class="section-head">
+
+          <span class="eyebrow">
+            Public Catalogue
+          </span>
+
+          <h2>
+            Explore learning experiences before you log in.
+          </h2>
+
+          <p>
+            Product information and pricing are public.
+            A RizSim account is required only when you
+            choose Buy Access, My Learning, Launch or
+            Access OUT.
+          </p>
+
+        </div>
+
+        <div class="catalog-toolbar">
+
+          <div
+            class="filter-tabs"
+            role="group"
+            aria-label="Filter catalogue"
+          >
+
+            <button
+              class="filter-tab active"
+              type="button"
+              data-filter="All"
+            >
+              All
+            </button>
+
+            <button
+              class="filter-tab"
+              type="button"
+              data-filter="Children"
+            >
+              Children
+            </button>
+
+            <button
+              class="filter-tab"
+              type="button"
+              data-filter="Learning"
+            >
+              Learning
+            </button>
+
+            <button
+              class="filter-tab"
+              type="button"
+              data-filter="Skills"
+            >
+              Skills
+            </button>
+
+          </div>
+
+          <div class="catalog-note">
+            Prices shown in PKR.
+            Secure online checkout will be activated
+            after payment-gateway approval.
+          </div>
+
+        </div>
+
+        <div
+          class="products"
+          id="productGrid"
+        >
+          <!-- Product cards rendered by JavaScript -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         HOW IT WORKS
+    ===================================================== -->
+
+    <section
+      class="section"
+      id="how-it-works"
+    >
+      <div class="shell">
+
+        <div class="section-head">
+
+          <span class="eyebrow">
+            How It Works
+          </span>
+
+          <h2>
+            A learning journey built around action.
+          </h2>
+
+          <p>
+            RizSim keeps the learner focused on decisions
+            and reflection rather than passive completion.
+          </p>
+
+        </div>
+
+        <div class="steps">
+
+          <article class="step">
+
+            <div class="step-num">
+              1
+            </div>
+
+            <h3>Explore</h3>
+
+            <p>
+              Read the context and identify what matters.
+            </p>
+
+          </article>
+
+          <article class="step">
+
+            <div class="step-num">
+              2
+            </div>
+
+            <h3>Decide</h3>
+
+            <p>
+              Commit to a response, judgment or action.
+            </p>
+
+          </article>
+
+          <article class="step">
+
+            <div class="step-num">
+              3
+            </div>
+
+            <h3>Check</h3>
+
+            <p>
+              Receive structured feedback when a
+              defensible answer exists.
+            </p>
+
+          </article>
+
+          <article class="step">
+
+            <div class="step-num">
+              4
+            </div>
+
+            <h3>Revise</h3>
+
+            <p>
+              Correct reasoning and see where thinking
+              changed.
+            </p>
+
+          </article>
+
+          <article class="step">
+
+            <div class="step-num">
+              5
+            </div>
+
+            <h3>Apply</h3>
+
+            <p>
+              Transfer the idea to a fresh decision
+              or situation.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         RESEARCH
+    ===================================================== -->
+
+    <section
+      class="section section-alt"
+      id="research"
+    >
+      <div class="shell research-grid">
+
+        <div class="research-card">
+
+          <span
+            class="eyebrow"
+            style="color:#8ce8e2"
+          >
+            Learning Gain
+          </span>
+
+          <h3>
+            Track how reasoning changes during practice.
+          </h3>
+
+          <p
+            style="
+              color:#c3d5de;
+              margin:0;
+            "
+          >
+            Where appropriate, RizSim preserves initial
+            and final responses so instructors can see
+            within-session correction rather than only
+            a final score.
+          </p>
+
+          <div
+            class="gain-chart"
+            aria-label="Illustrative learning gain visualization"
+          >
+
+            <div class="gain-col">
+
+              <div
+                class="gain-bar"
+                style="height:78%"
+              >
+                <span class="gain-value">
+                  Initial
+                </span>
+
+                <span class="gain-label">
+                  Errors
+                </span>
+              </div>
+
+              <div
+                class="gain-bar final"
+                style="height:38%"
+              >
+                <span class="gain-value">
+                  Final
+                </span>
+
+                <span class="gain-label">
+                  Errors
+                </span>
+              </div>
+
+            </div>
+
+            <div class="gain-col">
+
+              <div
+                class="gain-bar"
+                style="height:42%"
+              >
+                <span class="gain-value">
+                  First
+                </span>
+
+                <span class="gain-label">
+                  Applied accuracy
+                </span>
+              </div>
+
+              <div
+                class="gain-bar final"
+                style="height:84%"
+              >
+                <span class="gain-value">
+                  Final
+                </span>
+
+                <span class="gain-label">
+                  Applied accuracy
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div>
+
+          <div
+            class="section-head"
+            style="margin-bottom:24px"
+          >
+
+            <span class="eyebrow">
+              Research & Pedagogy
+            </span>
+
+            <h2>
+              Designed to make learning visible.
+            </h2>
+
+            <p>
+              RizSim combines structured decisions,
+              immediate feedback where appropriate,
+              learning-transfer tasks and faculty
+              analytics.
+            </p>
+
+          </div>
+
+          <div class="research-list">
+
+            <div class="research-point">
+
+              <div class="dot">
+                1
+              </div>
+
+              <div>
+                <h4>
+                  First-versus-final response capture
+                </h4>
+
+                <p>
+                  Preserves the learner's initial judgment
+                  before feedback and separates it from
+                  any corrected final response.
+                </p>
+              </div>
+
+            </div>
+
+            <div class="research-point">
+
+              <div class="dot">
+                2
+              </div>
+
+              <div>
+                <h4>
+                  Scenario-level insight
+                </h4>
+
+                <p>
+                  Looks beyond one aggregate score to show
+                  where misconceptions, divergence or
+                  correction occurred.
+                </p>
+              </div>
+
+            </div>
+
+            <div class="research-point">
+
+              <div class="dot">
+                3
+              </div>
+
+              <div>
+                <h4>
+                  Faculty-ready analysis
+                </h4>
+
+                <p>
+                  Authorized faculty can review class
+                  patterns and submitted responses
+                  through role-based Access OUT.
+                </p>
+              </div>
+
+            </div>
+
+            <div class="research-point">
+
+              <div class="dot">
+                4
+              </div>
+
+              <div>
+                <h4>
+                  Transfer over recall
+                </h4>
+
+                <p>
+                  Learning experiences are built to move
+                  concepts into fresh decisions rather
+                  than reward memorization alone.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         AUDIENCES
+    ===================================================== -->
+
+    <section
+      class="section"
+      id="audiences"
+    >
+      <div class="shell">
+
+        <div class="section-head">
+
+          <span class="eyebrow">
+            Who It Is For
+          </span>
+
+          <h2>
+            From individual learners to institutions.
+          </h2>
+
+        </div>
+
+        <div class="audience-grid">
+
+          <div class="audience">
+            <strong>Students</strong>
+            <span>
+              Practice concepts, decisions and applied
+              reasoning through interactive experiences.
+            </span>
+          </div>
+
+          <div class="audience">
+            <strong>Educators</strong>
+            <span>
+              Run structured activities and review
+              learning patterns through authorized
+              dashboards.
+            </span>
+          </div>
+
+          <div class="audience">
+            <strong>Universities & Schools</strong>
+            <span>
+              Use course, cohort and institutional access
+              structures for simulation-based learning.
+            </span>
+          </div>
+
+          <div class="audience">
+            <strong>Professionals & Organizations</strong>
+            <span>
+              Use workshops and applied simulations for
+              judgment, skills and development.
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         ABOUT
+    ===================================================== -->
+
+    <section
+      class="section section-alt"
+      id="about"
+    >
+      <div class="shell">
+
+        <div class="section-head">
+
+          <span class="eyebrow">
+            About RizSim
+          </span>
+
+          <h2>
+            A platform built around the gap between
+            understanding and application.
+          </h2>
+
+          <p>
+            RizSim's core promise is simple: learning
+            becomes more useful when people have to
+            interpret, decide, receive feedback and
+            apply what they know.
+          </p>
+
+        </div>
+
+        <div class="about-grid">
+
+          <div class="about-panel">
+
+            <h3>
+              Our learning philosophy
+            </h3>
+
+            <p style="color:var(--muted)">
+              RizSim supports active, decision-centered
+              learning across education and professional
+              development. Experiences can combine
+              conceptual diagnosis, applied scenarios,
+              learning gain, classroom analytics and
+              facilitator debrief.
+            </p>
+
+            <div class="principles">
+
+              <div class="principle">
+                <i>✓</i>
+                <span>
+                  Action before explanation where
+                  appropriate.
+                </span>
+              </div>
+
+              <div class="principle">
+                <i>✓</i>
+                <span>
+                  Feedback that supports correction rather
+                  than simply revealing an answer.
+                </span>
+              </div>
+
+              <div class="principle">
+                <i>✓</i>
+                <span>
+                  Clear distinction between subjective
+                  self-report and defensible learning
+                  checks.
+                </span>
+              </div>
+
+              <div class="principle">
+                <i>✓</i>
+                <span>
+                  Responsive browser experiences for
+                  learners, faculty and facilitators.
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="about-panel">
+
+            <h3>
+              Platform access model
+            </h3>
+
+            <p style="color:var(--muted)">
+              Most of RizSim is intentionally public.
+              Login is required only when a user reaches
+              a personal or permission-controlled action.
+            </p>
+
+            <div class="principles">
+
+              <div class="principle">
+                <i>○</i>
+                <span>
+                  <b>Public:</b>
+                  browse products, prices, research,
+                  about, contact and policies.
+                </span>
+              </div>
+
+              <div class="principle">
+                <i>→</i>
+                <span>
+                  <b>Login:</b>
+                  Buy Access, My Learning, Launch and
+                  Access OUT.
+                </span>
+              </div>
+
+              <div class="principle">
+                <i>◆</i>
+                <span>
+                  <b>Role-based:</b>
+                  faculty, institution and management
+                  functions are permission controlled.
+                </span>
+              </div>
+
+              <div class="principle">
+                <i>▣</i>
+                <span>
+                  <b>Digital delivery:</b>
+                  access is provided through the
+                  authenticated RizSim account after
+                  verified payment or an authorized grant.
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CONTACT + POLICIES
+    ===================================================== -->
+
+    <section
+      class="section"
+      id="contact"
+    >
+      <div class="shell contact-wrap">
+
+        <div>
+
+          <div
+            class="section-head"
+            style="margin-bottom:22px"
+          >
+
+            <span class="eyebrow">
+              Contact
+            </span>
+
+            <h2>
+              Questions about access, institutions or
+              RizSim products?
+            </h2>
+
+            <p>
+              Use the public contact details below.
+              These details should be finalized before
+              payment-gateway review.
+            </p>
+
+          </div>
+
+          <div class="contact-card">
+
+            <h3>
+              RizSim
+            </h3>
+
+            <div class="contact-item">
+              <small>Location</small>
+              <span>
+                Karachi, Sindh, Pakistan
+              </span>
+            </div>
+
+            <div class="contact-item">
+              <small>Business email</small>
+              <span>
+                [Add public RizSim business email]
+              </span>
+            </div>
+
+            <div class="contact-item">
+              <small>Phone</small>
+              <span>
+                [Add Pakistan business contact number]
+              </span>
+            </div>
+
+            <div class="contact-item">
+              <small>Office address</small>
+              <span>
+                [Add local office / business address]
+              </span>
+            </div>
+
+          </div>
+
+          <div class="contact-note">
+            <b>Before PayFast review:</b>
+            replace the three bracketed contact
+            placeholders with the real public business
+            details used for merchant onboarding.
+          </div>
+
+        </div>
+
+        <div>
+
+          <div
+            class="section-head"
+            style="margin-bottom:22px"
+          >
+
+            <span class="eyebrow">
+              Policies
+            </span>
+
+            <h2>
+              Clear terms for digital learning access.
+            </h2>
+
+            <p>
+              These links are already placed in the site
+              architecture. We will create the complete
+              public policy pages next.
+            </p>
+
+          </div>
+
+          <div class="policy-grid">
+
+            <a
+              class="policy-link"
+              href="privacy-policy.html"
+            >
+              Privacy Policy
+              <span>
+                How account and platform data are handled.
+              </span>
+            </a>
+
+            <a
+              class="policy-link"
+              href="terms.html"
+            >
+              Terms & Conditions
+              <span>
+                Rules governing access and use of RizSim.
+              </span>
+            </a>
+
+            <a
+              class="policy-link"
+              href="refund-policy.html"
+            >
+              Refund & Cancellation Policy
+              <span>
+                Conditions for digital-service
+                cancellations and refunds.
+              </span>
+            </a>
+
+            <a
+              class="policy-link"
+              href="service-delivery.html"
+            >
+              Service Delivery Policy
+              <span>
+                Digital access delivery; no physical
+                shipping.
+              </span>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CTA
+    ===================================================== -->
+
+    <div class="cta-band">
+
+      <div class="shell">
+
+        <div class="cta-box">
+
+          <div>
+
+            <h2>
+              Explore first. Login only when you need access.
+            </h2>
+
+            <p>
+              Browse the public catalogue freely, then
+              sign in to buy, launch or continue learning.
+            </p>
+
+          </div>
+
+          <div class="cta-actions">
+
+            <a
+              class="btn btn-light"
+              href="#simulations"
+            >
+              Browse Catalogue
+            </a>
+
+            <a
+              class="btn btn-dark"
+              href="access-in.html"
+            >
+              My Learning
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
+  </main>
 
-  </header>
+  <!-- ====================================================
+       FOOTER
+  ===================================================== -->
 
+  <footer>
 
+    <div class="shell">
 
-  <!-- =======================================================
-       WEBSITE
-       ======================================================= -->
+      <div class="footer-grid">
 
-  <div
-    class="website-viewport"
-  >
+        <div class="footer-brand">
 
-
-    <main
-      class="page-track"
-      id="pageTrack"
-    >
-
-
-
-      <!-- ===================================================
-           HOME
-           =================================================== -->
-
-      <section
-        class="page home-page"
-        data-page-name="Home"
-      >
-
-
-        <div
-          class="page-label"
-        >
-          RizSim / Home
-        </div>
-
-
-
-        <div
-          class="home-shell"
-        >
-
-
-          <div
-            class="brand-banner"
+          <a
+            class="brand"
+            href="#home"
           >
-
 
             <img
-              src="RizSim%20finalized%20logo.png"
-              alt="RizSim - Explore. Decide. Grow."
-            >
+              class="brand-mark"
+              src="rizsim-r.png"
+              alt=""
+              onerror="this.style.display='none'"
+            />
 
+            <span class="brand-text">
 
-          </div>
-
-
-
-          <div
-            class="home-bottom"
-          >
-
-
-            <div
-              class="home-message"
-            >
-
-              Transforming learning from passive
-              consumption into
-
-              <span>
-                active intellectual experience.
+              <span
+                class="brand-name"
+                style="color:#fff"
+              >
+                RizSim
               </span>
 
-            </div>
+              <span
+                class="brand-tag"
+                style="color:#7896a4"
+              >
+                From Knowing to Doing
+              </span>
 
+            </span>
 
+          </a>
 
-            <div
-              class="home-philosophy"
-            >
+          <p>
+            Interactive learning experiences that help
+            people move from understanding concepts to
+            applying them in decisions, scenarios and
+            practice.
+          </p>
 
-              <strong>
-                Where Learning Becomes Experience
-              </strong>
+        </div>
 
-              Explore ideas. Make decisions.
-              Reflect on consequences.
-              Grow through experience.
+        <div class="footer-col">
 
-            </div>
+          <h4>
+            Explore
+          </h4>
 
+          <a href="#simulations">
+            Simulations
+          </a>
+
+          <a href="#learning">
+            Learning
+          </a>
+
+          <a href="#research">
+            Research
+          </a>
+
+          <a href="#about">
+            About
+          </a>
+
+        </div>
+
+        <div class="footer-col">
+
+          <h4>
+            Access
+          </h4>
+
+          <a href="access-in.html">
+            My Learning / Access IN
+          </a>
+
+          <a href="access-out.html">
+            Access OUT
+          </a>
+
+          <a href="#contact">
+            Contact
+          </a>
+
+        </div>
+
+        <div class="footer-col">
+
+          <h4>
+            Policies
+          </h4>
+
+          <a href="privacy-policy.html">
+            Privacy Policy
+          </a>
+
+          <a href="terms.html">
+            Terms & Conditions
+          </a>
+
+          <a href="refund-policy.html">
+            Refund & Cancellation
+          </a>
+
+          <a href="service-delivery.html">
+            Service Delivery
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <span>
+          © <span id="year"></span> RizSim.
+          All rights reserved.
+        </span>
+
+        <span>
+          Digital learning platform · Karachi, Pakistan
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <!-- ====================================================
+       PRODUCT DETAIL MODAL
+  ===================================================== -->
+
+  <div
+    class="modal-backdrop"
+    id="productModal"
+    role="presentation"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+
+      <div class="modal-top">
+
+        <div>
+
+          <span
+            class="pill"
+            id="modalCategory"
+            style="
+              background:rgba(255,255,255,.12);
+              color:#c8f5f1;
+            "
+          ></span>
+
+          <h3 id="modalTitle"></h3>
+
+        </div>
+
+        <button
+          class="modal-close"
+          id="modalClose"
+          type="button"
+          aria-label="Close product details"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <p id="modalDescription"></p>
+
+        <div class="modal-facts">
+
+          <div class="modal-fact">
+
+            <small>
+              Type
+            </small>
+
+            <strong id="modalType"></strong>
 
           </div>
 
+          <div class="modal-fact">
+
+            <small>
+              Price
+            </small>
+
+            <strong id="modalPrice"></strong>
+
+          </div>
+
+          <div class="modal-fact">
+
+            <small>
+              Delivery
+            </small>
+
+            <strong>
+              Digital account access
+            </strong>
+
+          </div>
 
         </div>
 
+        <p>
+          <b>Access:</b>
+          Public browsing does not require login.
+          A RizSim account is required to buy, launch
+          or continue this experience.
+        </p>
 
-      </section>
+        <div class="modal-actions">
 
-
-
-      <!-- ===================================================
-           SIMULATIONS
-           =================================================== -->
-
-      <section
-        class="page light-page"
-        data-page-name="Simulations"
-      >
-
-
-        <img
-          class="brand-watermark"
-          src="rizsim-r.png"
-          alt=""
-          aria-hidden="true"
-        >
-
-
-        <div
-          class="page-label"
-        >
-          RizSim / Simulations
-        </div>
-
-
-
-        <div
-          class="page-shell"
-        >
-
-
-          <div
-            class="simulation-layout"
+          <a
+            class="btn btn-primary"
+            id="modalBuy"
+            href="access-in.html"
           >
-
-
-
-            <div
-              class="simulation-intro"
-            >
-
-
-              <div
-                class="kicker"
-              >
-                RizSim Experiences
-              </div>
-
-
-              <h1
-                class="display-title"
-              >
-
-                Learning through
-
-                <span
-                  class="accent"
-                >
-                  decisions.
-                </span>
-
-              </h1>
-
-
-              <p
-                class="lead"
-              >
-
-                Interactive learning experiences
-                built around uncertainty,
-                judgment, reflection and
-                measurable change.
-
-              </p>
-
-
-            </div>
-
-
-
-            <div
-              class="simulation-grid"
-            >
-
-
-
-              <article
-                class="simulation-card"
-              >
-
-
-                <div
-                  class="sim-icon"
-                >
-                  DM
-                </div>
-
-
-                <h3>
-                  Decision Making
-                </h3>
-
-
-                <p>
-
-                  Judgment, uncertainty,
-                  cognitive bias and
-                  consequential choices.
-
-                </p>
-
-
-                <div
-                  class="sim-arrow"
-                >
-                  →
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="simulation-card"
-              >
-
-
-                <div
-                  class="sim-icon"
-                >
-                  RM
-                </div>
-
-
-                <h3>
-                  Responsible Marketing
-                </h3>
-
-
-                <p>
-
-                  Value, responsibility,
-                  consumer autonomy and
-                  stakeholder impact.
-
-                </p>
-
-
-                <div
-                  class="sim-arrow"
-                >
-                  →
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="simulation-card"
-              >
-
-
-                <div
-                  class="sim-icon"
-                >
-                  NI
-                </div>
-
-
-                <h3>
-                  Neuro Insights
-                </h3>
-
-
-                <p>
-
-                  Attention, emotion,
-                  salience and
-                  neuro-informed decisions.
-
-                </p>
-
-
-                <div
-                  class="sim-arrow"
-                >
-                  →
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="simulation-card"
-              >
-
-
-                <div
-                  class="sim-icon"
-                >
-                  BR
-                </div>
-
-
-                <h3>
-                  Boardroom
-                </h3>
-
-
-                <p>
-
-                  Executive judgment,
-                  leadership, strategy
-                  and organizational tension.
-
-                </p>
-
-
-                <div
-                  class="sim-arrow"
-                >
-                  →
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="simulation-card"
-              >
-
-
-                <div
-                  class="sim-icon"
-                >
-                  RS
-                </div>
-
-
-                <h3>
-                  Research Simulations
-                </h3>
-
-
-                <p>
-
-                  Experimental reasoning,
-                  evidence and
-                  analytical judgment.
-
-                </p>
-
-
-                <div
-                  class="sim-arrow"
-                >
-                  →
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="simulation-card"
-              >
-
-
-                <div
-                  class="sim-icon"
-                >
-                  TL
-                </div>
-
-
-                <h3>
-                  Be Thought Leader
-                </h3>
-
-
-                <p>
-
-                  Challenge assumptions
-                  and develop greater
-                  independence of thought.
-
-                </p>
-
-
-                <div
-                  class="sim-arrow"
-                >
-                  →
-                </div>
-
-
-              </article>
-
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-
-      <!-- ===================================================
-           LEARNING
-           =================================================== -->
-
-      <section
-        class="page dark-page"
-        data-page-name="Learning"
-      >
-
-
-        <img
-          class="brand-watermark"
-          src="rizsim-r.png"
-          alt=""
-          aria-hidden="true"
-        >
-
-
-        <div
-          class="page-label"
-        >
-          RizSim / Learning
-        </div>
-
-
-
-        <div
-          class="page-shell"
-        >
-
-
-          <div
-            class="learning-layout"
+            Buy Access
+          </a>
+
+          <button
+            class="btn btn-light"
+            id="modalDismiss"
+            type="button"
           >
-
-
-
-            <div>
-
-
-              <div
-                class="kicker"
-              >
-                The RizSim Learning Model
-              </div>
-
-
-              <h1
-                class="display-title"
-              >
-
-                Explore.<br>
-
-                Decide.<br>
-
-                <span
-                  class="accent"
-                >
-                  Grow.
-                </span>
-
-              </h1>
-
-
-              <p
-                class="lead"
-              >
-
-                Learners move beyond knowing concepts
-                toward applying judgment,
-                experiencing consequences and
-                reflecting on how their thinking
-                changes.
-
-              </p>
-
-
-            </div>
-
-
-
-            <div
-              class="learning-steps"
-            >
-
-
-
-              <article
-                class="learning-step"
-              >
-
-
-                <div
-                  class="step-number"
-                >
-                  01
-                </div>
-
-
-                <div>
-
-
-                  <h3>
-                    Explore
-                  </h3>
-
-
-                  <p>
-
-                    Enter situations with competing
-                    perspectives, uncertainty
-                    and meaningful ambiguity.
-
-                  </p>
-
-
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="learning-step"
-              >
-
-
-                <div
-                  class="step-number"
-                >
-                  02
-                </div>
-
-
-                <div>
-
-
-                  <h3>
-                    Decide
-                  </h3>
-
-
-                  <p>
-
-                    Make consequential choices
-                    without relying on obvious
-                    right-answer cues.
-
-                  </p>
-
-
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="learning-step"
-              >
-
-
-                <div
-                  class="step-number"
-                >
-                  03
-                </div>
-
-
-                <div>
-
-
-                  <h3>
-                    Reflect
-                  </h3>
-
-
-                  <p>
-
-                    Examine assumptions,
-                    reasoning and consequences
-                    of initial judgment.
-
-                  </p>
-
-
-                </div>
-
-
-              </article>
-
-
-
-              <article
-                class="learning-step"
-              >
-
-
-                <div
-                  class="step-number"
-                >
-                  04
-                </div>
-
-
-                <div>
-
-
-                  <h3>
-                    Grow
-                  </h3>
-
-
-                  <p>
-
-                    Reconsider decisions
-                    and make learning gain
-                    visible.
-
-                  </p>
-
-
-                </div>
-
-
-              </article>
-
-
-            </div>
-
-
-          </div>
-
+            Continue Browsing
+          </button>
 
         </div>
 
+      </div>
 
-      </section>
-
-
-
-      <!-- ===================================================
-           RESEARCH
-           =================================================== -->
-
-      <section
-        class="page light-page"
-        data-page-name="Research"
-      >
-
-
-        <img
-          class="brand-watermark"
-          src="rizsim-r.png"
-          alt=""
-          aria-hidden="true"
-        >
-
-
-        <div
-          class="page-label"
-        >
-          RizSim / Research
-        </div>
-
-
-
-        <div
-          class="page-shell"
-        >
-
-
-          <div
-            class="research-layout"
-          >
-
-
-
-            <div>
-
-
-              <div
-                class="kicker"
-              >
-                Evidence-Informed Learning
-              </div>
-
-
-              <h1
-                class="display-title"
-              >
-
-                Beyond performance.
-
-                <span
-                  class="accent"
-                >
-                  Toward learning.
-                </span>
-
-              </h1>
-
-
-              <p
-                class="lead"
-              >
-
-                RizSim is designed to make
-                learning visible through
-                judgment, reconsideration,
-                reflection and measurable change.
-
-              </p>
-
-
-            </div>
-
-
-
-            <div
-              class="research-cards"
-            >
-
-
-
-              <article
-                class="research-card"
-              >
-
-
-                <div
-                  class="research-number"
-                >
-                  01
-                </div>
-
-
-                <h3>
-                  Learning Gain
-                </h3>
-
-
-                <p>
-
-                  Compare initial and revised
-                  understanding to identify
-                  meaningful learning.
-
-                </p>
-
-
-              </article>
-
-
-
-              <article
-                class="research-card"
-              >
-
-
-                <div
-                  class="research-number"
-                >
-                  02
-                </div>
-
-
-                <h3>
-                  Reflection
-                </h3>
-
-
-                <p>
-
-                  Make assumptions,
-                  reasoning and reconsideration
-                  visible.
-
-                </p>
-
-
-              </article>
-
-
-
-              <article
-                class="research-card"
-              >
-
-
-                <div
-                  class="research-number"
-                >
-                  03
-                </div>
-
-
-                <h3>
-                  Decision Quality
-                </h3>
-
-
-                <p>
-
-                  Assess judgment and
-                  reasoning rather than
-                  simple recall.
-
-                </p>
-
-
-              </article>
-
-
-
-              <article
-                class="research-card"
-              >
-
-
-                <div
-                  class="research-number"
-                >
-                  04
-                </div>
-
-
-                <h3>
-                  Analytics
-                </h3>
-
-
-                <p>
-
-                  Transform participant responses
-                  into meaningful evidence
-                  for teaching and research.
-
-                </p>
-
-
-              </article>
-
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-
-      <!-- ===================================================
-           ABOUT
-           =================================================== -->
-
-      <section
-        class="page light-page"
-        data-page-name="About"
-      >
-
-
-        <img
-          class="brand-watermark"
-          src="rizsim-r.png"
-          alt=""
-          aria-hidden="true"
-        >
-
-
-        <div
-          class="page-label"
-        >
-          RizSim / About
-        </div>
-
-
-
-        <div
-          class="page-shell"
-        >
-
-
-          <div
-            class="about-layout"
-          >
-
-
-
-            <div>
-
-
-              <div
-                class="kicker"
-              >
-                About RizSim
-              </div>
-
-
-              <h1
-                class="display-title"
-              >
-
-                Learning becomes meaningful
-                when thinking becomes
-
-                <span
-                  class="accent"
-                >
-                  active.
-                </span>
-
-              </h1>
-
-
-              <p
-                class="lead"
-              >
-
-                RizSim develops interactive
-                learning experiences that place
-                learners inside decisions
-                rather than outside them.
-
-              </p>
-
-
-            </div>
-
-
-
-            <div
-              class="about-panel"
-            >
-
-
-              <div
-                class="about-quote"
-              >
-
-                Where learning becomes
-
-                <span>
-                  experience.
-                </span>
-
-              </div>
-
-
-              <p>
-
-                Our simulations encourage
-                curiosity, judgment, reflection
-                and deeper engagement with
-                complex ideas.
-
-              </p>
-
-
-              <p>
-
-                The aim is not merely to
-                produce the correct answer.
-                It is to help learners examine
-                how they think, why they decide
-                and how understanding changes
-                through experience.
-
-              </p>
-
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-
-      <!-- ===================================================
-           CONTACT
-           =================================================== -->
-
-      <section
-        class="page light-page"
-        data-page-name="Contact"
-      >
-
-
-        <img
-          class="brand-watermark"
-          src="rizsim-r.png"
-          alt=""
-          aria-hidden="true"
-        >
-
-
-        <div
-          class="page-label"
-        >
-          RizSim / Contact
-        </div>
-
-
-
-        <div
-          class="page-shell"
-        >
-
-
-          <div
-            class="contact-layout"
-          >
-
-
-
-            <div>
-
-
-              <div
-                class="kicker"
-              >
-                Connect With RizSim
-              </div>
-
-
-              <h1
-                class="display-title"
-              >
-
-                Let's create better
-
-                <span
-                  class="accent"
-                >
-                  learning experiences.
-                </span>
-
-              </h1>
-
-
-              <p
-                class="lead"
-              >
-
-                Interested in simulations,
-                educator resources,
-                research collaboration or
-                institutional partnerships?
-
-              </p>
-
-
-            </div>
-
-
-
-            <div
-              class="contact-panel"
-            >
-
-
-
-              <div
-                class="contact-field"
-              >
-
-
-                <label
-                  for="contactName"
-                >
-                  NAME
-                </label>
-
-
-                <input
-                  id="contactName"
-                  type="text"
-                  placeholder="Your name"
-                >
-
-
-              </div>
-
-
-
-              <div
-                class="contact-field"
-              >
-
-
-                <label
-                  for="contactEmail"
-                >
-                  EMAIL
-                </label>
-
-
-                <input
-                  id="contactEmail"
-                  type="email"
-                  placeholder="Your email address"
-                >
-
-
-              </div>
-
-
-
-              <div
-                class="contact-field"
-              >
-
-
-                <label
-                  for="contactMessage"
-                >
-                  MESSAGE
-                </label>
-
-
-                <textarea
-                  id="contactMessage"
-                  placeholder="How can RizSim help?"
-                ></textarea>
-
-
-              </div>
-
-
-
-              <button
-                class="send-button"
-                type="button"
-                id="sendMessageButton"
-              >
-                Send Message →
-              </button>
-
-
-
-              <div
-                class="contact-note"
-                id="contactNote"
-              >
-
-                Contact form interface.
-                Email delivery will be connected
-                during a later development stage.
-
-              </div>
-
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-    </main>
-
+    </div>
 
   </div>
 
-
+  <!-- ====================================================
+       JAVASCRIPT
+  ===================================================== -->
 
   <script>
 
-    /* =========================================================
-       RIZSIM WEBSITE
-       VERSION 2.2
+    /* ====================================================
+       PUBLIC RIZSIM CATALOGUE
+    ===================================================== */
 
-       NAVIGATION BAR ONLY.
+    const PRODUCTS = [
 
-       No swipe navigation.
-       No mouse wheel navigation.
-       No keyboard page navigation.
-       No page arrows.
-       No bottom dots.
+      {
+        slug:'perception-attention-lab',
+        category:'Learning',
+        type:'Simulation',
+        title:'Perception & Attention Lab',
+        price:500,
+        icon:'PA',
+        description:
+          'Interactive learning simulation exploring sensation, perception, selective attention, interference and visual-attention effects through applied tasks.'
+      },
 
-       Normal vertical scrolling remains enabled.
-       ========================================================= */
+      {
+        slug:'brain-networks-decision-lab',
+        category:'Skills',
+        type:'Simulation',
+        title:'Brain Networks Decision Lab',
+        price:750,
+        icon:'BN',
+        description:
+          'Decision-making simulation exploring how salience, executive-control and default-mode processes interact during complex choices.'
+      },
 
+      {
+        slug:'cognitive-biases-decision-lab',
+        category:'Skills',
+        type:'Simulation',
+        title:'Cognitive Biases Decision Lab',
+        price:500,
+        icon:'CB',
+        description:
+          'Applied simulation helping learners recognize cognitive biases and examine how they influence business judgment and decision making.'
+      },
 
+      {
+        slug:'seven-sins-greenwashing',
+        category:'Learning',
+        type:'Simulation',
+        title:'Seven Sins of Greenwashing',
+        price:750,
+        icon:'7S',
+        description:
+          'Responsible-marketing simulation where learners identify and evaluate common forms of misleading environmental communication.'
+      },
 
-    const pageTrack =
-      document.getElementById(
-        "pageTrack"
-      );
+      {
+        slug:'dark-patterns-consumer-autonomy',
+        category:'Learning',
+        type:'Simulation',
+        title:'Dark Patterns & Consumer Autonomy',
+        price:750,
+        icon:'DP',
+        description:
+          'Interactive simulation examining manipulative digital interfaces, consumer choice architecture and substantive autonomy.'
+      },
 
+      {
+        slug:'responsible-marketing-meta-users',
+        category:'Learning',
+        type:'Simulation',
+        title:'Responsible Marketing: Meta vs Users',
+        price:750,
+        icon:'RM',
+        description:
+          'Stakeholder decision simulation examining consumer sovereignty, platform responsibility and ethical tensions in technology marketing.'
+      },
 
-    const pages =
-      Array.from(
-        document.querySelectorAll(
-          ".page"
-        )
-      );
+      {
+        slug:'learning-gain-ai-simulation',
+        category:'Skills',
+        type:'Simulation',
+        title:'Learning Gain AI Simulation',
+        price:750,
+        icon:'AI',
+        description:
+          'Learning experience examining whether performance produced with generative AI reflects genuine learning, reasoning and knowledge gain.'
+      },
 
-
-    const navigationTabs =
-      Array.from(
-        document.querySelectorAll(
-          ".nav-tab"
-        )
-      );
-
-
-    const brandButton =
-      document.querySelector(
-        ".brand-button"
-      );
-
-
-
-    const pageSlugs = [
-
-      "home",
-
-      "simulations",
-
-      "learning",
-
-      "research",
-
-      "about",
-
-      "contact"
+      {
+        slug:'little-scientist-motion-forces',
+        category:'Children',
+        type:'Simulation',
+        title:'Little Scientist: Motion & Forces Lab',
+        price:400,
+        icon:'LS',
+        description:
+          'Child-friendly interactive science experience using prediction, testing, observation and explanation to explore movement, surfaces, speed and forces.'
+      }
 
     ];
 
+    /* ====================================================
+       PRODUCT GRID
+    ===================================================== */
 
+    const grid =
+      document.getElementById('productGrid');
 
-    const pageTitles = [
+    const tabs =
+      [...document.querySelectorAll('.filter-tab')];
 
-      "RizSim | Explore. Decide. Grow.",
+    function money(n){
 
-      "Simulations | RizSim",
+      return (
+        'PKR ' +
+        Number(n).toLocaleString('en-PK')
+      );
 
-      "Learning | RizSim",
+    }
 
-      "Research | RizSim",
+    function productCard(p){
 
-      "About | RizSim",
+      const article =
+        document.createElement('article');
 
-      "Contact | RizSim"
+      article.className =
+        'product';
 
-    ];
+      article.dataset.category =
+        p.category;
 
+      article.innerHTML = `
 
+        <div class="product-art">
 
-    let currentPage =
-      0;
+          <div class="art-icon">
+            ${p.icon}
+          </div>
 
+        </div>
 
+        <div class="product-body">
 
-    /* =========================================================
-       CHANGE PAGE
-       ========================================================= */
+          <div class="product-meta">
 
-    function goToPage(
-      requestedPage,
-      updateURL = true
-    ) {
+            <span class="pill">
+              ${p.category}
+            </span>
 
+            <span class="product-type">
+              ${p.type}
+            </span>
 
-      const pageIndex =
-        Math.max(
+          </div>
 
-          0,
+          <h3>
+            ${p.title}
+          </h3>
 
-          Math.min(
+          <p>
+            ${p.description}
+          </p>
 
-            requestedPage,
+          <div class="product-price">
+            ${money(p.price)}
+          </div>
 
-            pages.length - 1
+          <div class="product-actions">
 
-          )
+            <button
+              class="btn btn-light details-btn"
+              type="button"
+              data-slug="${p.slug}"
+            >
+              View Details
+            </button>
 
+            <a
+              class="btn btn-primary"
+              href="access-in.html?intent=buy&product=${encodeURIComponent(p.slug)}"
+            >
+              Buy Access
+            </a>
+
+          </div>
+
+        </div>
+      `;
+
+      return article;
+
+    }
+
+    function renderProducts(filter='All'){
+
+      grid.innerHTML = '';
+
+      PRODUCTS
+        .filter(
+          p =>
+            filter === 'All' ||
+            p.category === filter
+        )
+        .forEach(
+          p =>
+            grid.appendChild(
+              productCard(p)
+            )
         );
 
+      grid
+        .querySelectorAll('.details-btn')
+        .forEach(
+          btn =>
+            btn.addEventListener(
+              'click',
+              () =>
+                openProduct(
+                  btn.dataset.slug
+                )
+            )
+        );
 
-      currentPage =
-        pageIndex;
+    }
 
+    /* ====================================================
+       CATEGORY FILTERS
+    ===================================================== */
 
+    tabs.forEach(
 
-      /*
-        Slide the complete website horizontally.
-      */
+      tab =>
 
-      pageTrack.style.transform =
-        "translate3d(-" +
-        (
-          currentPage * 100
-        ) +
-        "vw, 0, 0)";
+        tab.addEventListener(
+          'click',
+          () => {
 
+            tabs.forEach(
+              t =>
+                t.classList.remove('active')
+            );
 
+            tab.classList.add('active');
 
-      /*
-        Highlight only the active tab.
-      */
+            renderProducts(
+              tab.dataset.filter
+            );
 
-      navigationTabs.forEach(
+          }
+        )
 
-        function(
-          tab,
-          index
-        ) {
+    );
 
-          tab.classList.toggle(
+    document
+      .querySelectorAll('[data-filter-jump]')
+      .forEach(
 
-            "active",
+        link =>
 
-            index ===
-            currentPage
+          link.addEventListener(
+            'click',
+            () => {
 
+              const target =
+                link.dataset.filterJump;
+
+              const tab =
+                tabs.find(
+                  t =>
+                    t.dataset.filter ===
+                    target
+                );
+
+              if(tab){
+
+                tabs.forEach(
+                  t =>
+                    t.classList.remove(
+                      'active'
+                    )
+                );
+
+                tab.classList.add(
+                  'active'
+                );
+
+                renderProducts(
+                  target
+                );
+
+              }
+
+            }
+          )
+
+      );
+
+    /* ====================================================
+       PRODUCT MODAL
+    ===================================================== */
+
+    const modal =
+      document.getElementById(
+        'productModal'
+      );
+
+    const modalClose =
+      document.getElementById(
+        'modalClose'
+      );
+
+    const modalDismiss =
+      document.getElementById(
+        'modalDismiss'
+      );
+
+    let lastFocus =
+      null;
+
+    function openProduct(slug){
+
+      const p =
+        PRODUCTS.find(
+          x =>
+            x.slug === slug
+        );
+
+      if(!p){
+        return;
+      }
+
+      lastFocus =
+        document.activeElement;
+
+      document.getElementById(
+        'modalCategory'
+      ).textContent =
+        p.category;
+
+      document.getElementById(
+        'modalTitle'
+      ).textContent =
+        p.title;
+
+      document.getElementById(
+        'modalDescription'
+      ).textContent =
+        p.description;
+
+      document.getElementById(
+        'modalType'
+      ).textContent =
+        p.type;
+
+      document.getElementById(
+        'modalPrice'
+      ).textContent =
+        money(p.price);
+
+      document.getElementById(
+        'modalBuy'
+      ).href =
+        `access-in.html?intent=buy&product=${encodeURIComponent(p.slug)}`;
+
+      modal.classList.add(
+        'open'
+      );
+
+      modal.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      document.body.style.overflow =
+        'hidden';
+
+      modalClose.focus();
+
+    }
+
+    function closeProduct(){
+
+      modal.classList.remove(
+        'open'
+      );
+
+      modal.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      document.body.style.overflow =
+        '';
+
+      if(lastFocus){
+        lastFocus.focus();
+      }
+
+    }
+
+    modalClose.addEventListener(
+      'click',
+      closeProduct
+    );
+
+    modalDismiss.addEventListener(
+      'click',
+      closeProduct
+    );
+
+    modal.addEventListener(
+      'click',
+      e => {
+
+        if(e.target === modal){
+          closeProduct();
+        }
+
+      }
+    );
+
+    document.addEventListener(
+      'keydown',
+      e => {
+
+        if(
+          e.key === 'Escape' &&
+          modal.classList.contains('open')
+        ){
+          closeProduct();
+        }
+
+      }
+    );
+
+    /* ====================================================
+       LOGIN MENU
+    ===================================================== */
+
+    const loginBtn =
+      document.getElementById(
+        'loginBtn'
+      );
+
+    const loginMenu =
+      document.getElementById(
+        'loginMenu'
+      );
+
+    loginBtn.addEventListener(
+      'click',
+      e => {
+
+        e.stopPropagation();
+
+        const open =
+          loginMenu.classList.toggle(
+            'open'
+          );
+
+        loginBtn.setAttribute(
+          'aria-expanded',
+          String(open)
+        );
+
+      }
+    );
+
+    document.addEventListener(
+      'click',
+      e => {
+
+        if(
+          !loginMenu.contains(e.target) &&
+          e.target !== loginBtn
+        ){
+
+          loginMenu.classList.remove(
+            'open'
+          );
+
+          loginBtn.setAttribute(
+            'aria-expanded',
+            'false'
           );
 
         }
 
+      }
+    );
+
+    /* ====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    const menuToggle =
+      document.getElementById(
+        'menuToggle'
       );
 
+    const mainNav =
+      document.getElementById(
+        'mainNav'
+      );
 
+    menuToggle.addEventListener(
+      'click',
+      () => {
 
-      /*
-        Change browser title.
-      */
+        const open =
+          mainNav.classList.toggle(
+            'mobile-open'
+          );
 
-      document.title =
-        pageTitles[
-          currentPage
-        ];
-
-
-
-      /*
-        Update URL.
-
-        Example:
-        rizsim.com/#research
-      */
-
-      if (
-        updateURL
-      ) {
-
-        history.pushState(
-
-          {
-            page:
-              currentPage
-          },
-
-          "",
-
-          "#" +
-          pageSlugs[
-            currentPage
-          ]
-
+        menuToggle.setAttribute(
+          'aria-expanded',
+          String(open)
         );
 
       }
-
-
-
-      /*
-        When a different tab opens,
-        start that page from the top.
-      */
-
-      if (
-        pages[
-          currentPage
-        ]
-      ) {
-
-        pages[
-          currentPage
-        ].scrollTo({
-
-          top: 0,
-
-          left: 0,
-
-          behavior:
-            "instant"
-
-        });
-
-      }
-
-
-
-      /*
-        On phones, keep active navigation
-        tab visible in the header.
-      */
-
-      const activeTab =
-        navigationTabs[
-          currentPage
-        ];
-
-
-      if (
-        activeTab
-      ) {
-
-        activeTab.scrollIntoView({
-
-          behavior:
-            "smooth",
-
-          inline:
-            "center",
-
-          block:
-            "nearest"
-
-        });
-
-      }
-
-    }
-
-
-
-    /* =========================================================
-       NAVIGATION TABS
-
-       ONLY these tabs change pages.
-       ========================================================= */
-
-    navigationTabs.forEach(
-
-      function(
-        tab,
-        index
-      ) {
-
-
-        tab.addEventListener(
-
-          "click",
-
-          function() {
-
-
-            goToPage(
-              index
-            );
-
-
-          }
-
-        );
-
-
-      }
-
     );
 
+    /* ====================================================
+       PAGE NAVIGATION EFFECT
+    ===================================================== */
 
+    document
+      .querySelectorAll('a[href^="#"]')
+      .forEach(
 
-    /* =========================================================
-       RIZSIM LOGO RETURNS HOME
+        link =>
 
-       The RizSim brand itself acts as Home.
-       ========================================================= */
+          link.addEventListener(
+            'click',
+            () => {
 
-    brandButton.addEventListener(
+              document.body.classList.remove(
+                'nav-transition'
+              );
 
-      "click",
+              void document.body.offsetWidth;
 
-      function() {
+              document.body.classList.add(
+                'nav-transition'
+              );
 
+              setTimeout(
+                () =>
+                  document.body.classList.remove(
+                    'nav-transition'
+                  ),
+                360
+              );
 
-        goToPage(
-          0
-        );
+              mainNav.classList.remove(
+                'mobile-open'
+              );
 
+              menuToggle.setAttribute(
+                'aria-expanded',
+                'false'
+              );
 
-      }
-
-    );
-
-
-
-    /* =========================================================
-       HASH DETECTION
-       ========================================================= */
-
-    function getPageFromHash() {
-
-
-      const currentHash =
-        window.location.hash
-
-          .replace(
-            "#",
-            ""
+            }
           )
 
-          .toLowerCase();
-
-
-
-      const pageIndex =
-        pageSlugs.indexOf(
-          currentHash
-        );
-
-
-
-      if (
-        pageIndex >= 0
-      ) {
-
-        return pageIndex;
-
-      }
-
-
-
-      return 0;
-
-    }
-
-
-
-    /* =========================================================
-       BROWSER BACK/FORWARD
-       ========================================================= */
-
-    window.addEventListener(
-
-      "popstate",
-
-      function() {
-
-
-        goToPage(
-
-          getPageFromHash(),
-
-          false
-
-        );
-
-
-      }
-
-    );
-
-
-
-    /* =========================================================
-       CONTACT DEMONSTRATION
-       ========================================================= */
-
-    const sendMessageButton =
-      document.getElementById(
-        "sendMessageButton"
       );
 
+    /* ====================================================
+       CURRENT YEAR
+    ===================================================== */
 
-    const contactNote =
-      document.getElementById(
-        "contactNote"
-      );
+    document.getElementById(
+      'year'
+    ).textContent =
+      new Date().getFullYear();
 
+    /* ====================================================
+       INITIAL CATALOGUE
+    ===================================================== */
 
-    sendMessageButton.addEventListener(
-
-      "click",
-
-      function() {
-
-
-        contactNote.textContent =
-          "The contact interface is working. We will connect actual email delivery in a later stage.";
-
-
-        contactNote.style.color =
-          "#008792";
-
-
-        contactNote.style.fontWeight =
-          "750";
-
-
-      }
-
-    );
-
-
-
-    /* =========================================================
-       INITIAL PAGE
-       ========================================================= */
-
-    goToPage(
-
-      getPageFromHash(),
-
-      false
-
-    );
+    renderProducts();
 
   </script>
 
-
 </body>
-
 </html>
