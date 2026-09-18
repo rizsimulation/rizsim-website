@@ -4,27 +4,47 @@
 
 :root {
 
-  --navy: #061827;
-  --navy-deep: #03101b;
-  --navy-medium: #082336;
+  --navy:
+    #061827;
 
-  --teal: #18b8b0;
-  --teal-light: #59ded6;
-  --teal-soft: #def8f5;
+  --navy-light:
+    #0b3c4e;
 
-  --gold: #efc15b;
-  --gold-light: #ffd87b;
+  --navy-teal:
+    #0d4b58;
 
-  --white: #ffffff;
+  --teal:
+    #18b8b0;
 
-  --ink: #081d2d;
-  --muted: #687d8a;
+  --teal-light:
+    #59ded6;
 
-  --line: #dce7eb;
+  --teal-soft:
+    #def8f5;
 
-  --surface: #f7fafb;
+  --gold:
+    #efc15b;
 
-  --max-width: 1220px;
+  --gold-light:
+    #ffd87b;
+
+  --white:
+    #ffffff;
+
+  --ink:
+    #081d2d;
+
+  --muted:
+    #687d8a;
+
+  --line:
+    #dce7eb;
+
+  --surface:
+    #f7fafb;
+
+  --max-width:
+    1220px;
 
 }
 
@@ -107,16 +127,17 @@ img {
 
   outline:
     3px solid
-    rgba(89, 222, 214, .42);
+    rgba(89,222,214,.42);
 
-  outline-offset: 3px;
+  outline-offset:
+    3px;
 
 }
 
 
 
 /* ============================================================
-   SPLASH SCREEN
+   SPLASH
 ============================================================ */
 
 .splash-screen {
@@ -139,13 +160,13 @@ img {
 
     radial-gradient(
       circle at 50% 44%,
-      rgba(40, 201, 192, .17),
+      rgba(40,201,192,.17),
       transparent 31%
     ),
 
     radial-gradient(
       circle at 82% 18%,
-      rgba(25, 117, 167, .12),
+      rgba(25,117,167,.12),
       transparent 28%
     ),
 
@@ -200,7 +221,7 @@ img {
   top: 12%;
 
   background:
-    rgba(22, 184, 176, .09);
+    rgba(22,184,176,.09);
 
   animation:
     splashFloatOne
@@ -220,7 +241,7 @@ img {
   bottom: 5%;
 
   background:
-    rgba(46, 117, 176, .10);
+    rgba(46,117,176,.10);
 
   animation:
     splashFloatTwo
@@ -272,10 +293,7 @@ img {
   z-index: 4;
 
   width:
-    min(
-      1200px,
-      94vw
-    );
+    min(1200px,94vw);
 
   display: flex;
 
@@ -288,13 +306,12 @@ img {
 }
 
 
+/* LARGE CENTRED SPLASH LOGO */
+
 .splash-logo {
 
   width:
-    min(
-      1080px,
-      92vw
-    );
+    min(1080px,92vw);
 
   max-height: 55vh;
 
@@ -332,13 +349,12 @@ img {
 }
 
 
+/* THICKER PROGRESS */
+
 .splash-progress-track {
 
   width:
-    min(
-      500px,
-      63vw
-    );
+    min(500px,63vw);
 
   height: 9px;
 
@@ -442,7 +458,8 @@ img {
       translateY(22px)
       scale(.95);
 
-    filter: blur(5px);
+    filter:
+      blur(5px);
 
   }
 
@@ -556,51 +573,53 @@ img {
 
   z-index: 5000;
 
-  height: 108px;
+  height: 112px;
 
-  color: #ffffff;
+  color: white;
 
   background:
 
     radial-gradient(
-      ellipse at 9% 50%,
-      rgba(55, 206, 197, .12) 0%,
-      rgba(35, 160, 158, .045) 32%,
-      transparent 48%
+      circle at 10% 50%,
+      rgba(145,240,232,.20),
+      transparent 27%
+    ),
+
+    radial-gradient(
+      circle at 78% -20%,
+      rgba(62,205,198,.11),
+      transparent 34%
     ),
 
     linear-gradient(
-      90deg,
-      #03101b 0%,
-      #061827 48%,
-      #082336 100%
+      105deg,
+      #0b3447 0%,
+      #0c4051 48%,
+      #0d4b58 100%
     );
 
   border-bottom:
     1px solid
-    rgba(85, 222, 214, .11);
+    rgba(111,226,218,.17);
 
   box-shadow:
     0 8px 28px
-    rgba(3, 16, 27, .16);
+    rgba(3,25,39,.14);
 
 }
 
 
-
-/* ============================================================
-   NAV AMBIENT GLOW
-============================================================ */
+/* AMBIENT LIGHT BEHIND LOGO */
 
 .nav-glow {
 
   position: absolute;
 
-  width: 420px;
-  height: 145px;
+  width: 470px;
+  height: 160px;
 
-  left: -35px;
-  top: -18px;
+  left: -15px;
+  top: -22px;
 
   border-radius: 50%;
 
@@ -608,22 +627,17 @@ img {
 
     radial-gradient(
       ellipse,
-      rgba(94, 226, 217, .13) 0%,
-      rgba(49, 194, 187, .045) 42%,
+      rgba(175,246,240,.22) 0%,
+      rgba(83,218,209,.09) 40%,
       transparent 72%
     );
 
-  filter: blur(19px);
+  filter: blur(20px);
 
   pointer-events: none;
 
 }
 
-
-
-/* ============================================================
-   NAVIGATION SHELL
-============================================================ */
 
 .nav-shell {
 
@@ -637,7 +651,7 @@ img {
       calc(100% - 30px)
     );
 
-  height: 108px;
+  height: 112px;
 
   margin-inline: auto;
 
@@ -645,26 +659,25 @@ img {
 
   align-items: center;
 
-  gap: 20px;
+  gap: 18px;
 
 }
 
 
 
 /* ============================================================
-   NAVIGATION LOGO
-   SLIGHTLY SMALLER / PREMIUM BALANCE
+   LARGE NAVIGATION LOGO
 ============================================================ */
 
 .nav-logo-link {
 
   position: relative;
 
-  width: 320px;
+  width: 350px;
 
-  min-width: 320px;
+  min-width: 350px;
 
-  height: 102px;
+  height: 108px;
 
   display: block;
 
@@ -681,20 +694,18 @@ img {
 
   width: auto;
 
-  height: 185px;
+  height: 220px;
 
   max-width: none;
 
   max-height: none;
 
-  left: -9px;
+  left: -12px;
 
   top: 50%;
 
   transform:
     translateY(-50%);
-
-  object-fit: contain;
 
   background: transparent;
 
@@ -703,13 +714,13 @@ img {
   filter:
 
     drop-shadow(
-      0 1px 1px
-      rgba(255,255,255,.04)
+      0 2px 2px
+      rgba(255,255,255,.08)
     )
 
     drop-shadow(
-      0 0 10px
-      rgba(78,219,210,.09)
+      0 0 17px
+      rgba(106,232,223,.15)
     );
 
 }
@@ -717,7 +728,7 @@ img {
 
 
 /* ============================================================
-   MAIN NAV LINKS
+   MAIN NAV
 ============================================================ */
 
 .main-nav {
@@ -732,7 +743,7 @@ img {
 
   justify-content: center;
 
-  gap: 4px;
+  gap: 3px;
 
 }
 
@@ -741,11 +752,10 @@ img {
 
   position: relative;
 
-  padding:
-    12px 14px;
+  padding: 12px 13px;
 
   color:
-    #d9e6eb;
+    rgba(244,249,250,.91);
 
   border-radius: 11px;
 
@@ -758,27 +768,25 @@ img {
   transition:
     color .22s ease,
     background .22s ease,
-    transform .22s ease,
-    box-shadow .22s ease;
+    box-shadow .22s ease,
+    transform .22s ease;
 
 }
-
 
 
 /* HOVER */
 
 .main-nav a:hover {
 
-  color: #63dfd8;
+  color: #72e8e0;
 
   background:
-    rgba(75, 212, 203, .075);
+    rgba(106,229,220,.09);
 
   transform:
     translateY(-1px);
 
 }
-
 
 
 /* ACTIVE PAGE */
@@ -788,7 +796,12 @@ img {
   color: var(--gold-light);
 
   background:
-    rgba(52, 190, 184, .075);
+
+    linear-gradient(
+      180deg,
+      rgba(70,211,202,.12),
+      rgba(70,211,202,.045)
+    );
 
   box-shadow:
 
@@ -796,12 +809,12 @@ img {
     0
     -2px
     0
-    var(--teal-light),
+    #59ded6,
 
     0
-    7px
-    22px
-    rgba(24,184,176,.06);
+    8px
+    24px
+    rgba(32,190,181,.08);
 
 }
 
@@ -812,9 +825,8 @@ img {
 
   position: absolute;
 
-  left: 29%;
-  right: 29%;
-
+  left: 28%;
+  right: 28%;
   bottom: 4px;
 
   height: 2px;
@@ -825,13 +837,13 @@ img {
 
     linear-gradient(
       90deg,
-      var(--teal-light),
-      var(--gold)
+      #59ded6,
+      #efc15b
     );
 
   box-shadow:
-    0 0 9px
-    rgba(85,222,214,.35);
+    0 0 10px
+    rgba(89,222,214,.42);
 
 }
 
@@ -854,22 +866,19 @@ img {
 }
 
 
-
-/* ACCESS OUT */
-
 .nav-access-out {
 
-  padding:
-    11px 14px;
+  padding: 11px 14px;
 
-  color: #dce8ed;
+  color:
+    rgba(244,249,250,.94);
 
   background:
-    rgba(255,255,255,.015);
+    rgba(4,35,50,.12);
 
   border:
     1px solid
-    rgba(255,255,255,.15);
+    rgba(218,245,244,.19);
 
   border-radius: 11px;
 
@@ -884,21 +893,16 @@ img {
 
 .nav-access-out:hover {
 
-  color: #ffffff;
+  color: white;
 
   background:
-    rgba(85,222,214,.07);
+    rgba(97,226,217,.10);
 
   border-color:
-    rgba(85,222,214,.38);
+    rgba(106,230,221,.45);
 
 }
 
-
-
-/* ============================================================
-   LOGIN
-============================================================ */
 
 .login-wrap {
   position: relative;
@@ -907,17 +911,16 @@ img {
 
 .login-button {
 
-  padding:
-    11px 19px;
+  padding: 11px 19px;
 
-  color: #03222a;
+  color: #052733;
 
   background:
 
     linear-gradient(
       135deg,
-      #64e5dc,
-      #2abcb6
+      #69e4dc,
+      #42c8c2
     );
 
   border: 0;
@@ -928,7 +931,7 @@ img {
 
   box-shadow:
     0 8px 22px
-    rgba(38,192,184,.19);
+    rgba(41,194,187,.22);
 
   transition: .2s ease;
 
@@ -944,15 +947,15 @@ img {
 
     linear-gradient(
       135deg,
-      #7aeae2,
-      #3dc9c2
+      #82ebe4,
+      #55d4cd
     );
 
 }
 
 
 
-/* LOGIN MENU */
+/* LOGIN DROPDOWN */
 
 .login-menu {
 
@@ -971,11 +974,10 @@ img {
 
   color: var(--ink);
 
-  background: #ffffff;
+  background: white;
 
   border:
-    1px solid
-    var(--line);
+    1px solid var(--line);
 
   border-radius: 17px;
 
@@ -1009,10 +1011,7 @@ img {
 
 
 .login-menu a:hover {
-
-  background:
-    #f1fbfa;
-
+  background: #f1fbfa;
 }
 
 
@@ -1098,7 +1097,7 @@ img {
   width: 19px;
   height: 2px;
 
-  background: #ffffff;
+  background: white;
 
   border-radius: 99px;
 
@@ -1116,7 +1115,7 @@ img {
 
   min-height: 70vh;
 
-  background: #ffffff;
+  background: white;
 
   will-change:
     transform,
@@ -1279,7 +1278,7 @@ body.page-exit-prev .page-content {
 
   place-items: center;
 
-  color: #ffffff;
+  color: white;
 
   background:
     rgba(6,24,39,.88);
@@ -1348,7 +1347,7 @@ body.page-exit-prev .page-content {
   padding:
     72px 0 82px;
 
-  background: #ffffff;
+  background: white;
 
 }
 
@@ -1553,7 +1552,7 @@ body.page-exit-prev .page-content {
 
 .button-primary {
 
-  color: #ffffff;
+  color: white;
 
   background:
 
@@ -1574,7 +1573,7 @@ body.page-exit-prev .page-content {
 
   color: var(--navy);
 
-  background: #ffffff;
+  background: white;
 
   border:
     1px solid #d7e4e9;
@@ -1595,14 +1594,14 @@ body.page-exit-prev .page-content {
 
   color: var(--navy);
 
-  background: #ffffff;
+  background: white;
 
 }
 
 
 .button-dark {
 
-  color: #ffffff;
+  color: white;
 
   background: #071a29;
 
@@ -1663,7 +1662,7 @@ body.page-exit-prev .page-content {
 
 
 /* ============================================================
-   HERO EXPERIENCE PANEL
+   EXPERIENCE PANEL
 ============================================================ */
 
 .hero-visual {
@@ -1709,14 +1708,11 @@ body.page-exit-prev .page-content {
   z-index: 2;
 
   width:
-    min(
-      520px,
-      95%
-    );
+    min(520px,95%);
 
   padding: 28px;
 
-  color: #ffffff;
+  color: white;
 
   background:
 
@@ -2032,7 +2028,7 @@ body.page-exit-prev .page-content {
 
   z-index: 2;
 
-  color: #ffffff;
+  color: white;
 
   font-size: .72rem;
 
@@ -2226,7 +2222,7 @@ body.page-exit-prev .page-content {
   padding:
     94px 0;
 
-  background: #ffffff;
+  background: white;
 
 }
 
@@ -2322,7 +2318,7 @@ body.page-exit-prev .page-content {
 
   flex-direction: column;
 
-  background: #ffffff;
+  background: white;
 
   border:
     1px solid #dce8ec;
@@ -2361,7 +2357,7 @@ body.page-exit-prev .page-content {
 
   place-items: center;
 
-  color: #ffffff;
+  color: white;
 
   background:
 
@@ -2446,7 +2442,7 @@ body.page-exit-prev .page-content {
     linear-gradient(
       180deg,
       #f8fbfc,
-      #ffffff
+      white
     );
 
 }
@@ -2553,7 +2549,7 @@ body.page-exit-prev .page-content {
   padding:
     25px 0 90px;
 
-  background: #ffffff;
+  background: white;
 
 }
 
@@ -2571,7 +2567,7 @@ body.page-exit-prev .page-content {
 
   gap: 40px;
 
-  color: #ffffff;
+  color: white;
 
   background:
 
@@ -2709,7 +2705,7 @@ body.page-exit-prev .page-content {
   margin:
     0 0 13px;
 
-  color: #ffffff;
+  color: white;
 
   font-size: .83rem;
 
@@ -2762,25 +2758,25 @@ body.page-exit-prev .page-content {
 
 
 /* ============================================================
-   RESPONSIVE - LAPTOP
+   RESPONSIVE
 ============================================================ */
 
 @media (max-width: 1240px) {
 
   .nav-logo-link {
 
-    width: 280px;
+    width: 300px;
 
-    min-width: 280px;
+    min-width: 300px;
 
   }
 
 
   .nav-logo {
 
-    height: 164px;
+    height: 190px;
 
-    left: -8px;
+    left: -10px;
 
   }
 
@@ -2796,45 +2792,39 @@ body.page-exit-prev .page-content {
 
 
   .nav-access-out {
-
     display: none;
-
   }
 
 }
 
 
 
-/* ============================================================
-   RESPONSIVE - TABLET
-============================================================ */
-
 @media (max-width: 980px) {
 
   .site-header,
   .nav-shell {
 
-    height: 96px;
+    height: 100px;
 
   }
 
 
   .nav-logo-link {
 
-    width: 238px;
+    width: 250px;
 
-    min-width: 238px;
+    min-width: 250px;
 
-    height: 90px;
+    height: 96px;
 
   }
 
 
   .nav-logo {
 
-    height: 145px;
+    height: 162px;
 
-    left: -7px;
+    left: -8px;
 
   }
 
@@ -2845,8 +2835,7 @@ body.page-exit-prev .page-content {
 
     left: 16px;
     right: 16px;
-
-    top: 90px;
+    top: 94px;
 
     height: auto;
 
@@ -2862,13 +2851,13 @@ body.page-exit-prev .page-content {
 
       linear-gradient(
         145deg,
-        #03101b,
-        #082336
+        #0a3447,
+        #0d4a58
       );
 
     border:
       1px solid
-      rgba(85,222,214,.13);
+      rgba(99,226,217,.16);
 
     border-radius: 16px;
 
@@ -2880,9 +2869,7 @@ body.page-exit-prev .page-content {
 
 
   .main-nav.is-open {
-
     display: flex;
-
   }
 
 
@@ -2897,9 +2884,7 @@ body.page-exit-prev .page-content {
 
 
   .mobile-menu-button {
-
     display: flex;
-
   }
 
 
@@ -2912,9 +2897,7 @@ body.page-exit-prev .page-content {
 
 
   .hero-copy {
-
     max-width: 780px;
-
   }
 
 
@@ -2939,9 +2922,7 @@ body.page-exit-prev .page-content {
 
 
   .value-grid article:nth-child(2) {
-
     border-right: 0;
-
   }
 
 
@@ -2965,9 +2946,7 @@ body.page-exit-prev .page-content {
 
 
   .home-card {
-
     min-height: 250px;
-
   }
 
 
@@ -2980,19 +2959,12 @@ body.page-exit-prev .page-content {
 
 
   .footer-brand {
-
-    grid-column:
-      1 / -1;
-
+    grid-column: 1 / -1;
   }
 
 }
 
 
-
-/* ============================================================
-   RESPONSIVE - MOBILE
-============================================================ */
 
 @media (max-width: 680px) {
 
@@ -3014,20 +2986,20 @@ body.page-exit-prev .page-content {
 
   .nav-logo-link {
 
-    width: 198px;
+    width: 205px;
 
-    min-width: 198px;
+    min-width: 205px;
 
-    height: 86px;
+    height: 92px;
 
   }
 
 
   .nav-logo {
 
-    height: 125px;
+    height: 138px;
 
-    left: -6px;
+    left: -7px;
 
   }
 
@@ -3065,9 +3037,7 @@ body.page-exit-prev .page-content {
 
 
   .hero-lead {
-
     font-size: 1rem;
-
   }
 
 
@@ -3079,38 +3049,28 @@ body.page-exit-prev .page-content {
 
 
   .proof-divider {
-
     display: none;
-
   }
 
 
   .proof-item {
-
     width: 30%;
-
   }
 
 
   .hero-visual {
-
     min-height: 475px;
-
   }
 
 
   .floating-one,
   .floating-two {
-
     display: none;
-
   }
 
 
   .experience-panel {
-
     width: 100%;
-
   }
 
 
@@ -3141,9 +3101,7 @@ body.page-exit-prev .page-content {
 
 
   .audience-row > span:last-child {
-
     grid-column: 2;
-
   }
 
 
@@ -3167,10 +3125,7 @@ body.page-exit-prev .page-content {
 
 
   .footer-brand {
-
-    grid-column:
-      1 / -1;
-
+    grid-column: 1 / -1;
   }
 
 
@@ -3206,55 +3161,43 @@ body.page-exit-prev .page-content {
 
 
 
-/* ============================================================
-   RESPONSIVE - SMALL MOBILE
-============================================================ */
-
 @media (max-width: 430px) {
 
   .nav-logo-link {
 
-    width: 168px;
+    width: 174px;
 
-    min-width: 168px;
+    min-width: 174px;
 
   }
 
 
   .nav-logo {
 
-    height: 108px;
+    height: 118px;
 
-    left: -5px;
+    left: -6px;
 
   }
 
 
   .login-button {
-
     display: none;
-
   }
 
 
   .hero-buttons {
-
     flex-direction: column;
-
   }
 
 
   .button {
-
     width: 100%;
-
   }
 
 
   .proof-item {
-
     width: 100%;
-
   }
 
 
@@ -3268,17 +3211,12 @@ body.page-exit-prev .page-content {
 
 
   .footer-grid {
-
-    grid-template-columns:
-      1fr;
-
+    grid-template-columns: 1fr;
   }
 
 
   .footer-bottom {
-
     flex-direction: column;
-
   }
 
 }
@@ -3306,9 +3244,7 @@ body.page-exit-prev .page-content {
 
 
   html {
-
     scroll-behavior: auto;
-
   }
 
 }
