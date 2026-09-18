@@ -667,6 +667,9 @@ img {
 
 /* ============================================================
    LARGE NAVIGATION LOGO
+
+   The image contains transparent padding.
+   We deliberately enlarge and crop the transparent area.
 ============================================================ */
 
 .nav-logo-link {
