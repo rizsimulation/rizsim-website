@@ -3251,3 +3251,605 @@ body.page-exit-prev .page-content {
   }
 
 }
+/* ============================================================
+   RIZSIM NAVIGATION LOGO — FINAL LARGE FIT
+   Paste at the VERY BOTTOM of site.css
+============================================================ */
+
+
+/* NAVIGATION BAR */
+
+.site-header {
+
+  position: sticky;
+  top: 0;
+  z-index: 5000;
+
+  height: 118px;
+
+  color: #ffffff;
+
+  background:
+
+    radial-gradient(
+      ellipse at 10% 50%,
+      rgba(118, 235, 226, .27) 0%,
+      rgba(64, 202, 194, .12) 25%,
+      transparent 43%
+    ),
+
+    linear-gradient(
+      105deg,
+      #0e4858 0%,
+      #0b3c50 38%,
+      #082c43 100%
+    );
+
+  border-bottom:
+    1px solid rgba(110, 226, 217, .18);
+
+  box-shadow:
+    0 8px 28px rgba(3, 25, 39, .15);
+
+}
+
+
+/* STRONGER AMBIENT GLOW BEHIND LOGO */
+
+.nav-glow {
+
+  position: absolute;
+
+  width: 470px;
+  height: 170px;
+
+  left: -15px;
+  top: -25px;
+
+  border-radius: 50%;
+
+  background:
+
+    radial-gradient(
+      ellipse,
+      rgba(170, 246, 239, .32) 0%,
+      rgba(81, 217, 208, .15) 38%,
+      transparent 72%
+    );
+
+  filter: blur(22px);
+
+  pointer-events: none;
+
+}
+
+
+/* NAVIGATION CONTENT */
+
+.nav-shell {
+
+  position: relative;
+  z-index: 2;
+
+  width:
+    min(
+      1380px,
+      calc(100% - 24px)
+    );
+
+  height: 118px;
+
+  margin-inline: auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+}
+
+
+/* ============================================================
+   LOGO WINDOW
+
+   This is the visible area allocated to the logo.
+============================================================ */
+
+.nav-logo-link {
+
+  position: relative;
+
+  width: 345px;
+  min-width: 345px;
+
+  height: 112px;
+
+  display: block;
+
+  overflow: hidden;
+
+  flex: 0 0 auto;
+
+}
+
+
+/* ============================================================
+   ACTUAL LOGO IMAGE
+
+   The original PNG has large transparent margins.
+   This zooms the actual logo artwork dramatically.
+============================================================ */
+
+.nav-logo {
+
+  position: absolute;
+
+  width: 560px !important;
+
+  max-width: none !important;
+  max-height: none !important;
+
+  height: auto !important;
+
+  left: -104px;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%)
+    scale(1.72);
+
+  transform-origin:
+    center center;
+
+  object-fit: contain;
+
+  background: transparent;
+
+  border: 0;
+
+  filter:
+
+    brightness(1.18)
+
+    drop-shadow(
+      0 1px 2px
+      rgba(255, 255, 255, .12)
+    )
+
+    drop-shadow(
+      0 0 12px
+      rgba(89, 222, 214, .22)
+    );
+
+}
+
+
+/* ============================================================
+   NAVIGATION LINKS
+============================================================ */
+
+.main-nav {
+
+  flex: 1;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+}
+
+
+.main-nav a {
+
+  position: relative;
+
+  padding: 12px 14px;
+
+  color: rgba(247, 251, 252, .93);
+
+  border-radius: 11px;
+
+  font-size: .90rem;
+
+  font-weight: 720;
+
+  transition:
+    color .22s ease,
+    background .22s ease,
+    transform .22s ease,
+    box-shadow .22s ease;
+
+}
+
+
+/* HOVER */
+
+.main-nav a:hover {
+
+  color: #72e8df;
+
+  background:
+    rgba(103, 229, 220, .10);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+/* ACTIVE TAB */
+
+.main-nav a.is-active {
+
+  color: #ffd978;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(72, 211, 202, .12),
+      rgba(72, 211, 202, .045)
+    );
+
+  box-shadow:
+
+    inset
+    0
+    -2px
+    0
+    #5ce2da,
+
+    0
+    8px
+    24px
+    rgba(32, 190, 181, .08);
+
+}
+
+
+.main-nav a.is-active::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 28%;
+  right: 28%;
+
+  bottom: 4px;
+
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #5ce2da,
+      #efc15b
+    );
+
+  box-shadow:
+    0 0 10px rgba(89, 222, 214, .44);
+
+}
+
+
+/* ============================================================
+   ACCESS OUT
+============================================================ */
+
+.nav-access-out {
+
+  padding: 11px 14px;
+
+  color: rgba(247, 251, 252, .94);
+
+  background:
+    rgba(4, 35, 50, .12);
+
+  border:
+    1px solid rgba(218, 245, 244, .20);
+
+  border-radius: 11px;
+
+  font-size: .84rem;
+
+  font-weight: 750;
+
+  transition: .2s ease;
+
+}
+
+
+.nav-access-out:hover {
+
+  color: #ffffff;
+
+  background:
+    rgba(97, 226, 217, .10);
+
+  border-color:
+    rgba(106, 230, 221, .46);
+
+}
+
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+.login-button {
+
+  padding: 11px 19px;
+
+  color: #052733;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #73e7df,
+      #45cbc4
+    );
+
+  border: 0;
+
+  border-radius: 11px;
+
+  font-weight: 850;
+
+  box-shadow:
+    0 8px 22px rgba(41, 194, 187, .22);
+
+}
+
+
+.login-button:hover {
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #8aeee7,
+      #59d7d0
+    );
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+/* ============================================================
+   LAPTOP / SMALL DESKTOP
+============================================================ */
+
+@media (max-width: 1240px) {
+
+  .nav-logo-link {
+
+    width: 285px;
+    min-width: 285px;
+
+  }
+
+
+  .nav-logo {
+
+    width: 475px !important;
+
+    left: -90px;
+
+    transform:
+      translateY(-50%)
+      scale(1.62);
+
+  }
+
+
+  .main-nav a {
+
+    padding: 11px 9px;
+
+    font-size: .82rem;
+
+  }
+
+
+  .nav-access-out {
+
+    display: none;
+
+  }
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 980px) {
+
+  .site-header,
+  .nav-shell {
+
+    height: 100px;
+
+  }
+
+
+  .nav-logo-link {
+
+    width: 245px;
+    min-width: 245px;
+
+    height: 94px;
+
+  }
+
+
+  .nav-logo {
+
+    width: 405px !important;
+
+    left: -75px;
+
+    transform:
+      translateY(-50%)
+      scale(1.56);
+
+  }
+
+
+  .main-nav {
+
+    position: absolute;
+
+    left: 16px;
+    right: 16px;
+
+    top: 94px;
+
+    height: auto;
+
+    padding: 10px;
+
+    display: none;
+
+    flex-direction: column;
+    align-items: stretch;
+
+    background:
+
+      linear-gradient(
+        145deg,
+        #0c4051,
+        #092d43
+      );
+
+    border:
+      1px solid rgba(99, 226, 217, .16);
+
+    border-radius: 16px;
+
+    box-shadow:
+      0 22px 50px rgba(3, 16, 27, .26);
+
+  }
+
+
+  .main-nav.is-open {
+
+    display: flex;
+
+  }
+
+
+  .main-nav a {
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+  }
+
+
+  .mobile-menu-button {
+
+    display: flex;
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 680px) {
+
+  .nav-shell {
+
+    width:
+      calc(100% - 18px);
+
+  }
+
+
+  .nav-logo-link {
+
+    width: 205px;
+    min-width: 205px;
+
+    height: 90px;
+
+  }
+
+
+  .nav-logo {
+
+    width: 340px !important;
+
+    left: -63px;
+
+    transform:
+      translateY(-50%)
+      scale(1.50);
+
+  }
+
+
+  .login-button {
+
+    padding: 10px 13px;
+
+    font-size: .81rem;
+
+  }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 430px) {
+
+  .nav-logo-link {
+
+    width: 175px;
+    min-width: 175px;
+
+  }
+
+
+  .nav-logo {
+
+    width: 292px !important;
+
+    left: -54px;
+
+    transform:
+      translateY(-50%)
+      scale(1.46);
+
+  }
+
+
+  .login-button {
+
+    display: none;
+
+  }
+
+}
