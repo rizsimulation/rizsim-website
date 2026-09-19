@@ -17,7 +17,7 @@
 
   <meta
     name="theme-color"
-    content="#0b3c4e"
+    content="#9fc9c6"
   >
 
   <title>
@@ -41,9 +41,9 @@
 <body data-page="home">
 
 
-  <!-- ======================================================
-       SPLASH SCREEN
-  ======================================================= -->
+  <!-- ============================================================
+       SPLASH
+  ============================================================ -->
 
   <div
     id="rizsimSplash"
@@ -53,7 +53,6 @@
 
     <div class="splash-glow splash-glow-one"></div>
     <div class="splash-glow splash-glow-two"></div>
-
     <div class="splash-sweep"></div>
 
 
@@ -70,9 +69,7 @@
         class="splash-progress-track"
         aria-hidden="true"
       >
-
         <div class="splash-progress"></div>
-
       </div>
 
 
@@ -86,9 +83,9 @@
 
 
 
-  <!-- ======================================================
+  <!-- ============================================================
        NAVIGATION
-  ======================================================= -->
+  ============================================================ -->
 
   <header class="site-header">
 
@@ -96,6 +93,28 @@
 
 
     <div class="nav-shell">
+
+
+      <!-- SIDEBAR BUTTON -->
+
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        type="button"
+        aria-label="Open sidebar"
+        aria-expanded="false"
+        aria-controls="siteSidebar"
+        data-swipe-block
+      >
+
+        <span class="sidebar-toggle-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+
+      </button>
+
 
 
       <!-- LOGO -->
@@ -117,7 +136,7 @@
 
 
 
-      <!-- MAIN NAVIGATION -->
+      <!-- NAVIGATION TABS -->
 
       <nav
         class="main-nav"
@@ -177,19 +196,13 @@
 
 
 
-      <!-- ACCOUNT ACTIONS -->
+      <!-- LOGIN -->
 
       <div class="nav-actions">
 
-        <a
-          class="nav-access-out"
-          href="access-out.html"
-        >
-          Access OUT
-        </a>
-
 
         <div class="login-wrap">
+
 
           <button
             class="login-button"
@@ -198,44 +211,187 @@
             aria-expanded="false"
             aria-controls="loginMenu"
           >
-            Login
+
+            <span>
+              Login
+            </span>
+
+            <svg
+              class="login-chevron"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M5 7.5L10 12.5L15 7.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
           </button>
+
 
 
           <div
             class="login-menu"
             id="loginMenu"
+            aria-hidden="true"
+            data-swipe-block
           >
 
-            <a href="access-in.html">
+
+            <div class="login-menu-heading">
+
+              <span class="login-menu-eyebrow">
+                RIZSIM ACCESS
+              </span>
 
               <strong>
-                My Learning
+                Choose your workspace
               </strong>
 
-              <span>
-                Buy, launch and continue learning.
+            </div>
+
+
+
+            <a
+              class="login-floating-option"
+              href="access-in.html"
+            >
+
+              <div class="login-option-icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="M4 6.5C4 5.67 4.67 5 5.5 5H18.5C19.33 5 20 5.67 20 6.5V16.5C20 17.33 19.33 18 18.5 18H5.5C4.67 18 4 17.33 4 16.5V6.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+
+                  <path
+                    d="M8 21H16M12 18V21"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div class="login-option-copy">
+
+                <strong>
+                  My Learning
+                </strong>
+
+                <span>
+                  Buy, launch and continue your learning.
+                </span>
+
+              </div>
+
+
+              <span class="login-option-arrow">
+                →
               </span>
 
             </a>
 
 
-            <a href="access-out.html">
 
-              <strong>
-                Access OUT
-              </strong>
+            <a
+              class="login-floating-option"
+              href="access-out.html"
+            >
 
-              <span>
-                Faculty, institutional and management access.
+              <div class="login-option-icon faculty">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="M4 20V10M10 20V4M16 20V13M22 20H2"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div class="login-option-copy">
+
+                <strong>
+                  Faculty Dashboard
+                </strong>
+
+                <span>
+                  Faculty, facilitators and institutional access.
+                </span>
+
+              </div>
+
+
+              <span class="login-option-arrow">
+                →
               </span>
 
             </a>
+
+
+
+            <button
+              class="login-collapse-button"
+              id="loginCollapseButton"
+              type="button"
+              aria-label="Collapse login menu"
+            >
+
+              <svg
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M5 12L10 7L15 12"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+              </svg>
+
+            </button>
+
 
           </div>
 
         </div>
 
+
+
+        <!-- MOBILE NAV BUTTON -->
 
         <button
           class="mobile-menu-button"
@@ -251,8 +407,8 @@
 
         </button>
 
-      </div>
 
+      </div>
 
     </div>
 
@@ -260,9 +416,38 @@
 
 
 
-  <!-- ======================================================
-       PAGE
-  ======================================================= -->
+  <!-- ============================================================
+       LEFT SIDEBAR
+  ============================================================ -->
+
+  <div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <aside
+    class="site-sidebar"
+    id="siteSidebar"
+    aria-label="RizSim sidebar"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div class="sidebar-inner">
+
+      <!-- Sidebar intentionally empty for now -->
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- ============================================================
+       PAGE CONTENT
+  ============================================================ -->
 
   <main
     id="pageContent"
@@ -270,9 +455,7 @@
   >
 
 
-    <!-- ====================================================
-         HERO
-    ===================================================== -->
+    <!-- HERO -->
 
     <section class="home-hero">
 
@@ -284,6 +467,7 @@
 
 
         <div class="hero-copy">
+
 
           <div class="hero-kicker">
 
@@ -298,6 +482,7 @@
 
             Learning
             <br>
+
             should move
 
             <span>
@@ -339,6 +524,7 @@
             </a>
 
           </div>
+
 
 
           <div class="hero-proof">
@@ -391,11 +577,12 @@
 
           </div>
 
+
         </div>
 
 
 
-        <!-- HERO EXPERIENCE -->
+        <!-- EXPERIENCE PANEL -->
 
         <div
           class="hero-visual"
@@ -573,7 +760,6 @@
 
             </div>
 
-
           </div>
 
 
@@ -615,9 +801,7 @@
 
 
 
-    <!-- ====================================================
-         VALUE STRIP
-    ===================================================== -->
+    <!-- VALUE STRIP -->
 
     <section class="home-value-strip">
 
@@ -698,9 +882,7 @@
 
 
 
-    <!-- ====================================================
-         EXPLORE
-    ===================================================== -->
+    <!-- EXPLORE -->
 
     <section class="home-section">
 
@@ -840,9 +1022,7 @@
 
 
 
-    <!-- ====================================================
-         AUDIENCE
-    ===================================================== -->
+    <!-- AUDIENCE -->
 
     <section class="audience-section">
 
@@ -959,9 +1139,7 @@
 
 
 
-    <!-- ====================================================
-         CTA
-    ===================================================== -->
+    <!-- CTA -->
 
     <section class="home-cta">
 
@@ -998,7 +1176,7 @@
             </a>
 
             <a
-              class="button button-dark"
+              class="button button-primary"
               href="access-in.html"
             >
               My Learning
@@ -1018,9 +1196,9 @@
 
 
 
-  <!-- ======================================================
+  <!-- ============================================================
        FOOTER
-  ======================================================= -->
+  ============================================================ -->
 
   <footer class="site-footer">
 
@@ -1035,7 +1213,8 @@
         >
 
         <p>
-          Interactive learning through decisions, reflection and application.
+          Interactive learning through decisions,
+          reflection and application.
         </p>
 
       </div>
@@ -1083,7 +1262,7 @@
         </a>
 
         <a href="access-out.html">
-          Access OUT
+          Faculty Dashboard
         </a>
 
       </div>
@@ -1134,8 +1313,6 @@
   </footer>
 
 
-
-  <!-- SWIPE INDICATOR -->
 
   <div
     class="swipe-indicator"
