@@ -1,280 +1,939 @@
-<header class="site-header">
+<!doctype html>
 
-  <div class="nav-glow"></div>
+<html lang="en">
 
-  <div class="nav-shell">
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Explore RizSim browser-based interactive learning simulations."
+  >
+
+  <meta
+    name="theme-color"
+    content="#9fc9c6"
+  >
+
+  <title>
+    Simulations | RizSim
+  </title>
+
+  <link
+    rel="icon"
+    href="rizsim-r.png"
+    type="image/png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site.css"
+  >
 
 
-    <button
-      class="sidebar-toggle"
-      id="sidebarToggle"
-      type="button"
-      aria-label="Open sidebar"
-      aria-expanded="false"
-      aria-controls="siteSidebar"
-      data-swipe-block
-    >
+  <style>
 
-      <span class="sidebar-toggle-icon">
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
+    /* ========================================================
+       SIMULATIONS PAGE HERO
+    ========================================================= */
 
-    </button>
+    .sim-hero {
+      position: relative;
+
+      overflow: hidden;
+
+      padding:
+        78px 0 68px;
+
+      background: #ffffff;
+
+      border-bottom:
+        1px solid #e4ecef;
+    }
 
 
+    .sim-hero::before {
+      content: "";
 
-    <a
-      class="nav-logo-link"
-      href="index.html"
-      data-page-link
-      aria-label="RizSim Home"
-    >
+      position: absolute;
 
-      <img
-        class="nav-logo"
-        src="RizSim finalized logo.png"
-        alt="RizSim — From Knowing to Doing"
+      width: 500px;
+      height: 500px;
+
+      right: -220px;
+      top: -180px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(32,192,183,.10),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .sim-hero-grid {
+      position: relative;
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns:
+        1.05fr .95fr;
+
+      gap: 78px;
+
+      align-items: center;
+    }
+
+
+    .sim-kicker {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 10px;
+
+      color: #158c89;
+
+      font-size: .72rem;
+      font-weight: 900;
+
+      letter-spacing: .10em;
+
+      text-transform: uppercase;
+    }
+
+
+    .sim-kicker::before {
+      content: "";
+
+      width: 30px;
+      height: 2px;
+
+      border-radius: 99px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #18b8b0,
+          #efc15b
+        );
+    }
+
+
+    .sim-hero h1 {
+      margin:
+        20px 0 18px;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          3.3rem,
+          6.3vw,
+          5.4rem
+        );
+
+      line-height: .95;
+
+      letter-spacing: -.06em;
+    }
+
+
+    .sim-hero h1 span {
+      display: block;
+
+      color: #18b8b0;
+    }
+
+
+    .sim-hero-copy p {
+      max-width: 650px;
+
+      margin: 0;
+
+      color: #748895;
+
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+
+    /* ========================================================
+       EXPERIENCE CARD
+    ========================================================= */
+
+    .sim-experience-card {
+      padding: 29px;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 95% 10%,
+          rgba(45,206,198,.11),
+          transparent 31%
+        ),
+        linear-gradient(
+          145deg,
+          #071b2a,
+          #0d4251
+        );
+
+      border:
+        1px solid rgba(45,206,198,.18);
+
+      border-radius: 26px;
+
+      box-shadow:
+        0 28px 65px rgba(6,35,55,.15);
+    }
+
+
+    .sim-experience-card .micro {
+      color: #62d4cd;
+
+      font-size: .66rem;
+      font-weight: 900;
+
+      letter-spacing: .11em;
+    }
+
+
+    .sim-experience-card h2 {
+      margin:
+        11px 0 8px;
+
+      color: #ffffff;
+
+      font-size: 1.55rem;
+      line-height: 1.45;
+    }
+
+
+    .sim-experience-card > p {
+      margin:
+        0 0 22px;
+
+      color: #aac0c9;
+
+      font-size: .84rem;
+      line-height: 1.6;
+    }
+
+
+    .sim-process {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 9px;
+    }
+
+
+    .sim-process-item {
+      min-height: 96px;
+
+      padding: 15px;
+
+      background:
+        rgba(255,255,255,.055);
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      border-radius: 14px;
+    }
+
+
+    .sim-process-item span {
+      color: #70d9d2;
+
+      font-size: .62rem;
+      font-weight: 900;
+    }
+
+
+    .sim-process-item strong {
+      display: block;
+
+      margin-top: 13px;
+
+      font-size: .82rem;
+    }
+
+
+    .sim-process-item p {
+      margin:
+        4px 0 0;
+
+      color: #8faab5;
+
+      font-size: .67rem;
+    }
+
+
+    /* ========================================================
+       CATALOGUE
+    ========================================================= */
+
+    .catalogue-section {
+      padding:
+        76px 0 100px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #f8fbfb 0%,
+          #ffffff 280px
+        );
+    }
+
+
+    .catalogue-heading {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: end;
+
+      gap: 40px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .catalogue-heading h2 {
+      margin:
+        8px 0 0;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.2rem,
+          4vw,
+          3.25rem
+        );
+
+      line-height: 1.05;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .catalogue-heading p {
+      max-width: 490px;
+
+      margin: 0;
+
+      color: #748895;
+
+      font-size: .91rem;
+      line-height: 1.65;
+    }
+
+
+    /* ========================================================
+       FILTERS
+    ========================================================= */
+
+    .catalogue-filters {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 9px;
+
+      margin-bottom: 27px;
+    }
+
+
+    .catalogue-filter {
+      min-height: 41px;
+
+      padding:
+        9px 16px;
+
+      color: #24485b;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 11px;
+
+      font-size: .78rem;
+      font-weight: 800;
+
+      transition: .2s ease;
+    }
+
+
+    .catalogue-filter:hover {
+      border-color:
+        rgba(24,184,176,.42);
+
+      background: #f3fbfa;
+    }
+
+
+    .catalogue-filter.is-active {
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          135deg,
+          #13aaa5,
+          #20b7b0
+        );
+
+      border-color: transparent;
+
+      box-shadow:
+        0 7px 18px rgba(24,184,176,.17);
+    }
+
+
+    /* ========================================================
+       PRODUCT GRID
+    ========================================================= */
+
+    .simulation-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 19px;
+    }
+
+
+    .simulation-card {
+      min-height: 340px;
+
+      padding: 24px;
+
+      display: flex;
+      flex-direction: column;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce7eb;
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 9px 28px rgba(4,25,40,.055);
+
+      transition:
+        transform .23s ease,
+        box-shadow .23s ease,
+        border-color .23s ease;
+    }
+
+
+    .simulation-card:hover {
+      transform:
+        translateY(-4px);
+
+      border-color:
+        rgba(24,184,176,.28);
+
+      box-shadow:
+        0 18px 40px rgba(4,25,40,.10);
+    }
+
+
+    .simulation-card-top {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: flex-start;
+
+      gap: 15px;
+    }
+
+
+    .simulation-category {
+      display: inline-flex;
+      align-items: center;
+
+      min-height: 27px;
+
+      padding:
+        5px 9px;
+
+      color: #087f86;
+
+      background:
+        rgba(24,184,176,.09);
+
+      border-radius: 8px;
+
+      font-size: .62rem;
+      font-weight: 900;
+
+      letter-spacing: .08em;
+
+      text-transform: uppercase;
+    }
+
+
+    .simulation-type {
+      color: #8a9ba5;
+
+      font-size: .62rem;
+      font-weight: 800;
+
+      letter-spacing: .06em;
+
+      text-transform: uppercase;
+    }
+
+
+    .simulation-card h3 {
+      margin:
+        21px 0 9px;
+
+      color: #061827;
+
+      font-size: 1.26rem;
+      line-height: 1.3;
+    }
+
+
+    .simulation-card-description {
+      margin: 0;
+
+      color: #718490;
+
+      font-size: .83rem;
+      line-height: 1.62;
+    }
+
+
+    .simulation-price {
+      margin-top: auto;
+
+      padding-top: 23px;
+
+      color: #061827;
+
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+
+    .simulation-price small {
+      margin-right: 3px;
+
+      color: #79909b;
+
+      font-size: .68rem;
+      font-weight: 700;
+    }
+
+
+    .simulation-actions {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 9px;
+
+      margin-top: 17px;
+    }
+
+
+    .simulation-actions .button {
+      min-height: 44px;
+
+      padding:
+        9px 12px;
+
+      font-size: .77rem;
+
+      border-radius: 10px;
+    }
+
+
+    /* ========================================================
+       PRODUCT MODAL
+    ========================================================= */
+
+    .product-modal {
+      position: fixed;
+
+      z-index: 10000;
+
+      inset: 0;
+
+      padding: 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(3,16,27,.48);
+
+      backdrop-filter:
+        blur(7px);
+
+      opacity: 0;
+      visibility: hidden;
+
+      pointer-events: none;
+
+      transition:
+        opacity .22s ease,
+        visibility .22s ease;
+    }
+
+
+    .product-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+
+      pointer-events: auto;
+    }
+
+
+    .product-modal-card {
+      position: relative;
+
+      width: min(590px,100%);
+
+      max-height:
+        calc(100vh - 48px);
+
+      overflow-y: auto;
+
+      padding: 32px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce7eb;
+
+      border-radius: 24px;
+
+      box-shadow:
+        0 30px 80px rgba(3,16,27,.24);
+
+      transform:
+        translateY(12px)
+        scale(.98);
+
+      transition:
+        transform .24s ease;
+    }
+
+
+    .product-modal.is-open
+    .product-modal-card {
+      transform:
+        translateY(0)
+        scale(1);
+    }
+
+
+    .modal-close {
+      position: absolute;
+
+      right: 18px;
+      top: 18px;
+
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      color: #173a4c;
+
+      background: #f3f8f8;
+
+      border:
+        1px solid #dbe7e9;
+
+      border-radius: 50%;
+
+      font-size: 1.1rem;
+    }
+
+
+    .modal-category {
+      display: inline-block;
+
+      color: #128f8b;
+
+      font-size: .65rem;
+      font-weight: 900;
+
+      letter-spacing: .09em;
+    }
+
+
+    .product-modal-card h2 {
+      margin:
+        12px 50px 11px 0;
+
+      color: #061827;
+
+      font-size: 2rem;
+      line-height: 1.12;
+    }
+
+
+    .product-modal-card p {
+      color: #6f838f;
+
+      line-height: 1.7;
+    }
+
+
+    .modal-price {
+      margin-top: 22px;
+
+      color: #061827;
+
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 9px;
+
+      margin-top: 23px;
+    }
+
+
+    /* ========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1000px) {
+
+      .sim-hero-grid {
+        grid-template-columns:
+          1fr;
+
+        gap: 40px;
+      }
+
+      .simulation-grid {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .sim-hero {
+        padding:
+          55px 0;
+      }
+
+      .sim-hero h1 {
+        font-size:
+          clamp(
+            3rem,
+            14vw,
+            4.7rem
+          );
+      }
+
+      .sim-process {
+        grid-template-columns:
+          1fr;
+      }
+
+      .catalogue-heading {
+        flex-direction:
+          column;
+
+        align-items:
+          flex-start;
+      }
+
+      .simulation-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+      .product-modal {
+        padding: 13px;
+      }
+
+      .product-modal-card {
+        padding:
+          25px 20px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body data-page="simulations">
+
+
+  <!-- ========================================================
+       NAVIGATION
+  ========================================================= -->
+
+  <header class="site-header">
+
+    <div class="nav-glow"></div>
+
+
+    <div class="nav-shell">
+
+
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        type="button"
+        aria-label="Open sidebar"
+        aria-expanded="false"
+        aria-controls="siteSidebar"
+        data-swipe-block
       >
 
-    </a>
+        <span class="sidebar-toggle-icon">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </span>
+
+      </button>
 
 
-
-    <nav
-      class="main-nav"
-      id="mainNav"
-      aria-label="Main website navigation"
-    >
 
       <a
+        class="nav-logo-link"
         href="index.html"
         data-page-link
-        data-page="home"
+        aria-label="RizSim Home"
       >
-        Home
-      </a>
 
-      <a
-        href="simulations.html"
-        data-page-link
-        data-page="simulations"
-      >
-        Simulations
-      </a>
-
-      <a
-        href="learning.html"
-        data-page-link
-        data-page="learning"
-      >
-        Learning
-      </a>
-
-      <a
-        href="research.html"
-        data-page-link
-        data-page="research"
-      >
-        Research
-      </a>
-
-      <a
-        href="about.html"
-        data-page-link
-        data-page="about"
-      >
-        About
-      </a>
-
-      <a
-        href="contact.html"
-        data-page-link
-        data-page="contact"
-      >
-        Contact
-      </a>
-
-    </nav>
-
-
-
-    <div class="nav-actions">
-
-
-      <div class="login-wrap">
-
-
-        <button
-          class="login-button"
-          id="loginButton"
-          type="button"
-          aria-expanded="false"
-          aria-controls="loginMenu"
+        <img
+          class="nav-logo"
+          src="RizSim finalized logo.png"
+          alt="RizSim — From Knowing to Doing"
         >
 
-          <span>
-            Login
-          </span>
-
-          <svg
-            class="login-chevron"
-            viewBox="0 0 20 20"
-            aria-hidden="true"
-          >
-
-            <path
-              d="M5 7.5L10 12.5L15 7.5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-
-          </svg>
-
-        </button>
+      </a>
 
 
 
-        <div
-          class="login-menu"
-          id="loginMenu"
-          aria-hidden="true"
-          data-swipe-block
+      <nav
+        class="main-nav"
+        id="mainNav"
+      >
+
+        <a
+          href="index.html"
+          data-page-link
+          data-page="home"
         >
+          Home
+        </a>
 
+        <a
+          href="simulations.html"
+          data-page-link
+          data-page="simulations"
+        >
+          Simulations
+        </a>
 
-          <div class="login-menu-heading">
+        <a
+          href="learning.html"
+          data-page-link
+          data-page="learning"
+        >
+          Learning
+        </a>
 
-            <span class="login-menu-eyebrow">
-              RIZSIM ACCESS
-            </span>
+        <a
+          href="research.html"
+          data-page-link
+          data-page="research"
+        >
+          Research
+        </a>
 
-            <strong>
-              Choose your workspace
-            </strong>
+        <a
+          href="about.html"
+          data-page-link
+          data-page="about"
+        >
+          About
+        </a>
 
-          </div>
+        <a
+          href="contact.html"
+          data-page-link
+          data-page="contact"
+        >
+          Contact
+        </a>
 
-
-
-          <a
-            class="login-floating-option"
-            href="access-in.html"
-          >
-
-            <div class="login-option-icon">
-
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-
-                <path
-                  d="M4 6.5C4 5.67 4.67 5 5.5 5H18.5C19.33 5 20 5.67 20 6.5V16.5C20 17.33 19.33 18 18.5 18H5.5C4.67 18 4 17.33 4 16.5V6.5Z"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                />
-
-                <path
-                  d="M8 21H16M12 18V21"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                />
-
-              </svg>
-
-            </div>
-
-
-            <div class="login-option-copy">
-
-              <strong>
-                My Learning
-              </strong>
-
-              <span>
-                Buy, launch and continue your learning.
-              </span>
-
-            </div>
-
-
-            <span class="login-option-arrow">
-              →
-            </span>
-
-          </a>
+      </nav>
 
 
 
-          <a
-            class="login-floating-option"
-            href="access-out.html"
-          >
+      <div class="nav-actions">
 
-            <div class="login-option-icon faculty">
-
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-
-                <path
-                  d="M4 20V10M10 20V4M16 20V13M22 20H2"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-
-              </svg>
-
-            </div>
-
-
-            <div class="login-option-copy">
-
-              <strong>
-                Faculty Dashboard
-              </strong>
-
-              <span>
-                Faculty, facilitators and institutional access.
-              </span>
-
-            </div>
-
-
-            <span class="login-option-arrow">
-              →
-            </span>
-
-          </a>
-
+        <div class="login-wrap">
 
 
           <button
-            class="login-collapse-button"
-            id="loginCollapseButton"
+            class="login-button"
+            id="loginButton"
             type="button"
-            aria-label="Collapse login menu"
+            aria-expanded="false"
+            aria-controls="loginMenu"
           >
 
+            <span>
+              Login
+            </span>
+
+
             <svg
+              class="login-chevron"
               viewBox="0 0 20 20"
               aria-hidden="true"
             >
 
               <path
-                d="M5 12L10 7L15 12"
+                d="M5.5 7.5L10 12L14.5 7.5"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="1.8"
@@ -287,53 +946,1493 @@
           </button>
 
 
+
+          <div
+            class="login-menu"
+            id="loginMenu"
+            aria-hidden="true"
+            data-swipe-block
+          >
+
+
+            <a
+              class="login-role-button"
+              href="access-in.html"
+            >
+
+              <span class="login-role-text">
+                Student
+              </span>
+
+
+              <span class="login-role-icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="M3.5 8.5L12 4.5L20.5 8.5L12 12.5L3.5 8.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                  />
+
+                  <path
+                    d="M7 10.5V15C7 16.8 9.25 18.3 12 18.3C14.75 18.3 17 16.8 17 15V10.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <a
+              class="login-role-button"
+              href="access-out.html"
+            >
+
+              <span class="login-role-text">
+                Faculty
+              </span>
+
+
+              <span
+                class="login-role-icon faculty-icon"
+              >
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <circle
+                    cx="12"
+                    cy="7"
+                    r="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  />
+
+                  <path
+                    d="M6 19V17C6 14.8 8.2 13 12 13C15.8 13 18 14.8 18 17V19"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                  <path
+                    d="M4 20H20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <button
+              class="login-collapse-button"
+              id="loginCollapseButton"
+              type="button"
+              aria-label="Close login options"
+            >
+
+              <svg
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M5 12.5L10 7.5L15 12.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+              </svg>
+
+            </button>
+
+
+          </div>
+
+        </div>
+
+
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ========================================================
+       SIDEBAR
+  ========================================================= -->
+
+  <div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <aside
+    class="site-sidebar"
+    id="siteSidebar"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div class="sidebar-inner">
+
+      <!-- EMPTY FOR NOW -->
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- ========================================================
+       PAGE
+  ========================================================= -->
+
+  <main class="page-content">
+
+
+    <!-- HERO -->
+
+    <section class="sim-hero">
+
+      <div class="content-shell sim-hero-grid">
+
+
+        <div class="sim-hero-copy">
+
+          <div class="sim-kicker">
+            RizSim Catalogue
+          </div>
+
+
+          <h1>
+
+            Learn through
+
+            <span>
+              decisions.
+            </span>
+
+          </h1>
+
+
+          <p>
+
+            Explore browser-based learning experiences
+            designed to move concepts into judgment,
+            practice and application. Product information
+            and pricing are public; login is required only
+            when you choose to buy or launch an experience.
+
+          </p>
+
+        </div>
+
+
+
+        <div
+          class="sim-experience-card"
+          data-swipe-block
+        >
+
+          <span class="micro">
+            THE RIZSIM EXPERIENCE
+          </span>
+
+
+          <h2>
+            Less passive content. More active thinking.
+          </h2>
+
+
+          <p>
+
+            Each experience is designed around meaningful
+            learner action rather than content consumption alone.
+
+          </p>
+
+
+          <div class="sim-process">
+
+
+            <div class="sim-process-item">
+
+              <span>
+                01
+              </span>
+
+              <strong>
+                Decide
+              </strong>
+
+              <p>
+                Commit to a judgment.
+              </p>
+
+            </div>
+
+
+            <div class="sim-process-item">
+
+              <span>
+                02
+              </span>
+
+              <strong>
+                Reflect
+              </strong>
+
+              <p>
+                Examine the reasoning.
+              </p>
+
+            </div>
+
+
+            <div class="sim-process-item">
+
+              <span>
+                03
+              </span>
+
+              <strong>
+                Apply
+              </strong>
+
+              <p>
+                Transfer the learning.
+              </p>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CATALOGUE -->
+
+    <section class="catalogue-section">
+
+      <div class="content-shell">
+
+
+        <div class="catalogue-heading">
+
+
+          <div>
+
+            <span class="section-kicker">
+              LEARNING EXPERIENCES
+            </span>
+
+            <h2>
+              Explore the catalogue.
+            </h2>
+
+          </div>
+
+
+          <p>
+
+            Browse the current RizSim learning experiences.
+            View details publicly and sign in only when
+            purchasing or launching access.
+
+          </p>
+
+
+        </div>
+
+
+
+        <!-- FILTERS -->
+
+        <div
+          class="catalogue-filters"
+          data-swipe-block
+        >
+
+          <button
+            class="catalogue-filter is-active"
+            type="button"
+            data-filter="all"
+          >
+            All
+          </button>
+
+          <button
+            class="catalogue-filter"
+            type="button"
+            data-filter="learning"
+          >
+            Learning
+          </button>
+
+          <button
+            class="catalogue-filter"
+            type="button"
+            data-filter="skills"
+          >
+            Skills
+          </button>
+
+          <button
+            class="catalogue-filter"
+            type="button"
+            data-filter="children"
+          >
+            Children
+          </button>
+
+        </div>
+
+
+
+        <!-- PRODUCT GRID -->
+
+        <div
+          class="simulation-grid"
+          id="simulationGrid"
+        >
+
+
+          <!-- PRODUCT 1 -->
+
+          <article
+            class="simulation-card"
+            data-category="learning"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Learning
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Perception & Attention Lab
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Explore sensation, perception, selective
+              attention, interference and visual-attention
+              effects through applied interactive tasks.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              500
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Perception & Attention Lab"
+                data-category="Learning"
+                data-price="PKR 500"
+                data-description="Interactive learning simulation exploring sensation, perception, selective attention, interference and visual-attention effects through applied tasks."
+                data-slug="perception-attention-lab"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=perception-attention-lab"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 2 -->
+
+          <article
+            class="simulation-card"
+            data-category="skills"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Skills
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Brain Networks Decision Lab
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Explore how salience, executive-control
+              and default-mode processes interact during
+              complex decisions.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              750
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Brain Networks Decision Lab"
+                data-category="Skills"
+                data-price="PKR 750"
+                data-description="Decision-making simulation exploring how salience, executive-control and default-mode processes interact during complex choices."
+                data-slug="brain-networks-decision-lab"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=brain-networks-decision-lab"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 3 -->
+
+          <article
+            class="simulation-card"
+            data-category="skills"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Skills
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Cognitive Biases Decision Lab
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Recognize cognitive biases and examine
+              how they influence judgment and business
+              decision making.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              500
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Cognitive Biases Decision Lab"
+                data-category="Skills"
+                data-price="PKR 500"
+                data-description="Applied simulation helping learners recognize cognitive biases and examine how they influence business judgment and decision making."
+                data-slug="cognitive-biases-decision-lab"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=cognitive-biases-decision-lab"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 4 -->
+
+          <article
+            class="simulation-card"
+            data-category="learning"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Learning
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Seven Sins of Greenwashing
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Identify and evaluate common forms of
+              misleading environmental communication
+              through applied scenarios.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              750
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Seven Sins of Greenwashing"
+                data-category="Learning"
+                data-price="PKR 750"
+                data-description="Responsible-marketing simulation where learners identify and evaluate common forms of misleading environmental communication."
+                data-slug="seven-sins-greenwashing"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=seven-sins-greenwashing"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 5 -->
+
+          <article
+            class="simulation-card"
+            data-category="learning"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Learning
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Dark Patterns & Consumer Autonomy
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Examine manipulative digital interfaces,
+              consumer choice architecture and
+              substantive autonomy.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              750
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Dark Patterns & Consumer Autonomy"
+                data-category="Learning"
+                data-price="PKR 750"
+                data-description="Interactive simulation examining manipulative digital interfaces, consumer choice architecture and substantive autonomy."
+                data-slug="dark-patterns-consumer-autonomy"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=dark-patterns-consumer-autonomy"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 6 -->
+
+          <article
+            class="simulation-card"
+            data-category="learning"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Learning
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Responsible Marketing: Meta vs Users
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Examine consumer sovereignty, platform
+              responsibility and stakeholder tensions
+              in technology marketing.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              750
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Responsible Marketing: Meta vs Users"
+                data-category="Learning"
+                data-price="PKR 750"
+                data-description="Stakeholder decision simulation examining consumer sovereignty, platform responsibility and ethical tensions in technology marketing."
+                data-slug="responsible-marketing-meta-vs-users"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=responsible-marketing-meta-vs-users"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 7 -->
+
+          <article
+            class="simulation-card"
+            data-category="skills"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Skills
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Learning Gain AI Simulation
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              Examine whether performance produced with
+              generative AI reflects genuine learning,
+              reasoning and knowledge gain.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              750
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Learning Gain AI Simulation"
+                data-category="Skills"
+                data-price="PKR 750"
+                data-description="Learning experience examining whether performance produced with generative AI reflects genuine learning, reasoning and knowledge gain."
+                data-slug="learning-gain-ai-simulation"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=learning-gain-ai-simulation"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- PRODUCT 8 -->
+
+          <article
+            class="simulation-card"
+            data-category="children"
+          >
+
+            <div class="simulation-card-top">
+
+              <span class="simulation-category">
+                Children
+              </span>
+
+              <span class="simulation-type">
+                Simulation
+              </span>
+
+            </div>
+
+
+            <h3>
+              Little Scientist: Motion & Forces Lab
+            </h3>
+
+
+            <p class="simulation-card-description">
+
+              A child-friendly experience using prediction,
+              testing, observation and explanation to explore
+              motion and forces.
+
+            </p>
+
+
+            <div class="simulation-price">
+
+              <small>
+                PKR
+              </small>
+
+              400
+
+            </div>
+
+
+            <div class="simulation-actions">
+
+              <button
+                class="button button-secondary product-details"
+                type="button"
+                data-title="Little Scientist: Motion & Forces Lab"
+                data-category="Children"
+                data-price="PKR 400"
+                data-description="Child-friendly interactive science experience using prediction, testing, observation and explanation to explore movement, surfaces, speed and forces."
+                data-slug="little-scientist-motion-forces"
+              >
+                View Details
+              </button>
+
+
+              <a
+                class="button button-primary"
+                href="access-in.html?intent=buy&product=little-scientist-motion-forces"
+              >
+                Buy Access
+              </a>
+
+            </div>
+
+          </article>
+
+
         </div>
 
       </div>
 
+    </section>
 
+
+  </main>
+
+
+
+  <!-- ========================================================
+       PRODUCT MODAL
+  ========================================================= -->
+
+  <div
+    class="product-modal"
+    id="productModal"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div
+      class="product-modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
 
       <button
-        class="mobile-menu-button"
-        id="mobileMenuButton"
+        class="modal-close"
+        id="modalClose"
         type="button"
-        aria-label="Open navigation"
-        aria-expanded="false"
+        aria-label="Close"
       >
-
-        <span></span>
-        <span></span>
-        <span></span>
-
+        ×
       </button>
 
+
+      <span
+        class="modal-category"
+        id="modalCategory"
+      ></span>
+
+
+      <h2 id="modalTitle"></h2>
+
+
+      <p id="modalDescription"></p>
+
+
+      <div
+        class="modal-price"
+        id="modalPrice"
+      ></div>
+
+
+      <div class="modal-actions">
+
+        <button
+          class="button button-secondary"
+          id="modalCancel"
+          type="button"
+        >
+          Close
+        </button>
+
+
+        <a
+          class="button button-primary"
+          id="modalBuy"
+          href="access-in.html"
+        >
+          Buy Access
+        </a>
+
+      </div>
 
     </div>
 
   </div>
 
-</header>
 
 
-<div
-  class="sidebar-overlay"
-  id="sidebarOverlay"
-  aria-hidden="true"
-></div>
+  <!-- ========================================================
+       FOOTER
+  ========================================================= -->
+
+  <footer class="site-footer">
+
+    <div class="content-shell footer-grid">
 
 
-<aside
-  class="site-sidebar"
-  id="siteSidebar"
-  aria-label="RizSim sidebar"
-  aria-hidden="true"
-  data-swipe-block
->
+      <div class="footer-brand">
 
-  <div class="sidebar-inner">
+        <img
+          src="RizSim finalized logo.png"
+          alt="RizSim"
+        >
 
-    <!-- Intentionally empty -->
+        <p>
+          Interactive learning through decisions,
+          reflection and application.
+        </p>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Explore
+        </h4>
+
+        <a href="simulations.html">
+          Simulations
+        </a>
+
+        <a
+          href="learning.html"
+          data-page-link
+        >
+          Learning
+        </a>
+
+        <a
+          href="research.html"
+          data-page-link
+        >
+          Research
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Access
+        </h4>
+
+        <a href="access-in.html">
+          Student
+        </a>
+
+        <a href="access-out.html">
+          Faculty
+        </a>
+
+        <a
+          href="about.html"
+          data-page-link
+        >
+          About
+        </a>
+
+        <a
+          href="contact.html"
+          data-page-link
+        >
+          Contact
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Policies
+        </h4>
+
+        <a href="privacy-policy.html">
+          Privacy
+        </a>
+
+        <a href="terms.html">
+          Terms
+        </a>
+
+        <a href="refund-policy.html">
+          Refunds
+        </a>
+
+        <a href="service-delivery.html">
+          Service Delivery
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="content-shell footer-bottom">
+
+      <span>
+        © <span id="footerYear"></span> RizSim.
+      </span>
+
+      <span>
+        From Knowing to Doing.
+      </span>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- SWIPE INDICATOR -->
+
+  <div
+    class="swipe-indicator"
+    id="swipeIndicator"
+    aria-hidden="true"
+  >
+
+    <span id="swipeIndicatorIcon">
+      →
+    </span>
 
   </div>
 
-</aside>
+
+
+  <script src="site.js"></script>
+
+
+  <!-- ========================================================
+       SIMULATIONS PAGE FUNCTIONS
+  ========================================================= -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+
+        /* FILTERS */
+
+        const filterButtons =
+          document.querySelectorAll(
+            ".catalogue-filter"
+          );
+
+
+        const cards =
+          document.querySelectorAll(
+            ".simulation-card"
+          );
+
+
+        filterButtons.forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const filter =
+                  button.dataset.filter;
+
+
+                filterButtons.forEach(
+                  item => {
+
+                    item.classList.remove(
+                      "is-active"
+                    );
+
+                  }
+                );
+
+
+                button.classList.add(
+                  "is-active"
+                );
+
+
+                cards.forEach(
+                  card => {
+
+                    const visible =
+                      filter === "all" ||
+                      card.dataset.category ===
+                      filter;
+
+
+                    card.style.display =
+                      visible
+                        ? "flex"
+                        : "none";
+
+                  }
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+
+        /* PRODUCT DETAILS */
+
+        const modal =
+          document.getElementById(
+            "productModal"
+          );
+
+
+        const modalTitle =
+          document.getElementById(
+            "modalTitle"
+          );
+
+
+        const modalCategory =
+          document.getElementById(
+            "modalCategory"
+          );
+
+
+        const modalDescription =
+          document.getElementById(
+            "modalDescription"
+          );
+
+
+        const modalPrice =
+          document.getElementById(
+            "modalPrice"
+          );
+
+
+        const modalBuy =
+          document.getElementById(
+            "modalBuy"
+          );
+
+
+        const closeButton =
+          document.getElementById(
+            "modalClose"
+          );
+
+
+        const cancelButton =
+          document.getElementById(
+            "modalCancel"
+          );
+
+
+        function openProductModal(
+          button
+        ) {
+
+          modalTitle.textContent =
+            button.dataset.title || "";
+
+
+          modalCategory.textContent =
+            button.dataset.category || "";
+
+
+          modalDescription.textContent =
+            button.dataset.description || "";
+
+
+          modalPrice.textContent =
+            button.dataset.price || "";
+
+
+          modalBuy.href =
+            "access-in.html?intent=buy&product=" +
+            encodeURIComponent(
+              button.dataset.slug || ""
+            );
+
+
+          modal.classList.add(
+            "is-open"
+          );
+
+
+          modal.setAttribute(
+            "aria-hidden",
+            "false"
+          );
+
+
+          document.body.style.overflow =
+            "hidden";
+
+        }
+
+
+        function closeProductModal() {
+
+          modal.classList.remove(
+            "is-open"
+          );
+
+
+          modal.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+
+          document.body.style.overflow =
+            "";
+
+        }
+
+
+        document
+          .querySelectorAll(
+            ".product-details"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  openProductModal(
+                    button
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        closeButton.addEventListener(
+          "click",
+          closeProductModal
+        );
+
+
+        cancelButton.addEventListener(
+          "click",
+          closeProductModal
+        );
+
+
+        modal.addEventListener(
+          "click",
+          event => {
+
+            if (
+              event.target === modal
+            ) {
+
+              closeProductModal();
+
+            }
+
+          }
+        );
+
+
+        document.addEventListener(
+          "keydown",
+          event => {
+
+            if (
+              event.key === "Escape" &&
+              modal.classList.contains(
+                "is-open"
+              )
+            ) {
+
+              closeProductModal();
+
+            }
+
+          }
+        );
+
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>
