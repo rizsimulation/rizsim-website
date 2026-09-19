@@ -2,71 +2,50 @@
    RIZSIM GLOBAL WEBSITE JAVASCRIPT
 ============================================================ */
 
+const RIZSIM_PAGES = [
+  {
+    key: "home",
+    url: "index.html"
+  },
+  {
+    key: "simulations",
+    url: "simulations.html"
+  },
+  {
+    key: "learning",
+    url: "learning.html"
+  },
+  {
+    key: "research",
+    url: "research.html"
+  },
+  {
+    key: "about",
+    url: "about.html"
+  },
+  {
+    key: "contact",
+    url: "contact.html"
+  }
+];
+
+
 document.addEventListener(
   "DOMContentLoaded",
   () => {
 
     initialiseActiveNavigation();
-
     initialiseFooterYear();
-
     initialiseSplash();
-
-    initialiseMobileNavigation();
-
     initialiseLoginMenu();
-
     initialiseSidebar();
-
+    initialiseMobileNavigation();
     initialisePageTransitions();
-
-    initialiseSafeSwipe();
-
     initialisePageEntryAnimation();
+    initialiseSafeSwipe();
 
   }
 );
-
-
-
-/* ============================================================
-   PAGE ORDER
-============================================================ */
-
-const RIZSIM_PAGES = [
-
-  {
-    key: "home",
-    url: "index.html"
-  },
-
-  {
-    key: "simulations",
-    url: "simulations.html"
-  },
-
-  {
-    key: "learning",
-    url: "learning.html"
-  },
-
-  {
-    key: "research",
-    url: "research.html"
-  },
-
-  {
-    key: "about",
-    url: "about.html"
-  },
-
-  {
-    key: "contact",
-    url: "contact.html"
-  }
-
-];
-
 
 
 /* ============================================================
@@ -91,14 +70,18 @@ function initialiseActiveNavigation() {
     .forEach(
       link => {
 
-        if (
+        const active =
           link.dataset.page ===
-          currentPage
-        ) {
+          currentPage;
 
-          link.classList.add(
-            "is-active"
-          );
+
+        link.classList.toggle(
+          "is-active",
+          active
+        );
+
+
+        if (active) {
 
           link.setAttribute(
             "aria-current",
@@ -106,10 +89,6 @@ function initialiseActiveNavigation() {
           );
 
         } else {
-
-          link.classList.remove(
-            "is-active"
-          );
 
           link.removeAttribute(
             "aria-current"
@@ -121,7 +100,6 @@ function initialiseActiveNavigation() {
     );
 
 }
-
 
 
 /* ============================================================
@@ -144,7 +122,6 @@ function initialiseFooterYear() {
   }
 
 }
-
 
 
 /* ============================================================
@@ -188,6 +165,7 @@ function initialiseSplash() {
         "is-hidden"
       );
 
+
       document.body.classList.remove(
         "splash-locked"
       );
@@ -196,13 +174,7 @@ function initialiseSplash() {
       window.setTimeout(
         () => {
 
-          if (splash.parentNode) {
-
-            splash.parentNode.removeChild(
-              splash
-            );
-
-          }
+          splash.remove();
 
         },
         950
@@ -213,89 +185,6 @@ function initialiseSplash() {
   );
 
 }
-
-
-
-/* ============================================================
-   MOBILE NAVIGATION
-============================================================ */
-
-function initialiseMobileNavigation() {
-
-  const button =
-    document.getElementById(
-      "mobileMenuButton"
-    );
-
-
-  const nav =
-    document.getElementById(
-      "mainNav"
-    );
-
-
-  if (
-    !button ||
-    !nav
-  ) {
-
-    return;
-
-  }
-
-
-  button.addEventListener(
-    "click",
-    event => {
-
-      event.stopPropagation();
-
-      closeLoginMenu();
-
-      closeSidebar();
-
-
-      const open =
-        nav.classList.toggle(
-          "is-open"
-        );
-
-
-      button.setAttribute(
-        "aria-expanded",
-        String(open)
-      );
-
-    }
-  );
-
-
-  nav
-    .querySelectorAll("a")
-    .forEach(
-      link => {
-
-        link.addEventListener(
-          "click",
-          () => {
-
-            nav.classList.remove(
-              "is-open"
-            );
-
-            button.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-
-          }
-        );
-
-      }
-    );
-
-}
-
 
 
 /* ============================================================
@@ -320,14 +209,11 @@ function openLoginMenu() {
     !button ||
     !menu
   ) {
-
     return;
-
   }
 
 
   closeSidebar();
-
   closeMobileNavigation();
 
 
@@ -336,15 +222,15 @@ function openLoginMenu() {
   );
 
 
-  button.setAttribute(
-    "aria-expanded",
-    "true"
-  );
-
-
   menu.setAttribute(
     "aria-hidden",
     "false"
+  );
+
+
+  button.setAttribute(
+    "aria-expanded",
+    "true"
   );
 
 }
@@ -368,9 +254,7 @@ function closeLoginMenu() {
     !button ||
     !menu
   ) {
-
     return;
-
   }
 
 
@@ -379,15 +263,15 @@ function closeLoginMenu() {
   );
 
 
-  button.setAttribute(
-    "aria-expanded",
-    "false"
-  );
-
-
   menu.setAttribute(
     "aria-hidden",
     "true"
+  );
+
+
+  button.setAttribute(
+    "aria-expanded",
+    "false"
   );
 
 }
@@ -407,7 +291,7 @@ function initialiseLoginMenu() {
     );
 
 
-  const collapse =
+  const collapseButton =
     document.getElementById(
       "loginCollapseButton"
     );
@@ -417,9 +301,7 @@ function initialiseLoginMenu() {
     !button ||
     !menu
   ) {
-
     return;
-
   }
 
 
@@ -458,9 +340,9 @@ function initialiseLoginMenu() {
   );
 
 
-  if (collapse) {
+  if (collapseButton) {
 
-    collapse.addEventListener(
+    collapseButton.addEventListener(
       "click",
       event => {
 
@@ -499,14 +381,13 @@ function initialiseLoginMenu() {
 }
 
 
-
 /* ============================================================
    SIDEBAR
 ============================================================ */
 
 function openSidebar() {
 
-  const toggle =
+  const button =
     document.getElementById(
       "sidebarToggle"
     );
@@ -525,18 +406,15 @@ function openSidebar() {
 
 
   if (
-    !toggle ||
+    !button ||
     !sidebar ||
     !overlay
   ) {
-
     return;
-
   }
 
 
   closeLoginMenu();
-
   closeMobileNavigation();
 
 
@@ -545,13 +423,13 @@ function openSidebar() {
   );
 
 
-  toggle.setAttribute(
+  button.setAttribute(
     "aria-expanded",
     "true"
   );
 
 
-  toggle.setAttribute(
+  button.setAttribute(
     "aria-label",
     "Collapse sidebar"
   );
@@ -573,7 +451,7 @@ function openSidebar() {
 
 function closeSidebar() {
 
-  const toggle =
+  const button =
     document.getElementById(
       "sidebarToggle"
     );
@@ -592,13 +470,11 @@ function closeSidebar() {
 
 
   if (
-    !toggle ||
+    !button ||
     !sidebar ||
     !overlay
   ) {
-
     return;
-
   }
 
 
@@ -607,13 +483,13 @@ function closeSidebar() {
   );
 
 
-  toggle.setAttribute(
+  button.setAttribute(
     "aria-expanded",
     "false"
   );
 
 
-  toggle.setAttribute(
+  button.setAttribute(
     "aria-label",
     "Open sidebar"
   );
@@ -635,7 +511,7 @@ function closeSidebar() {
 
 function initialiseSidebar() {
 
-  const toggle =
+  const button =
     document.getElementById(
       "sidebarToggle"
     );
@@ -647,12 +523,12 @@ function initialiseSidebar() {
     );
 
 
-  if (!toggle) {
+  if (!button) {
     return;
   }
 
 
-  toggle.addEventListener(
+  button.addEventListener(
     "click",
     event => {
 
@@ -689,14 +565,76 @@ function initialiseSidebar() {
 }
 
 
-
 /* ============================================================
-   CLOSE MOBILE NAV
+   MOBILE NAV
 ============================================================ */
+
+function initialiseMobileNavigation() {
+
+  const button =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+
+  const navigation =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  if (
+    !button ||
+    !navigation
+  ) {
+    return;
+  }
+
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      closeLoginMenu();
+      closeSidebar();
+
+
+      const open =
+        navigation.classList.toggle(
+          "is-open"
+        );
+
+
+      button.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+    }
+  );
+
+
+  navigation
+    .querySelectorAll("a")
+    .forEach(
+      link => {
+
+        link.addEventListener(
+          "click",
+          closeMobileNavigation
+        );
+
+      }
+    );
+
+}
+
 
 function closeMobileNavigation() {
 
-  const nav =
+  const navigation =
     document.getElementById(
       "mainNav"
     );
@@ -708,9 +646,9 @@ function closeMobileNavigation() {
     );
 
 
-  if (nav) {
+  if (navigation) {
 
-    nav.classList.remove(
+    navigation.classList.remove(
       "is-open"
     );
 
@@ -729,7 +667,6 @@ function closeMobileNavigation() {
 }
 
 
-
 /* ============================================================
    ESCAPE KEY
 ============================================================ */
@@ -739,46 +676,44 @@ document.addEventListener(
   event => {
 
     if (
-      event.key !== "Escape"
+      event.key !==
+      "Escape"
     ) {
-
       return;
-
     }
 
 
     closeLoginMenu();
-
     closeSidebar();
-
     closeMobileNavigation();
 
   }
 );
 
 
-
 /* ============================================================
-   PAGE DIRECTION
+   PAGE NAVIGATION HELPERS
 ============================================================ */
 
 function getCurrentPageIndex() {
 
-  const currentPage =
+  const current =
     document.body.dataset.page;
 
 
   return RIZSIM_PAGES.findIndex(
     page =>
-      page.key === currentPage
+      page.key === current
   );
 
 }
 
 
-function getPageIndexFromUrl(url) {
+function getPageIndexFromUrl(
+  url
+) {
 
-  const cleanUrl =
+  const clean =
     url
       .split("?")[0]
       .split("#")[0]
@@ -789,15 +724,14 @@ function getPageIndexFromUrl(url) {
 
   return RIZSIM_PAGES.findIndex(
     page =>
-      page.url === cleanUrl
+      page.url === clean
   );
 
 }
 
 
-
 /* ============================================================
-   PAGE TRANSITION
+   PAGE TRANSITIONS
 ============================================================ */
 
 function navigateWithTransition(
@@ -811,31 +745,15 @@ function navigateWithTransition(
 
 
   closeLoginMenu();
-
   closeSidebar();
-
   closeMobileNavigation();
 
 
-  const body =
-    document.body;
-
-
-  if (
+  document.body.classList.add(
     direction === "prev"
-  ) {
-
-    body.classList.add(
-      "page-exit-prev"
-    );
-
-  } else {
-
-    body.classList.add(
-      "page-exit-next"
-    );
-
-  }
+      ? "page-exit-prev"
+      : "page-exit-next"
+  );
 
 
   try {
@@ -847,7 +765,7 @@ function navigateWithTransition(
 
   } catch (error) {
 
-    /* Ignore storage restrictions */
+    /* Ignore */
 
   }
 
@@ -864,11 +782,6 @@ function navigateWithTransition(
 
 }
 
-
-
-/* ============================================================
-   CLICK NAVIGATION TRANSITIONS
-============================================================ */
 
 function initialisePageTransitions() {
 
@@ -892,9 +805,7 @@ function initialisePageTransitions() {
               event.altKey ||
               link.target === "_blank"
             ) {
-
               return;
-
             }
 
 
@@ -908,9 +819,7 @@ function initialisePageTransitions() {
               !href ||
               href.startsWith("#")
             ) {
-
               return;
-
             }
 
 
@@ -926,37 +835,22 @@ function initialisePageTransitions() {
 
             if (
               destinationIndex === -1 ||
-              currentIndex === -1
+              currentIndex === -1 ||
+              destinationIndex === currentIndex
             ) {
-
               return;
-
-            }
-
-
-            if (
-              destinationIndex ===
-              currentIndex
-            ) {
-
-              return;
-
             }
 
 
             event.preventDefault();
 
 
-            const direction =
+            navigateWithTransition(
+              href,
               destinationIndex >
               currentIndex
                 ? "next"
-                : "prev";
-
-
-            navigateWithTransition(
-              href,
-              direction
+                : "prev"
             );
 
           }
@@ -968,9 +862,8 @@ function initialisePageTransitions() {
 }
 
 
-
 /* ============================================================
-   PAGE ENTRY ANIMATION
+   PAGE ENTRY
 ============================================================ */
 
 function initialisePageEntryAnimation() {
@@ -1003,29 +896,19 @@ function initialisePageEntryAnimation() {
   }
 
 
-  if (
+  document.body.classList.add(
     direction === "prev"
-  ) {
-
-    document.body.classList.add(
-      "page-enter-prev"
-    );
-
-  } else {
-
-    document.body.classList.add(
-      "page-enter-next"
-    );
-
-  }
+      ? "page-enter-prev"
+      : "page-enter-next"
+  );
 
 
   window.setTimeout(
     () => {
 
       document.body.classList.remove(
-        "page-enter-next",
-        "page-enter-prev"
+        "page-enter-prev",
+        "page-enter-next"
       );
 
     },
@@ -1035,7 +918,6 @@ function initialisePageEntryAnimation() {
 }
 
 
-
 /* ============================================================
    SAFE SWIPE NAVIGATION
 ============================================================ */
@@ -1043,36 +925,22 @@ function initialisePageEntryAnimation() {
 function initialiseSafeSwipe() {
 
   let startX = null;
-
   let startY = null;
-
   let startTime = null;
-
   let startTarget = null;
 
 
   const blockedSelector = [
-
     "[data-swipe-block]",
-
     "button",
-
     "a",
-
     "input",
-
     "textarea",
-
     "select",
-
     "[contenteditable='true']",
-
     ".login-menu",
-
     ".site-sidebar"
-
   ].join(",");
-
 
 
   document.addEventListener(
@@ -1084,31 +952,25 @@ function initialiseSafeSwipe() {
       ) {
 
         resetSwipe();
-
         return;
 
       }
 
 
-      const target =
-        event.target;
-
-
       if (
-        target.closest(
+        event.target.closest(
           blockedSelector
         )
       ) {
 
         resetSwipe();
-
         return;
 
       }
 
 
       startTarget =
-        target;
+        event.target;
 
 
       startX =
@@ -1129,7 +991,6 @@ function initialiseSafeSwipe() {
   );
 
 
-
   document.addEventListener(
     "touchend",
     event => {
@@ -1141,7 +1002,6 @@ function initialiseSafeSwipe() {
       ) {
 
         resetSwipe();
-
         return;
 
       }
@@ -1154,7 +1014,6 @@ function initialiseSafeSwipe() {
       ) {
 
         resetSwipe();
-
         return;
 
       }
@@ -1173,7 +1032,6 @@ function initialiseSafeSwipe() {
       ) {
 
         resetSwipe();
-
         return;
 
       }
@@ -1210,50 +1068,20 @@ function initialiseSafeSwipe() {
         );
 
 
-      /*
-        Deliberately conservative thresholds
-        to prevent accidental page switching.
-      */
-
-      const validDistance =
-        absX >= 115;
-
-
-      const horizontalDominance =
-        absX >
-        absY * 1.6;
-
-
-      const limitedVerticalMotion =
-        absY <= 80;
-
-
-      const validDuration =
+      const valid =
+        absX >= 115 &&
+        absX > absY * 1.6 &&
+        absY <= 80 &&
         duration <= 900;
 
 
-      if (
-        validDistance &&
-        horizontalDominance &&
-        limitedVerticalMotion &&
-        validDuration
-      ) {
+      if (valid) {
 
-        if (
+        navigateAdjacentPage(
           deltaX < 0
-        ) {
-
-          navigateAdjacentPage(
-            "next"
-          );
-
-        } else {
-
-          navigateAdjacentPage(
-            "prev"
-          );
-
-        }
+            ? "next"
+            : "prev"
+        );
 
       }
 
@@ -1267,15 +1095,11 @@ function initialiseSafeSwipe() {
   );
 
 
-
   function resetSwipe() {
 
     startX = null;
-
     startY = null;
-
     startTime = null;
-
     startTarget = null;
 
   }
@@ -1283,9 +1107,8 @@ function initialiseSafeSwipe() {
 }
 
 
-
 /* ============================================================
-   ADJACENT PAGE SWIPE
+   ADJACENT PAGE
 ============================================================ */
 
 function navigateAdjacentPage(
@@ -1299,45 +1122,23 @@ function navigateAdjacentPage(
   if (
     currentIndex === -1
   ) {
-
     return;
-
   }
 
 
-  let destinationIndex;
-
-
-  if (
+  const destinationIndex =
     direction === "next"
-  ) {
-
-    destinationIndex =
-      currentIndex + 1;
-
-  } else {
-
-    destinationIndex =
-      currentIndex - 1;
-
-  }
+      ? currentIndex + 1
+      : currentIndex - 1;
 
 
   if (
     destinationIndex < 0 ||
     destinationIndex >=
-      RIZSIM_PAGES.length
+    RIZSIM_PAGES.length
   ) {
-
     return;
-
   }
-
-
-  const destination =
-    RIZSIM_PAGES[
-      destinationIndex
-    ];
 
 
   showSwipeIndicator(
@@ -1349,7 +1150,9 @@ function navigateAdjacentPage(
     () => {
 
       navigateWithTransition(
-        destination.url,
+        RIZSIM_PAGES[
+          destinationIndex
+        ].url,
         direction
       );
 
@@ -1358,7 +1161,6 @@ function navigateAdjacentPage(
   );
 
 }
-
 
 
 /* ============================================================
@@ -1385,9 +1187,7 @@ function showSwipeIndicator(
     !indicator ||
     !icon
   ) {
-
     return;
-
   }
 
 
