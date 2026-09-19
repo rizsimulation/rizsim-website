@@ -2,45 +2,67 @@
    RIZSIM GLOBAL WEBSITE JAVASCRIPT
 ============================================================ */
 
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    initialiseActiveNavigation();
+
+    initialiseFooterYear();
+
+    initialiseSplash();
+
+    initialiseMobileNavigation();
+
+    initialiseLoginMenu();
+
+    initialiseSidebar();
+
+    initialisePageTransitions();
+
+    initialiseSafeSwipe();
+
+    initialisePageEntryAnimation();
+
+  }
+);
+
+
 
 /* ============================================================
-   PUBLIC PAGE ORDER
-
-   This determines:
-   - directional click transitions
-   - swipe left / right navigation
+   PAGE ORDER
 ============================================================ */
 
-const RIZSIM_PUBLIC_PAGES = [
+const RIZSIM_PAGES = [
 
   {
     key: "home",
-    file: "index.html"
+    url: "index.html"
   },
 
   {
     key: "simulations",
-    file: "simulations.html"
+    url: "simulations.html"
   },
 
   {
     key: "learning",
-    file: "learning.html"
+    url: "learning.html"
   },
 
   {
     key: "research",
-    file: "research.html"
+    url: "research.html"
   },
 
   {
     key: "about",
-    file: "about.html"
+    url: "about.html"
   },
 
   {
     key: "contact",
-    file: "contact.html"
+    url: "contact.html"
   }
 
 ];
@@ -48,118 +70,35 @@ const RIZSIM_PUBLIC_PAGES = [
 
 
 /* ============================================================
-   HELPERS
+   ACTIVE NAVIGATION
 ============================================================ */
 
-function getCurrentFile() {
+function initialiseActiveNavigation() {
 
-  const parts =
-    window.location.pathname.split("/");
-
-
-  const file =
-    parts[parts.length - 1];
-
-
-  return file || "index.html";
-
-}
-
-
-function getPageIndex(file) {
-
-  return RIZSIM_PUBLIC_PAGES.findIndex(
-
-    page =>
-      page.file === file
-
-  );
-
-}
-
-
-function getPublicPageFromHref(href) {
-
-  try {
-
-    const url =
-      new URL(
-        href,
-        window.location.href
-      );
-
-
-    if (
-      url.origin !==
-      window.location.origin
-    ) {
-
-      return null;
-
-    }
-
-
-    const pieces =
-      url.pathname.split("/");
-
-
-    const file =
-      pieces[pieces.length - 1] ||
-      "index.html";
-
-
-    const page =
-      RIZSIM_PUBLIC_PAGES.find(
-
-        item =>
-          item.file === file
-
-      );
-
-
-    return page || null;
-
-  } catch (error) {
-
-    return null;
-
-  }
-
-}
-
-
-
-/* ============================================================
-   ACTIVE NAV TAB
-============================================================ */
-
-function setActiveNavigation() {
-
-  const bodyPage =
+  const currentPage =
     document.body.dataset.page;
+
+
+  if (!currentPage) {
+    return;
+  }
 
 
   document
     .querySelectorAll(
-      ".main-nav a[data-page]"
+      ".main-nav [data-page]"
     )
     .forEach(
-
       link => {
 
-
-        const isActive =
+        if (
           link.dataset.page ===
-          bodyPage;
+          currentPage
+        ) {
 
-
-        link.classList.toggle(
-          "is-active",
-          isActive
-        );
-
-
-        if (isActive) {
+          link.classList.add(
+            "is-active"
+          );
 
           link.setAttribute(
             "aria-current",
@@ -168,15 +107,17 @@ function setActiveNavigation() {
 
         } else {
 
+          link.classList.remove(
+            "is-active"
+          );
+
           link.removeAttribute(
             "aria-current"
           );
 
         }
 
-
       }
-
     );
 
 }
@@ -184,10 +125,855 @@ function setActiveNavigation() {
 
 
 /* ============================================================
-   PAGE ENTER TRANSITION
+   FOOTER YEAR
 ============================================================ */
 
-function applyEnterTransition() {
+function initialiseFooterYear() {
+
+  const year =
+    document.getElementById(
+      "footerYear"
+    );
+
+
+  if (year) {
+
+    year.textContent =
+      new Date().getFullYear();
+
+  }
+
+}
+
+
+
+/* ============================================================
+   SPLASH SCREEN
+============================================================ */
+
+function initialiseSplash() {
+
+  const splash =
+    document.getElementById(
+      "rizsimSplash"
+    );
+
+
+  if (!splash) {
+    return;
+  }
+
+
+  document.body.classList.add(
+    "splash-locked"
+  );
+
+
+  const reducedMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  const delay =
+    reducedMotion
+      ? 500
+      : 4200;
+
+
+  window.setTimeout(
+    () => {
+
+      splash.classList.add(
+        "is-hidden"
+      );
+
+      document.body.classList.remove(
+        "splash-locked"
+      );
+
+
+      window.setTimeout(
+        () => {
+
+          if (splash.parentNode) {
+
+            splash.parentNode.removeChild(
+              splash
+            );
+
+          }
+
+        },
+        950
+      );
+
+    },
+    delay
+  );
+
+}
+
+
+
+/* ============================================================
+   MOBILE NAVIGATION
+============================================================ */
+
+function initialiseMobileNavigation() {
+
+  const button =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+
+  const nav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  if (
+    !button ||
+    !nav
+  ) {
+
+    return;
+
+  }
+
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      closeLoginMenu();
+
+      closeSidebar();
+
+
+      const open =
+        nav.classList.toggle(
+          "is-open"
+        );
+
+
+      button.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+    }
+  );
+
+
+  nav
+    .querySelectorAll("a")
+    .forEach(
+      link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            nav.classList.remove(
+              "is-open"
+            );
+
+            button.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+
+/* ============================================================
+   LOGIN MENU
+============================================================ */
+
+function openLoginMenu() {
+
+  const button =
+    document.getElementById(
+      "loginButton"
+    );
+
+
+  const menu =
+    document.getElementById(
+      "loginMenu"
+    );
+
+
+  if (
+    !button ||
+    !menu
+  ) {
+
+    return;
+
+  }
+
+
+  closeSidebar();
+
+  closeMobileNavigation();
+
+
+  menu.classList.add(
+    "is-open"
+  );
+
+
+  button.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+
+
+  menu.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+}
+
+
+function closeLoginMenu() {
+
+  const button =
+    document.getElementById(
+      "loginButton"
+    );
+
+
+  const menu =
+    document.getElementById(
+      "loginMenu"
+    );
+
+
+  if (
+    !button ||
+    !menu
+  ) {
+
+    return;
+
+  }
+
+
+  menu.classList.remove(
+    "is-open"
+  );
+
+
+  button.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+
+  menu.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+function initialiseLoginMenu() {
+
+  const button =
+    document.getElementById(
+      "loginButton"
+    );
+
+
+  const menu =
+    document.getElementById(
+      "loginMenu"
+    );
+
+
+  const collapse =
+    document.getElementById(
+      "loginCollapseButton"
+    );
+
+
+  if (
+    !button ||
+    !menu
+  ) {
+
+    return;
+
+  }
+
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+
+      if (
+        menu.classList.contains(
+          "is-open"
+        )
+      ) {
+
+        closeLoginMenu();
+
+      } else {
+
+        openLoginMenu();
+
+      }
+
+    }
+  );
+
+
+  menu.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+    }
+  );
+
+
+  if (collapse) {
+
+    collapse.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        closeLoginMenu();
+
+        button.focus();
+
+      }
+    );
+
+  }
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      if (
+        !menu.contains(
+          event.target
+        ) &&
+        !button.contains(
+          event.target
+        )
+      ) {
+
+        closeLoginMenu();
+
+      }
+
+    }
+  );
+
+}
+
+
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+function openSidebar() {
+
+  const toggle =
+    document.getElementById(
+      "sidebarToggle"
+    );
+
+
+  const sidebar =
+    document.getElementById(
+      "siteSidebar"
+    );
+
+
+  const overlay =
+    document.getElementById(
+      "sidebarOverlay"
+    );
+
+
+  if (
+    !toggle ||
+    !sidebar ||
+    !overlay
+  ) {
+
+    return;
+
+  }
+
+
+  closeLoginMenu();
+
+  closeMobileNavigation();
+
+
+  document.body.classList.add(
+    "sidebar-open"
+  );
+
+
+  toggle.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+
+
+  toggle.setAttribute(
+    "aria-label",
+    "Collapse sidebar"
+  );
+
+
+  sidebar.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  overlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+}
+
+
+function closeSidebar() {
+
+  const toggle =
+    document.getElementById(
+      "sidebarToggle"
+    );
+
+
+  const sidebar =
+    document.getElementById(
+      "siteSidebar"
+    );
+
+
+  const overlay =
+    document.getElementById(
+      "sidebarOverlay"
+    );
+
+
+  if (
+    !toggle ||
+    !sidebar ||
+    !overlay
+  ) {
+
+    return;
+
+  }
+
+
+  document.body.classList.remove(
+    "sidebar-open"
+  );
+
+
+  toggle.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+
+  toggle.setAttribute(
+    "aria-label",
+    "Open sidebar"
+  );
+
+
+  sidebar.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  overlay.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+function initialiseSidebar() {
+
+  const toggle =
+    document.getElementById(
+      "sidebarToggle"
+    );
+
+
+  const overlay =
+    document.getElementById(
+      "sidebarOverlay"
+    );
+
+
+  if (!toggle) {
+    return;
+  }
+
+
+  toggle.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+
+      if (
+        document.body.classList.contains(
+          "sidebar-open"
+        )
+      ) {
+
+        closeSidebar();
+
+      } else {
+
+        openSidebar();
+
+      }
+
+    }
+  );
+
+
+  if (overlay) {
+
+    overlay.addEventListener(
+      "click",
+      closeSidebar
+    );
+
+  }
+
+}
+
+
+
+/* ============================================================
+   CLOSE MOBILE NAV
+============================================================ */
+
+function closeMobileNavigation() {
+
+  const nav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  const button =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+
+  if (nav) {
+
+    nav.classList.remove(
+      "is-open"
+    );
+
+  }
+
+
+  if (button) {
+
+    button.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  }
+
+}
+
+
+
+/* ============================================================
+   ESCAPE KEY
+============================================================ */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key !== "Escape"
+    ) {
+
+      return;
+
+    }
+
+
+    closeLoginMenu();
+
+    closeSidebar();
+
+    closeMobileNavigation();
+
+  }
+);
+
+
+
+/* ============================================================
+   PAGE DIRECTION
+============================================================ */
+
+function getCurrentPageIndex() {
+
+  const currentPage =
+    document.body.dataset.page;
+
+
+  return RIZSIM_PAGES.findIndex(
+    page =>
+      page.key === currentPage
+  );
+
+}
+
+
+function getPageIndexFromUrl(url) {
+
+  const cleanUrl =
+    url
+      .split("?")[0]
+      .split("#")[0]
+      .split("/")
+      .pop() ||
+    "index.html";
+
+
+  return RIZSIM_PAGES.findIndex(
+    page =>
+      page.url === cleanUrl
+  );
+
+}
+
+
+
+/* ============================================================
+   PAGE TRANSITION
+============================================================ */
+
+function navigateWithTransition(
+  url,
+  direction
+) {
+
+  if (!url) {
+    return;
+  }
+
+
+  closeLoginMenu();
+
+  closeSidebar();
+
+  closeMobileNavigation();
+
+
+  const body =
+    document.body;
+
+
+  if (
+    direction === "prev"
+  ) {
+
+    body.classList.add(
+      "page-exit-prev"
+    );
+
+  } else {
+
+    body.classList.add(
+      "page-exit-next"
+    );
+
+  }
+
+
+  try {
+
+    sessionStorage.setItem(
+      "rizsimNavigationDirection",
+      direction
+    );
+
+  } catch (error) {
+
+    /* Ignore storage restrictions */
+
+  }
+
+
+  window.setTimeout(
+    () => {
+
+      window.location.href =
+        url;
+
+    },
+    285
+  );
+
+}
+
+
+
+/* ============================================================
+   CLICK NAVIGATION TRANSITIONS
+============================================================ */
+
+function initialisePageTransitions() {
+
+  document
+    .querySelectorAll(
+      "[data-page-link]"
+    )
+    .forEach(
+      link => {
+
+        link.addEventListener(
+          "click",
+          event => {
+
+            if (
+              event.defaultPrevented ||
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey ||
+              link.target === "_blank"
+            ) {
+
+              return;
+
+            }
+
+
+            const href =
+              link.getAttribute(
+                "href"
+              );
+
+
+            if (
+              !href ||
+              href.startsWith("#")
+            ) {
+
+              return;
+
+            }
+
+
+            const destinationIndex =
+              getPageIndexFromUrl(
+                href
+              );
+
+
+            const currentIndex =
+              getCurrentPageIndex();
+
+
+            if (
+              destinationIndex === -1 ||
+              currentIndex === -1
+            ) {
+
+              return;
+
+            }
+
+
+            if (
+              destinationIndex ===
+              currentIndex
+            ) {
+
+              return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            const direction =
+              destinationIndex >
+              currentIndex
+                ? "next"
+                : "prev";
+
+
+            navigateWithTransition(
+              href,
+              direction
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+
+/* ============================================================
+   PAGE ENTRY ANIMATION
+============================================================ */
+
+function initialisePageEntryAnimation() {
 
   let direction =
     null;
@@ -197,30 +983,23 @@ function applyEnterTransition() {
 
     direction =
       sessionStorage.getItem(
-        "rizsimTransitionDirection"
+        "rizsimNavigationDirection"
       );
 
 
     sessionStorage.removeItem(
-      "rizsimTransitionDirection"
+      "rizsimNavigationDirection"
     );
 
   } catch (error) {
 
-    direction =
-      null;
+    direction = null;
 
   }
 
 
-  if (
-    direction === "next"
-  ) {
-
-    document.body.classList.add(
-      "page-enter-next"
-    );
-
+  if (!direction) {
+    return;
   }
 
 
@@ -230,6 +1009,12 @@ function applyEnterTransition() {
 
     document.body.classList.add(
       "page-enter-prev"
+    );
+
+  } else {
+
+    document.body.classList.add(
+      "page-enter-next"
     );
 
   }
@@ -244,7 +1029,7 @@ function applyEnterTransition() {
       );
 
     },
-    520
+    500
   );
 
 }
@@ -252,20 +1037,267 @@ function applyEnterTransition() {
 
 
 /* ============================================================
-   CONTROLLED PAGE NAVIGATION
+   SAFE SWIPE NAVIGATION
 ============================================================ */
 
-let pageIsTransitioning =
-  false;
+function initialiseSafeSwipe() {
+
+  let startX = null;
+
+  let startY = null;
+
+  let startTime = null;
+
+  let startTarget = null;
 
 
-function navigateToPublicPage(
-  targetFile,
+  const blockedSelector = [
+
+    "[data-swipe-block]",
+
+    "button",
+
+    "a",
+
+    "input",
+
+    "textarea",
+
+    "select",
+
+    "[contenteditable='true']",
+
+    ".login-menu",
+
+    ".site-sidebar"
+
+  ].join(",");
+
+
+
+  document.addEventListener(
+    "touchstart",
+    event => {
+
+      if (
+        event.touches.length !== 1
+      ) {
+
+        resetSwipe();
+
+        return;
+
+      }
+
+
+      const target =
+        event.target;
+
+
+      if (
+        target.closest(
+          blockedSelector
+        )
+      ) {
+
+        resetSwipe();
+
+        return;
+
+      }
+
+
+      startTarget =
+        target;
+
+
+      startX =
+        event.touches[0].clientX;
+
+
+      startY =
+        event.touches[0].clientY;
+
+
+      startTime =
+        Date.now();
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+
+  document.addEventListener(
+    "touchend",
+    event => {
+
+      if (
+        startX === null ||
+        startY === null ||
+        !startTarget
+      ) {
+
+        resetSwipe();
+
+        return;
+
+      }
+
+
+      if (
+        document.body.classList.contains(
+          "sidebar-open"
+        )
+      ) {
+
+        resetSwipe();
+
+        return;
+
+      }
+
+
+      const loginMenu =
+        document.getElementById(
+          "loginMenu"
+        );
+
+
+      if (
+        loginMenu?.classList.contains(
+          "is-open"
+        )
+      ) {
+
+        resetSwipe();
+
+        return;
+
+      }
+
+
+      const touch =
+        event.changedTouches[0];
+
+
+      const deltaX =
+        touch.clientX -
+        startX;
+
+
+      const deltaY =
+        touch.clientY -
+        startY;
+
+
+      const duration =
+        Date.now() -
+        startTime;
+
+
+      const absX =
+        Math.abs(
+          deltaX
+        );
+
+
+      const absY =
+        Math.abs(
+          deltaY
+        );
+
+
+      /*
+        Deliberately conservative thresholds
+        to prevent accidental page switching.
+      */
+
+      const validDistance =
+        absX >= 115;
+
+
+      const horizontalDominance =
+        absX >
+        absY * 1.6;
+
+
+      const limitedVerticalMotion =
+        absY <= 80;
+
+
+      const validDuration =
+        duration <= 900;
+
+
+      if (
+        validDistance &&
+        horizontalDominance &&
+        limitedVerticalMotion &&
+        validDuration
+      ) {
+
+        if (
+          deltaX < 0
+        ) {
+
+          navigateAdjacentPage(
+            "next"
+          );
+
+        } else {
+
+          navigateAdjacentPage(
+            "prev"
+          );
+
+        }
+
+      }
+
+
+      resetSwipe();
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+
+  function resetSwipe() {
+
+    startX = null;
+
+    startY = null;
+
+    startTime = null;
+
+    startTarget = null;
+
+  }
+
+}
+
+
+
+/* ============================================================
+   ADJACENT PAGE SWIPE
+============================================================ */
+
+function navigateAdjacentPage(
   direction
 ) {
 
+  const currentIndex =
+    getCurrentPageIndex();
+
+
   if (
-    pageIsTransitioning
+    currentIndex === -1
   ) {
 
     return;
@@ -273,67 +1305,56 @@ function navigateToPublicPage(
   }
 
 
-  const currentFile =
-    getCurrentFile();
+  let destinationIndex;
 
 
   if (
-    targetFile === currentFile
+    direction === "next"
   ) {
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-    return;
-
-  }
-
-
-  pageIsTransitioning =
-    true;
-
-
-  try {
-
-    sessionStorage.setItem(
-      "rizsimTransitionDirection",
-      direction
-    );
-
-  } catch (error) {
-
-    /* Continue normally */
-
-  }
-
-
-  if (
-    direction === "prev"
-  ) {
-
-    document.body.classList.add(
-      "page-exit-prev"
-    );
+    destinationIndex =
+      currentIndex + 1;
 
   } else {
 
-    document.body.classList.add(
-      "page-exit-next"
-    );
+    destinationIndex =
+      currentIndex - 1;
 
   }
+
+
+  if (
+    destinationIndex < 0 ||
+    destinationIndex >=
+      RIZSIM_PAGES.length
+  ) {
+
+    return;
+
+  }
+
+
+  const destination =
+    RIZSIM_PAGES[
+      destinationIndex
+    ];
+
+
+  showSwipeIndicator(
+    direction
+  );
 
 
   window.setTimeout(
     () => {
 
-      window.location.href =
-        targetFile;
+      navigateWithTransition(
+        destination.url,
+        direction
+      );
 
     },
-    280
+    135
   );
 
 }
@@ -341,210 +1362,12 @@ function navigateToPublicPage(
 
 
 /* ============================================================
-   INTERCEPT PUBLIC PAGE LINKS
-
-   Internal public tabs use transition animation.
-
-   Login / Access IN / Access OUT / policies remain normal links.
+   SWIPE INDICATOR
 ============================================================ */
 
-function initialisePageLinks() {
-
-  document
-    .querySelectorAll(
-      "a[data-page-link]"
-    )
-    .forEach(
-
-      link => {
-
-
-        link.addEventListener(
-          "click",
-          event => {
-
-
-            const page =
-              getPublicPageFromHref(
-                link.getAttribute(
-                  "href"
-                )
-              );
-
-
-            if (!page) {
-
-              return;
-
-            }
-
-
-            event.preventDefault();
-
-
-            const currentIndex =
-              getPageIndex(
-                getCurrentFile()
-              );
-
-
-            const targetIndex =
-              getPageIndex(
-                page.file
-              );
-
-
-            const direction =
-              targetIndex <
-              currentIndex
-                ? "prev"
-                : "next";
-
-
-            navigateToPublicPage(
-              page.file,
-              direction
-            );
-
-
-          }
-
-        );
-
-
-      }
-
-    );
-
-}
-
-
-
-/* ============================================================
-   SAFE / DELIBERATE SWIPE NAVIGATION
-
-   Designed to reduce accidental swipes.
-
-   Requirements:
-   - touch device
-   - starts away from browser screen edges
-   - no buttons / links / forms / cards
-   - at least 120px horizontal travel
-   - horizontal movement significantly greater than vertical
-   - vertical drift limited
-   - gesture must complete within 750ms
-============================================================ */
-
-const SWIPE_MIN_DISTANCE =
-  120;
-
-
-const SWIPE_MAX_VERTICAL =
-  70;
-
-
-const SWIPE_DIRECTION_RATIO =
-  1.65;
-
-
-const SWIPE_MAX_DURATION =
-  750;
-
-
-const SWIPE_EDGE_GUARD =
-  34;
-
-
-let swipeStartX =
-  null;
-
-
-let swipeStartY =
-  null;
-
-
-let swipeStartTime =
-  null;
-
-
-let swipeTarget =
-  null;
-
-
-let swipeCancelled =
-  false;
-
-
-let horizontalIntent =
-  false;
-
-
-
-function isSwipeBlockedElement(target) {
-
-  if (!target) {
-
-    return true;
-
-  }
-
-
-  return Boolean(
-
-    target.closest(
-
-      [
-        "a",
-        "button",
-        "input",
-        "textarea",
-        "select",
-        "label",
-        "[role='button']",
-        "[contenteditable='true']",
-        "[data-swipe-block]",
-        ".login-menu",
-        ".modal",
-        ".product-card",
-        ".home-card",
-        ".experience-panel"
-      ].join(",")
-
-    )
-
-  );
-
-}
-
-
-
-function resetSwipe() {
-
-  swipeStartX =
-    null;
-
-  swipeStartY =
-    null;
-
-  swipeStartTime =
-    null;
-
-  swipeTarget =
-    null;
-
-  swipeCancelled =
-    false;
-
-  horizontalIntent =
-    false;
-
-  hideSwipeIndicator();
-
-}
-
-
-
-function showSwipeIndicator(direction) {
+function showSwipeIndicator(
+  direction
+) {
 
   const indicator =
     document.getElementById(
@@ -570,13 +1393,13 @@ function showSwipeIndicator(direction) {
 
   indicator.classList.remove(
     "next",
-    "prev"
+    "prev",
+    "show"
   );
 
 
   indicator.classList.add(
-    direction,
-    "show"
+    direction
   );
 
 
@@ -585,817 +1408,27 @@ function showSwipeIndicator(direction) {
       ? "→"
       : "←";
 
-}
 
-
-
-function hideSwipeIndicator() {
-
-  const indicator =
-    document.getElementById(
-      "swipeIndicator"
-    );
-
-
-  if (!indicator) {
-
-    return;
-
-  }
-
-
-  indicator.classList.remove(
-    "show",
-    "next",
-    "prev"
-  );
-
-}
-
-
-
-function initialiseSwipeNavigation() {
-
-  const touchCapable =
-    (
-      "ontouchstart" in window
-    ) ||
-    (
-      navigator.maxTouchPoints > 0
-    );
-
-
-  if (!touchCapable) {
-
-    return;
-
-  }
-
-
-
-  document.addEventListener(
-
-    "touchstart",
-
-    event => {
-
-
-      if (
-        event.touches.length !== 1
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-      const touch =
-        event.touches[0];
-
-
-      /*
-        Protect browser edge gestures such as
-        iOS Safari Back / Forward.
-      */
-
-      if (
-        touch.clientX <
-        SWIPE_EDGE_GUARD ||
-        touch.clientX >
-        window.innerWidth -
-        SWIPE_EDGE_GUARD
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-      if (
-        isSwipeBlockedElement(
-          event.target
-        )
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-      swipeStartX =
-        touch.clientX;
-
-
-      swipeStartY =
-        touch.clientY;
-
-
-      swipeStartTime =
-        Date.now();
-
-
-      swipeTarget =
-        event.target;
-
-
-      swipeCancelled =
-        false;
-
-
-      horizontalIntent =
-        false;
-
-
-    },
-
-    {
-      passive: true
-    }
-
-  );
-
-
-
-  document.addEventListener(
-
-    "touchmove",
-
-    event => {
-
-
-      if (
-        swipeStartX === null ||
-        swipeCancelled ||
-        event.touches.length !== 1
-      ) {
-
-        return;
-
-      }
-
-
-      const touch =
-        event.touches[0];
-
-
-      const dx =
-        touch.clientX -
-        swipeStartX;
-
-
-      const dy =
-        touch.clientY -
-        swipeStartY;
-
-
-      const absX =
-        Math.abs(dx);
-
-
-      const absY =
-        Math.abs(dy);
-
-
-
-      /*
-        If user clearly begins vertical scrolling,
-        immediately cancel swipe navigation.
-      */
-
-      if (
-        absY > 20 &&
-        absY > absX
-      ) {
-
-        swipeCancelled =
-          true;
-
-        hideSwipeIndicator();
-
-        return;
-
-      }
-
-
-
-      /*
-        Only classify as horizontal intent after
-        sufficient movement and a clear horizontal bias.
-      */
-
-      if (
-
-        !horizontalIntent &&
-
-        absX > 32 &&
-
-        absX >
-        absY *
-        SWIPE_DIRECTION_RATIO
-
-      ) {
-
-        horizontalIntent =
-          true;
-
-      }
-
-
-
-      if (
-        horizontalIntent
-      ) {
-
-        /*
-          Once gesture is clearly horizontal,
-          stop browser content from drifting horizontally.
-        */
-
-        if (
-          event.cancelable
-        ) {
-
-          event.preventDefault();
-
-        }
-
-
-        if (
-          absX > 72
-        ) {
-
-          showSwipeIndicator(
-
-            dx < 0
-              ? "next"
-              : "prev"
-
-          );
-
-        }
-
-      }
-
-
-    },
-
-    {
-      passive: false
-    }
-
-  );
-
-
-
-  document.addEventListener(
-
-    "touchend",
-
-    event => {
-
-
-      if (
-        swipeStartX === null ||
-        swipeCancelled
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-      if (
-        event.changedTouches.length !== 1
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-      const touch =
-        event.changedTouches[0];
-
-
-      const dx =
-        touch.clientX -
-        swipeStartX;
-
-
-      const dy =
-        touch.clientY -
-        swipeStartY;
-
-
-      const absX =
-        Math.abs(dx);
-
-
-      const absY =
-        Math.abs(dy);
-
-
-      const duration =
-        Date.now() -
-        swipeStartTime;
-
-
-
-      const deliberateSwipe =
-
-        horizontalIntent &&
-
-        absX >=
-        SWIPE_MIN_DISTANCE &&
-
-        absY <=
-        SWIPE_MAX_VERTICAL &&
-
-        absX >=
-        absY *
-        SWIPE_DIRECTION_RATIO &&
-
-        duration <=
-        SWIPE_MAX_DURATION;
-
-
-
-      if (
-        !deliberateSwipe
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-
-      const currentFile =
-        getCurrentFile();
-
-
-      const currentIndex =
-        getPageIndex(
-          currentFile
-        );
-
-
-      if (
-        currentIndex === -1
-      ) {
-
-        resetSwipe();
-
-        return;
-
-      }
-
-
-
-      /*
-        Finger moves LEFT:
-        go to NEXT page.
-      */
-
-      if (
-        dx < 0
-      ) {
-
-
-        const nextIndex =
-          currentIndex + 1;
-
-
-        if (
-          nextIndex <
-          RIZSIM_PUBLIC_PAGES.length
-        ) {
-
-
-          const nextPage =
-            RIZSIM_PUBLIC_PAGES[
-              nextIndex
-            ];
-
-
-          navigateToPublicPage(
-            nextPage.file,
-            "next"
-          );
-
-
-        }
-
-
-      }
-
-
-
-      /*
-        Finger moves RIGHT:
-        go to PREVIOUS page.
-      */
-
-      if (
-        dx > 0
-      ) {
-
-
-        const previousIndex =
-          currentIndex - 1;
-
-
-        if (
-          previousIndex >= 0
-        ) {
-
-
-          const previousPage =
-            RIZSIM_PUBLIC_PAGES[
-              previousIndex
-            ];
-
-
-          navigateToPublicPage(
-            previousPage.file,
-            "prev"
-          );
-
-
-        }
-
-
-      }
-
-
-
-      resetSwipe();
-
-
-    },
-
-    {
-      passive: true
-    }
-
-  );
-
-
-}
-
-
-
-/* ============================================================
-   LOGIN MENU
-============================================================ */
-
-function initialiseLoginMenu() {
-
-  const loginButton =
-    document.getElementById(
-      "loginButton"
-    );
-
-
-  const loginMenu =
-    document.getElementById(
-      "loginMenu"
-    );
-
-
-  if (
-    !loginButton ||
-    !loginMenu
-  ) {
-
-    return;
-
-  }
-
-
-
-  loginButton.addEventListener(
-    "click",
-    event => {
-
-
-      event.stopPropagation();
-
-
-      const isOpen =
-        loginMenu.classList.toggle(
-          "is-open"
-        );
-
-
-      loginButton.setAttribute(
-        "aria-expanded",
-        String(isOpen)
-      );
-
-
-    }
-  );
-
-
-
-  document.addEventListener(
-    "click",
-    event => {
-
-
-      if (
-        !loginMenu.contains(
-          event.target
-        ) &&
-        event.target !== loginButton
-      ) {
-
-
-        loginMenu.classList.remove(
-          "is-open"
-        );
-
-
-        loginButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-
-      }
-
-
-    }
-  );
-
-}
-
-
-
-/* ============================================================
-   MOBILE MENU
-============================================================ */
-
-function initialiseMobileMenu() {
-
-  const button =
-    document.getElementById(
-      "mobileMenuButton"
-    );
-
-
-  const nav =
-    document.getElementById(
-      "mainNav"
-    );
-
-
-  if (
-    !button ||
-    !nav
-  ) {
-
-    return;
-
-  }
-
-
-
-  button.addEventListener(
-    "click",
+  requestAnimationFrame(
     () => {
 
-
-      const open =
-        nav.classList.toggle(
-          "is-open"
-        );
-
-
-      button.setAttribute(
-        "aria-expanded",
-        String(open)
+      indicator.classList.add(
+        "show"
       );
-
 
     }
   );
-
-
-
-  nav
-    .querySelectorAll("a")
-    .forEach(
-      link => {
-
-
-        link.addEventListener(
-          "click",
-          () => {
-
-
-            nav.classList.remove(
-              "is-open"
-            );
-
-
-            button.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-
-
-          }
-        );
-
-
-      }
-    );
-
-}
-
-
-
-/* ============================================================
-   SPLASH
-   HOME PAGE ONLY
-   ONCE PER BROWSER SESSION
-============================================================ */
-
-function initialiseSplash() {
-
-  const splash =
-    document.getElementById(
-      "rizsimSplash"
-    );
-
-
-  if (!splash) {
-
-    return;
-
-  }
-
-
-  let alreadySeen =
-    false;
-
-
-  try {
-
-    alreadySeen =
-      sessionStorage.getItem(
-        "rizsimSplashSeen"
-      ) === "1";
-
-  } catch (error) {
-
-    alreadySeen =
-      false;
-
-  }
-
-
-
-  if (alreadySeen) {
-
-    splash.style.display =
-      "none";
-
-    return;
-
-  }
-
-
-  document.body.classList.add(
-    "splash-locked"
-  );
-
-
-  try {
-
-    sessionStorage.setItem(
-      "rizsimSplashSeen",
-      "1"
-    );
-
-  } catch (error) {
-
-    /* Continue */
-
-  }
-
-
-
-  const reducedMotion =
-    window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-
-  const duration =
-    reducedMotion
-      ? 700
-      : 3650;
-
 
 
   window.setTimeout(
     () => {
 
-
-      splash.classList.add(
-        "is-hidden"
+      indicator.classList.remove(
+        "show"
       );
-
-
-      document.body.classList.remove(
-        "splash-locked"
-      );
-
-
-      window.setTimeout(
-        () => {
-
-          splash.style.display =
-            "none";
-
-        },
-        reducedMotion
-          ? 40
-          : 950
-      );
-
 
     },
-    duration
+    320
   );
 
 }
-
-
-
-/* ============================================================
-   FOOTER YEAR
-============================================================ */
-
-function setFooterYear() {
-
-  const target =
-    document.getElementById(
-      "footerYear"
-    );
-
-
-  if (target) {
-
-    target.textContent =
-      new Date().getFullYear();
-
-  }
-
-}
-
-
-
-/* ============================================================
-   INITIALISE WEBSITE
-============================================================ */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-
-    setActiveNavigation();
-
-    applyEnterTransition();
-
-    initialisePageLinks();
-
-    initialiseSwipeNavigation();
-
-    initialiseLoginMenu();
-
-    initialiseMobileMenu();
-
-    initialiseSplash();
-
-    setFooterYear();
-
-
-  }
-);
