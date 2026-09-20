@@ -13,7 +13,7 @@
 
   <meta
     name="description"
-    content="Explore RizSim browser-based interactive learning simulations."
+    content="Explore RizSim browser-based interactive learning simulations for faculty, institutions and learners."
   >
 
   <meta
@@ -41,6 +41,7 @@
 
     /* ========================================================
        SIMULATIONS PAGE HERO
+       PREMIUM VISUAL SYSTEM PRESERVED
     ========================================================= */
 
     .sim-hero {
@@ -51,7 +52,13 @@
       padding:
         78px 0 68px;
 
-      background: #ffffff;
+      background-color: #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
 
       border-bottom:
         1px solid #e4ecef;
@@ -84,6 +91,7 @@
 
     .sim-hero-grid {
       position: relative;
+
       z-index: 2;
 
       display: grid;
@@ -99,6 +107,7 @@
 
     .sim-kicker {
       display: inline-flex;
+
       align-items: center;
 
       gap: 10px;
@@ -106,6 +115,7 @@
       color: #158c89;
 
       font-size: .72rem;
+
       font-weight: 900;
 
       letter-spacing: .10em;
@@ -118,6 +128,7 @@
       content: "";
 
       width: 30px;
+
       height: 2px;
 
       border-radius: 99px;
@@ -165,8 +176,10 @@
       color: #748895;
 
       font-size: 1.05rem;
+
       line-height: 1.8;
     }
+
 
 
     /* ========================================================
@@ -191,12 +204,14 @@
         );
 
       border:
-        1px solid rgba(45,206,198,.18);
+        1px solid
+        rgba(45,206,198,.18);
 
       border-radius: 26px;
 
       box-shadow:
-        0 28px 65px rgba(6,35,55,.15);
+        0 28px 65px
+        rgba(6,35,55,.15);
     }
 
 
@@ -204,6 +219,7 @@
       color: #62d4cd;
 
       font-size: .66rem;
+
       font-weight: 900;
 
       letter-spacing: .11em;
@@ -217,6 +233,7 @@
       color: #ffffff;
 
       font-size: 1.55rem;
+
       line-height: 1.45;
     }
 
@@ -228,6 +245,7 @@
       color: #aac0c9;
 
       font-size: .84rem;
+
       line-height: 1.6;
     }
 
@@ -251,7 +269,8 @@
         rgba(255,255,255,.055);
 
       border:
-        1px solid rgba(255,255,255,.07);
+        1px solid
+        rgba(255,255,255,.07);
 
       border-radius: 14px;
     }
@@ -261,6 +280,7 @@
       color: #70d9d2;
 
       font-size: .62rem;
+
       font-weight: 900;
     }
 
@@ -284,6 +304,146 @@
     }
 
 
+
+    /* ========================================================
+       FACULTY LICENSING STRIP
+    ========================================================= */
+
+    .licensing-strip {
+      position: relative;
+
+      z-index: 3;
+
+      margin-top: -24px;
+
+      padding-bottom: 2px;
+    }
+
+
+    .licensing-panel {
+      padding:
+        18px 22px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 24px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 18px;
+
+      box-shadow:
+        0 13px 35px
+        rgba(4,25,40,.08);
+    }
+
+
+    .licensing-message {
+      display: flex;
+
+      align-items: center;
+
+      gap: 14px;
+    }
+
+
+    .licensing-icon {
+      width: 42px;
+
+      height: 42px;
+
+      flex:
+        0 0 42px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          135deg,
+          #13aaa5,
+          #20b7b0
+        );
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 7px 18px
+        rgba(24,184,176,.18);
+    }
+
+
+    .licensing-icon svg {
+      width: 22px;
+
+      height: 22px;
+    }
+
+
+    .licensing-message strong {
+      display: block;
+
+      color: #061827;
+
+      font-size: .87rem;
+    }
+
+
+    .licensing-message span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: #718590;
+
+      font-size: .76rem;
+    }
+
+
+    .licensing-periods {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: flex-end;
+
+      gap: 7px;
+    }
+
+
+    .licensing-period {
+      padding:
+        7px 10px;
+
+      color: #176d70;
+
+      background:
+        #eff9f8;
+
+      border:
+        1px solid
+        rgba(24,184,176,.15);
+
+      border-radius: 9px;
+
+      font-size: .66rem;
+
+      font-weight: 850;
+    }
+
+
+
     /* ========================================================
        CATALOGUE
     ========================================================= */
@@ -292,12 +452,20 @@
       padding:
         76px 0 100px;
 
-      background:
+      background-color:
+        #f8fbfb;
+
+      background-image:
         linear-gradient(
           180deg,
-          #f8fbfb 0%,
-          #ffffff 280px
-        );
+          rgba(248,251,251,.95) 0%,
+          rgba(255,255,255,.98) 280px
+        ),
+        var(--rizsim-texture);
+
+      background-size:
+        100% 100%,
+        var(--rizsim-texture-size);
     }
 
 
@@ -305,6 +473,7 @@
       display: flex;
 
       justify-content: space-between;
+
       align-items: end;
 
       gap: 40px;
@@ -340,8 +509,10 @@
       color: #748895;
 
       font-size: .91rem;
+
       line-height: 1.65;
     }
+
 
 
     /* ========================================================
@@ -350,6 +521,7 @@
 
     .catalogue-filters {
       display: flex;
+
       flex-wrap: wrap;
 
       gap: 9px;
@@ -374,9 +546,11 @@
       border-radius: 11px;
 
       font-size: .78rem;
+
       font-weight: 800;
 
-      transition: .2s ease;
+      transition:
+        .2s ease;
     }
 
 
@@ -401,8 +575,10 @@
       border-color: transparent;
 
       box-shadow:
-        0 7px 18px rgba(24,184,176,.17);
+        0 7px 18px
+        rgba(24,184,176,.17);
     }
+
 
 
     /* ========================================================
@@ -420,14 +596,16 @@
 
 
     .simulation-card {
-      min-height: 340px;
+      min-height: 375px;
 
       padding: 24px;
 
       display: flex;
+
       flex-direction: column;
 
-      background: #ffffff;
+      background:
+        rgba(255,255,255,.97);
 
       border:
         1px solid #dce7eb;
@@ -435,7 +613,8 @@
       border-radius: 20px;
 
       box-shadow:
-        0 9px 28px rgba(4,25,40,.055);
+        0 9px 28px
+        rgba(4,25,40,.055);
 
       transition:
         transform .23s ease,
@@ -452,7 +631,8 @@
         rgba(24,184,176,.28);
 
       box-shadow:
-        0 18px 40px rgba(4,25,40,.10);
+        0 18px 40px
+        rgba(4,25,40,.10);
     }
 
 
@@ -460,6 +640,7 @@
       display: flex;
 
       justify-content: space-between;
+
       align-items: flex-start;
 
       gap: 15px;
@@ -468,6 +649,7 @@
 
     .simulation-category {
       display: inline-flex;
+
       align-items: center;
 
       min-height: 27px;
@@ -483,6 +665,7 @@
       border-radius: 8px;
 
       font-size: .62rem;
+
       font-weight: 900;
 
       letter-spacing: .08em;
@@ -495,6 +678,7 @@
       color: #8a9ba5;
 
       font-size: .62rem;
+
       font-weight: 800;
 
       letter-spacing: .06em;
@@ -510,6 +694,7 @@
       color: #061827;
 
       font-size: 1.26rem;
+
       line-height: 1.3;
     }
 
@@ -520,18 +705,75 @@
       color: #718490;
 
       font-size: .83rem;
+
       line-height: 1.62;
     }
 
 
-    .simulation-price {
+
+    /* ========================================================
+       LICENCE INFORMATION ON PRODUCT CARDS
+    ========================================================= */
+
+    .simulation-license {
       margin-top: auto;
 
-      padding-top: 23px;
+      padding-top: 21px;
+    }
+
+
+    .simulation-license-label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #81939d;
+
+      font-size: .62rem;
+
+      font-weight: 850;
+
+      letter-spacing: .07em;
+
+      text-transform: uppercase;
+    }
+
+
+    .simulation-license-options {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 5px;
+    }
+
+
+    .simulation-license-options span {
+      padding:
+        5px 7px;
+
+      color: #47717b;
+
+      background: #f4f9f9;
+
+      border:
+        1px solid #e1ebed;
+
+      border-radius: 7px;
+
+      font-size: .59rem;
+
+      font-weight: 800;
+    }
+
+
+    .simulation-price {
+      margin-top: 14px;
 
       color: #061827;
 
       font-size: 1.25rem;
+
       font-weight: 900;
     }
 
@@ -542,7 +784,17 @@
       color: #79909b;
 
       font-size: .68rem;
+
       font-weight: 700;
+    }
+
+
+    .simulation-price-note {
+      margin-top: 3px;
+
+      color: #91a0a8;
+
+      font-size: .61rem;
     }
 
 
@@ -570,6 +822,7 @@
     }
 
 
+
     /* ========================================================
        PRODUCT MODAL
     ========================================================= */
@@ -584,7 +837,9 @@
       padding: 24px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       background:
@@ -593,7 +848,11 @@
       backdrop-filter:
         blur(7px);
 
+      -webkit-backdrop-filter:
+        blur(7px);
+
       opacity: 0;
+
       visibility: hidden;
 
       pointer-events: none;
@@ -606,6 +865,7 @@
 
     .product-modal.is-open {
       opacity: 1;
+
       visibility: visible;
 
       pointer-events: auto;
@@ -615,16 +875,23 @@
     .product-modal-card {
       position: relative;
 
-      width: min(590px,100%);
+      width:
+        min(
+          590px,
+          100%
+        );
 
       max-height:
-        calc(100vh - 48px);
+        calc(
+          100vh - 48px
+        );
 
       overflow-y: auto;
 
       padding: 32px;
 
-      background: #ffffff;
+      background:
+        #ffffff;
 
       border:
         1px solid #dce7eb;
@@ -632,7 +899,8 @@
       border-radius: 24px;
 
       box-shadow:
-        0 30px 80px rgba(3,16,27,.24);
+        0 30px 80px
+        rgba(3,16,27,.24);
 
       transform:
         translateY(12px)
@@ -655,12 +923,15 @@
       position: absolute;
 
       right: 18px;
+
       top: 18px;
 
       width: 38px;
+
       height: 38px;
 
       display: grid;
+
       place-items: center;
 
       color: #173a4c;
@@ -682,6 +953,7 @@
       color: #128f8b;
 
       font-size: .65rem;
+
       font-weight: 900;
 
       letter-spacing: .09em;
@@ -695,6 +967,7 @@
       color: #061827;
 
       font-size: 2rem;
+
       line-height: 1.12;
     }
 
@@ -706,24 +979,91 @@
     }
 
 
+    .modal-license-box {
+      margin-top: 21px;
+
+      padding:
+        16px 17px;
+
+      background: #f6fbfa;
+
+      border:
+        1px solid #dceae9;
+
+      border-radius: 14px;
+    }
+
+
+    .modal-license-box strong {
+      display: block;
+
+      margin-bottom: 9px;
+
+      color: #13384a;
+
+      font-size: .77rem;
+    }
+
+
+    .modal-license-periods {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 6px;
+    }
+
+
+    .modal-license-periods span {
+      padding:
+        6px 9px;
+
+      color: #147979;
+
+      background: #ffffff;
+
+      border:
+        1px solid
+        rgba(24,184,176,.18);
+
+      border-radius: 8px;
+
+      font-size: .65rem;
+
+      font-weight: 850;
+    }
+
+
     .modal-price {
       margin-top: 22px;
 
       color: #061827;
 
       font-size: 1.35rem;
+
       font-weight: 900;
+    }
+
+
+    .modal-price-caption {
+      margin-top: 3px;
+
+      color: #91a1a9;
+
+      font-size: .67rem;
     }
 
 
     .modal-actions {
       display: flex;
+
       flex-wrap: wrap;
 
       gap: 9px;
 
       margin-top: 23px;
     }
+
 
 
     /* ========================================================
@@ -739,9 +1079,22 @@
         gap: 40px;
       }
 
+
       .simulation-grid {
         grid-template-columns:
           repeat(2,1fr);
+      }
+
+
+      .licensing-panel {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .licensing-periods {
+        justify-content: flex-start;
       }
 
     }
@@ -754,6 +1107,7 @@
           55px 0;
       }
 
+
       .sim-hero h1 {
         font-size:
           clamp(
@@ -763,10 +1117,17 @@
           );
       }
 
+
       .sim-process {
         grid-template-columns:
           1fr;
       }
+
+
+      .licensing-strip {
+        margin-top: -18px;
+      }
+
 
       .catalogue-heading {
         flex-direction:
@@ -776,14 +1137,17 @@
           flex-start;
       }
 
+
       .simulation-grid {
         grid-template-columns:
           1fr;
       }
 
+
       .product-modal {
         padding: 13px;
       }
+
 
       .product-modal-card {
         padding:
@@ -812,6 +1176,8 @@
     <div class="nav-shell">
 
 
+      <!-- SIDEBAR -->
+
       <button
         class="sidebar-toggle"
         id="sidebarToggle"
@@ -834,6 +1200,8 @@
 
 
 
+      <!-- LOGO -->
+
       <a
         class="nav-logo-link"
         href="index.html"
@@ -851,6 +1219,8 @@
 
 
 
+      <!-- PUBLIC NAVIGATION -->
+
       <nav
         class="main-nav"
         id="mainNav"
@@ -864,6 +1234,7 @@
           Home
         </a>
 
+
         <a
           href="simulations.html"
           data-page-link
@@ -872,21 +1243,6 @@
           Simulations
         </a>
 
-        <a
-          href="learning.html"
-          data-page-link
-          data-page="learning"
-        >
-          Learning
-        </a>
-
-        <a
-          href="research.html"
-          data-page-link
-          data-page="research"
-        >
-          Research
-        </a>
 
         <a
           href="about.html"
@@ -895,6 +1251,7 @@
         >
           About
         </a>
+
 
         <a
           href="contact.html"
@@ -907,6 +1264,8 @@
       </nav>
 
 
+
+      <!-- LOGIN -->
 
       <div class="nav-actions">
 
@@ -955,6 +1314,8 @@
           >
 
 
+            <!-- STUDENT -->
+
             <a
               class="login-role-button"
               href="access-in.html"
@@ -995,6 +1356,8 @@
             </a>
 
 
+
+            <!-- FACULTY -->
 
             <a
               class="login-role-button"
@@ -1048,6 +1411,8 @@
 
 
 
+            <!-- CLOSE -->
+
             <button
               class="login-collapse-button"
               id="loginCollapseButton"
@@ -1073,12 +1438,13 @@
 
             </button>
 
-
           </div>
 
         </div>
 
 
+
+        <!-- MOBILE MENU -->
 
         <button
           class="mobile-menu-button"
@@ -1138,7 +1504,9 @@
   <main class="page-content">
 
 
-    <!-- HERO -->
+    <!-- ======================================================
+         HERO
+    ======================================================= -->
 
     <section class="sim-hero">
 
@@ -1146,6 +1514,7 @@
 
 
         <div class="sim-hero-copy">
+
 
           <div class="sim-kicker">
             RizSim Catalogue
@@ -1167,15 +1536,18 @@
 
             Explore browser-based learning experiences
             designed to move concepts into judgment,
-            practice and application. Product information
-            and pricing are public; login is required only
-            when you choose to buy or launch an experience.
+            practice and application. Faculty and institutions
+            license simulations and bring them into their
+            learning environments; students join through
+            a class code or secure link.
 
           </p>
 
         </div>
 
 
+
+        <!-- EXPERIENCE CARD -->
 
         <div
           class="sim-experience-card"
@@ -1265,7 +1637,104 @@
 
 
 
-    <!-- CATALOGUE -->
+    <!-- ======================================================
+         LICENSING STRIP
+    ======================================================= -->
+
+    <div class="licensing-strip">
+
+      <div class="content-shell">
+
+        <div class="licensing-panel">
+
+
+          <div class="licensing-message">
+
+
+            <div class="licensing-icon">
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M4 7.5H20V18.5H4V7.5Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="M8 7.5V5.5C8 4.7 8.7 4 9.5 4H14.5C15.3 4 16 4.7 16 5.5V7.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+
+                <path
+                  d="M4 12H20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Faculty & Institution Licensing
+              </strong>
+
+              <span>
+                Choose the access period that fits your teaching or learning programme.
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+
+          <div class="licensing-periods">
+
+            <span class="licensing-period">
+              Day
+            </span>
+
+            <span class="licensing-period">
+              Week
+            </span>
+
+            <span class="licensing-period">
+              Semester
+            </span>
+
+            <span class="licensing-period">
+              Year
+            </span>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         CATALOGUE
+    ======================================================= -->
 
     <section class="catalogue-section">
 
@@ -1290,9 +1759,10 @@
 
           <p>
 
-            Browse the current RizSim learning experiences.
-            View details publicly and sign in only when
-            purchasing or launching access.
+            Product information is public.
+            Faculty and institutions license RizSim
+            experiences; learners participate through
+            faculty-managed access.
 
           </p>
 
@@ -1316,6 +1786,7 @@
             All
           </button>
 
+
           <button
             class="catalogue-filter"
             type="button"
@@ -1324,6 +1795,7 @@
             Learning
           </button>
 
+
           <button
             class="catalogue-filter"
             type="button"
@@ -1331,6 +1803,7 @@
           >
             Skills
           </button>
+
 
           <button
             class="catalogue-filter"
@@ -1344,7 +1817,9 @@
 
 
 
-        <!-- PRODUCT GRID -->
+        <!-- ==================================================
+             PRODUCT GRID
+        =================================================== -->
 
         <div
           class="simulation-grid"
@@ -1352,7 +1827,9 @@
         >
 
 
-          <!-- PRODUCT 1 -->
+          <!-- =================================================
+               PRODUCT 1
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1386,6 +1863,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1394,6 +1892,11 @@
 
               500
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1412,12 +1915,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=perception-attention-lab"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1425,7 +1929,9 @@
 
 
 
-          <!-- PRODUCT 2 -->
+          <!-- =================================================
+               PRODUCT 2
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1459,6 +1965,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1467,6 +1994,11 @@
 
               750
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1485,12 +2017,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=brain-networks-decision-lab"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1498,7 +2031,9 @@
 
 
 
-          <!-- PRODUCT 3 -->
+          <!-- =================================================
+               PRODUCT 3
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1532,6 +2067,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1540,6 +2096,11 @@
 
               500
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1558,12 +2119,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=cognitive-biases-decision-lab"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1571,7 +2133,9 @@
 
 
 
-          <!-- PRODUCT 4 -->
+          <!-- =================================================
+               PRODUCT 4
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1605,6 +2169,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1613,6 +2198,11 @@
 
               750
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1631,12 +2221,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=seven-sins-greenwashing"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1644,7 +2235,9 @@
 
 
 
-          <!-- PRODUCT 5 -->
+          <!-- =================================================
+               PRODUCT 5
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1678,6 +2271,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1686,6 +2300,11 @@
 
               750
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1704,12 +2323,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=dark-patterns-consumer-autonomy"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1717,7 +2337,9 @@
 
 
 
-          <!-- PRODUCT 6 -->
+          <!-- =================================================
+               PRODUCT 6
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1751,6 +2373,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1759,6 +2402,11 @@
 
               750
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1777,12 +2425,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=responsible-marketing-meta-vs-users"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1790,7 +2439,9 @@
 
 
 
-          <!-- PRODUCT 7 -->
+          <!-- =================================================
+               PRODUCT 7
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1824,6 +2475,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1832,6 +2504,11 @@
 
               750
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1850,12 +2527,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=learning-gain-ai-simulation"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1863,7 +2541,9 @@
 
 
 
-          <!-- PRODUCT 8 -->
+          <!-- =================================================
+               PRODUCT 8
+          ================================================== -->
 
           <article
             class="simulation-card"
@@ -1897,6 +2577,27 @@
             </p>
 
 
+            <div class="simulation-license">
+
+              <span class="simulation-license-label">
+                Faculty licence options
+              </span>
+
+              <div class="simulation-license-options">
+
+                <span>Day</span>
+
+                <span>Week</span>
+
+                <span>Semester</span>
+
+                <span>Year</span>
+
+              </div>
+
+            </div>
+
+
             <div class="simulation-price">
 
               <small>
@@ -1905,6 +2606,11 @@
 
               400
 
+            </div>
+
+
+            <div class="simulation-price-note">
+              Current catalogue price
             </div>
 
 
@@ -1923,12 +2629,13 @@
               </button>
 
 
-              <a
+              <button
                 class="button button-primary"
-                href="access-in.html?intent=buy&product=little-scientist-motion-forces"
+                type="button"
+                data-faculty-invite
               >
                 Buy Access
-              </a>
+              </button>
 
             </div>
 
@@ -1947,7 +2654,7 @@
 
 
   <!-- ========================================================
-       PRODUCT MODAL
+       PRODUCT DETAILS MODAL
   ========================================================= -->
 
   <div
@@ -1968,7 +2675,7 @@
         class="modal-close"
         id="modalClose"
         type="button"
-        aria-label="Close"
+        aria-label="Close product details"
       >
         ×
       </button>
@@ -1986,10 +2693,48 @@
       <p id="modalDescription"></p>
 
 
+
+      <div class="modal-license-box">
+
+        <strong>
+          Faculty licence options
+        </strong>
+
+
+        <div class="modal-license-periods">
+
+          <span>
+            Day
+          </span>
+
+          <span>
+            Week
+          </span>
+
+          <span>
+            Semester
+          </span>
+
+          <span>
+            Year
+          </span>
+
+        </div>
+
+      </div>
+
+
+
       <div
         class="modal-price"
         id="modalPrice"
       ></div>
+
+
+      <div class="modal-price-caption">
+        Current catalogue price
+      </div>
+
 
 
       <div class="modal-actions">
@@ -2003,15 +2748,171 @@
         </button>
 
 
-        <a
+        <button
           class="button button-primary"
           id="modalBuy"
-          href="access-in.html"
+          type="button"
         >
           Buy Access
-        </a>
+        </button>
 
       </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       FACULTY ACCESS INVITATION
+
+       Public Buy Access now opens this invitation.
+  ========================================================= -->
+
+  <div
+    class="faculty-access-invite"
+    id="facultyAccessInvite"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div
+      class="faculty-access-invite-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="facultyAccessInviteTitle"
+    >
+
+
+      <!-- CLOSE ICON -->
+
+      <button
+        class="faculty-access-invite-close"
+        id="facultyAccessInviteClose"
+        type="button"
+        aria-label="Close faculty access invitation"
+      >
+
+        <svg
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M6 6L14 14M14 6L6 14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+
+        </svg>
+
+      </button>
+
+
+
+      <span class="faculty-access-invite-kicker">
+        Faculty Access
+      </span>
+
+
+      <h2 id="facultyAccessInviteTitle">
+        Bring this simulation to your learners.
+      </h2>
+
+
+      <p class="faculty-access-invite-message">
+
+        RizSim simulations are licensed by faculty
+        and institutions. Create your faculty account
+        to purchase, organise and manage simulation
+        access for your learners.
+
+      </p>
+
+
+
+      <!-- DECENT FRIENDLY SMILE -->
+
+      <div
+        class="faculty-access-smile"
+        aria-hidden="true"
+      >
+
+        <svg
+          viewBox="0 0 48 48"
+        >
+
+          <circle
+            cx="24"
+            cy="24"
+            r="18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <circle
+            cx="18"
+            cy="20"
+            r="1.7"
+            fill="currentColor"
+          />
+
+          <circle
+            cx="30"
+            cy="20"
+            r="1.7"
+            fill="currentColor"
+          />
+
+          <path
+            d="M16.5 28C18.4 31.1 21 32.6 24 32.6C27 32.6 29.6 31.1 31.5 28"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+
+        </svg>
+
+      </div>
+
+
+
+      <div class="faculty-access-invite-actions">
+
+
+        <a
+          class="button button-primary"
+          href="access-out.html?intent=signup"
+        >
+          Sign Up
+        </a>
+
+
+        <button
+          class="button button-secondary"
+          id="facultyAccessInviteDismiss"
+          type="button"
+        >
+          Close
+        </button>
+
+
+      </div>
+
+
+
+      <div class="faculty-access-invite-note">
+
+        Already have Faculty Access?
+        Use the Faculty option under Login.
+
+      </div>
+
 
     </div>
 
@@ -2027,6 +2928,8 @@
 
     <div class="content-shell footer-grid">
 
+
+      <!-- BRAND -->
 
       <div class="footer-brand">
 
@@ -2044,46 +2947,19 @@
 
 
 
+      <!-- EXPLORE -->
+
       <div class="footer-column">
 
         <h4>
           Explore
         </h4>
 
-        <a href="simulations.html">
+        <a
+          href="simulations.html"
+          data-page-link
+        >
           Simulations
-        </a>
-
-        <a
-          href="learning.html"
-          data-page-link
-        >
-          Learning
-        </a>
-
-        <a
-          href="research.html"
-          data-page-link
-        >
-          Research
-        </a>
-
-      </div>
-
-
-
-      <div class="footer-column">
-
-        <h4>
-          Access
-        </h4>
-
-        <a href="access-in.html">
-          Student
-        </a>
-
-        <a href="access-out.html">
-          Faculty
         </a>
 
         <a
@@ -2104,6 +2980,28 @@
 
 
 
+      <!-- ACCESS -->
+
+      <div class="footer-column">
+
+        <h4>
+          Access
+        </h4>
+
+        <a href="access-in.html">
+          Student
+        </a>
+
+        <a href="access-out.html">
+          Faculty
+        </a>
+
+      </div>
+
+
+
+      <!-- POLICIES -->
+
       <div class="footer-column">
 
         <h4>
@@ -2111,19 +3009,19 @@
         </h4>
 
         <a href="privacy-policy.html">
-          Privacy
+          Privacy Policy
         </a>
 
         <a href="terms.html">
-          Terms
+          Terms & Conditions
         </a>
 
         <a href="refund-policy.html">
-          Refunds
+          Refund & Cancellation
         </a>
 
         <a href="service-delivery.html">
-          Service Delivery
+          Digital Service Delivery
         </a>
 
       </div>
@@ -2149,7 +3047,9 @@
 
 
 
-  <!-- SWIPE INDICATOR -->
+  <!-- ========================================================
+       SWIPE INDICATOR
+  ========================================================= -->
 
   <div
     class="swipe-indicator"
@@ -2165,7 +3065,12 @@
 
 
 
+  <!-- ========================================================
+       GLOBAL JAVASCRIPT
+  ========================================================= -->
+
   <script src="site.js"></script>
+
 
 
   <!-- ========================================================
@@ -2179,7 +3084,9 @@
       () => {
 
 
-        /* FILTERS */
+        /* ====================================================
+           FILTERS
+        ===================================================== */
 
         const filterButtons =
           document.querySelectorAll(
@@ -2245,7 +3152,9 @@
 
 
 
-        /* PRODUCT DETAILS */
+        /* ====================================================
+           PRODUCT DETAILS MODAL
+        ===================================================== */
 
         const modal =
           document.getElementById(
@@ -2295,31 +3204,29 @@
           );
 
 
+
         function openProductModal(
           button
         ) {
 
           modalTitle.textContent =
-            button.dataset.title || "";
+            button.dataset.title ||
+            "";
 
 
           modalCategory.textContent =
-            button.dataset.category || "";
+            button.dataset.category ||
+            "";
 
 
           modalDescription.textContent =
-            button.dataset.description || "";
+            button.dataset.description ||
+            "";
 
 
           modalPrice.textContent =
-            button.dataset.price || "";
-
-
-          modalBuy.href =
-            "access-in.html?intent=buy&product=" +
-            encodeURIComponent(
-              button.dataset.slug || ""
-            );
+            button.dataset.price ||
+            "";
 
 
           modal.classList.add(
@@ -2339,6 +3246,7 @@
         }
 
 
+
         function closeProductModal() {
 
           modal.classList.remove(
@@ -2356,6 +3264,7 @@
             "";
 
         }
+
 
 
         document
@@ -2380,6 +3289,7 @@
           );
 
 
+
         closeButton.addEventListener(
           "click",
           closeProductModal
@@ -2392,12 +3302,36 @@
         );
 
 
+
+        modalBuy.addEventListener(
+          "click",
+          () => {
+
+            closeProductModal();
+
+
+            if (
+              typeof
+              openFacultyAccessInvitation ===
+              "function"
+            ) {
+
+              openFacultyAccessInvitation();
+
+            }
+
+          }
+        );
+
+
+
         modal.addEventListener(
           "click",
           event => {
 
             if (
-              event.target === modal
+              event.target ===
+              modal
             ) {
 
               closeProductModal();
@@ -2408,12 +3342,14 @@
         );
 
 
+
         document.addEventListener(
           "keydown",
           event => {
 
             if (
-              event.key === "Escape" &&
+              event.key ===
+              "Escape" &&
               modal.classList.contains(
                 "is-open"
               )
