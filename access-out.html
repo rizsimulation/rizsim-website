@@ -39,11 +39,6 @@
 
   <style>
 
-    /* ========================================================
-       FACULTY ACCESS
-       Uses the established RizSim visual system
-    ========================================================= */
-
     :root {
       --portal-sidebar: 264px;
     }
@@ -90,7 +85,7 @@
 
 
     /* ========================================================
-       PUBLIC-STYLE TOP BAR
+       HEADER
     ========================================================= */
 
     .access-header {
@@ -237,7 +232,7 @@
 
 
     /* ========================================================
-       AUTH / PENDING / LEGACY GATES
+       LOGIN / BLOCKED / LEGACY GATES
     ========================================================= */
 
     .access-gate {
@@ -260,14 +255,13 @@
 
       width:
         min(
-          560px,
+          570px,
           100%
         );
 
       overflow: hidden;
 
-      padding:
-        38px;
+      padding: 38px;
 
       background:
         radial-gradient(
@@ -306,10 +300,16 @@
           rgba(24,184,176,.10),
           transparent 69%
         );
+
+      pointer-events: none;
     }
 
 
     .gate-logo {
+      position: relative;
+
+      z-index: 2;
+
       width: 260px;
 
       max-width: 72%;
@@ -319,6 +319,10 @@
 
 
     .gate-kicker {
+      position: relative;
+
+      z-index: 2;
+
       color: #118d89;
 
       font-size: .68rem;
@@ -332,6 +336,10 @@
 
 
     .gate-card h1 {
+      position: relative;
+
+      z-index: 2;
+
       margin:
         9px 0 12px;
 
@@ -351,6 +359,10 @@
 
 
     .gate-card > p {
+      position: relative;
+
+      z-index: 2;
+
       margin: 0;
 
       color: #6d818c;
@@ -360,6 +372,10 @@
 
 
     .gate-status {
+      position: relative;
+
+      z-index: 2;
+
       margin-top: 21px;
 
       padding:
@@ -381,6 +397,10 @@
 
 
     .google-login-button {
+      position: relative;
+
+      z-index: 2;
+
       width: 100%;
 
       min-height: 53px;
@@ -453,7 +473,26 @@
     }
 
 
+    .gate-note {
+      position: relative;
+
+      z-index: 2;
+
+      margin-top: 17px !important;
+
+      color: #91a0a8 !important;
+
+      font-size: .69rem;
+
+      line-height: 1.55 !important;
+    }
+
+
     .gate-actions {
+      position: relative;
+
+      z-index: 2;
+
       display: flex;
 
       flex-wrap: wrap;
@@ -467,22 +506,15 @@
     .gate-actions .button {
       flex: 1;
 
-      min-width: 160px;
-    }
-
-
-    .gate-note {
-      margin-top: 17px !important;
-
-      color: #91a0a8 !important;
-
-      font-size: .69rem;
-
-      line-height: 1.55 !important;
+      min-width: 150px;
     }
 
 
     .identity-box {
+      position: relative;
+
+      z-index: 2;
+
       margin-top: 20px;
 
       padding: 16px;
@@ -559,6 +591,10 @@
 
 
     .legacy-warning {
+      position: relative;
+
+      z-index: 2;
+
       margin-top: 18px;
 
       padding: 15px;
@@ -580,7 +616,7 @@
 
 
     /* ========================================================
-       PORTAL LAYOUT
+       PORTAL
     ========================================================= */
 
     .faculty-portal {
@@ -595,6 +631,11 @@
       display: flex;
     }
 
+
+
+    /* ========================================================
+       SIDEBAR
+    ========================================================= */
 
     .portal-sidebar {
       position: fixed;
@@ -1266,7 +1307,7 @@
 
 
     /* ========================================================
-       SIMULATION CARDS
+       SIMULATIONS
     ========================================================= */
 
     .portal-simulation-grid {
@@ -1420,8 +1461,6 @@
 
       font-weight: 900;
 
-      letter-spacing: .07em;
-
       text-transform: uppercase;
     }
 
@@ -1485,7 +1524,7 @@
 
 
     /* ========================================================
-       EMPTY STATES
+       EMPTY / WORKSPACE / ACCOUNT
     ========================================================= */
 
     .empty-state {
@@ -1543,12 +1582,8 @@
     }
 
 
-
-    /* ========================================================
-       WORKSPACE CARDS
-    ========================================================= */
-
-    .workspace-grid {
+    .workspace-grid,
+    .account-grid {
       display: grid;
 
       grid-template-columns:
@@ -1560,7 +1595,8 @@
     }
 
 
-    .workspace-card {
+    .workspace-card,
+    .account-detail {
       padding: 22px;
 
       background: #ffffff;
@@ -1575,14 +1611,15 @@
     }
 
 
-    .workspace-card-label {
+    .workspace-card-label,
+    .account-detail-label {
       color: #118d89;
 
       font-size: .59rem;
 
       font-weight: 900;
 
-      letter-spacing: .08em;
+      letter-spacing: .07em;
 
       text-transform: uppercase;
     }
@@ -1606,48 +1643,6 @@
       font-size: .73rem;
 
       line-height: 1.62;
-    }
-
-
-
-    /* ========================================================
-       ACCOUNT
-    ========================================================= */
-
-    .account-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2,1fr);
-
-      gap: 15px;
-
-      margin-top: 22px;
-    }
-
-
-    .account-detail {
-      padding: 19px;
-
-      background: #ffffff;
-
-      border:
-        1px solid #dce8eb;
-
-      border-radius: 17px;
-    }
-
-
-    .account-detail-label {
-      color: #118d89;
-
-      font-size: .58rem;
-
-      font-weight: 900;
-
-      letter-spacing: .07em;
-
-      text-transform: uppercase;
     }
 
 
@@ -1933,7 +1928,7 @@
        RESPONSIVE
     ========================================================= */
 
-    @media (max-width: 1080px) {
+    @media (max-width:1080px) {
 
       .portal-metrics {
         grid-template-columns:
@@ -1949,7 +1944,7 @@
     }
 
 
-    @media (max-width: 900px) {
+    @media (max-width:900px) {
 
       :root {
         --portal-sidebar: 78px;
@@ -1982,30 +1977,17 @@
       }
 
 
-      .portal-nav-label {
-        display: none;
-      }
-
-
+      .portal-nav-label,
       .access-public-nav {
         display: none;
-      }
-
-
-      .access-header-shell {
-        justify-content: space-between;
       }
 
     }
 
 
-    @media (max-width: 650px) {
+    @media (max-width:650px) {
 
-      .access-header {
-        min-height: 88px;
-      }
-
-
+      .access-header,
       .access-header-shell {
         min-height: 88px;
       }
@@ -2115,8 +2097,7 @@
       .portal-simulation-grid,
       .workspace-grid,
       .account-grid {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
 
@@ -2124,11 +2105,6 @@
         align-items: flex-start;
 
         flex-direction: column;
-      }
-
-
-      .response-modal {
-        padding: 12px;
       }
 
     }
@@ -2142,7 +2118,7 @@
 
 
 <!-- ==========================================================
-     PUBLIC-STYLE HEADER
+     HEADER
 =========================================================== -->
 
 <header class="access-header">
@@ -2164,7 +2140,6 @@
     </a>
 
 
-
     <nav class="access-public-nav">
 
       <a href="index.html">
@@ -2184,7 +2159,6 @@
       </a>
 
     </nav>
-
 
 
     <div class="access-header-badge">
@@ -2221,19 +2195,19 @@
       class="gate-kicker"
       id="authKicker"
     >
-      FACULTY & INSTITUTION ACCESS
+      FACULTY ACCESS
     </span>
 
 
     <h1 id="authTitle">
-      Faculty Access
+      Faculty Dashboard
     </h1>
 
 
     <p id="authCopy">
 
-      Sign in to manage your RizSim learning environment,
-      simulations and authorized classroom activity.
+      Sign in with Google to enter your RizSim Faculty Dashboard.
+      Standard Faculty Access is available immediately.
 
     </p>
 
@@ -2256,7 +2230,7 @@
         G
       </span>
 
-      <span id="googleLoginText">
+      <span>
         Continue with Google
       </span>
 
@@ -2265,9 +2239,9 @@
 
     <p class="gate-note">
 
-      Students do not purchase classroom simulations.
-      Student participation is provided through faculty-managed
-      class codes or secure links.
+      Standard Faculty Access does not require Owner approval.
+      Institution Access, Course Lead, Admin and other elevated
+      access remain Owner-controlled.
 
     </p>
 
@@ -2279,11 +2253,11 @@
 
 
 <!-- ==========================================================
-     NO ACTIVE MEMBERSHIP
+     DISABLED ACCESS
 =========================================================== -->
 
 <section
-  id="pendingGate"
+  id="disabledGate"
   class="access-gate hidden"
 >
 
@@ -2291,20 +2265,19 @@
 
 
     <span class="gate-kicker">
-      RIZSIM IDENTITY VERIFIED
+      ACCESS UNAVAILABLE
     </span>
 
 
     <h1>
-      Faculty Access approval
+      Faculty Access is disabled.
     </h1>
 
 
     <p>
 
-      Your Google identity is connected to RizSim.
-      Faculty and institutional portal access is approved
-      separately by the RizSim Owner.
+      This Google identity has an existing RizSim membership,
+      but that membership is currently disabled.
 
     </p>
 
@@ -2313,7 +2286,7 @@
 
 
       <div
-        id="pendingAvatar"
+        id="disabledAvatar"
         class="identity-avatar"
       >
         R
@@ -2323,14 +2296,14 @@
       <div>
 
         <div
-          id="pendingName"
+          id="disabledName"
           class="identity-name"
         >
           —
         </div>
 
         <div
-          id="pendingEmail"
+          id="disabledEmail"
           class="identity-email"
         >
           —
@@ -2342,34 +2315,23 @@
     </div>
 
 
-    <div class="gate-status">
-
-      If you are requesting Faculty or Institution Access,
-      contact RizSim from this account. Your final role and
-      access scope are Owner-approved.
-
-    </div>
-
-
     <div class="gate-actions">
-
 
       <a
         class="button button-primary"
-        href="mailto:rizsimulation@gmail.com?subject=RizSim%20Faculty%20Access%20Request"
+        href="contact.html"
       >
-        Request Access
+        Contact RizSim
       </a>
 
 
       <button
-        id="pendingSignOut"
+        id="disabledSignOut"
         class="button button-secondary"
         type="button"
       >
         Sign Out
       </button>
-
 
     </div>
 
@@ -2398,40 +2360,36 @@
 
 
     <h1>
-      Role migration required
+      Role migration required.
     </h1>
 
 
     <p>
 
-      This account contains an older RizSim Access OUT role.
-      The previous role model is no longer used by the new
-      Faculty and Institution Portal.
+      This account contains an older RizSim role.
+      It has not been automatically converted because
+      elevated access should not be reassigned without
+      an explicit decision.
 
     </p>
 
 
     <div class="legacy-warning">
 
-      Current legacy role:
+      Existing role:
+
       <strong id="legacyRole">
         —
       </strong>
-
-      <br><br>
-
-      The account has not been automatically converted because
-      role authority and access scope must remain explicit.
 
     </div>
 
 
     <div class="gate-actions">
 
-
       <a
         class="button button-primary"
-        href="mailto:rizsimulation@gmail.com?subject=RizSim%20Role%20Migration"
+        href="contact.html"
       >
         Contact RizSim
       </a>
@@ -2445,7 +2403,6 @@
         Sign Out
       </button>
 
-
     </div>
 
 
@@ -2456,7 +2413,7 @@
 
 
 <!-- ==========================================================
-     FACULTY / INSTITUTION PORTAL
+     PORTAL
 =========================================================== -->
 
 <div
@@ -2464,10 +2421,6 @@
   class="faculty-portal"
 >
 
-
-  <!-- ========================================================
-       SIDEBAR
-  ========================================================= -->
 
   <aside class="portal-sidebar">
 
@@ -2514,7 +2467,6 @@
       </button>
 
 
-
       <button
         class="portal-nav-button"
         type="button"
@@ -2530,7 +2482,6 @@
         </span>
 
       </button>
-
 
 
       <button
@@ -2550,7 +2501,6 @@
       </button>
 
 
-
       <button
         class="portal-nav-button"
         type="button"
@@ -2566,7 +2516,6 @@
         </span>
 
       </button>
-
 
 
       <button
@@ -2586,7 +2535,6 @@
       </button>
 
 
-
       <button
         class="portal-nav-button"
         type="button"
@@ -2602,7 +2550,6 @@
         </span>
 
       </button>
-
 
 
       <button
@@ -2622,7 +2569,6 @@
       </button>
 
 
-
       <button
         class="portal-nav-button"
         type="button"
@@ -2640,7 +2586,6 @@
       </button>
 
 
-
       <a
         class="portal-nav-link"
         href="about.html"
@@ -2655,7 +2600,6 @@
         </span>
 
       </a>
-
 
 
       <a
@@ -2716,10 +2660,6 @@
 
 
 
-  <!-- ========================================================
-       MAIN
-  ========================================================= -->
-
   <main class="portal-main">
 
 
@@ -2740,7 +2680,6 @@
         </div>
 
       </div>
-
 
 
       <div class="portal-user">
@@ -2783,15 +2722,12 @@
     <div class="portal-content">
 
 
-      <!-- ====================================================
-           HOME
-      ===================================================== -->
+      <!-- HOME -->
 
       <section
         id="view-home"
         class="portal-view active"
       >
-
 
         <span class="view-kicker">
           FACULTY & INSTITUTION PORTAL
@@ -2805,11 +2741,10 @@
 
         <p class="view-description">
 
-          Manage the RizSim learning experiences available
-          within your authorized role and scope.
+          Manage learning experiences available within
+          your current role and authorized access.
 
         </p>
-
 
 
         <div class="role-hero">
@@ -2839,12 +2774,10 @@
         </div>
 
 
-
         <div
           id="portalMetrics"
           class="portal-metrics"
         ></div>
-
 
 
         <div class="portal-panel">
@@ -2876,15 +2809,12 @@
 
 
 
-      <!-- ====================================================
-           SIMULATIONS
-      ===================================================== -->
+      <!-- SIMULATIONS -->
 
       <section
         id="view-simulations"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           SIMULATIONS
@@ -2898,8 +2828,8 @@
 
         <p class="view-description">
 
-          Browse RizSim simulations visible within your
-          current role and access scope.
+          Browse RizSim simulations and access products
+          available to your Faculty account.
 
         </p>
 
@@ -2914,15 +2844,12 @@
 
 
 
-      <!-- ====================================================
-           COURSES
-      ===================================================== -->
+      <!-- COURSES -->
 
       <section
         id="view-courses"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           COURSE LEAD
@@ -2936,15 +2863,14 @@
 
         <p class="view-description">
 
-          Course Lead is the premium Faculty Access level.
-          It combines simulations into structured courses
-          and supports multiple classes and learning materials.
+          Course Lead is Premium Faculty Access.
+          It supports course structures, multiple classes,
+          simulations and learner materials.
 
         </p>
 
 
         <div class="portal-panel">
-
 
           <div class="empty-state">
 
@@ -2957,15 +2883,10 @@
             </strong>
 
             <p>
-
-              Your course workspace will contain course
-              structure, simulations, learner materials
-              and linked classes.
-
+              Course structures and linked classes will appear here.
             </p>
 
           </div>
-
 
         </div>
 
@@ -2974,15 +2895,12 @@
 
 
 
-      <!-- ====================================================
-           CLASSROOM
-      ===================================================== -->
+      <!-- CLASSROOM -->
 
       <section
         id="view-classroom"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           COURSE LEAD
@@ -2996,8 +2914,8 @@
 
         <p class="view-description">
 
-          Create and manage learning sessions, class access,
-          Live Class and Practice availability.
+          Manage Live Class and Practice experiences
+          across your authorized courses.
 
         </p>
 
@@ -3016,15 +2934,11 @@
             </h3>
 
             <p>
-
-              Class sessions will generate secure student
-              codes and shareable links within an active
-              licence period.
-
+              Generate secure student codes and shareable links
+              for authorized learning sessions.
             </p>
 
           </article>
-
 
 
           <article class="workspace-card">
@@ -3038,11 +2952,8 @@
             </h3>
 
             <p>
-
-              Practice availability can be controlled
-              independently with its own start and expiry
-              period.
-
+              Control practice independently with its own
+              start and expiry period.
             </p>
 
           </article>
@@ -3055,15 +2966,12 @@
 
 
 
-      <!-- ====================================================
-           RESULTS
-      ===================================================== -->
+      <!-- RESULTS -->
 
       <section
         id="view-results"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           LEARNING RESULTS
@@ -3077,8 +2985,8 @@
 
         <p class="view-description">
 
-          Participant activity visible within the
-          current account's authorized scope.
+          Participant activity visible within the current
+          account's authorized simulations and classes.
 
         </p>
 
@@ -3151,15 +3059,12 @@
 
 
 
-      <!-- ====================================================
-           INSTITUTION
-      ===================================================== -->
+      <!-- INSTITUTION -->
 
       <section
         id="view-institution"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           INSTITUTION ACCESS
@@ -3173,9 +3078,8 @@
 
         <p class="view-description">
 
-          Institution Access provides visibility within
-          the institution's approved RizSim scope.
-          Faculty authorization remains Owner-controlled.
+          Manage the institution's approved RizSim environment.
+          Faculty associations require Owner approval.
 
         </p>
 
@@ -3186,53 +3090,38 @@
           <article class="workspace-card">
 
             <span class="workspace-card-label">
-              FACULTY ACCESS
+              FACULTY
             </span>
 
             <h3>
-              Request faculty access
+              Institution faculty
             </h3>
 
             <p>
 
-              Institutions may request that faculty
-              members be added. Final approval, role
-              and scope remain with the RizSim Owner.
+              The institution can request that a Faculty account
+              be associated with the institution. Approval is
+              completed by the RizSim Owner.
 
             </p>
 
-
-            <div style="margin-top:18px;">
-
-              <a
-                class="button button-primary"
-                href="mailto:rizsimulation@gmail.com?subject=RizSim%20Institution%20Faculty%20Access%20Request"
-              >
-                Request Faculty Access
-              </a>
-
-            </div>
-
           </article>
-
 
 
           <article class="workspace-card">
 
             <span class="workspace-card-label">
-              INSTITUTION RESULTS
+              SHARED ACCESS
             </span>
 
             <h3>
-              Learning visibility
+              Institution scope
             </h3>
 
             <p>
 
-              Institution analytics and results remain
-              restricted to simulations, faculty and
-              learning activity within the institution's
-              approved scope.
+              Approved faculty members can use the simulations
+              and learning resources available to their institution.
 
             </p>
 
@@ -3246,15 +3135,12 @@
 
 
 
-      <!-- ====================================================
-           ADMINISTRATION
-      ===================================================== -->
+      <!-- ADMIN -->
 
       <section
         id="view-administration"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           PLATFORM OPERATIONS
@@ -3278,7 +3164,6 @@
           id="administrationMetrics"
           class="portal-metrics"
         ></div>
-
 
 
         <div
@@ -3343,15 +3228,12 @@
 
 
 
-      <!-- ====================================================
-           ACCOUNT
-      ===================================================== -->
+      <!-- ACCOUNT -->
 
       <section
         id="view-account"
         class="portal-view"
       >
-
 
         <span class="view-kicker">
           ACCOUNT
@@ -3390,7 +3272,6 @@
           </div>
 
 
-
           <div class="account-detail">
 
             <div class="account-detail-label">
@@ -3405,7 +3286,6 @@
             </div>
 
           </div>
-
 
 
           <div class="account-detail">
@@ -3424,7 +3304,6 @@
           </div>
 
 
-
           <div class="account-detail">
 
             <div class="account-detail-label">
@@ -3439,7 +3318,6 @@
             </div>
 
           </div>
-
 
 
           <div class="account-detail">
@@ -3458,18 +3336,17 @@
           </div>
 
 
-
           <div class="account-detail">
 
             <div class="account-detail-label">
-              Access Status
+              Access
             </div>
 
             <div
-              id="accountAccessStatus"
+              id="accountAccess"
               class="account-detail-value"
             >
-              Active
+              —
             </div>
 
           </div>
@@ -3565,9 +3442,6 @@ from
 
 /* ============================================================
    SUPABASE
-
-   Publishable browser key retained from the current
-   production Access OUT file.
 ============================================================ */
 
 const SUPABASE_URL =
@@ -3587,7 +3461,7 @@ const supabase =
 
 
 /* ============================================================
-   NEW ROLE MODEL
+   ROLE MODEL
 ============================================================ */
 
 const ACTIVE_PORTAL_ROLES =
@@ -3610,7 +3484,6 @@ const LEGACY_PORTAL_ROLES =
   ]);
 
 
-
 const ROLE_LABELS = {
 
   owner:
@@ -3629,7 +3502,6 @@ const ROLE_LABELS = {
     "Course Lead"
 
 };
-
 
 
 const VIEW_TITLES = {
@@ -3709,8 +3581,7 @@ function showLoading() {
     .getElementById(
       "portalLoading"
     )
-    .classList
-    .add(
+    .classList.add(
       "show"
     );
 
@@ -3723,8 +3594,7 @@ function hideLoading() {
     .getElementById(
       "portalLoading"
     )
-    .classList
-    .remove(
+    .classList.remove(
       "show"
     );
 
@@ -3746,30 +3616,11 @@ function escapeHTML(value) {
 
   return String(value)
 
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
@@ -3777,9 +3628,7 @@ function escapeHTML(value) {
 function formatDate(value) {
 
   if(!value) {
-
     return "—";
-
   }
 
 
@@ -3824,9 +3673,7 @@ function roleLabel(role) {
 function getInitials(name) {
 
   if(!name) {
-
     return "R";
-
   }
 
 
@@ -3836,10 +3683,7 @@ function getInitials(name) {
 
     .split(/\s+/)
 
-    .slice(
-      0,
-      2
-    )
+    .slice(0,2)
 
     .map(
       part =>
@@ -3849,34 +3693,6 @@ function getInitials(name) {
     )
 
     .join("");
-
-}
-
-
-function getCategoryName(categoryId) {
-
-  const category =
-    categories.find(
-      item =>
-        item.id === categoryId
-    );
-
-
-  return (
-    category?.name
-    ||
-    "Uncategorized"
-  );
-
-}
-
-
-function getOwnerProfile(userId) {
-
-  return ownerProfiles.find(
-    item =>
-      item.id === userId
-  );
 
 }
 
@@ -3929,9 +3745,37 @@ function setAvatar(
 }
 
 
+function getCategoryName(categoryId) {
+
+  const category =
+    categories.find(
+      item =>
+        item.id === categoryId
+    );
+
+
+  return (
+    category?.name
+    ||
+    "Uncategorized"
+  );
+
+}
+
+
+function getOwnerProfile(userId) {
+
+  return ownerProfiles.find(
+    item =>
+      item.id === userId
+  );
+
+}
+
+
 
 /* ============================================================
-   INTENT
+   URL INTENT
 ============================================================ */
 
 const query =
@@ -3966,20 +3810,14 @@ if(
   document.getElementById(
     "authCopy"
   ).textContent =
-    "Continue with Google to create or verify your RizSim identity. Faculty and institutional access is Owner-approved before purchasing and classroom management become available.";
-
-
-  document.getElementById(
-    "googleLoginText"
-  ).textContent =
-    "Continue with Google";
+    "Continue with Google to create your standard Faculty account and enter the RizSim Faculty Dashboard.";
 
 }
 
 
 
 /* ============================================================
-   GOOGLE SIGN IN
+   GOOGLE LOGIN
 ============================================================ */
 
 async function signInWithGoogle() {
@@ -3995,13 +3833,9 @@ async function signInWithGoogle() {
 
   const redirectURL =
     window.location.origin
-
     +
-
     "/access-out.html"
-
     +
-
     suffix;
 
 
@@ -4086,16 +3920,6 @@ async function getOrCreateProfile() {
 
 
 
-  /*
-     New Google identity.
-
-     Try to create the user's own RizSim profile using
-     non-sensitive identity fields supplied by Google.
-
-     Existing RLS remains responsible for deciding whether
-     this insert is permitted.
-  */
-
   const metadata =
     currentUser.user_metadata
     ||
@@ -4129,6 +3953,7 @@ async function getOrCreateProfile() {
       null
 
   };
+
 
 
   const insertResult =
@@ -4194,6 +4019,91 @@ async function getOrCreateProfile() {
 
 
 /* ============================================================
+   MEMBERSHIP
+============================================================ */
+
+async function getMembership() {
+
+  const {
+    data,
+    error
+  } =
+
+    await supabase
+
+      .from(
+        "access_out_members"
+      )
+
+      .select(`
+        user_id,
+        role,
+        active,
+        created_at
+      `)
+
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+
+      .maybeSingle();
+
+
+  if(error) {
+
+    return null;
+
+  }
+
+
+  return data || null;
+
+}
+
+
+
+/* ============================================================
+   AUTOMATIC STANDARD FACULTY ACCESS
+============================================================ */
+
+async function ensureStandardFacultyAccess() {
+
+  const {
+    data,
+    error
+  } =
+
+    await supabase.rpc(
+      "ensure_standard_faculty_access"
+    );
+
+
+  if(error) {
+
+    throw error;
+
+  }
+
+
+  if(
+    Array.isArray(data)
+    &&
+    data.length
+  ) {
+
+    return data[0];
+
+  }
+
+
+  return null;
+
+}
+
+
+
+/* ============================================================
    VERIFY ACCESS
 ============================================================ */
 
@@ -4231,18 +4141,7 @@ async function verifyAccess() {
     document.getElementById(
       "gateStatus"
     ).textContent =
-      intent ===
-      "signup"
-
-        ? "Continue with Google to begin Faculty Access."
-
-        : "Sign in with your authorized Google account.";
-
-
-    document.getElementById(
-      "googleLogin"
-    ).style.display =
-      "flex";
+      "Continue with Google to enter your Faculty Dashboard.";
 
 
     return;
@@ -4256,9 +4155,7 @@ async function verifyAccess() {
 
 
 
-  if(
-    !currentProfile
-  ) {
+  if(!currentProfile) {
 
     hideLoading();
 
@@ -4266,7 +4163,68 @@ async function verifyAccess() {
     document.getElementById(
       "gateStatus"
     ).textContent =
-      "Your RizSim profile could not be verified. Please contact RizSim.";
+      "Your RizSim profile could not be created or verified.";
+
+
+    return;
+
+  }
+
+
+
+  currentMembership =
+    await getMembership();
+
+
+
+  /*
+     No portal membership exists.
+
+     Create standard Faculty automatically.
+  */
+
+  if(!currentMembership) {
+
+    try {
+
+      await ensureStandardFacultyAccess();
+
+
+      currentMembership =
+        await getMembership();
+
+    }
+
+    catch(error) {
+
+      hideLoading();
+
+
+      document.getElementById(
+        "gateStatus"
+      ).textContent =
+        error.message
+        ||
+        "Faculty Access could not be created.";
+
+
+      return;
+
+    }
+
+  }
+
+
+
+  if(!currentMembership) {
+
+    hideLoading();
+
+
+    document.getElementById(
+      "gateStatus"
+    ).textContent =
+      "Faculty Access could not be verified.";
 
 
     return;
@@ -4276,17 +4234,15 @@ async function verifyAccess() {
 
 
   /*
-     Do not treat a non-active profile as portal-authorized.
+     Existing disabled memberships remain disabled.
   */
 
   if(
-    currentProfile.account_status
-    &&
-    currentProfile.account_status !==
-      "active"
+    currentMembership.active !==
+    true
   ) {
 
-    showPendingGate();
+    showDisabledGate();
 
     hideLoading();
 
@@ -4296,65 +4252,18 @@ async function verifyAccess() {
 
 
 
-  const {
-    data:membership,
-    error:membershipError
-  } =
-
-    await supabase
-
-      .from(
-        "access_out_members"
-      )
-
-      .select(`
-        user_id,
-        role,
-        active,
-        created_at
-      `)
-
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-
-      .maybeSingle();
-
-
-
-  if(
-    membershipError
-    ||
-    !membership
-    ||
-    membership.active !==
-      true
-  ) {
-
-    showPendingGate();
-
-    hideLoading();
-
-    return;
-
-  }
-
-
-
-  currentMembership =
-    membership;
-
-
+  /*
+     Legacy roles are intentionally not auto-converted.
+  */
 
   if(
     LEGACY_PORTAL_ROLES.has(
-      membership.role
+      currentMembership.role
     )
   ) {
 
     showLegacyGate(
-      membership.role
+      currentMembership.role
     );
 
     hideLoading();
@@ -4367,11 +4276,11 @@ async function verifyAccess() {
 
   if(
     !ACTIVE_PORTAL_ROLES.has(
-      membership.role
+      currentMembership.role
     )
   ) {
 
-    showPendingGate();
+    showDisabledGate();
 
     hideLoading();
 
@@ -4394,7 +4303,7 @@ async function verifyAccess() {
 
 
 /* ============================================================
-   GATES
+   PRIMARY SCREENS
 ============================================================ */
 
 function hideAllPrimaryScreens() {
@@ -4403,18 +4312,16 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "authGate"
     )
-    .classList
-    .add(
+    .classList.add(
       "hidden"
     );
 
 
   document
     .getElementById(
-      "pendingGate"
+      "disabledGate"
     )
-    .classList
-    .add(
+    .classList.add(
       "hidden"
     );
 
@@ -4423,8 +4330,7 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "legacyGate"
     )
-    .classList
-    .add(
+    .classList.add(
       "hidden"
     );
 
@@ -4433,31 +4339,29 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "facultyPortal"
     )
-    .classList
-    .remove(
+    .classList.remove(
       "show"
     );
 
 }
 
 
-function showPendingGate() {
+function showDisabledGate() {
 
   hideAllPrimaryScreens();
 
 
   document
     .getElementById(
-      "pendingGate"
+      "disabledGate"
     )
-    .classList
-    .remove(
+    .classList.remove(
       "hidden"
     );
 
 
   document.getElementById(
-    "pendingName"
+    "disabledName"
   ).textContent =
     currentProfile?.display_name
     ||
@@ -4465,7 +4369,7 @@ function showPendingGate() {
 
 
   document.getElementById(
-    "pendingEmail"
+    "disabledEmail"
   ).textContent =
     currentProfile?.email
     ||
@@ -4476,7 +4380,7 @@ function showPendingGate() {
 
   setAvatar(
     document.getElementById(
-      "pendingAvatar"
+      "disabledAvatar"
     ),
     currentProfile
   );
@@ -4493,8 +4397,7 @@ function showLegacyGate(role) {
     .getElementById(
       "legacyGate"
     )
-    .classList
-    .remove(
+    .classList.remove(
       "hidden"
     );
 
@@ -4516,14 +4419,12 @@ function showPortal() {
     .getElementById(
       "facultyPortal"
     )
-    .classList
-    .add(
+    .classList.add(
       "show"
     );
 
 
   configurePortalRole();
-
 
   setPortalIdentity();
 
@@ -4532,7 +4433,7 @@ function showPortal() {
 
 
 /* ============================================================
-   PORTAL ROLE
+   ROLE-AWARE PORTAL
 ============================================================ */
 
 function configurePortalRole() {
@@ -4550,41 +4451,9 @@ function configurePortalRole() {
 
 
 
-  if(
-    role ===
-    "owner"
-  ) {
-
-    [
-      "courses",
-      "classroom",
-      "results",
-      "institution",
-      "administration"
-    ]
-    .forEach(
-      view =>
-        allowedViews.add(
-          view
-        )
-    );
-
-  }
-
-
-
-  if(
-    role ===
-    "admin"
-  ) {
-
-    allowedViews.add(
-      "administration"
-    );
-
-  }
-
-
+  /*
+     Standard Faculty
+  */
 
   if(
     role ===
@@ -4598,6 +4467,10 @@ function configurePortalRole() {
   }
 
 
+
+  /*
+     Course Lead = Premium Faculty
+  */
 
   if(
     role ===
@@ -4620,6 +4493,10 @@ function configurePortalRole() {
 
 
 
+  /*
+     Institution
+  */
+
   if(
     role ===
     "institution"
@@ -4628,6 +4505,50 @@ function configurePortalRole() {
     [
       "results",
       "institution"
+    ]
+    .forEach(
+      view =>
+        allowedViews.add(
+          view
+        )
+    );
+
+  }
+
+
+
+  /*
+     Admin
+  */
+
+  if(
+    role ===
+    "admin"
+  ) {
+
+    allowedViews.add(
+      "administration"
+    );
+
+  }
+
+
+
+  /*
+     Owner
+  */
+
+  if(
+    role ===
+    "owner"
+  ) {
+
+    [
+      "courses",
+      "classroom",
+      "results",
+      "institution",
+      "administration"
     ]
     .forEach(
       view =>
@@ -4662,61 +4583,11 @@ function configurePortalRole() {
 
 
   let title =
-    roleLabel(
-      role
-    );
+    roleLabel(role);
 
 
   let copy =
     "Authorized RizSim portal access.";
-
-
-
-  if(
-    role ===
-    "owner"
-  ) {
-
-    title =
-      "RizSim Owner";
-
-
-    copy =
-      "Complete platform authority including access approval, role and scope control, entitlements, permanent deletion and full platform analytics.";
-
-  }
-
-
-
-  if(
-    role ===
-    "admin"
-  ) {
-
-    title =
-      "RizSim Admin";
-
-
-    copy =
-      "Operational and content administration. User approval, role assignment, entitlements and permanent deletion remain Owner-controlled.";
-
-  }
-
-
-
-  if(
-    role ===
-    "institution"
-  ) {
-
-    title =
-      "Institution Access";
-
-
-    copy =
-      "Institution-level access within the approved RizSim scope. Faculty additions are requested through the Owner.";
-
-  }
 
 
 
@@ -4730,7 +4601,7 @@ function configurePortalRole() {
 
 
     copy =
-      "Run and review authorized simulations and learning activity within the faculty account's permitted scope.";
+      "Standard Faculty Access. Browse and purchase simulations, run authorized learning experiences and review activity within your own Faculty scope.";
 
   }
 
@@ -4746,7 +4617,55 @@ function configurePortalRole() {
 
 
     copy =
-      "Premium Faculty Access with course structure, multiple classes, learning materials and combined course/class/simulation visibility.";
+      "Premium Faculty Access with Courses, multiple classes, learning materials and combined course/class/simulation management.";
+
+  }
+
+
+
+  if(
+    role ===
+    "institution"
+  ) {
+
+    title =
+      "Institution Access";
+
+
+    copy =
+      "Institution-level access within the scope assigned by the RizSim Owner. Approved institution faculty can share that authorized access.";
+
+  }
+
+
+
+  if(
+    role ===
+    "admin"
+  ) {
+
+    title =
+      "RizSim Admin";
+
+
+    copy =
+      "Operational and content administration. User approval, elevated roles and access-control decisions remain Owner-controlled.";
+
+  }
+
+
+
+  if(
+    role ===
+    "owner"
+  ) {
+
+    title =
+      "RizSim Owner";
+
+
+    copy =
+      "Complete platform authority including institutions, elevated roles, access scopes, entitlements and platform administration.";
 
   }
 
@@ -4767,9 +4686,12 @@ function configurePortalRole() {
   document.getElementById(
     "roleHeroChip"
   ).textContent =
-    roleLabel(
-      role
-    );
+    role ===
+    "course_lead"
+
+      ? "Premium Faculty"
+
+      : roleLabel(role);
 
 
   document.getElementById(
@@ -4780,16 +4702,14 @@ function configurePortalRole() {
 
       ? "Course Lead · Premium Faculty"
 
-      : roleLabel(
-          role
-        );
+      : roleLabel(role);
 
 }
 
 
 
 /* ============================================================
-   IDENTITY
+   PORTAL IDENTITY
 ============================================================ */
 
 function setPortalIdentity() {
@@ -4866,6 +4786,14 @@ function setPortalIdentity() {
     "active";
 
 
+  document.getElementById(
+    "accountAccess"
+  ).textContent =
+    currentMembership.active
+      ? "Active"
+      : "Disabled";
+
+
   setAvatar(
     document.getElementById(
       "portalUserAvatar"
@@ -4878,7 +4806,7 @@ function setPortalIdentity() {
 
 
 /* ============================================================
-   LOAD DATA
+   LOAD PORTAL DATA
 ============================================================ */
 
 async function loadPortalData() {
@@ -4900,8 +4828,7 @@ async function loadPortalData() {
       .order(
         "name",
         {
-          ascending:
-            true
+          ascending:true
         }
       );
 
@@ -4926,8 +4853,7 @@ async function loadPortalData() {
       .order(
         "created_at",
         {
-          ascending:
-            false
+          ascending:false
         }
       );
 
@@ -4947,9 +4873,15 @@ async function loadPortalData() {
 
 
   submissions =
-    submissionResult.data
-    ||
-    [];
+    submissionResult.error
+
+      ? []
+
+      : (
+          submissionResult.data
+          ||
+          []
+        );
 
 
 
@@ -4989,11 +4921,9 @@ async function loadPortalData() {
           .order(
             "created_at",
             {
-              ascending:
-                false
+              ascending:false
             }
           ),
-
 
 
         supabase
@@ -5012,8 +4942,7 @@ async function loadPortalData() {
           .order(
             "created_at",
             {
-              ascending:
-                false
+              ascending:false
             }
           )
 
@@ -5038,7 +4967,6 @@ async function loadPortalData() {
 
   renderPortal();
 
-
   hideLoading();
 
 }
@@ -5046,19 +4974,16 @@ async function loadPortalData() {
 
 
 /* ============================================================
-   PORTAL RENDER
+   RENDER
 ============================================================ */
 
 function renderPortal() {
 
   renderHome();
 
-
   renderSimulations();
 
-
   renderResults();
-
 
   renderAdministration();
 
@@ -5091,10 +5016,6 @@ function renderHome() {
     ).size;
 
 
-  const submittedCount =
-    submissions.length;
-
-
 
   const metrics = [
 
@@ -5106,7 +5027,7 @@ function renderHome() {
 
     [
       "Submissions",
-      submittedCount,
+      submissions.length,
       "Within your scope"
     ],
 
@@ -5199,8 +5120,8 @@ function renderHome() {
         </strong>
 
         <p>
-          Submitted simulation activity within your authorized
-          scope will appear here.
+          Learning activity within your authorized scope
+          will appear here.
         </p>
 
       </div>
@@ -5304,7 +5225,8 @@ function renderSimulations() {
         </strong>
 
         <p>
-          Simulations visible to this account will appear here.
+          RizSim simulations visible to this account
+          will appear here.
         </p>
 
       </div>
@@ -5339,11 +5261,9 @@ function renderSimulations() {
 
 
           <h3>
-
             ${escapeHTML(
               product.title
             )}
-
           </h3>
 
 
@@ -5372,13 +5292,11 @@ function renderSimulations() {
                   : "muted"
               }"
             >
-
               ${escapeHTML(
                 product.status
                 ||
                 "Available"
               )}
-
             </span>
 
 
@@ -5391,7 +5309,7 @@ function renderSimulations() {
                 text-decoration:none;
               "
             >
-              Details
+              View
             </a>
 
           </div>
@@ -5421,9 +5339,7 @@ function renderResults() {
     "resultCount"
   ).textContent =
     submissions.length
-
     +
-
     " submission(s)";
 
 
@@ -5445,7 +5361,7 @@ function renderResults() {
             color:#7a8d97;
           "
         >
-          No submissions visible within this account's current scope.
+          No submissions are currently visible within this account's scope.
         </td>
 
       </tr>
@@ -5469,11 +5385,9 @@ function renderResults() {
           <td>
 
             <div class="table-primary">
-
               ${escapeHTML(
                 item.student_name
               )}
-
             </div>
 
           </td>
@@ -5482,28 +5396,23 @@ function renderResults() {
           <td>
 
             <div class="table-primary">
-
               ${escapeHTML(
                 item.simulation_title
               )}
-
             </div>
 
             <div class="table-secondary">
-
               ${escapeHTML(
                 item.category_name
                 ||
                 "Uncategorized"
               )}
-
             </div>
 
           </td>
 
 
           <td>
-
             ${
               Number(
                 item.progress_percent
@@ -5511,18 +5420,15 @@ function renderResults() {
                 0
               ).toFixed(0)
             }%
-
           </td>
 
 
           <td>
-
             ${escapeHTML(
               formatDate(
                 item.submitted_at
               )
             )}
-
           </td>
 
 
@@ -5576,19 +5482,16 @@ function renderAdministration() {
 
 
 
-  const description =
-    role ===
-    "owner"
-
-      ? "Owner-level platform visibility. User approval, access roles, scopes and entitlements remain Owner authority."
-
-      : "Operational and content administration. User approvals, role assignment, entitlements and permanent deletion remain Owner-controlled.";
-
-
   document.getElementById(
     "administrationDescription"
   ).textContent =
-    description;
+
+    role ===
+    "owner"
+
+      ? "Owner-level platform visibility and access authority."
+
+      : "Operational and content administration. Elevated roles and access decisions remain Owner-controlled.";
 
 
 
@@ -5599,7 +5502,6 @@ function renderAdministration() {
         item.product_type ===
         "simulation"
     ).length;
-
 
 
   const publishedCount =
@@ -5723,20 +5625,11 @@ function renderAdministration() {
 
 
 
-  const panel =
-    document.getElementById(
-      "ownerMembershipPanel"
-    );
-
-
-  panel.classList.remove(
+  document.getElementById(
+    "ownerMembershipPanel"
+  ).classList.remove(
     "hidden"
   );
-
-
-
-  const rows =
-    ownerMembers;
 
 
 
@@ -5744,9 +5637,9 @@ function renderAdministration() {
     "membershipRows"
   ).innerHTML =
 
-    rows.length
+    ownerMembers.length
 
-      ? rows.map(
+      ? ownerMembers.map(
           member => {
 
             const profile =
@@ -5812,13 +5705,11 @@ function renderAdministration() {
                         : "muted"
                     }"
                   >
-
                     ${
                       member.active
                         ? "Active"
                         : "Disabled"
                     }
-
                   </span>
 
                 </td>
@@ -5854,7 +5745,7 @@ function renderAdministration() {
 
 
 /* ============================================================
-   RESPONSES
+   RESPONSE VIEW
 ============================================================ */
 
 async function openResponses(
@@ -5904,8 +5795,7 @@ async function openResponses(
       .order(
         "question_key",
         {
-          ascending:
-            true
+          ascending:true
         }
       );
 
@@ -5931,13 +5821,9 @@ async function openResponses(
   ).textContent =
 
     attempt.student_name
-
     +
-
     " — "
-
     +
-
     attempt.simulation_title;
 
 
@@ -5947,11 +5833,9 @@ async function openResponses(
     <div class="response-summary">
 
       <strong>
-
         ${escapeHTML(
           attempt.student_name
         )}
-
       </strong>
 
       <span>
@@ -6007,23 +5891,17 @@ async function openResponses(
           const questionText =
             item.response_data
               ?.question_text
-
             ||
-
             item.question_key;
 
 
           const answerText =
             item.response_data
               ?.answer_text
-
             ??
-
             item.response_data
               ?.value
-
             ??
-
             JSON.stringify(
               item.response_data
             );
@@ -6034,25 +5912,19 @@ async function openResponses(
             <article class="response-item">
 
               <div class="response-question">
-
                 ${escapeHTML(
                   questionText
                 )}
-
               </div>
-
 
               <div class="response-answer-label">
                 Participant Response
               </div>
 
-
               <div class="response-answer">
-
                 ${escapeHTML(
                   answerText
                 )}
-
               </div>
 
             </article>
@@ -6086,9 +5958,7 @@ async function openResponses(
    PORTAL NAVIGATION
 ============================================================ */
 
-function activateView(
-  view
-) {
+function activateView(view) {
 
   document
     .querySelectorAll(
@@ -6135,37 +6005,11 @@ function activateView(
 
 
   window.scrollTo({
-    top:
-      0,
-
-    behavior:
-      "smooth"
+    top:0,
+    behavior:"smooth"
   });
 
 }
-
-
-
-document
-  .querySelectorAll(
-    ".portal-nav-button"
-  )
-  .forEach(
-    button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          activateView(
-            button.dataset.view
-          );
-
-        }
-      );
-
-    }
-  );
 
 
 
@@ -6200,7 +6044,6 @@ document.getElementById(
 );
 
 
-
 document.getElementById(
   "portalSignOut"
 ).addEventListener(
@@ -6209,14 +6052,12 @@ document.getElementById(
 );
 
 
-
 document.getElementById(
-  "pendingSignOut"
+  "disabledSignOut"
 ).addEventListener(
   "click",
   signOut
 );
-
 
 
 document.getElementById(
@@ -6225,6 +6066,29 @@ document.getElementById(
   "click",
   signOut
 );
+
+
+
+document
+  .querySelectorAll(
+    ".portal-nav-button"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          activateView(
+            button.dataset.view
+          );
+
+        }
+      );
+
+    }
+  );
 
 
 
@@ -6280,8 +6144,7 @@ document.getElementById(
     ) {
 
       event.currentTarget
-        .classList
-        .remove(
+        .classList.remove(
           "show"
         );
 
