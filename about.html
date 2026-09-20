@@ -1,0 +1,2165 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="About RizSim — interactive simulation-based learning designed to move learners from knowing to doing."
+  >
+
+  <meta
+    name="theme-color"
+    content="#9fc9c6"
+  >
+
+  <title>
+    About | RizSim
+  </title>
+
+  <link
+    rel="icon"
+    href="rizsim-r.png"
+    type="image/png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site.css"
+  >
+
+
+  <style>
+
+    /* ========================================================
+       ABOUT HERO
+    ========================================================= */
+
+    .about-hero {
+      position: relative;
+
+      overflow: hidden;
+
+      padding:
+        82px 0 84px;
+
+      background-color:
+        #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+
+      border-bottom:
+        1px solid #e5edef;
+    }
+
+
+    .about-hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 560px;
+      height: 560px;
+
+      right: -240px;
+      top: -190px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(24,184,176,.10),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .about-hero::after {
+      content: "";
+
+      position: absolute;
+
+      width: 420px;
+      height: 420px;
+
+      left: -210px;
+      bottom: -250px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(45,118,169,.05),
+          transparent 70%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .about-hero-grid {
+      position: relative;
+
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns:
+        1.05fr .95fr;
+
+      gap: 76px;
+
+      align-items: center;
+    }
+
+
+    .about-kicker {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      color: #158c89;
+
+      font-size: .72rem;
+
+      font-weight: 900;
+
+      letter-spacing: .10em;
+
+      text-transform: uppercase;
+    }
+
+
+    .about-kicker::before {
+      content: "";
+
+      width: 30px;
+      height: 2px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #18b8b0,
+          #efc15b
+        );
+    }
+
+
+    .about-hero h1 {
+      margin:
+        20px 0 21px;
+
+      max-width: 760px;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          3.45rem,
+          6.5vw,
+          5.8rem
+        );
+
+      line-height: .96;
+
+      letter-spacing: -.06em;
+    }
+
+
+    .about-hero h1 span {
+      display: block;
+
+      color: #18b8b0;
+    }
+
+
+    .about-hero-copy p {
+      max-width: 680px;
+
+      margin: 0;
+
+      color: #687d8a;
+
+      font-size: 1.08rem;
+
+      line-height: 1.8;
+    }
+
+
+    /* ========================================================
+       HERO PRINCIPLE PANEL
+    ========================================================= */
+
+    .about-principle-card {
+      position: relative;
+
+      padding: 31px;
+
+      overflow: hidden;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 95% 10%,
+          rgba(65,220,210,.13),
+          transparent 32%
+        ),
+        linear-gradient(
+          145deg,
+          #071b2a,
+          #0c3d4d
+        );
+
+      border:
+        1px solid rgba(75,210,201,.18);
+
+      border-radius: 27px;
+
+      box-shadow:
+        0 30px 68px rgba(6,35,55,.16);
+    }
+
+
+    .about-principle-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 240px;
+      height: 240px;
+
+      right: -100px;
+      bottom: -125px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(80,225,214,.10),
+          transparent 70%
+        );
+    }
+
+
+    .about-principle-card
+    .micro-label {
+      color: #65d6cf;
+    }
+
+
+    .about-principle-card h2 {
+      position: relative;
+
+      z-index: 2;
+
+      margin:
+        10px 0 11px;
+
+      max-width: 430px;
+
+      color: #ffffff;
+
+      font-size:
+        clamp(
+          1.7rem,
+          3vw,
+          2.25rem
+        );
+
+      line-height: 1.2;
+
+      letter-spacing: -.025em;
+    }
+
+
+    .about-principle-card > p {
+      position: relative;
+
+      z-index: 2;
+
+      margin: 0;
+
+      max-width: 450px;
+
+      color: #a9c0ca;
+
+      font-size: .87rem;
+
+      line-height: 1.7;
+    }
+
+
+    .principle-flow {
+      position: relative;
+
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      gap: 8px;
+
+      margin-top: 27px;
+    }
+
+
+    .principle-step {
+      min-height: 90px;
+
+      padding: 14px 12px;
+
+      background:
+        rgba(255,255,255,.055);
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      border-radius: 13px;
+    }
+
+
+    .principle-step span {
+      color: #69d7d0;
+
+      font-size: .61rem;
+
+      font-weight: 900;
+    }
+
+
+    .principle-step strong {
+      display: block;
+
+      margin-top: 13px;
+
+      color: #ffffff;
+
+      font-size: .77rem;
+    }
+
+
+    /* ========================================================
+       ABOUT INTRO
+    ========================================================= */
+
+    .about-section {
+      padding:
+        94px 0;
+
+      background-color:
+        #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+    }
+
+
+    .about-intro {
+      display: grid;
+
+      grid-template-columns:
+        .82fr 1.18fr;
+
+      gap: 92px;
+
+      align-items: start;
+    }
+
+
+    .about-section-title h2 {
+      margin:
+        10px 0 0;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.3rem,
+          4.2vw,
+          3.7rem
+        );
+
+      line-height: 1.05;
+
+      letter-spacing: -.05em;
+    }
+
+
+    .about-intro-copy {
+      padding-top: 4px;
+    }
+
+
+    .about-intro-copy p {
+      margin:
+        0 0 20px;
+
+      color: #697d89;
+
+      font-size: .96rem;
+
+      line-height: 1.8;
+    }
+
+
+    .about-intro-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    /* ========================================================
+       APPROACH
+    ========================================================= */
+
+    .approach-section {
+      padding:
+        90px 0;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(247,251,251,.95),
+          rgba(255,255,255,.98)
+        );
+
+      border-top:
+        1px solid #e5edef;
+
+      border-bottom:
+        1px solid #e5edef;
+    }
+
+
+    .approach-heading {
+      display: grid;
+
+      grid-template-columns:
+        1fr .7fr;
+
+      gap: 70px;
+
+      align-items: end;
+
+      margin-bottom: 38px;
+    }
+
+
+    .approach-heading h2 {
+      margin:
+        9px 0 0;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.2rem,
+          4vw,
+          3.5rem
+        );
+
+      line-height: 1.05;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .approach-heading p {
+      margin: 0;
+
+      color: #6f828e;
+
+      line-height: 1.75;
+    }
+
+
+    .approach-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      gap: 17px;
+    }
+
+
+    .approach-card {
+      min-height: 245px;
+
+      padding: 25px;
+
+      background:
+        rgba(255,255,255,.97);
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 9px 27px rgba(4,25,40,.045);
+
+      transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+    }
+
+
+    .approach-card:hover {
+      transform:
+        translateY(-4px);
+
+      border-color:
+        rgba(24,184,176,.28);
+
+      box-shadow:
+        0 17px 38px rgba(4,25,40,.085);
+    }
+
+
+    .approach-number {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          145deg,
+          #0a3143,
+          #0d6670
+        );
+
+      border-radius: 12px;
+
+      font-size: .69rem;
+
+      font-weight: 900;
+    }
+
+
+    .approach-card h3 {
+      margin:
+        20px 0 8px;
+
+      color: #061827;
+
+      font-size: 1.04rem;
+    }
+
+
+    .approach-card p {
+      margin: 0;
+
+      color: #718590;
+
+      font-size: .82rem;
+
+      line-height: 1.65;
+    }
+
+
+    /* ========================================================
+       ACCESS MODEL
+    ========================================================= */
+
+    .access-model-section {
+      padding:
+        96px 0;
+
+      background-color:
+        #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+    }
+
+
+    .access-model-layout {
+      display: grid;
+
+      grid-template-columns:
+        .92fr 1.08fr;
+
+      gap: 85px;
+
+      align-items: center;
+    }
+
+
+    .access-model-copy h2 {
+      margin:
+        10px 0 16px;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.2rem,
+          4vw,
+          3.5rem
+        );
+
+      line-height: 1.06;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .access-model-copy p {
+      margin: 0;
+
+      color: #6d818c;
+
+      line-height: 1.8;
+    }
+
+
+    .access-flow {
+      padding: 28px;
+
+      background:
+        rgba(255,255,255,.97);
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 22px;
+
+      box-shadow:
+        0 15px 40px rgba(4,25,40,.065);
+    }
+
+
+    .access-flow-row {
+      display: grid;
+
+      grid-template-columns:
+        44px 1fr;
+
+      gap: 15px;
+
+      align-items: center;
+
+      padding:
+        16px 0;
+
+      border-bottom:
+        1px solid #e4edef;
+    }
+
+
+    .access-flow-row:first-child {
+      padding-top: 0;
+    }
+
+
+    .access-flow-row:last-child {
+      padding-bottom: 0;
+
+      border-bottom: 0;
+    }
+
+
+    .access-flow-index {
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #0b7e80;
+
+      background:
+        #ecf8f7;
+
+      border:
+        1px solid rgba(24,184,176,.14);
+
+      border-radius: 11px;
+
+      font-size: .68rem;
+
+      font-weight: 900;
+    }
+
+
+    .access-flow-row strong {
+      display: block;
+
+      color: #102f41;
+
+      font-size: .86rem;
+    }
+
+
+    .access-flow-row span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: #788b95;
+
+      font-size: .76rem;
+
+      line-height: 1.55;
+    }
+
+
+    /* ========================================================
+       WHO RIZSIM SERVES
+    ========================================================= */
+
+    .audience-about-section {
+      padding:
+        90px 0;
+
+      background:
+        linear-gradient(
+          180deg,
+          #f8fbfc,
+          #ffffff
+        );
+
+      border-top:
+        1px solid #e7eef0;
+    }
+
+
+    .audience-about-heading {
+      max-width: 720px;
+
+      margin-bottom: 35px;
+    }
+
+
+    .audience-about-heading h2 {
+      margin:
+        9px 0 0;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.2rem,
+          4vw,
+          3.5rem
+        );
+
+      line-height: 1.06;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .audience-about-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 17px;
+    }
+
+
+    .audience-about-card {
+      min-height: 210px;
+
+      padding: 24px;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 19px;
+
+      box-shadow:
+        0 9px 25px rgba(4,25,40,.045);
+    }
+
+
+    .audience-about-card span {
+      color: #18a8a2;
+
+      font-size: .66rem;
+
+      font-weight: 900;
+
+      letter-spacing: .09em;
+    }
+
+
+    .audience-about-card h3 {
+      margin:
+        13px 0 8px;
+
+      color: #061827;
+
+      font-size: 1.1rem;
+    }
+
+
+    .audience-about-card p {
+      margin: 0;
+
+      color: #71848f;
+
+      font-size: .82rem;
+
+      line-height: 1.65;
+    }
+
+
+    /* ========================================================
+       CTA
+    ========================================================= */
+
+    .about-cta {
+      padding:
+        20px 0 90px;
+
+      background-color:
+        #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+    }
+
+
+    .about-cta-panel {
+      padding:
+        39px 42px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 42px;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 85% 20%,
+          rgba(83,226,216,.15),
+          transparent 32%
+        ),
+        linear-gradient(
+          130deg,
+          #061827,
+          #0a3445
+        );
+
+      border-radius: 26px;
+
+      box-shadow:
+        0 24px 60px rgba(4,25,40,.13);
+    }
+
+
+    .about-cta-panel h2 {
+      margin:
+        8px 0;
+
+      color: #ffffff;
+    }
+
+
+    .about-cta-panel p {
+      max-width: 650px;
+
+      margin: 0;
+
+      color: #bdd0d8;
+    }
+
+
+    /* ========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1000px) {
+
+      .about-hero-grid,
+      .about-intro,
+      .approach-heading,
+      .access-model-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .approach-grid {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+
+      .audience-about-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .about-hero {
+        padding:
+          57px 0 64px;
+      }
+
+
+      .about-hero h1 {
+        font-size:
+          clamp(
+            3rem,
+            14vw,
+            4.8rem
+          );
+      }
+
+
+      .principle-flow {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+
+      .approach-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .about-cta-panel {
+        flex-direction: column;
+
+        align-items: flex-start;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body data-page="about">
+
+
+  <!-- ========================================================
+       NAVIGATION
+  ========================================================= -->
+
+  <header class="site-header">
+
+    <div class="nav-glow"></div>
+
+
+    <div class="nav-shell">
+
+
+      <!-- SIDEBAR -->
+
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        type="button"
+        aria-label="Open sidebar"
+        aria-expanded="false"
+        aria-controls="siteSidebar"
+        data-swipe-block
+      >
+
+        <span class="sidebar-toggle-icon">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </span>
+
+      </button>
+
+
+
+      <!-- LOGO -->
+
+      <a
+        class="nav-logo-link"
+        href="index.html"
+        data-page-link
+        aria-label="RizSim Home"
+      >
+
+        <img
+          class="nav-logo"
+          src="RizSim finalized logo.png"
+          alt="RizSim — From Knowing to Doing"
+        >
+
+      </a>
+
+
+
+      <!-- NAV -->
+
+      <nav
+        class="main-nav"
+        id="mainNav"
+      >
+
+        <a
+          href="index.html"
+          data-page-link
+          data-page="home"
+        >
+          Home
+        </a>
+
+
+        <a
+          href="simulations.html"
+          data-page-link
+          data-page="simulations"
+        >
+          Simulations
+        </a>
+
+
+        <a
+          href="about.html"
+          data-page-link
+          data-page="about"
+        >
+          About
+        </a>
+
+
+        <a
+          href="contact.html"
+          data-page-link
+          data-page="contact"
+        >
+          Contact
+        </a>
+
+      </nav>
+
+
+
+      <!-- LOGIN -->
+
+      <div class="nav-actions">
+
+        <div class="login-wrap">
+
+
+          <button
+            class="login-button"
+            id="loginButton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="loginMenu"
+          >
+
+            <span>
+              Login
+            </span>
+
+
+            <svg
+              class="login-chevron"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M5.5 7.5L10 12L14.5 7.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
+          </button>
+
+
+
+          <div
+            class="login-menu"
+            id="loginMenu"
+            aria-hidden="true"
+            data-swipe-block
+          >
+
+
+            <a
+              class="login-role-button"
+              href="access-in.html"
+            >
+
+              <span class="login-role-text">
+                Student
+              </span>
+
+
+              <span class="login-role-icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="M3.5 8.5L12 4.5L20.5 8.5L12 12.5L3.5 8.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                  />
+
+                  <path
+                    d="M7 10.5V15C7 16.8 9.25 18.3 12 18.3C14.75 18.3 17 16.8 17 15V10.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <a
+              class="login-role-button"
+              href="access-out.html"
+            >
+
+              <span class="login-role-text">
+                Faculty
+              </span>
+
+
+              <span
+                class="login-role-icon faculty-icon"
+              >
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <circle
+                    cx="12"
+                    cy="7"
+                    r="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  />
+
+                  <path
+                    d="M6 19V17C6 14.8 8.2 13 12 13C15.8 13 18 14.8 18 17V19"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                  <path
+                    d="M4 20H20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <button
+              class="login-collapse-button"
+              id="loginCollapseButton"
+              type="button"
+              aria-label="Close login options"
+            >
+
+              <svg
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M5 12.5L10 7.5L15 12.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+              </svg>
+
+            </button>
+
+
+          </div>
+
+        </div>
+
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ========================================================
+       SIDEBAR
+  ========================================================= -->
+
+  <div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <aside
+    class="site-sidebar"
+    id="siteSidebar"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div class="sidebar-inner"></div>
+
+  </aside>
+
+
+
+  <!-- ========================================================
+       PAGE
+  ========================================================= -->
+
+  <main class="page-content">
+
+
+    <!-- ======================================================
+         HERO
+    ======================================================= -->
+
+    <section class="about-hero">
+
+      <div class="content-shell about-hero-grid">
+
+
+        <div class="about-hero-copy">
+
+
+          <span class="about-kicker">
+            About RizSim
+          </span>
+
+
+          <h1>
+
+            Learning becomes meaningful
+
+            <span>
+              when people act on it.
+            </span>
+
+          </h1>
+
+
+          <p>
+
+            RizSim is an interactive learning platform built
+            around decisions, reflection and application.
+            Instead of treating learning as passive content
+            consumption, RizSim places learners inside
+            situations where they must interpret, decide,
+            reconsider and apply.
+
+          </p>
+
+
+          <div class="hero-buttons">
+
+            <a
+              class="button button-primary"
+              href="simulations.html"
+              data-page-link
+            >
+              Explore Simulations
+            </a>
+
+
+            <a
+              class="button button-secondary"
+              href="contact.html"
+              data-page-link
+            >
+              Contact RizSim
+            </a>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- PRINCIPLE CARD -->
+
+        <div
+          class="about-principle-card"
+          data-swipe-block
+        >
+
+          <span class="micro-label">
+            THE RIZSIM IDEA
+          </span>
+
+
+          <h2>
+            From knowing something to being able to use it.
+          </h2>
+
+
+          <p>
+
+            RizSim learning experiences create opportunities
+            for learners to make judgments, receive structure
+            for reflection and transfer what they learn into
+            another situation.
+
+          </p>
+
+
+
+          <div class="principle-flow">
+
+
+            <div class="principle-step">
+
+              <span>
+                01
+              </span>
+
+              <strong>
+                Explore
+              </strong>
+
+            </div>
+
+
+            <div class="principle-step">
+
+              <span>
+                02
+              </span>
+
+              <strong>
+                Decide
+              </strong>
+
+            </div>
+
+
+            <div class="principle-step">
+
+              <span>
+                03
+              </span>
+
+              <strong>
+                Reflect
+              </strong>
+
+            </div>
+
+
+            <div class="principle-step">
+
+              <span>
+                04
+              </span>
+
+              <strong>
+                Apply
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         WHAT IS RIZSIM
+    ======================================================= -->
+
+    <section class="about-section">
+
+      <div class="content-shell about-intro">
+
+
+        <div class="about-section-title">
+
+          <span class="section-kicker">
+            WHAT IS RIZSIM?
+          </span>
+
+
+          <h2>
+            Learning designed around action.
+          </h2>
+
+        </div>
+
+
+
+        <div class="about-intro-copy">
+
+          <p>
+
+            RizSim creates browser-based simulations and
+            interactive learning experiences for education,
+            executive learning, professional development
+            and structured classroom activities.
+
+          </p>
+
+
+          <p>
+
+            The platform is designed to help move concepts
+            beyond explanation. Learners encounter a situation,
+            make a choice or judgment, engage with feedback
+            or reflection, and then carry that learning into
+            another context.
+
+          </p>
+
+
+          <p>
+
+            Faculty and institutions can bring RizSim
+            experiences into their own teaching environments,
+            while students participate through managed
+            class access rather than purchasing individual
+            classroom simulations themselves.
+
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         APPROACH
+    ======================================================= -->
+
+    <section class="approach-section">
+
+      <div class="content-shell">
+
+
+        <div class="approach-heading">
+
+
+          <div>
+
+            <span class="section-kicker">
+              THE LEARNING APPROACH
+            </span>
+
+
+            <h2>
+              A journey from judgment to transfer.
+            </h2>
+
+          </div>
+
+
+          <p>
+
+            RizSim experiences are structured around learner
+            action. The exact activity may differ, but the
+            learning journey remains focused on meaningful
+            decisions and application.
+
+          </p>
+
+
+        </div>
+
+
+
+        <div class="approach-grid">
+
+
+          <article class="approach-card">
+
+            <div class="approach-number">
+              01
+            </div>
+
+
+            <h3>
+              Explore
+            </h3>
+
+
+            <p>
+
+              Learners encounter a situation, problem,
+              stimulus or decision context.
+
+            </p>
+
+          </article>
+
+
+
+          <article class="approach-card">
+
+            <div class="approach-number">
+              02
+            </div>
+
+
+            <h3>
+              Decide
+            </h3>
+
+
+            <p>
+
+              Learners commit to a judgment instead of
+              remaining passive observers.
+
+            </p>
+
+          </article>
+
+
+
+          <article class="approach-card">
+
+            <div class="approach-number">
+              03
+            </div>
+
+
+            <h3>
+              Reflect
+            </h3>
+
+
+            <p>
+
+              Feedback, comparison or structured reflection
+              helps learners reconsider their reasoning.
+
+            </p>
+
+          </article>
+
+
+
+          <article class="approach-card">
+
+            <div class="approach-number">
+              04
+            </div>
+
+
+            <h3>
+              Apply
+            </h3>
+
+
+            <p>
+
+              Learning is transferred into another context
+              so understanding can become usable judgment.
+
+            </p>
+
+          </article>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         ACCESS MODEL
+    ======================================================= -->
+
+    <section class="access-model-section">
+
+      <div class="content-shell access-model-layout">
+
+
+        <div class="access-model-copy">
+
+          <span class="section-kicker">
+            HOW ACCESS WORKS
+          </span>
+
+
+          <h2>
+            Faculty lead the learning experience.
+          </h2>
+
+
+          <p>
+
+            RizSim is designed around faculty- and
+            institution-managed learning. Faculty license
+            a simulation, create the learning session and
+            share access with students through a class code
+            or secure link.
+
+          </p>
+
+        </div>
+
+
+
+        <div
+          class="access-flow"
+          data-swipe-block
+        >
+
+
+          <div class="access-flow-row">
+
+            <div class="access-flow-index">
+              01
+            </div>
+
+
+            <div>
+
+              <strong>
+                Faculty selects a simulation
+              </strong>
+
+              <span>
+                Choose the RizSim experience that fits the learning objective.
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="access-flow-row">
+
+            <div class="access-flow-index">
+              02
+            </div>
+
+
+            <div>
+
+              <strong>
+                Faculty creates the learning session
+              </strong>
+
+              <span>
+                Configure the classroom or practice experience.
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="access-flow-row">
+
+            <div class="access-flow-index">
+              03
+            </div>
+
+
+            <div>
+
+              <strong>
+                RizSim generates access
+              </strong>
+
+              <span>
+                Students receive a class code or secure link.
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="access-flow-row">
+
+            <div class="access-flow-index">
+              04
+            </div>
+
+
+            <div>
+
+              <strong>
+                Learning becomes visible
+              </strong>
+
+              <span>
+                Participation and permitted results return to the appropriate faculty environment.
+              </span>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         AUDIENCE
+    ======================================================= -->
+
+    <section class="audience-about-section">
+
+      <div class="content-shell">
+
+
+        <div class="audience-about-heading">
+
+          <span class="section-kicker">
+            WHO RIZSIM SERVES
+          </span>
+
+
+          <h2>
+            Designed for different learning environments.
+          </h2>
+
+        </div>
+
+
+
+        <div class="audience-about-grid">
+
+
+          <article class="audience-about-card">
+
+            <span>
+              LEARNERS
+            </span>
+
+
+            <h3>
+              Students
+            </h3>
+
+
+            <p>
+
+              Participate in faculty-managed simulations,
+              classroom sessions and practice experiences
+              through secure access.
+
+            </p>
+
+          </article>
+
+
+
+          <article class="audience-about-card">
+
+            <span>
+              EDUCATORS
+            </span>
+
+
+            <h3>
+              Faculty
+            </h3>
+
+
+            <p>
+
+              Bring simulations into teaching, manage
+              learning sessions and use structured
+              experiences for active learning.
+
+            </p>
+
+          </article>
+
+
+
+          <article class="audience-about-card">
+
+            <span>
+              ORGANISATIONS
+            </span>
+
+
+            <h3>
+              Institutions
+            </h3>
+
+
+            <p>
+
+              Support faculty, courses, cohorts,
+              workshops and structured learning
+              programmes within an authorised environment.
+
+            </p>
+
+          </article>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         CTA
+    ======================================================= -->
+
+    <section class="about-cta">
+
+      <div class="content-shell">
+
+
+        <div class="about-cta-panel">
+
+
+          <div>
+
+            <span class="section-kicker">
+              DISCOVER RIZSIM
+            </span>
+
+
+            <h2>
+              From knowing to doing.
+            </h2>
+
+
+            <p>
+
+              Explore the simulation catalogue or speak
+              with RizSim about using interactive learning
+              in your teaching or institution.
+
+            </p>
+
+          </div>
+
+
+
+          <div class="hero-buttons">
+
+            <a
+              class="button button-light"
+              href="simulations.html"
+              data-page-link
+            >
+              Browse Simulations
+            </a>
+
+
+            <a
+              class="button button-primary"
+              href="contact.html"
+              data-page-link
+            >
+              Contact
+            </a>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- ========================================================
+       FOOTER
+  ========================================================= -->
+
+  <footer class="site-footer">
+
+    <div class="content-shell footer-grid">
+
+
+      <div class="footer-brand">
+
+        <img
+          src="RizSim finalized logo.png"
+          alt="RizSim"
+        >
+
+        <p>
+          Interactive learning through decisions,
+          reflection and application.
+        </p>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Explore
+        </h4>
+
+        <a
+          href="simulations.html"
+          data-page-link
+        >
+          Simulations
+        </a>
+
+
+        <a
+          href="about.html"
+          data-page-link
+        >
+          About
+        </a>
+
+
+        <a
+          href="contact.html"
+          data-page-link
+        >
+          Contact
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Access
+        </h4>
+
+        <a href="access-in.html">
+          Student
+        </a>
+
+
+        <a href="access-out.html">
+          Faculty
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Policies
+        </h4>
+
+        <a href="privacy-policy.html">
+          Privacy Policy
+        </a>
+
+
+        <a href="terms.html">
+          Terms & Conditions
+        </a>
+
+
+        <a href="refund-policy.html">
+          Refund & Cancellation
+        </a>
+
+
+        <a href="service-delivery.html">
+          Digital Service Delivery
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="content-shell footer-bottom">
+
+      <span>
+        © <span id="footerYear"></span> RizSim.
+      </span>
+
+
+      <span>
+        From Knowing to Doing.
+      </span>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- ========================================================
+       SWIPE INDICATOR
+  ========================================================= -->
+
+  <div
+    class="swipe-indicator"
+    id="swipeIndicator"
+    aria-hidden="true"
+  >
+
+    <span id="swipeIndicatorIcon">
+      →
+    </span>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       GLOBAL JAVASCRIPT
+  ========================================================= -->
+
+  <script src="site.js"></script>
+
+
+</body>
+
+</html>
