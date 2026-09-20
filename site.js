@@ -1,51 +1,76 @@
 /* ============================================================
    RIZSIM GLOBAL WEBSITE JAVASCRIPT
+   PUBLIC WEBSITE OPERATING MODEL
+============================================================ */
+
+
+/* ============================================================
+   PUBLIC PAGE ORDER
+
+   IMPORTANT:
+   This order also controls left/right swipe navigation.
+
+   New public structure:
+   Home → Simulations → About → Contact
 ============================================================ */
 
 const RIZSIM_PAGES = [
+
   {
     key: "home",
     url: "index.html"
   },
+
   {
     key: "simulations",
     url: "simulations.html"
   },
-  {
-    key: "learning",
-    url: "learning.html"
-  },
-  {
-    key: "research",
-    url: "research.html"
-  },
+
   {
     key: "about",
     url: "about.html"
   },
+
   {
     key: "contact",
     url: "contact.html"
   }
+
 ];
 
+
+
+/* ============================================================
+   INITIALISE WEBSITE
+============================================================ */
 
 document.addEventListener(
   "DOMContentLoaded",
   () => {
 
     initialiseActiveNavigation();
+
     initialiseFooterYear();
+
     initialiseSplash();
+
     initialiseLoginMenu();
+
     initialiseSidebar();
+
     initialiseMobileNavigation();
+
+    initialiseFacultyAccessInvitation();
+
     initialisePageTransitions();
+
     initialisePageEntryAnimation();
+
     initialiseSafeSwipe();
 
   }
 );
+
 
 
 /* ============================================================
@@ -59,7 +84,9 @@ function initialiseActiveNavigation() {
 
 
   if (!currentPage) {
+
     return;
+
   }
 
 
@@ -102,6 +129,7 @@ function initialiseActiveNavigation() {
 }
 
 
+
 /* ============================================================
    FOOTER YEAR
 ============================================================ */
@@ -114,18 +142,28 @@ function initialiseFooterYear() {
     );
 
 
-  if (year) {
+  if (!year) {
 
-    year.textContent =
-      new Date().getFullYear();
+    return;
 
   }
+
+
+  year.textContent =
+    new Date().getFullYear();
 
 }
 
 
+
 /* ============================================================
    SPLASH SCREEN
+
+   IMPORTANT:
+   The RizSim splash should appear only once during the
+   current browser session.
+
+   Moving between public pages should NOT replay the splash.
 ============================================================ */
 
 function initialiseSplash() {
@@ -137,9 +175,66 @@ function initialiseSplash() {
 
 
   if (!splash) {
+
     return;
+
   }
 
+
+  let splashAlreadySeen =
+    false;
+
+
+  try {
+
+    splashAlreadySeen =
+      sessionStorage.getItem(
+        "rizsimSplashSeen"
+      ) === "true";
+
+  } catch (error) {
+
+    splashAlreadySeen =
+      false;
+
+  }
+
+
+  /* ----------------------------------------------------------
+     IF SPLASH HAS ALREADY BEEN SEEN
+  ---------------------------------------------------------- */
+
+  if (splashAlreadySeen) {
+
+    splash.classList.add(
+      "is-hidden"
+    );
+
+
+    splash.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    window.setTimeout(
+      () => {
+
+        splash.remove();
+
+      },
+      20
+    );
+
+
+    return;
+
+  }
+
+
+  /* ----------------------------------------------------------
+     FIRST VIEW OF THIS BROWSER SESSION
+  ---------------------------------------------------------- */
 
   document.body.classList.add(
     "splash-locked"
@@ -154,8 +249,22 @@ function initialiseSplash() {
 
   const delay =
     reducedMotion
-      ? 500
+      ? 650
       : 4200;
+
+
+  try {
+
+    sessionStorage.setItem(
+      "rizsimSplashSeen",
+      "true"
+    );
+
+  } catch (error) {
+
+    /* Continue even if sessionStorage is unavailable */
+
+  }
 
 
   window.setTimeout(
@@ -163,6 +272,12 @@ function initialiseSplash() {
 
       splash.classList.add(
         "is-hidden"
+      );
+
+
+      splash.setAttribute(
+        "aria-hidden",
+        "true"
       );
 
 
@@ -187,8 +302,9 @@ function initialiseSplash() {
 }
 
 
+
 /* ============================================================
-   LOGIN MENU
+   PREMIUM LOGIN MENU
 ============================================================ */
 
 function openLoginMenu() {
@@ -209,12 +325,17 @@ function openLoginMenu() {
     !button ||
     !menu
   ) {
+
     return;
+
   }
 
 
   closeSidebar();
+
   closeMobileNavigation();
+
+  closeFacultyAccessInvitation();
 
 
   menu.classList.add(
@@ -236,6 +357,7 @@ function openLoginMenu() {
 }
 
 
+
 function closeLoginMenu() {
 
   const button =
@@ -254,7 +376,9 @@ function closeLoginMenu() {
     !button ||
     !menu
   ) {
+
     return;
+
   }
 
 
@@ -275,6 +399,7 @@ function closeLoginMenu() {
   );
 
 }
+
 
 
 function initialiseLoginMenu() {
@@ -301,7 +426,9 @@ function initialiseLoginMenu() {
     !button ||
     !menu
   ) {
+
     return;
+
   }
 
 
@@ -312,11 +439,13 @@ function initialiseLoginMenu() {
       event.stopPropagation();
 
 
-      if (
+      const currentlyOpen =
         menu.classList.contains(
           "is-open"
-        )
-      ) {
+        );
+
+
+      if (currentlyOpen) {
 
         closeLoginMenu();
 
@@ -348,7 +477,9 @@ function initialiseLoginMenu() {
 
         event.stopPropagation();
 
+
         closeLoginMenu();
+
 
         button.focus();
 
@@ -381,8 +512,9 @@ function initialiseLoginMenu() {
 }
 
 
+
 /* ============================================================
-   SIDEBAR
+   LEFT SIDEBAR
 ============================================================ */
 
 function openSidebar() {
@@ -410,12 +542,17 @@ function openSidebar() {
     !sidebar ||
     !overlay
   ) {
+
     return;
+
   }
 
 
   closeLoginMenu();
+
   closeMobileNavigation();
+
+  closeFacultyAccessInvitation();
 
 
   document.body.classList.add(
@@ -449,6 +586,7 @@ function openSidebar() {
 }
 
 
+
 function closeSidebar() {
 
   const button =
@@ -474,7 +612,9 @@ function closeSidebar() {
     !sidebar ||
     !overlay
   ) {
+
     return;
+
   }
 
 
@@ -509,6 +649,7 @@ function closeSidebar() {
 }
 
 
+
 function initialiseSidebar() {
 
   const button =
@@ -524,7 +665,9 @@ function initialiseSidebar() {
 
 
   if (!button) {
+
     return;
+
   }
 
 
@@ -535,11 +678,13 @@ function initialiseSidebar() {
       event.stopPropagation();
 
 
-      if (
+      const sidebarOpen =
         document.body.classList.contains(
           "sidebar-open"
-        )
-      ) {
+        );
+
+
+      if (sidebarOpen) {
 
         closeSidebar();
 
@@ -565,8 +710,9 @@ function initialiseSidebar() {
 }
 
 
+
 /* ============================================================
-   MOBILE NAV
+   MOBILE NAVIGATION
 ============================================================ */
 
 function initialiseMobileNavigation() {
@@ -587,7 +733,9 @@ function initialiseMobileNavigation() {
     !button ||
     !navigation
   ) {
+
     return;
+
   }
 
 
@@ -597,8 +745,12 @@ function initialiseMobileNavigation() {
 
       event.stopPropagation();
 
+
       closeLoginMenu();
+
       closeSidebar();
+
+      closeFacultyAccessInvitation();
 
 
       const open =
@@ -630,6 +782,7 @@ function initialiseMobileNavigation() {
     );
 
 }
+
 
 
 function closeMobileNavigation() {
@@ -667,8 +820,227 @@ function closeMobileNavigation() {
 }
 
 
+
+/* ============================================================
+   FACULTY ACCESS INVITATION
+
+   This supports the new permanent RizSim purchasing rule.
+
+   Public users do not directly enter the student purchasing
+   route.
+
+   When simulations.html is updated, its Buy Access buttons
+   will use:
+
+   data-faculty-invite
+
+   The friendly invitation modal will use:
+
+   #facultyAccessInvite
+   #facultyAccessInviteClose
+   #facultyAccessInviteDismiss
+
+   The Sign Up button itself will remain a normal link.
+============================================================ */
+
+function initialiseFacultyAccessInvitation() {
+
+  const modal =
+    document.getElementById(
+      "facultyAccessInvite"
+    );
+
+
+  if (!modal) {
+
+    return;
+
+  }
+
+
+  const inviteButtons =
+    document.querySelectorAll(
+      "[data-faculty-invite]"
+    );
+
+
+  const closeButton =
+    document.getElementById(
+      "facultyAccessInviteClose"
+    );
+
+
+  const dismissButton =
+    document.getElementById(
+      "facultyAccessInviteDismiss"
+    );
+
+
+  inviteButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.preventDefault();
+
+
+          openFacultyAccessInvitation();
+
+        }
+      );
+
+    }
+  );
+
+
+  if (closeButton) {
+
+    closeButton.addEventListener(
+      "click",
+      () => {
+
+        closeFacultyAccessInvitation();
+
+      }
+    );
+
+  }
+
+
+  if (dismissButton) {
+
+    dismissButton.addEventListener(
+      "click",
+      () => {
+
+        closeFacultyAccessInvitation();
+
+      }
+    );
+
+  }
+
+
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeFacultyAccessInvitation();
+
+      }
+
+    }
+  );
+
+}
+
+
+
+function openFacultyAccessInvitation() {
+
+  const modal =
+    document.getElementById(
+      "facultyAccessInvite"
+    );
+
+
+  if (!modal) {
+
+    return;
+
+  }
+
+
+  closeLoginMenu();
+
+  closeSidebar();
+
+  closeMobileNavigation();
+
+
+  modal.classList.add(
+    "is-open"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.classList.add(
+    "faculty-invite-open"
+  );
+
+
+  const firstInteractiveElement =
+    modal.querySelector(
+      "a, button"
+    );
+
+
+  if (firstInteractiveElement) {
+
+    window.setTimeout(
+      () => {
+
+        firstInteractiveElement.focus();
+
+      },
+      180
+    );
+
+  }
+
+}
+
+
+
+function closeFacultyAccessInvitation() {
+
+  const modal =
+    document.getElementById(
+      "facultyAccessInvite"
+    );
+
+
+  if (!modal) {
+
+    return;
+
+  }
+
+
+  modal.classList.remove(
+    "is-open"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.classList.remove(
+    "faculty-invite-open"
+  );
+
+}
+
+
+
 /* ============================================================
    ESCAPE KEY
+
+   Escape closes whichever temporary interface is open.
 ============================================================ */
 
 document.addEventListener(
@@ -679,16 +1051,23 @@ document.addEventListener(
       event.key !==
       "Escape"
     ) {
+
       return;
+
     }
 
 
+    closeFacultyAccessInvitation();
+
     closeLoginMenu();
+
     closeSidebar();
+
     closeMobileNavigation();
 
   }
 );
+
 
 
 /* ============================================================
@@ -709,9 +1088,17 @@ function getCurrentPageIndex() {
 }
 
 
+
 function getPageIndexFromUrl(
   url
 ) {
+
+  if (!url) {
+
+    return -1;
+
+  }
+
 
   const clean =
     url
@@ -730,8 +1117,9 @@ function getPageIndexFromUrl(
 }
 
 
+
 /* ============================================================
-   PAGE TRANSITIONS
+   PREMIUM PAGE TRANSITIONS
 ============================================================ */
 
 function navigateWithTransition(
@@ -740,13 +1128,25 @@ function navigateWithTransition(
 ) {
 
   if (!url) {
+
     return;
+
   }
 
 
+  closeFacultyAccessInvitation();
+
   closeLoginMenu();
+
   closeSidebar();
+
   closeMobileNavigation();
+
+
+  document.body.classList.remove(
+    "page-exit-next",
+    "page-exit-prev"
+  );
 
 
   document.body.classList.add(
@@ -765,7 +1165,7 @@ function navigateWithTransition(
 
   } catch (error) {
 
-    /* Ignore */
+    /* Continue normally */
 
   }
 
@@ -782,6 +1182,11 @@ function navigateWithTransition(
 
 }
 
+
+
+/* ============================================================
+   LINK-BASED PAGE TRANSITIONS
+============================================================ */
 
 function initialisePageTransitions() {
 
@@ -805,7 +1210,9 @@ function initialisePageTransitions() {
               event.altKey ||
               link.target === "_blank"
             ) {
+
               return;
+
             }
 
 
@@ -819,7 +1226,9 @@ function initialisePageTransitions() {
               !href ||
               href.startsWith("#")
             ) {
+
               return;
+
             }
 
 
@@ -833,24 +1242,49 @@ function initialisePageTransitions() {
               getCurrentPageIndex();
 
 
+            /*
+             * Links which are not part of the four-page
+             * public swipe sequence continue normally.
+             *
+             * Examples:
+             * Student Portal
+             * Faculty Portal
+             * Policy pages
+             */
+
             if (
               destinationIndex === -1 ||
-              currentIndex === -1 ||
-              destinationIndex === currentIndex
+              currentIndex === -1
             ) {
+
               return;
+
+            }
+
+
+            if (
+              destinationIndex ===
+              currentIndex
+            ) {
+
+              return;
+
             }
 
 
             event.preventDefault();
 
 
-            navigateWithTransition(
-              href,
+            const direction =
               destinationIndex >
               currentIndex
                 ? "next"
-                : "prev"
+                : "prev";
+
+
+            navigateWithTransition(
+              href,
+              direction
             );
 
           }
@@ -862,8 +1296,9 @@ function initialisePageTransitions() {
 }
 
 
+
 /* ============================================================
-   PAGE ENTRY
+   PAGE ENTRY ANIMATION
 ============================================================ */
 
 function initialisePageEntryAnimation() {
@@ -886,13 +1321,16 @@ function initialisePageEntryAnimation() {
 
   } catch (error) {
 
-    direction = null;
+    direction =
+      null;
 
   }
 
 
   if (!direction) {
+
     return;
+
   }
 
 
@@ -918,40 +1356,126 @@ function initialisePageEntryAnimation() {
 }
 
 
+
 /* ============================================================
    SAFE SWIPE NAVIGATION
+
+   IMPORTANT:
+   RizSim swipe navigation is intentionally conservative.
+
+   Approved thresholds:
+
+   Minimum horizontal movement: 120px
+   Maximum vertical drift:      70px
+   Horizontal/vertical ratio:   1.65
+   Maximum gesture duration:    750ms
+   Browser edge guard:          34px
+
+   Swipe LEFT  → next public page
+   Swipe RIGHT → previous public page
+
 ============================================================ */
 
 function initialiseSafeSwipe() {
 
-  let startX = null;
-  let startY = null;
-  let startTime = null;
-  let startTarget = null;
+  let startX =
+    null;
 
+
+  let startY =
+    null;
+
+
+  let startTime =
+    null;
+
+
+  let startTarget =
+    null;
+
+
+  let swipeCancelled =
+    false;
+
+
+  const minimumHorizontalTravel =
+    120;
+
+
+  const maximumVerticalDrift =
+    70;
+
+
+  const horizontalDominanceRatio =
+    1.65;
+
+
+  const maximumDuration =
+    750;
+
+
+  const browserEdgeGuard =
+    34;
+
+
+
+  /* ----------------------------------------------------------
+     ELEMENTS WHERE SWIPE MUST NEVER TRIGGER
+  ---------------------------------------------------------- */
 
   const blockedSelector = [
+
     "[data-swipe-block]",
+
     "button",
+
     "a",
+
     "input",
+
     "textarea",
+
     "select",
+
+    "label",
+
+    "form",
+
     "[contenteditable='true']",
+
     ".login-menu",
-    ".site-sidebar"
+
+    ".site-sidebar",
+
+    ".product-modal",
+
+    ".faculty-access-invite",
+
+    ".simulation-card",
+
+    ".home-card",
+
+    ".experience-panel"
+
   ].join(",");
 
+
+
+  /* ----------------------------------------------------------
+     TOUCH START
+  ---------------------------------------------------------- */
 
   document.addEventListener(
     "touchstart",
     event => {
 
+      resetSwipe();
+
+
       if (
         event.touches.length !== 1
       ) {
 
-        resetSwipe();
         return;
 
       }
@@ -963,7 +1487,31 @@ function initialiseSafeSwipe() {
         )
       ) {
 
-        resetSwipe();
+        return;
+
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      const viewportWidth =
+        window.innerWidth;
+
+
+      /*
+       * Avoid interfering with browser-level edge gestures.
+       */
+
+      if (
+        touch.clientX <=
+        browserEdgeGuard ||
+        touch.clientX >=
+        viewportWidth -
+        browserEdgeGuard
+      ) {
+
         return;
 
       }
@@ -974,15 +1522,19 @@ function initialiseSafeSwipe() {
 
 
       startX =
-        event.touches[0].clientX;
+        touch.clientX;
 
 
       startY =
-        event.touches[0].clientY;
+        touch.clientY;
 
 
       startTime =
         Date.now();
+
+
+      swipeCancelled =
+        false;
 
     },
     {
@@ -991,6 +1543,100 @@ function initialiseSafeSwipe() {
   );
 
 
+
+  /* ----------------------------------------------------------
+     TOUCH MOVE
+
+     Cancel the gesture if it becomes predominantly vertical.
+  ---------------------------------------------------------- */
+
+  document.addEventListener(
+    "touchmove",
+    event => {
+
+      if (
+        startX === null ||
+        startY === null ||
+        swipeCancelled ||
+        event.touches.length !== 1
+      ) {
+
+        return;
+
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      const deltaX =
+        touch.clientX -
+        startX;
+
+
+      const deltaY =
+        touch.clientY -
+        startY;
+
+
+      const absX =
+        Math.abs(
+          deltaX
+        );
+
+
+      const absY =
+        Math.abs(
+          deltaY
+        );
+
+
+      /*
+       * A clear vertical movement cancels the swipe completely.
+       */
+
+      if (
+        absY >
+        maximumVerticalDrift
+      ) {
+
+        swipeCancelled =
+          true;
+
+
+        return;
+
+      }
+
+
+      /*
+       * If vertical movement becomes dominant early,
+       * cancel the navigation gesture.
+       */
+
+      if (
+        absY > 24 &&
+        absY > absX
+      ) {
+
+        swipeCancelled =
+          true;
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+
+  /* ----------------------------------------------------------
+     TOUCH END
+  ---------------------------------------------------------- */
+
   document.addEventListener(
     "touchend",
     event => {
@@ -998,14 +1644,22 @@ function initialiseSafeSwipe() {
       if (
         startX === null ||
         startY === null ||
-        !startTarget
+        !startTarget ||
+        swipeCancelled
       ) {
 
         resetSwipe();
+
+
         return;
 
       }
 
+
+      /*
+       * Swipe navigation is disabled while temporary
+       * interface elements are open.
+       */
 
       if (
         document.body.classList.contains(
@@ -1014,6 +1668,22 @@ function initialiseSafeSwipe() {
       ) {
 
         resetSwipe();
+
+
+        return;
+
+      }
+
+
+      if (
+        document.body.classList.contains(
+          "faculty-invite-open"
+        )
+      ) {
+
+        resetSwipe();
+
+
         return;
 
       }
@@ -1026,12 +1696,28 @@ function initialiseSafeSwipe() {
 
 
       if (
-        loginMenu?.classList.contains(
+        loginMenu &&
+        loginMenu.classList.contains(
           "is-open"
         )
       ) {
 
         resetSwipe();
+
+
+        return;
+
+      }
+
+
+      if (
+        !event.changedTouches ||
+        !event.changedTouches.length
+      ) {
+
+        resetSwipe();
+
+
         return;
 
       }
@@ -1068,14 +1754,35 @@ function initialiseSafeSwipe() {
         );
 
 
-      const valid =
-        absX >= 115 &&
-        absX > absY * 1.6 &&
-        absY <= 80 &&
-        duration <= 900;
+      const horizontalEnough =
+        absX >=
+        minimumHorizontalTravel;
 
 
-      if (valid) {
+      const verticalControlled =
+        absY <=
+        maximumVerticalDrift;
+
+
+      const horizontallyDominant =
+        absX >
+        absY *
+        horizontalDominanceRatio;
+
+
+      const fastEnough =
+        duration <=
+        maximumDuration;
+
+
+      const validSwipe =
+        horizontalEnough &&
+        verticalControlled &&
+        horizontallyDominant &&
+        fastEnough;
+
+
+      if (validSwipe) {
 
         navigateAdjacentPage(
           deltaX < 0
@@ -1095,20 +1802,58 @@ function initialiseSafeSwipe() {
   );
 
 
+
+  /* ----------------------------------------------------------
+     TOUCH CANCEL
+  ---------------------------------------------------------- */
+
+  document.addEventListener(
+    "touchcancel",
+    () => {
+
+      resetSwipe();
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+
+  /* ----------------------------------------------------------
+     RESET
+  ---------------------------------------------------------- */
+
   function resetSwipe() {
 
-    startX = null;
-    startY = null;
-    startTime = null;
-    startTarget = null;
+    startX =
+      null;
+
+
+    startY =
+      null;
+
+
+    startTime =
+      null;
+
+
+    startTarget =
+      null;
+
+
+    swipeCancelled =
+      false;
 
   }
 
 }
 
 
+
 /* ============================================================
-   ADJACENT PAGE
+   ADJACENT PUBLIC PAGE NAVIGATION
 ============================================================ */
 
 function navigateAdjacentPage(
@@ -1122,7 +1867,9 @@ function navigateAdjacentPage(
   if (
     currentIndex === -1
   ) {
+
     return;
+
   }
 
 
@@ -1132,12 +1879,19 @@ function navigateAdjacentPage(
       : currentIndex - 1;
 
 
+  /*
+   * At either end of the public page sequence,
+   * do nothing.
+   */
+
   if (
     destinationIndex < 0 ||
     destinationIndex >=
     RIZSIM_PAGES.length
   ) {
+
     return;
+
   }
 
 
@@ -1161,6 +1915,7 @@ function navigateAdjacentPage(
   );
 
 }
+
 
 
 /* ============================================================
@@ -1187,7 +1942,9 @@ function showSwipeIndicator(
     !indicator ||
     !icon
   ) {
+
     return;
+
   }
 
 
