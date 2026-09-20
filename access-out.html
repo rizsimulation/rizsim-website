@@ -4,2450 +4,2363 @@
 
 <head>
 
-  <meta charset="utf-8">
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
+<meta
+  name="theme-color"
+  content="#9fc9c6"
+>
+
+<meta
+  name="description"
+  content="RizSim Faculty and Institution Access."
+>
+
+<title>Faculty Access | RizSim</title>
+
+<link
+  rel="icon"
+  href="rizsim-r.png"
+  type="image/png"
+>
+
+<link
+  rel="stylesheet"
+  href="site.css"
+>
+
+
+<style>
+
+:root {
+  --portal-sidebar: 264px;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background-color: #f7fafb;
+  background-image: var(--rizsim-texture);
+  background-size: var(--rizsim-texture-size);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.access-header {
+  position: sticky;
+  top: 0;
+  z-index: 6000;
+  min-height: 100px;
+
+  background:
+    radial-gradient(
+      ellipse at 9% 48%,
+      rgba(93,210,201,.28) 0%,
+      rgba(93,210,201,.10) 33%,
+      transparent 52%
+    ),
+    linear-gradient(
+      105deg,
+      #9fc9c6 0%,
+      #b5d4d1 48%,
+      #c5dcd9 100%
+    );
+
+  border-bottom:
+    1px solid rgba(6,35,55,.11);
+
+  box-shadow:
+    0 8px 28px rgba(6,35,55,.10);
+}
+
+.access-header-shell {
+  width:
+    min(
+      1360px,
+      calc(100% - 34px)
+    );
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+  min-height: 100px;
+  margin-inline: auto;
 
-  <meta
-    name="theme-color"
-    content="#9fc9c6"
-  >
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
 
-  <meta
-    name="description"
-    content="RizSim Faculty and Institution Access."
-  >
+.access-logo {
+  width: 250px;
+  flex: 0 0 auto;
+}
 
-  <title>
-    Faculty Access | RizSim
-  </title>
+.access-logo img {
+  width: 100%;
+  max-height: 82px;
+  object-fit: contain;
+  object-position: left center;
+}
 
-  <link
-    rel="icon"
-    href="rizsim-r.png"
-    type="image/png"
-  >
+.access-public-nav {
+  flex: 1;
 
-  <link
-    rel="stylesheet"
-    href="site.css"
-  >
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
 
+.access-public-nav a {
+  padding: 11px 13px;
 
-  <style>
+  color: #0a3045;
 
-    :root {
-      --portal-sidebar: 264px;
-    }
+  border-radius: 11px;
 
+  font-size: .86rem;
+  font-weight: 800;
 
-    html,
-    body {
-      min-height: 100%;
-    }
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
 
+.access-public-nav a:hover {
+  color: #087f86;
 
-    body {
-      margin: 0;
+  background:
+    rgba(255,255,255,.30);
 
-      color: var(--ink);
+  transform:
+    translateY(-1px);
+}
 
-      background-color: #f7fafb;
+.access-header-badge {
+  min-height: 41px;
 
-      background-image:
-        var(--rizsim-texture);
+  padding:
+    0 14px;
 
-      background-size:
-        var(--rizsim-texture-size);
-    }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
+  color: #ffffff;
 
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
+  background:
+    linear-gradient(
+      135deg,
+      #13aaa5,
+      #20b7b0
+    );
 
+  border-radius: 11px;
 
-    button {
-      cursor: pointer;
-    }
+  font-size: .77rem;
+  font-weight: 850;
 
+  box-shadow:
+    0 7px 18px rgba(24,184,176,.18);
+}
 
-    .hidden {
-      display: none !important;
-    }
 
+/* ============================================================
+   LOGIN GATES
+============================================================ */
 
+.access-gate {
+  min-height:
+    calc(100vh - 100px);
 
-    /* ========================================================
-       HEADER
-    ========================================================= */
+  padding:
+    55px 22px 80px;
 
-    .access-header {
-      position: sticky;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      top: 0;
+.gate-card {
+  position: relative;
 
-      z-index: 6000;
+  width:
+    min(
+      570px,
+      100%
+    );
 
-      min-height: 100px;
+  overflow: hidden;
 
-      background:
-        radial-gradient(
-          ellipse at 9% 48%,
-          rgba(93,210,201,.28) 0%,
-          rgba(93,210,201,.10) 33%,
-          transparent 52%
-        ),
-        linear-gradient(
-          105deg,
-          #9fc9c6 0%,
-          #b5d4d1 48%,
-          #c5dcd9 100%
-        );
+  padding: 38px;
 
-      border-bottom:
-        1px solid rgba(6,35,55,.11);
+  background:
+    radial-gradient(
+      circle at 95% 3%,
+      rgba(24,184,176,.11),
+      transparent 31%
+    ),
+    rgba(255,255,255,.98);
 
-      box-shadow:
-        0 8px 28px rgba(6,35,55,.10);
-    }
+  border:
+    1px solid #dce8eb;
 
+  border-radius: 27px;
 
-    .access-header-shell {
-      width:
-        min(
-          1360px,
-          calc(100% - 34px)
-        );
+  box-shadow:
+    0 28px 75px rgba(4,25,40,.13);
+}
 
-      min-height: 100px;
+.gate-card::before {
+  content: "";
 
-      margin-inline: auto;
+  position: absolute;
 
-      display: flex;
+  width: 220px;
+  height: 220px;
 
-      align-items: center;
+  right: -115px;
+  top: -115px;
 
-      gap: 28px;
-    }
+  border-radius: 50%;
 
+  background:
+    radial-gradient(
+      circle,
+      rgba(24,184,176,.10),
+      transparent 69%
+    );
 
-    .access-logo {
-      width: 250px;
+  pointer-events: none;
+}
 
-      flex: 0 0 auto;
-    }
+.gate-logo {
+  position: relative;
+  z-index: 2;
 
+  width: 260px;
+  max-width: 72%;
 
-    .access-logo img {
-      width: 100%;
+  margin-bottom: 25px;
+}
 
-      max-height: 82px;
+.gate-kicker {
+  position: relative;
+  z-index: 2;
 
-      object-fit: contain;
+  color: #118d89;
 
-      object-position: left center;
-    }
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .10em;
 
+  text-transform: uppercase;
+}
 
-    .access-public-nav {
-      flex: 1;
+.gate-card h1 {
+  position: relative;
+  z-index: 2;
 
-      display: flex;
+  margin:
+    9px 0 12px;
 
-      align-items: center;
+  color: #061827;
 
-      justify-content: center;
+  font-size:
+    clamp(
+      2.25rem,
+      6vw,
+      3.25rem
+    );
 
-      gap: 4px;
-    }
+  line-height: 1.02;
 
+  letter-spacing: -.045em;
+}
 
-    .access-public-nav a {
-      padding: 11px 13px;
+.gate-card > p {
+  position: relative;
+  z-index: 2;
 
-      color: #0a3045;
+  margin: 0;
 
-      border-radius: 11px;
+  color: #6d818c;
 
-      font-size: .86rem;
+  line-height: 1.72;
+}
 
-      font-weight: 800;
+.gate-status {
+  position: relative;
+  z-index: 2;
 
-      transition:
-        background .2s ease,
-        color .2s ease,
-        transform .2s ease;
-    }
+  margin-top: 21px;
 
+  padding:
+    14px 15px;
 
-    .access-public-nav a:hover {
-      color: #087f86;
+  color: #58717d;
 
-      background:
-        rgba(255,255,255,.30);
+  background: #f4f9f9;
 
-      transform:
-        translateY(-1px);
-    }
+  border:
+    1px solid #dce8ea;
 
+  border-radius: 13px;
 
-    .access-header-badge {
-      min-height: 41px;
+  font-size: .78rem;
 
-      padding:
-        0 14px;
+  line-height: 1.55;
+}
 
-      display: inline-flex;
+.google-login-button {
+  position: relative;
+  z-index: 2;
 
-      align-items: center;
+  width: 100%;
+  min-height: 53px;
 
-      justify-content: center;
+  margin-top: 16px;
 
-      color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
 
-      background:
-        linear-gradient(
-          135deg,
-          #13aaa5,
-          #20b7b0
-        );
+  color: #17384a;
 
-      border-radius: 11px;
+  background: #ffffff;
 
-      font-size: .77rem;
+  border:
+    1px solid #d4e2e6;
 
-      font-weight: 850;
+  border-radius: 13px;
 
-      box-shadow:
-        0 7px 18px rgba(24,184,176,.18);
-    }
+  font-weight: 850;
 
+  box-shadow:
+    0 7px 20px rgba(4,25,40,.06);
 
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
 
-    /* ========================================================
-       LOGIN / BLOCKED / LEGACY GATES
-    ========================================================= */
+.google-login-button:hover {
+  transform:
+    translateY(-2px);
 
-    .access-gate {
-      min-height:
-        calc(100vh - 100px);
+  border-color:
+    rgba(24,184,176,.32);
 
-      padding:
-        55px 22px 80px;
+  box-shadow:
+    0 11px 25px rgba(4,25,40,.09);
+}
 
-      display: flex;
+.google-mark {
+  width: 30px;
+  height: 30px;
 
-      align-items: center;
+  display: grid;
+  place-items: center;
 
-      justify-content: center;
-    }
+  color: #ffffff;
 
+  background:
+    linear-gradient(
+      145deg,
+      #0c3850,
+      #16aaa5
+    );
 
-    .gate-card {
-      position: relative;
+  border-radius: 9px;
 
-      width:
-        min(
-          570px,
-          100%
-        );
+  font-size: .82rem;
+  font-weight: 900;
+}
 
-      overflow: hidden;
+.gate-note {
+  position: relative;
+  z-index: 2;
 
-      padding: 38px;
+  margin-top: 17px !important;
 
-      background:
-        radial-gradient(
-          circle at 95% 3%,
-          rgba(24,184,176,.11),
-          transparent 31%
-        ),
-        rgba(255,255,255,.98);
+  color: #91a0a8 !important;
 
-      border:
-        1px solid #dce8eb;
+  font-size: .69rem;
 
-      border-radius: 27px;
+  line-height: 1.55 !important;
+}
 
-      box-shadow:
-        0 28px 75px rgba(4,25,40,.13);
-    }
+.gate-actions {
+  position: relative;
+  z-index: 2;
 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
 
-    .gate-card::before {
-      content: "";
+  margin-top: 19px;
+}
 
-      position: absolute;
+.gate-actions .button {
+  flex: 1;
+  min-width: 150px;
+}
 
-      width: 220px;
-      height: 220px;
+.identity-box {
+  position: relative;
+  z-index: 2;
 
-      right: -115px;
-      top: -115px;
+  margin-top: 20px;
 
-      border-radius: 50%;
+  padding: 16px;
 
-      background:
-        radial-gradient(
-          circle,
-          rgba(24,184,176,.10),
-          transparent 69%
-        );
+  display: grid;
 
-      pointer-events: none;
-    }
+  grid-template-columns:
+    46px 1fr;
 
+  gap: 12px;
 
-    .gate-logo {
-      position: relative;
+  align-items: center;
 
-      z-index: 2;
+  background: #f5faf9;
 
-      width: 260px;
+  border:
+    1px solid #dce9e8;
 
-      max-width: 72%;
+  border-radius: 14px;
+}
 
-      margin-bottom: 25px;
-    }
+.identity-avatar {
+  width: 46px;
+  height: 46px;
 
+  overflow: hidden;
 
-    .gate-kicker {
-      position: relative;
+  display: grid;
+  place-items: center;
 
-      z-index: 2;
+  color: #ffffff;
 
-      color: #118d89;
+  background:
+    linear-gradient(
+      145deg,
+      #0a3143,
+      #12aaa5
+    );
 
-      font-size: .68rem;
+  border-radius: 50%;
 
-      font-weight: 900;
+  font-weight: 900;
+}
 
-      letter-spacing: .10em;
+.identity-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-      text-transform: uppercase;
-    }
+.identity-name {
+  color: #0b2d40;
 
+  font-size: .88rem;
 
-    .gate-card h1 {
-      position: relative;
+  font-weight: 850;
+}
 
-      z-index: 2;
+.identity-email {
+  margin-top: 2px;
 
-      margin:
-        9px 0 12px;
+  color: #718590;
 
-      color: #061827;
+  font-size: .72rem;
 
-      font-size:
-        clamp(
-          2.25rem,
-          6vw,
-          3.25rem
-        );
+  word-break: break-word;
+}
 
-      line-height: 1.02;
+.legacy-warning {
+  position: relative;
+  z-index: 2;
 
-      letter-spacing: -.045em;
-    }
+  margin-top: 18px;
 
+  padding: 15px;
 
-    .gate-card > p {
-      position: relative;
+  color: #704d00;
 
-      z-index: 2;
+  background: #fff8e8;
 
-      margin: 0;
+  border:
+    1px solid #f0dfb1;
 
-      color: #6d818c;
+  border-radius: 13px;
 
-      line-height: 1.72;
-    }
+  font-size: .76rem;
 
+  line-height: 1.6;
+}
 
-    .gate-status {
-      position: relative;
 
-      z-index: 2;
+/* ============================================================
+   PORTAL
+============================================================ */
 
-      margin-top: 21px;
+.faculty-portal {
+  display: none;
 
-      padding:
-        14px 15px;
+  min-height:
+    calc(100vh - 100px);
+}
 
-      color: #58717d;
+.faculty-portal.show {
+  display: flex;
+}
 
-      background: #f4f9f9;
 
-      border:
-        1px solid #dce8ea;
+/* ============================================================
+   SIDEBAR
+============================================================ */
 
-      border-radius: 13px;
+.portal-sidebar {
+  position: fixed;
 
-      font-size: .78rem;
+  left: 0;
+  top: 100px;
+  bottom: 0;
 
-      line-height: 1.55;
-    }
+  z-index: 900;
 
+  width:
+    var(--portal-sidebar);
 
-    .google-login-button {
-      position: relative;
+  padding:
+    23px 16px;
 
-      z-index: 2;
+  display: flex;
 
-      width: 100%;
+  flex-direction: column;
 
-      min-height: 53px;
+  color: #ffffff;
 
-      margin-top: 16px;
+  background:
+    radial-gradient(
+      circle at 7% 4%,
+      rgba(89,222,214,.14),
+      transparent 27%
+    ),
+    linear-gradient(
+      180deg,
+      #03101b,
+      #082f42
+    );
 
-      display: flex;
+  border-right:
+    1px solid rgba(255,255,255,.06);
 
-      align-items: center;
+  box-shadow:
+    18px 0 45px rgba(3,16,27,.10);
 
-      justify-content: center;
+  overflow-y: auto;
+}
 
-      gap: 11px;
+.portal-sidebar-title {
+  padding:
+    4px 10px 18px;
 
-      color: #17384a;
+  color: #ffffff;
+}
 
-      background: #ffffff;
+.portal-sidebar-title strong {
+  display: block;
 
-      border:
-        1px solid #d4e2e6;
+  font-size: 1.15rem;
+}
 
-      border-radius: 13px;
+.portal-sidebar-title span {
+  display: block;
 
-      font-weight: 850;
+  margin-top: 4px;
 
-      box-shadow:
-        0 7px 20px rgba(4,25,40,.06);
+  color: #70d6d0;
 
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease;
-    }
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .10em;
 
+  text-transform: uppercase;
+}
 
-    .google-login-button:hover {
-      transform:
-        translateY(-2px);
+.portal-role-pill {
+  margin:
+    0 8px 18px;
 
-      border-color:
-        rgba(24,184,176,.32);
+  padding:
+    8px 10px;
 
-      box-shadow:
-        0 11px 25px rgba(4,25,40,.09);
-    }
+  color: #d7ffff;
 
+  background:
+    rgba(255,255,255,.06);
 
-    .google-mark {
-      width: 30px;
-      height: 30px;
+  border:
+    1px solid rgba(255,255,255,.08);
 
-      display: grid;
+  border-radius: 11px;
 
-      place-items: center;
+  font-size: .65rem;
+  font-weight: 850;
 
-      color: #ffffff;
+  text-align: center;
+}
 
-      background:
-        linear-gradient(
-          145deg,
-          #0c3850,
-          #16aaa5
-        );
+.portal-nav {
+  display: grid;
 
-      border-radius: 9px;
+  gap: 5px;
+}
 
-      font-size: .82rem;
+.portal-nav-button,
+.portal-nav-link {
+  width: 100%;
+  min-height: 45px;
 
-      font-weight: 900;
-    }
+  padding:
+    0 13px;
 
+  display: flex;
+  align-items: center;
+  gap: 11px;
 
-    .gate-note {
-      position: relative;
+  color:
+    rgba(255,255,255,.67);
 
-      z-index: 2;
+  background: transparent;
 
-      margin-top: 17px !important;
+  border:
+    1px solid transparent;
 
-      color: #91a0a8 !important;
+  border-radius: 12px;
 
-      font-size: .69rem;
+  text-align: left;
 
-      line-height: 1.55 !important;
-    }
+  font-size: .76rem;
+  font-weight: 750;
 
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease;
+}
 
-    .gate-actions {
-      position: relative;
+.portal-nav-button:hover,
+.portal-nav-link:hover {
+  color: #ffffff;
 
-      z-index: 2;
+  background:
+    rgba(255,255,255,.065);
+}
 
-      display: flex;
+.portal-nav-button.active {
+  color: #ffffff;
 
-      flex-wrap: wrap;
+  background:
+    linear-gradient(
+      105deg,
+      rgba(24,184,176,.24),
+      rgba(89,222,214,.08)
+    );
 
-      gap: 9px;
+  border-color:
+    rgba(89,222,214,.12);
+}
 
-      margin-top: 19px;
-    }
+.portal-nav-icon {
+  width: 25px;
 
+  flex:
+    0 0 25px;
 
-    .gate-actions .button {
-      flex: 1;
+  color: #69dcd7;
 
-      min-width: 150px;
-    }
+  font-size: .62rem;
 
+  font-weight: 900;
+}
 
-    .identity-box {
-      position: relative;
+.portal-sidebar-bottom {
+  margin-top: auto;
 
-      z-index: 2;
+  padding-top: 22px;
+}
 
-      margin-top: 20px;
+.sidebar-account {
+  padding: 13px;
 
-      padding: 16px;
+  background:
+    rgba(255,255,255,.055);
 
-      display: grid;
+  border:
+    1px solid rgba(255,255,255,.075);
 
-      grid-template-columns:
-        46px 1fr;
+  border-radius: 14px;
+}
 
-      gap: 12px;
+.sidebar-account-name {
+  font-size: .76rem;
 
-      align-items: center;
+  font-weight: 850;
+}
 
-      background: #f5faf9;
+.sidebar-account-role {
+  margin-top: 3px;
 
-      border:
-        1px solid #dce9e8;
+  color: #69dcd7;
 
-      border-radius: 14px;
-    }
+  font-size: .58rem;
+  font-weight: 900;
 
+  text-transform: uppercase;
+}
 
-    .identity-avatar {
-      width: 46px;
-      height: 46px;
+.portal-signout {
+  width: 100%;
 
-      overflow: hidden;
+  min-height: 40px;
 
-      display: grid;
+  margin-top: 8px;
 
-      place-items: center;
+  color: #ffffff;
 
-      color: #ffffff;
+  background:
+    rgba(255,255,255,.045);
 
-      background:
-        linear-gradient(
-          145deg,
-          #0a3143,
-          #12aaa5
-        );
+  border:
+    1px solid rgba(255,255,255,.09);
 
-      border-radius: 50%;
+  border-radius: 11px;
 
-      font-weight: 900;
-    }
+  font-size: .69rem;
 
+  font-weight: 800;
+}
 
-    .identity-avatar img {
-      width: 100%;
-      height: 100%;
 
-      object-fit: cover;
-    }
+/* ============================================================
+   PORTAL MAIN
+============================================================ */
 
+.portal-main {
+  width:
+    calc(
+      100% - var(--portal-sidebar)
+    );
 
-    .identity-name {
-      color: #0b2d40;
+  min-height:
+    calc(100vh - 100px);
 
-      font-size: .88rem;
+  margin-left:
+    var(--portal-sidebar);
+}
 
-      font-weight: 850;
-    }
+.portal-topbar {
+  position: sticky;
 
+  top: 100px;
 
-    .identity-email {
-      margin-top: 2px;
+  z-index: 700;
 
-      color: #718590;
+  min-height: 76px;
 
-      font-size: .72rem;
+  padding:
+    10px 31px;
 
-      word-break: break-word;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  gap: 20px;
 
-    .legacy-warning {
-      position: relative;
+  background:
+    rgba(255,255,255,.92);
 
-      z-index: 2;
+  backdrop-filter:
+    blur(18px);
 
-      margin-top: 18px;
+  -webkit-backdrop-filter:
+    blur(18px);
 
-      padding: 15px;
+  border-bottom:
+    1px solid #dce8eb;
+}
 
-      color: #704d00;
+.portal-page-title {
+  color: #061827;
 
-      background: #fff8e8;
+  font-size: 1.28rem;
 
-      border:
-        1px solid #f0dfb1;
+  font-weight: 900;
 
-      border-radius: 13px;
+  letter-spacing: -.025em;
+}
 
-      font-size: .76rem;
+.portal-page-subtitle {
+  margin-top: 2px;
 
-      line-height: 1.6;
-    }
+  color: #7c8f99;
 
+  font-size: .68rem;
+}
 
+.portal-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    /* ========================================================
-       PORTAL
-    ========================================================= */
+.portal-user-avatar {
+  width: 40px;
+  height: 40px;
 
-    .faculty-portal {
-      display: none;
+  overflow: hidden;
 
-      min-height:
-        calc(100vh - 100px);
-    }
+  display: grid;
+  place-items: center;
 
+  color: #ffffff;
 
-    .faculty-portal.show {
-      display: flex;
-    }
+  background:
+    linear-gradient(
+      145deg,
+      #0a3143,
+      #14aaa5
+    );
 
+  border-radius: 50%;
 
+  font-size: .72rem;
 
-    /* ========================================================
-       SIDEBAR
-    ========================================================= */
+  font-weight: 900;
+}
 
-    .portal-sidebar {
-      position: fixed;
+.portal-user-avatar img {
+  width: 100%;
+  height: 100%;
 
-      left: 0;
-      top: 100px;
-      bottom: 0;
+  object-fit: cover;
+}
 
-      z-index: 900;
+.portal-user-name {
+  color: #173749;
 
-      width:
-        var(--portal-sidebar);
+  font-size: .72rem;
 
-      padding:
-        23px 16px;
+  font-weight: 850;
+}
 
-      display: flex;
+.portal-user-role {
+  margin-top: 1px;
 
-      flex-direction: column;
+  color: #118d89;
 
-      color: #ffffff;
+  font-size: .58rem;
+  font-weight: 900;
 
-      background:
-        radial-gradient(
-          circle at 7% 4%,
-          rgba(89,222,214,.14),
-          transparent 27%
-        ),
-        linear-gradient(
-          180deg,
-          #03101b,
-          #082f42
-        );
+  text-transform: uppercase;
+}
 
-      border-right:
-        1px solid rgba(255,255,255,.06);
+.portal-content {
+  padding:
+    31px 31px 75px;
+}
 
-      box-shadow:
-        18px 0 45px rgba(3,16,27,.10);
+.portal-view {
+  display: none;
+}
 
-      overflow-y: auto;
-    }
+.portal-view.active {
+  display: block;
+}
 
+.view-kicker {
+  color: #118d89;
 
-    .portal-sidebar-title {
-      padding:
-        4px 10px 18px;
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .10em;
 
-      color: #ffffff;
-    }
+  text-transform: uppercase;
+}
 
+.portal-view h1 {
+  margin:
+    8px 0 0;
 
-    .portal-sidebar-title strong {
-      display: block;
+  color: #061827;
 
-      font-size: 1.15rem;
-    }
+  font-size:
+    clamp(
+      2.15rem,
+      4vw,
+      3.6rem
+    );
 
+  line-height: 1.04;
 
-    .portal-sidebar-title span {
-      display: block;
+  letter-spacing: -.05em;
+}
 
-      margin-top: 4px;
+.view-description {
+  max-width: 780px;
 
-      color: #70d6d0;
+  margin-top: 10px;
 
-      font-size: .61rem;
+  color: #6c808c;
 
-      font-weight: 900;
+  font-size: .88rem;
 
-      letter-spacing: .10em;
+  line-height: 1.72;
+}
 
-      text-transform: uppercase;
-    }
 
+/* ============================================================
+   ROLE HERO
+============================================================ */
 
-    .portal-role-pill {
-      margin:
-        0 8px 18px;
+.role-hero {
+  margin-top: 23px;
 
-      padding:
-        8px 10px;
+  padding: 24px;
 
-      color: #d7ffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-      background:
-        rgba(255,255,255,.06);
+  gap: 25px;
 
-      border:
-        1px solid rgba(255,255,255,.08);
+  color: #ffffff;
 
-      border-radius: 11px;
+  background:
+    radial-gradient(
+      circle at 88% 5%,
+      rgba(89,222,214,.17),
+      transparent 30%
+    ),
+    linear-gradient(
+      130deg,
+      #061827,
+      #0a3b4b
+    );
 
-      font-size: .65rem;
+  border:
+    1px solid rgba(89,222,214,.12);
 
-      font-weight: 850;
+  border-radius: 21px;
 
-      text-align: center;
-    }
+  box-shadow:
+    0 18px 45px rgba(4,25,40,.10);
+}
 
+.role-hero strong {
+  display: block;
 
-    .portal-nav {
-      display: grid;
+  font-size: 1rem;
+}
 
-      gap: 5px;
-    }
+.role-hero p {
+  max-width: 690px;
 
+  margin:
+    5px 0 0;
 
-    .portal-nav-button,
-    .portal-nav-link {
-      width: 100%;
+  color: #abc1ca;
 
-      min-height: 45px;
+  font-size: .74rem;
 
-      padding:
-        0 13px;
+  line-height: 1.55;
+}
 
-      display: flex;
+.role-chip {
+  flex: 0 0 auto;
 
-      align-items: center;
+  padding:
+    7px 11px;
 
-      gap: 11px;
+  color: #d8ffff;
 
-      color:
-        rgba(255,255,255,.67);
+  background:
+    rgba(89,222,214,.10);
 
-      background: transparent;
+  border:
+    1px solid rgba(89,222,214,.15);
 
-      border:
-        1px solid transparent;
+  border-radius: 999px;
 
-      border-radius: 12px;
+  font-size: .61rem;
 
-      text-align: left;
+  font-weight: 900;
 
-      font-size: .76rem;
+  text-transform: uppercase;
+}
 
-      font-weight: 750;
 
-      transition:
-        background .18s ease,
-        color .18s ease,
-        border-color .18s ease;
-    }
+/* ============================================================
+   METRICS
+============================================================ */
 
+.portal-metrics {
+  display: grid;
 
-    .portal-nav-button:hover,
-    .portal-nav-link:hover {
-      color: #ffffff;
+  grid-template-columns:
+    repeat(4,1fr);
 
-      background:
-        rgba(255,255,255,.065);
-    }
+  gap: 14px;
 
+  margin-top: 22px;
+}
 
-    .portal-nav-button.active {
-      color: #ffffff;
+.portal-metric {
+  min-height: 132px;
 
-      background:
-        linear-gradient(
-          105deg,
-          rgba(24,184,176,.24),
-          rgba(89,222,214,.08)
-        );
+  padding: 19px;
 
-      border-color:
-        rgba(89,222,214,.12);
-    }
+  background:
+    rgba(255,255,255,.98);
 
+  border:
+    1px solid #dce8eb;
 
-    .portal-nav-icon {
-      width: 25px;
+  border-radius: 18px;
 
-      flex:
-        0 0 25px;
+  box-shadow:
+    0 8px 26px rgba(4,25,40,.045);
+}
 
-      color: #69dcd7;
+.portal-metric-label {
+  color: #7b8f99;
 
-      font-size: .62rem;
+  font-size: .58rem;
 
-      font-weight: 900;
-    }
+  font-weight: 900;
 
+  letter-spacing: .07em;
 
-    .portal-sidebar-bottom {
-      margin-top: auto;
+  text-transform: uppercase;
+}
 
-      padding-top: 22px;
-    }
+.portal-metric-value {
+  margin-top: 13px;
 
+  color: #061827;
 
-    .sidebar-account {
-      padding: 13px;
+  font-size: 2.05rem;
 
-      background:
-        rgba(255,255,255,.055);
+  font-weight: 900;
 
-      border:
-        1px solid rgba(255,255,255,.075);
+  letter-spacing: -.04em;
+}
 
-      border-radius: 14px;
-    }
+.portal-metric-note {
+  margin-top: 5px;
 
+  color: #118d89;
 
-    .sidebar-account-name {
-      font-size: .76rem;
+  font-size: .62rem;
 
-      font-weight: 850;
-    }
+  font-weight: 750;
+}
 
 
-    .sidebar-account-role {
-      margin-top: 3px;
+/* ============================================================
+   GENERAL PANELS
+============================================================ */
 
-      color: #69dcd7;
+.portal-panel {
+  margin-top: 20px;
 
-      font-size: .58rem;
+  overflow: hidden;
 
-      font-weight: 900;
+  background:
+    rgba(255,255,255,.98);
 
-      text-transform: uppercase;
-    }
+  border:
+    1px solid #dce8eb;
 
+  border-radius: 20px;
 
-    .portal-signout {
-      width: 100%;
+  box-shadow:
+    0 9px 28px rgba(4,25,40,.045);
+}
 
-      min-height: 40px;
+.portal-panel-header {
+  min-height: 63px;
 
-      margin-top: 8px;
+  padding:
+    12px 20px;
 
-      color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-      background:
-        rgba(255,255,255,.045);
+  gap: 20px;
 
-      border:
-        1px solid rgba(255,255,255,.09);
+  border-bottom:
+    1px solid #e2ebee;
+}
 
-      border-radius: 11px;
+.portal-panel-title {
+  color: #0d3042;
 
-      font-size: .69rem;
+  font-size: .89rem;
 
-      font-weight: 800;
-    }
+  font-weight: 850;
+}
 
+.portal-panel-note {
+  margin-top: 2px;
 
+  color: #85969f;
 
-    /* ========================================================
-       PORTAL MAIN
-    ========================================================= */
+  font-size: .62rem;
+}
 
-    .portal-main {
-      width:
-        calc(
-          100% - var(--portal-sidebar)
-        );
+.portal-panel-body {
+  padding: 20px;
+}
 
-      min-height:
-        calc(100vh - 100px);
 
-      margin-left:
-        var(--portal-sidebar);
-    }
+/* ============================================================
+   FORMS / MANAGEMENT
+============================================================ */
 
+.management-grid {
+  display: grid;
 
-    .portal-topbar {
-      position: sticky;
+  grid-template-columns:
+    repeat(2,1fr);
 
-      top: 100px;
+  gap: 16px;
 
-      z-index: 700;
+  padding: 20px;
 
-      min-height: 76px;
+  background:
+    linear-gradient(
+      180deg,
+      #fbfdfd,
+      #f7fbfb
+    );
+}
 
-      padding:
-        10px 31px;
+.management-card {
+  position: relative;
 
-      display: flex;
+  padding: 20px;
 
-      align-items: center;
+  overflow: hidden;
 
-      justify-content: space-between;
+  background: #ffffff;
 
-      gap: 20px;
+  border:
+    1px solid #dce8eb;
 
-      background:
-        rgba(255,255,255,.92);
+  border-radius: 17px;
 
-      backdrop-filter:
-        blur(18px);
+  box-shadow:
+    0 7px 22px rgba(4,25,40,.035);
+}
 
-      -webkit-backdrop-filter:
-        blur(18px);
+.management-card::before {
+  content: "";
 
-      border-bottom:
-        1px solid #dce8eb;
-    }
+  position: absolute;
 
+  width: 140px;
+  height: 140px;
 
-    .portal-page-title {
-      color: #061827;
+  right: -75px;
+  top: -75px;
 
-      font-size: 1.28rem;
+  border-radius: 50%;
 
-      font-weight: 900;
+  background:
+    radial-gradient(
+      circle,
+      rgba(24,184,176,.08),
+      transparent 70%
+    );
 
-      letter-spacing: -.025em;
-    }
+  pointer-events: none;
+}
 
+.management-card-kicker {
+  position: relative;
 
-    .portal-page-subtitle {
-      margin-top: 2px;
+  z-index: 1;
 
-      color: #7c8f99;
+  color: #118d89;
 
-      font-size: .68rem;
-    }
+  font-size: .57rem;
 
+  font-weight: 900;
 
-    .portal-user {
-      display: flex;
+  letter-spacing: .08em;
 
-      align-items: center;
+  text-transform: uppercase;
+}
 
-      gap: 10px;
-    }
+.management-card h3 {
+  position: relative;
 
+  z-index: 1;
 
-    .portal-user-avatar {
-      width: 40px;
-      height: 40px;
+  margin:
+    8px 0 6px;
 
-      overflow: hidden;
+  color: #0b3042;
 
-      display: grid;
+  font-size: 1rem;
+}
 
-      place-items: center;
+.management-card > p {
+  position: relative;
 
-      color: #ffffff;
+  z-index: 1;
 
-      background:
-        linear-gradient(
-          145deg,
-          #0a3143,
-          #14aaa5
-        );
+  margin: 0;
 
-      border-radius: 50%;
+  color: #718590;
 
-      font-size: .72rem;
+  font-size: .7rem;
 
-      font-weight: 900;
-    }
+  line-height: 1.58;
+}
 
+.management-field {
+  position: relative;
 
-    .portal-user-avatar img {
-      width: 100%;
-      height: 100%;
+  z-index: 1;
 
-      object-fit: cover;
-    }
+  margin-top: 13px;
+}
 
+.management-field label {
+  display: block;
 
-    .portal-user-name {
-      color: #173749;
+  margin-bottom: 6px;
 
-      font-size: .72rem;
+  color: #516c79;
 
-      font-weight: 850;
-    }
+  font-size: .57rem;
 
+  font-weight: 900;
 
-    .portal-user-role {
-      margin-top: 1px;
+  letter-spacing: .055em;
 
-      color: #118d89;
+  text-transform: uppercase;
+}
 
-      font-size: .58rem;
+.management-input,
+.management-select,
+.management-textarea {
+  width: 100%;
 
-      font-weight: 900;
+  color: #17394a;
 
-      text-transform: uppercase;
-    }
+  background: #ffffff;
 
+  border:
+    1px solid #d6e4e7;
 
-    .portal-content {
-      padding:
-        31px 31px 75px;
-    }
+  border-radius: 10px;
 
+  outline: none;
 
-    .portal-view {
-      display: none;
-    }
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
 
+.management-input,
+.management-select {
+  min-height: 43px;
 
-    .portal-view.active {
-      display: block;
-    }
+  padding:
+    0 11px;
+}
 
+.management-textarea {
+  min-height: 95px;
 
-    .view-kicker {
-      color: #118d89;
+  padding: 11px;
 
-      font-size: .64rem;
+  resize: vertical;
 
-      font-weight: 900;
+  line-height: 1.5;
+}
 
-      letter-spacing: .10em;
+.management-input:focus,
+.management-select:focus,
+.management-textarea:focus {
+  border-color:
+    rgba(24,184,176,.58);
 
-      text-transform: uppercase;
-    }
+  box-shadow:
+    0 0 0 3px
+    rgba(24,184,176,.075);
+}
 
+.management-help {
+  display: block;
 
-    .portal-view h1 {
-      margin:
-        8px 0 0;
+  margin-top: 5px;
 
-      color: #061827;
+  color: #95a4ab;
 
-      font-size:
-        clamp(
-          2.15rem,
-          4vw,
-          3.6rem
-        );
+  font-size: .56rem;
 
-      line-height: 1.04;
+  line-height: 1.42;
+}
 
-      letter-spacing: -.05em;
-    }
+.management-action {
+  width: 100%;
 
+  min-height: 43px;
 
-    .view-description {
-      max-width: 780px;
+  margin-top: 14px;
 
-      margin-top: 10px;
+  color: #ffffff;
 
-      color: #6c808c;
+  background:
+    linear-gradient(
+      135deg,
+      #13aaa5,
+      #20b7b0
+    );
 
-      font-size: .88rem;
+  border: 0;
 
-      line-height: 1.72;
-    }
+  border-radius: 10px;
 
+  font-size: .68rem;
 
+  font-weight: 900;
 
-    /* ========================================================
-       ROLE HERO
-    ========================================================= */
+  box-shadow:
+    0 7px 18px rgba(24,184,176,.16);
 
-    .role-hero {
-      margin-top: 23px;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
 
-      padding: 24px;
+.management-action:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
 
-      display: flex;
+  box-shadow:
+    0 10px 22px rgba(24,184,176,.20);
+}
 
-      justify-content: space-between;
+.management-action:disabled {
+  opacity: .52;
 
-      align-items: center;
+  cursor: default;
+}
 
-      gap: 25px;
+.management-message {
+  min-height: 17px;
 
-      color: #ffffff;
+  margin-top: 9px;
 
-      background:
-        radial-gradient(
-          circle at 88% 5%,
-          rgba(89,222,214,.17),
-          transparent 30%
-        ),
-        linear-gradient(
-          130deg,
-          #061827,
-          #0a3b4b
-        );
+  color: #087f86;
 
-      border:
-        1px solid rgba(89,222,214,.12);
+  font-size: .61rem;
 
-      border-radius: 21px;
+  line-height: 1.45;
+}
 
-      box-shadow:
-        0 18px 45px rgba(4,25,40,.10);
-    }
+.management-message.error {
+  color: #b42318;
+}
 
 
-    .role-hero strong {
-      display: block;
+/* ============================================================
+   STATUS
+============================================================ */
 
-      font-size: 1rem;
-    }
+.status-badge {
+  display: inline-flex;
 
+  min-height: 25px;
 
-    .role-hero p {
-      max-width: 690px;
+  padding:
+    0 9px;
 
-      margin:
-        5px 0 0;
+  align-items: center;
 
-      color: #abc1ca;
+  border-radius: 999px;
 
-      font-size: .74rem;
+  color: #087f86;
 
-      line-height: 1.55;
-    }
+  background: #eaf8f7;
 
+  font-size: .56rem;
 
-    .role-chip {
-      flex: 0 0 auto;
+  font-weight: 850;
 
-      padding:
-        7px 11px;
+  text-transform: uppercase;
+}
 
-      color: #d8ffff;
+.status-badge.muted {
+  color: #607681;
 
-      background:
-        rgba(89,222,214,.10);
+  background: #eef3f5;
+}
 
-      border:
-        1px solid rgba(89,222,214,.15);
+.status-badge.pending {
+  color: #916100;
 
-      border-radius: 999px;
+  background: #fff5da;
+}
 
-      font-size: .61rem;
+.status-badge.rejected {
+  color: #aa3429;
 
-      font-weight: 900;
+  background: #fff0ee;
+}
 
-      text-transform: uppercase;
-    }
+.status-badge.approved {
+  color: #087f86;
 
+  background: #e7f8f5;
+}
 
+.status-badge.cancelled {
+  color: #647782;
 
-    /* ========================================================
-       METRICS
-    ========================================================= */
+  background: #edf3f5;
+}
 
-    .portal-metrics {
-      display: grid;
 
-      grid-template-columns:
-        repeat(4,1fr);
+/* ============================================================
+   TABLE
+============================================================ */
 
-      gap: 14px;
+.table-scroll {
+  overflow-x: auto;
+}
 
-      margin-top: 22px;
-    }
+.portal-table {
+  width: 100%;
 
+  min-width: 760px;
 
-    .portal-metric {
-      min-height: 132px;
+  border-collapse: collapse;
+}
 
-      padding: 19px;
+.portal-table th {
+  padding:
+    12px 15px;
 
-      background:
-        rgba(255,255,255,.98);
+  color: #788c97;
 
-      border:
-        1px solid #dce8eb;
+  background: #f7fafb;
 
-      border-radius: 18px;
+  border-bottom:
+    1px solid #dce8eb;
 
-      box-shadow:
-        0 8px 26px rgba(4,25,40,.045);
-    }
+  text-align: left;
 
+  font-size: .56rem;
 
-    .portal-metric-label {
-      color: #7b8f99;
+  font-weight: 900;
 
-      font-size: .58rem;
+  letter-spacing: .04em;
 
-      font-weight: 900;
+  text-transform: uppercase;
+}
 
-      letter-spacing: .07em;
+.portal-table td {
+  padding:
+    14px 15px;
 
-      text-transform: uppercase;
-    }
+  color: #234455;
 
+  border-bottom:
+    1px solid #e4edef;
 
-    .portal-metric-value {
-      margin-top: 13px;
+  font-size: .7rem;
 
-      color: #061827;
+  vertical-align: middle;
+}
 
-      font-size: 2.05rem;
+.portal-table tr:last-child td {
+  border-bottom: 0;
+}
 
-      font-weight: 900;
+.table-primary {
+  color: #102f41;
 
-      letter-spacing: -.04em;
-    }
+  font-weight: 800;
+}
 
+.table-secondary {
+  margin-top: 3px;
 
-    .portal-metric-note {
-      margin-top: 5px;
+  color: #85959e;
 
-      color: #118d89;
+  font-size: .61rem;
 
-      font-size: .62rem;
+  line-height: 1.45;
+}
 
-      font-weight: 750;
-    }
+.small-action {
+  min-height: 32px;
 
+  padding:
+    0 10px;
 
+  color: #173c4d;
 
-    /* ========================================================
-       PANELS
-    ========================================================= */
+  background: #ffffff;
 
-    .portal-panel {
-      margin-top: 20px;
+  border:
+    1px solid #d8e4e7;
 
-      overflow: hidden;
+  border-radius: 9px;
 
-      background:
-        rgba(255,255,255,.98);
+  font-size: .61rem;
 
-      border:
-        1px solid #dce8eb;
+  font-weight: 800;
+}
 
-      border-radius: 20px;
+.small-action.primary-action {
+  color: #ffffff;
 
-      box-shadow:
-        0 9px 28px rgba(4,25,40,.045);
-    }
+  background:
+    linear-gradient(
+      135deg,
+      #13aaa5,
+      #20b7b0
+    );
 
+  border-color: transparent;
+}
 
-    .portal-panel-header {
-      min-height: 63px;
+.small-action.danger {
+  color: #a2342a;
 
-      padding:
-        12px 20px;
+  border-color: #eed5d2;
 
-      display: flex;
+  background: #fffafa;
+}
 
-      align-items: center;
 
-      justify-content: space-between;
+/* ============================================================
+   SIMULATION CARDS
+============================================================ */
 
-      gap: 20px;
+.portal-simulation-grid {
+  display: grid;
 
-      border-bottom:
-        1px solid #e2ebee;
-    }
+  grid-template-columns:
+    repeat(3,1fr);
 
+  gap: 15px;
 
-    .portal-panel-title {
-      color: #0d3042;
+  margin-top: 22px;
+}
 
-      font-size: .89rem;
+.portal-simulation-card {
+  min-height: 230px;
 
-      font-weight: 850;
-    }
+  padding: 20px;
 
+  display: flex;
+  flex-direction: column;
 
-    .portal-panel-note {
-      color: #85969f;
+  background: #ffffff;
 
-      font-size: .62rem;
-    }
+  border:
+    1px solid #dce8eb;
 
+  border-radius: 18px;
 
-    .portal-panel-body {
-      padding: 20px;
-    }
+  box-shadow:
+    0 8px 24px rgba(4,25,40,.04);
+}
 
+.portal-simulation-category {
+  color: #118d89;
 
+  font-size: .58rem;
 
-    /* ========================================================
-       OWNER INSTITUTION MANAGEMENT
-    ========================================================= */
+  font-weight: 900;
 
-    .owner-management-grid {
-      display: grid;
+  letter-spacing: .08em;
 
-      grid-template-columns:
-        repeat(2,1fr);
+  text-transform: uppercase;
+}
 
-      gap: 16px;
+.portal-simulation-card h3 {
+  margin:
+    12px 0 8px;
 
-      padding: 20px;
+  color: #061827;
 
-      background:
-        linear-gradient(
-          180deg,
-          #fbfdfd,
-          #f7fbfb
-        );
+  font-size: 1rem;
 
-      border-bottom:
-        1px solid #e2ebee;
-    }
+  line-height: 1.35;
+}
 
+.portal-simulation-card p {
+  margin: 0;
 
-    .management-card {
-      position: relative;
+  color: #718590;
 
-      padding: 20px;
+  font-size: .73rem;
 
-      overflow: hidden;
+  line-height: 1.58;
+}
 
-      background: #ffffff;
+.portal-card-footer {
+  margin-top: auto;
 
-      border:
-        1px solid #dce8eb;
+  padding-top: 17px;
 
-      border-radius: 17px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-      box-shadow:
-        0 7px 22px rgba(4,25,40,.035);
-    }
+  gap: 10px;
+}
 
 
-    .management-card::before {
-      content: "";
+/* ============================================================
+   EMPTY / WORKSPACE / ACCOUNT
+============================================================ */
 
-      position: absolute;
+.empty-state {
+  padding:
+    36px 20px;
 
-      width: 140px;
-      height: 140px;
+  text-align: center;
 
-      right: -75px;
-      top: -75px;
+  color: #758993;
+}
 
-      border-radius: 50%;
+.empty-state-icon {
+  width: 52px;
+  height: 52px;
 
-      background:
-        radial-gradient(
-          circle,
-          rgba(24,184,176,.08),
-          transparent 70%
-        );
+  margin:
+    0 auto 13px;
 
-      pointer-events: none;
-    }
+  display: grid;
+  place-items: center;
 
+  color: #118d89;
 
-    .management-card-kicker {
-      position: relative;
+  background: #eaf8f7;
 
-      z-index: 1;
+  border:
+    1px solid rgba(24,184,176,.13);
 
-      color: #118d89;
+  border-radius: 15px;
 
-      font-size: .57rem;
+  font-weight: 900;
+}
 
-      font-weight: 900;
+.empty-state strong {
+  display: block;
 
-      letter-spacing: .08em;
+  color: #15384a;
 
-      text-transform: uppercase;
-    }
+  font-size: .87rem;
+}
 
+.empty-state p {
+  max-width: 520px;
 
-    .management-card h3 {
-      position: relative;
+  margin:
+    5px auto 0;
 
-      z-index: 1;
+  font-size: .7rem;
 
-      margin:
-        8px 0 6px;
+  line-height: 1.6;
+}
 
-      color: #0b3042;
+.workspace-grid,
+.account-grid {
+  display: grid;
 
-      font-size: 1rem;
-    }
+  grid-template-columns:
+    repeat(2,1fr);
 
+  gap: 16px;
 
-    .management-card > p {
-      position: relative;
+  margin-top: 22px;
+}
 
-      z-index: 1;
+.workspace-card,
+.account-detail {
+  padding: 22px;
 
-      margin: 0;
+  background: #ffffff;
 
-      color: #718590;
+  border:
+    1px solid #dce8eb;
 
-      font-size: .7rem;
+  border-radius: 19px;
 
-      line-height: 1.58;
-    }
+  box-shadow:
+    0 8px 24px rgba(4,25,40,.04);
+}
 
+.workspace-card-label,
+.account-detail-label {
+  color: #118d89;
 
-    .management-field {
-      position: relative;
+  font-size: .59rem;
 
-      z-index: 1;
+  font-weight: 900;
 
-      margin-top: 13px;
-    }
+  letter-spacing: .07em;
 
+  text-transform: uppercase;
+}
 
-    .management-field label {
-      display: block;
+.workspace-card h3 {
+  margin:
+    10px 0 7px;
 
-      margin-bottom: 6px;
+  color: #0b2e40;
 
-      color: #516c79;
+  font-size: 1rem;
+}
 
-      font-size: .57rem;
+.workspace-card p {
+  margin: 0;
 
-      font-weight: 900;
+  color: #718590;
 
-      letter-spacing: .055em;
+  font-size: .73rem;
 
-      text-transform: uppercase;
-    }
+  line-height: 1.62;
+}
 
+.account-detail-value {
+  margin-top: 7px;
 
-    .management-input,
-    .management-select {
-      width: 100%;
+  color: #173749;
 
-      min-height: 43px;
+  font-size: .78rem;
 
-      padding:
-        0 11px;
+  font-weight: 800;
 
-      color: #17394a;
+  overflow-wrap: anywhere;
+}
 
-      background: #ffffff;
 
-      border:
-        1px solid #d6e4e7;
+/* ============================================================
+   REVIEW MODAL
+============================================================ */
 
-      border-radius: 10px;
+.review-modal,
+.response-modal {
+  position: fixed;
 
-      outline: 0;
+  inset: 0;
 
-      transition:
-        border-color .18s ease,
-        box-shadow .18s ease;
-    }
+  z-index: 12000;
 
+  padding: 24px;
 
-    .management-input:focus,
-    .management-select:focus {
-      border-color:
-        rgba(24,184,176,.58);
+  display: none;
 
-      box-shadow:
-        0 0 0 3px
-        rgba(24,184,176,.075);
-    }
+  align-items: center;
+  justify-content: center;
 
+  background:
+    rgba(3,16,27,.55);
 
-    .management-help {
-      display: block;
+  backdrop-filter:
+    blur(7px);
+}
 
-      margin-top: 5px;
+.review-modal.show,
+.response-modal.show {
+  display: flex;
+}
 
-      color: #95a4ab;
+.review-modal-card,
+.response-modal-card {
+  width:
+    min(
+      760px,
+      100%
+    );
 
-      font-size: .56rem;
+  max-height:
+    calc(100vh - 48px);
 
-      line-height: 1.42;
-    }
+  overflow-y: auto;
 
+  background: #ffffff;
 
-    .management-action {
-      width: 100%;
+  border-radius: 23px;
 
-      min-height: 43px;
+  box-shadow:
+    0 32px 90px rgba(3,16,27,.27);
+}
 
-      margin-top: 14px;
+.review-modal-header,
+.response-modal-header {
+  position: sticky;
 
-      color: #ffffff;
+  top: 0;
 
-      background:
-        linear-gradient(
-          135deg,
-          #13aaa5,
-          #20b7b0
-        );
+  z-index: 2;
 
-      border: 0;
+  min-height: 65px;
 
-      border-radius: 10px;
+  padding:
+    12px 20px;
 
-      font-size: .68rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-      font-weight: 900;
+  gap: 20px;
 
-      box-shadow:
-        0 7px 18px rgba(24,184,176,.16);
+  background:
+    rgba(255,255,255,.97);
 
-      transition:
-        transform .18s ease,
-        box-shadow .18s ease;
-    }
+  border-bottom:
+    1px solid #dce8eb;
+}
 
+.review-modal-title,
+.response-modal-title {
+  color: #0c3042;
 
-    .management-action:hover:not(:disabled) {
-      transform:
-        translateY(-1px);
+  font-size: .9rem;
 
-      box-shadow:
-        0 10px 22px rgba(24,184,176,.20);
-    }
+  font-weight: 900;
+}
 
+.review-modal-close,
+.response-modal-close {
+  width: 36px;
+  height: 36px;
 
-    .management-action:disabled {
-      opacity: .52;
+  display: grid;
+  place-items: center;
 
-      cursor: default;
-    }
+  color: #274a5a;
 
+  background: #f1f7f7;
 
-    .management-message {
-      min-height: 17px;
+  border:
+    1px solid #dce7e9;
 
-      margin-top: 9px;
+  border-radius: 50%;
+}
 
-      color: #087f86;
+.review-modal-body,
+.response-modal-body {
+  padding: 20px;
+}
 
-      font-size: .61rem;
+.review-summary {
+  padding: 20px;
 
-      line-height: 1.45;
-    }
+  color: #ffffff;
 
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(89,222,214,.15),
+      transparent 32%
+    ),
+    linear-gradient(
+      130deg,
+      #061827,
+      #0a3b4b
+    );
 
-    .management-message.error {
-      color: #b42318;
-    }
+  border-radius: 18px;
+}
 
+.review-summary h3 {
+  margin:
+    5px 0 0;
 
-    .institution-name {
-      color: #102f41;
+  color: #ffffff;
+}
 
-      font-size: .76rem;
+.review-summary-label {
+  color: #72d8d2;
 
-      font-weight: 850;
-    }
+  font-size: .58rem;
 
+  font-weight: 900;
 
-    .institution-slug {
-      margin-top: 3px;
+  text-transform: uppercase;
+}
 
-      color: #85969f;
+.review-details {
+  display: grid;
 
-      font-size: .59rem;
-    }
+  grid-template-columns:
+    1fr 1fr;
 
+  gap: 12px;
 
-    .institution-admin-list {
-      display: grid;
+  margin-top: 15px;
+}
 
-      gap: 3px;
-    }
+.review-detail {
+  padding: 15px;
 
+  background: #f7fafb;
 
-    .institution-admin-name {
-      color: #234656;
+  border:
+    1px solid #dce8eb;
 
-      font-size: .68rem;
+  border-radius: 13px;
+}
 
-      font-weight: 800;
-    }
+.review-detail span {
+  display: block;
 
+  color: #7e919b;
 
-    .institution-admin-email {
-      color: #81929b;
+  font-size: .56rem;
 
-      font-size: .58rem;
+  font-weight: 900;
 
-      overflow-wrap: anywhere;
-    }
+  text-transform: uppercase;
+}
 
+.review-detail strong {
+  display: block;
 
-    .institution-faculty-count {
-      color: #0f777b;
+  margin-top: 5px;
 
-      font-weight: 850;
-    }
+  color: #173849;
 
+  font-size: .73rem;
 
-    .small-action.danger {
-      color: #a2342a;
+  overflow-wrap: anywhere;
+}
 
-      border-color: #eed5d2;
+.review-note-box {
+  margin-top: 14px;
 
-      background: #fffafa;
-    }
+  padding: 15px;
 
+  color: #43606f;
 
-    .small-action.activate {
-      color: #087f86;
+  background: #f7fafb;
 
-      border-color: #cae8e5;
+  border:
+    1px solid #dce8eb;
 
-      background: #f4fcfb;
-    }
+  border-radius: 13px;
 
+  font-size: .72rem;
 
+  line-height: 1.6;
+}
 
-    /* ========================================================
-       SIMULATIONS
-    ========================================================= */
+.review-actions {
+  display: grid;
 
-    .portal-simulation-grid {
-      display: grid;
+  grid-template-columns:
+    1fr 1fr;
 
-      grid-template-columns:
-        repeat(3,1fr);
+  gap: 10px;
 
-      gap: 15px;
+  margin-top: 15px;
+}
 
-      margin-top: 22px;
-    }
+.review-approve,
+.review-reject {
+  min-height: 45px;
 
+  border-radius: 11px;
 
-    .portal-simulation-card {
-      min-height: 230px;
+  font-size: .71rem;
 
-      padding: 20px;
+  font-weight: 900;
+}
 
-      display: flex;
+.review-approve {
+  color: #ffffff;
 
-      flex-direction: column;
+  background:
+    linear-gradient(
+      135deg,
+      #13aaa5,
+      #20b7b0
+    );
 
-      background: #ffffff;
+  border: 0;
+}
 
-      border:
-        1px solid #dce8eb;
+.review-reject {
+  color: #a02e25;
 
-      border-radius: 18px;
+  background: #fff5f3;
 
-      box-shadow:
-        0 8px 24px rgba(4,25,40,.04);
-    }
+  border:
+    1px solid #efd3cf;
+}
 
 
-    .portal-simulation-category {
-      color: #118d89;
+/* ============================================================
+   RESPONSE MODAL
+============================================================ */
 
-      font-size: .58rem;
+.response-summary {
+  padding: 18px;
 
-      font-weight: 900;
+  color: #ffffff;
 
-      letter-spacing: .08em;
+  background:
+    linear-gradient(
+      130deg,
+      #061827,
+      #0a3b4b
+    );
 
-      text-transform: uppercase;
-    }
+  border-radius: 16px;
+}
 
+.response-summary strong {
+  display: block;
 
-    .portal-simulation-card h3 {
-      margin:
-        12px 0 8px;
+  font-size: .92rem;
+}
 
-      color: #061827;
+.response-summary span {
+  display: block;
 
-      font-size: 1rem;
+  margin-top: 4px;
 
-      line-height: 1.35;
-    }
+  color: #a9c0ca;
 
+  font-size: .66rem;
+}
 
-    .portal-simulation-card p {
-      margin: 0;
+.response-item {
+  margin-top: 13px;
 
-      color: #718590;
+  padding: 17px;
 
-      font-size: .73rem;
+  background: #f7fafb;
 
-      line-height: 1.58;
-    }
+  border:
+    1px solid #dce8eb;
 
+  border-radius: 14px;
+}
 
-    .portal-card-footer {
-      margin-top: auto;
+.response-question {
+  color: #123548;
 
-      padding-top: 17px;
+  font-size: .77rem;
 
-      display: flex;
+  font-weight: 800;
 
-      justify-content: space-between;
+  line-height: 1.55;
+}
 
-      align-items: center;
+.response-answer-label {
+  margin-top: 12px;
 
-      gap: 10px;
-    }
+  color: #118d89;
 
+  font-size: .55rem;
 
-    .status-badge {
-      display: inline-flex;
+  font-weight: 900;
 
-      min-height: 25px;
+  text-transform: uppercase;
+}
 
-      padding:
-        0 9px;
+.response-answer {
+  margin-top: 5px;
 
-      align-items: center;
+  padding: 11px;
 
-      border-radius: 999px;
+  color: #294b5b;
 
-      color: #087f86;
+  background: #ffffff;
 
-      background: #eaf8f7;
+  border:
+    1px solid #dce7e9;
 
-      font-size: .56rem;
+  border-radius: 10px;
 
-      font-weight: 850;
+  font-size: .72rem;
 
-      text-transform: uppercase;
-    }
+  line-height: 1.55;
+}
 
 
-    .status-badge.muted {
-      color: #607681;
+/* ============================================================
+   LOADING
+============================================================ */
 
-      background: #eef3f5;
-    }
+.portal-loading {
+  position: fixed;
 
+  inset: 0;
 
+  z-index: 20000;
 
-    /* ========================================================
-       TABLE
-    ========================================================= */
+  display: none;
 
-    .table-scroll {
-      overflow-x: auto;
-    }
+  align-items: center;
+  justify-content: center;
 
+  background:
+    rgba(255,255,255,.74);
 
-    .portal-table {
-      width: 100%;
+  backdrop-filter:
+    blur(7px);
+}
 
-      min-width: 760px;
+.portal-loading.show {
+  display: flex;
+}
 
-      border-collapse: collapse;
-    }
+.portal-spinner {
+  width: 50px;
+  height: 50px;
 
+  border:
+    4px solid #dcebed;
 
-    .portal-table th {
-      padding:
-        12px 15px;
+  border-top-color: #18b8b0;
 
-      color: #788c97;
+  border-radius: 50%;
 
-      background: #f7fafb;
+  animation:
+    portalSpin .75s linear infinite;
+}
 
-      border-bottom:
-        1px solid #dce8eb;
+@keyframes portalSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-      text-align: left;
 
-      font-size: .56rem;
+/* ============================================================
+   RESPONSIVE
+============================================================ */
 
-      font-weight: 900;
+@media (max-width:1080px) {
 
-      text-transform: uppercase;
-    }
+  .portal-metrics {
+    grid-template-columns:
+      repeat(2,1fr);
+  }
 
+  .portal-simulation-grid {
+    grid-template-columns:
+      repeat(2,1fr);
+  }
 
-    .portal-table td {
-      padding:
-        14px 15px;
+  .management-grid {
+    grid-template-columns:
+      1fr;
+  }
 
-      color: #234455;
+}
 
-      border-bottom:
-        1px solid #e4edef;
 
-      font-size: .7rem;
+@media (max-width:900px) {
 
-      vertical-align: middle;
-    }
+  :root {
+    --portal-sidebar: 78px;
+  }
 
+  .portal-sidebar {
+    padding:
+      20px 8px;
+  }
 
-    .portal-table tr:last-child td {
-      border-bottom: 0;
-    }
+  .portal-sidebar-title,
+  .portal-role-pill,
+  .sidebar-account {
+    display: none;
+  }
 
+  .portal-nav-button,
+  .portal-nav-link {
+    justify-content: center;
+    padding: 0;
+  }
 
-    .table-primary {
-      color: #102f41;
+  .portal-nav-icon {
+    width: auto;
+  }
 
-      font-weight: 800;
-    }
+  .portal-nav-label,
+  .access-public-nav {
+    display: none;
+  }
 
+}
 
-    .table-secondary {
-      margin-top: 3px;
 
-      color: #85959e;
+@media (max-width:650px) {
 
-      font-size: .61rem;
-    }
+  .access-header,
+  .access-header-shell {
+    min-height: 88px;
+  }
 
+  .access-logo {
+    width: 185px;
+  }
 
-    .small-action {
-      min-height: 32px;
+  .access-header-badge {
+    display: none;
+  }
 
-      padding:
-        0 10px;
+  .access-gate {
+    min-height:
+      calc(100vh - 88px);
 
-      color: #173c4d;
+    padding:
+      32px 13px 60px;
+  }
 
-      background: #ffffff;
+  .gate-card {
+    padding:
+      29px 22px;
+  }
 
-      border:
-        1px solid #d8e4e7;
+  .faculty-portal.show {
+    display: block;
+  }
 
-      border-radius: 9px;
+  .portal-sidebar {
+    position: fixed;
 
-      font-size: .61rem;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
 
-      font-weight: 800;
-    }
+    width: 100%;
+    height: 67px;
 
+    padding: 7px;
 
+    flex-direction: row;
+  }
 
-    /* ========================================================
-       EMPTY / WORKSPACE / ACCOUNT
-    ========================================================= */
+  .portal-nav {
+    width: 100%;
 
-    .empty-state {
-      padding:
-        36px 20px;
+    display: flex;
 
-      text-align: center;
+    gap: 4px;
 
-      color: #758993;
-    }
+    overflow-x: auto;
+  }
 
+  .portal-nav-button,
+  .portal-nav-link {
+    flex:
+      0 0 58px;
 
-    .empty-state-icon {
-      width: 52px;
-      height: 52px;
+    min-height: 52px;
+  }
 
-      margin:
-        0 auto 13px;
+  .portal-sidebar-bottom {
+    display: none;
+  }
 
-      display: grid;
+  .portal-main {
+    width: 100%;
 
-      place-items: center;
+    margin-left: 0;
 
-      color: #118d89;
+    padding-bottom: 70px;
+  }
 
-      background: #eaf8f7;
+  .portal-topbar {
+    top: 88px;
 
-      border:
-        1px solid rgba(24,184,176,.13);
+    padding:
+      10px 15px;
+  }
 
-      border-radius: 15px;
+  .portal-user-copy {
+    display: none;
+  }
 
-      font-weight: 900;
-    }
+  .portal-content {
+    padding:
+      25px 14px 45px;
+  }
 
+  .portal-metrics,
+  .portal-simulation-grid,
+  .workspace-grid,
+  .account-grid,
+  .review-details,
+  .review-actions {
+    grid-template-columns: 1fr;
+  }
 
-    .empty-state strong {
-      display: block;
+  .role-hero {
+    align-items: flex-start;
 
-      color: #15384a;
+    flex-direction: column;
+  }
 
-      font-size: .87rem;
-    }
+  .management-grid {
+    padding: 14px;
+  }
 
+}
 
-    .empty-state p {
-      max-width: 520px;
-
-      margin:
-        5px auto 0;
-
-      font-size: .7rem;
-
-      line-height: 1.6;
-    }
-
-
-    .workspace-grid,
-    .account-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2,1fr);
-
-      gap: 16px;
-
-      margin-top: 22px;
-    }
-
-
-    .workspace-card,
-    .account-detail {
-      padding: 22px;
-
-      background: #ffffff;
-
-      border:
-        1px solid #dce8eb;
-
-      border-radius: 19px;
-
-      box-shadow:
-        0 8px 24px rgba(4,25,40,.04);
-    }
-
-
-    .workspace-card-label,
-    .account-detail-label {
-      color: #118d89;
-
-      font-size: .59rem;
-
-      font-weight: 900;
-
-      letter-spacing: .07em;
-
-      text-transform: uppercase;
-    }
-
-
-    .workspace-card h3 {
-      margin:
-        10px 0 7px;
-
-      color: #0b2e40;
-
-      font-size: 1rem;
-    }
-
-
-    .workspace-card p {
-      margin: 0;
-
-      color: #718590;
-
-      font-size: .73rem;
-
-      line-height: 1.62;
-    }
-
-
-    .account-detail-value {
-      margin-top: 7px;
-
-      color: #173749;
-
-      font-size: .78rem;
-
-      font-weight: 800;
-
-      overflow-wrap: anywhere;
-    }
-
-
-
-    /* ========================================================
-       RESPONSE MODAL
-    ========================================================= */
-
-    .response-modal {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 12000;
-
-      padding: 24px;
-
-      display: none;
-
-      align-items: center;
-
-      justify-content: center;
-
-      background:
-        rgba(3,16,27,.55);
-
-      backdrop-filter:
-        blur(7px);
-    }
-
-
-    .response-modal.show {
-      display: flex;
-    }
-
-
-    .response-modal-card {
-      width:
-        min(
-          760px,
-          100%
-        );
-
-      max-height:
-        calc(100vh - 48px);
-
-      overflow-y: auto;
-
-      background: #ffffff;
-
-      border-radius: 23px;
-
-      box-shadow:
-        0 32px 90px rgba(3,16,27,.27);
-    }
-
-
-    .response-modal-header {
-      position: sticky;
-
-      top: 0;
-
-      z-index: 2;
-
-      min-height: 65px;
-
-      padding:
-        12px 20px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 20px;
-
-      background:
-        rgba(255,255,255,.97);
-
-      border-bottom:
-        1px solid #dce8eb;
-    }
-
-
-    .response-modal-title {
-      color: #0c3042;
-
-      font-size: .9rem;
-
-      font-weight: 900;
-    }
-
-
-    .response-modal-close {
-      width: 36px;
-      height: 36px;
-
-      display: grid;
-
-      place-items: center;
-
-      color: #274a5a;
-
-      background: #f1f7f7;
-
-      border:
-        1px solid #dce7e9;
-
-      border-radius: 50%;
-    }
-
-
-    .response-modal-body {
-      padding: 20px;
-    }
-
-
-    .response-summary {
-      padding: 18px;
-
-      color: #ffffff;
-
-      background:
-        linear-gradient(
-          130deg,
-          #061827,
-          #0a3b4b
-        );
-
-      border-radius: 16px;
-    }
-
-
-    .response-summary strong {
-      display: block;
-
-      font-size: .92rem;
-    }
-
-
-    .response-summary span {
-      display: block;
-
-      margin-top: 4px;
-
-      color: #a9c0ca;
-
-      font-size: .66rem;
-    }
-
-
-    .response-item {
-      margin-top: 13px;
-
-      padding: 17px;
-
-      background: #f7fafb;
-
-      border:
-        1px solid #dce8eb;
-
-      border-radius: 14px;
-    }
-
-
-    .response-question {
-      color: #123548;
-
-      font-size: .77rem;
-
-      font-weight: 800;
-
-      line-height: 1.55;
-    }
-
-
-    .response-answer-label {
-      margin-top: 12px;
-
-      color: #118d89;
-
-      font-size: .55rem;
-
-      font-weight: 900;
-
-      text-transform: uppercase;
-    }
-
-
-    .response-answer {
-      margin-top: 5px;
-
-      padding: 11px;
-
-      color: #294b5b;
-
-      background: #ffffff;
-
-      border:
-        1px solid #dce7e9;
-
-      border-radius: 10px;
-
-      font-size: .72rem;
-
-      line-height: 1.55;
-    }
-
-
-
-    /* ========================================================
-       LOADING
-    ========================================================= */
-
-    .portal-loading {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 20000;
-
-      display: none;
-
-      align-items: center;
-
-      justify-content: center;
-
-      background:
-        rgba(255,255,255,.74);
-
-      backdrop-filter:
-        blur(7px);
-    }
-
-
-    .portal-loading.show {
-      display: flex;
-    }
-
-
-    .portal-spinner {
-      width: 50px;
-      height: 50px;
-
-      border:
-        4px solid #dcebed;
-
-      border-top-color: #18b8b0;
-
-      border-radius: 50%;
-
-      animation:
-        portalSpin .75s linear infinite;
-    }
-
-
-    @keyframes portalSpin {
-
-      to {
-        transform:
-          rotate(360deg);
-      }
-
-    }
-
-
-
-    /* ========================================================
-       RESPONSIVE
-    ========================================================= */
-
-    @media (max-width:1080px) {
-
-      .portal-metrics {
-        grid-template-columns:
-          repeat(2,1fr);
-      }
-
-
-      .portal-simulation-grid {
-        grid-template-columns:
-          repeat(2,1fr);
-      }
-
-
-      .owner-management-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-    }
-
-
-    @media (max-width:900px) {
-
-      :root {
-        --portal-sidebar: 78px;
-      }
-
-
-      .portal-sidebar {
-        padding:
-          20px 8px;
-      }
-
-
-      .portal-sidebar-title,
-      .portal-role-pill,
-      .sidebar-account {
-        display: none;
-      }
-
-
-      .portal-nav-button,
-      .portal-nav-link {
-        justify-content: center;
-
-        padding: 0;
-      }
-
-
-      .portal-nav-icon {
-        width: auto;
-      }
-
-
-      .portal-nav-label,
-      .access-public-nav {
-        display: none;
-      }
-
-    }
-
-
-    @media (max-width:650px) {
-
-      .access-header,
-      .access-header-shell {
-        min-height: 88px;
-      }
-
-
-      .access-logo {
-        width: 185px;
-      }
-
-
-      .access-header-badge {
-        display: none;
-      }
-
-
-      .access-gate {
-        min-height:
-          calc(100vh - 88px);
-
-        padding:
-          32px 13px 60px;
-      }
-
-
-      .gate-card {
-        padding:
-          29px 22px;
-      }
-
-
-      .faculty-portal.show {
-        display: block;
-      }
-
-
-      .portal-sidebar {
-        position: fixed;
-
-        left: 0;
-        right: 0;
-        top: auto;
-        bottom: 0;
-
-        width: 100%;
-        height: 67px;
-
-        padding: 7px;
-
-        flex-direction: row;
-      }
-
-
-      .portal-nav {
-        width: 100%;
-
-        display: flex;
-
-        gap: 4px;
-
-        overflow-x: auto;
-      }
-
-
-      .portal-nav-button,
-      .portal-nav-link {
-        flex:
-          0 0 58px;
-
-        min-height: 52px;
-      }
-
-
-      .portal-sidebar-bottom {
-        display: none;
-      }
-
-
-      .portal-main {
-        width: 100%;
-
-        margin-left: 0;
-
-        padding-bottom: 70px;
-      }
-
-
-      .portal-topbar {
-        top: 88px;
-
-        padding:
-          10px 15px;
-      }
-
-
-      .portal-user-copy {
-        display: none;
-      }
-
-
-      .portal-content {
-        padding:
-          25px 14px 45px;
-      }
-
-
-      .portal-metrics,
-      .portal-simulation-grid,
-      .workspace-grid,
-      .account-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .role-hero {
-        align-items: flex-start;
-
-        flex-direction: column;
-      }
-
-
-      .owner-management-grid {
-        padding: 14px;
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
 
@@ -2461,57 +2374,55 @@
 
 <header class="access-header">
 
-  <div class="access-header-shell">
+<div class="access-header-shell">
+
+<a
+  class="access-logo"
+  href="index.html"
+  aria-label="RizSim Home"
+>
+
+<img
+  src="RizSim finalized logo.png"
+  alt="RizSim — From Knowing to Doing"
+>
+
+</a>
 
 
-    <a
-      class="access-logo"
-      href="index.html"
-      aria-label="RizSim Home"
-    >
+<nav class="access-public-nav">
 
-      <img
-        src="RizSim finalized logo.png"
-        alt="RizSim — From Knowing to Doing"
-      >
+<a href="index.html">
+Home
+</a>
 
-    </a>
+<a href="simulations.html">
+Simulations
+</a>
 
+<a href="about.html">
+About
+</a>
 
-    <nav class="access-public-nav">
+<a href="contact.html">
+Contact
+</a>
 
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="simulations.html">
-        Simulations
-      </a>
-
-      <a href="about.html">
-        About
-      </a>
-
-      <a href="contact.html">
-        Contact
-      </a>
-
-    </nav>
+</nav>
 
 
-    <div class="access-header-badge">
-      Faculty Access
-    </div>
+<div class="access-header-badge">
+Faculty Access
+</div>
 
-
-  </div>
+</div>
 
 </header>
 
 
 
 <!-- ==========================================================
-     SIGN IN
+     LOGIN
 =========================================================== -->
 
 <section
@@ -2519,79 +2430,66 @@
   class="access-gate"
 >
 
-  <div class="gate-card">
+<div class="gate-card">
 
+<img
+  class="gate-logo"
+  src="RizSim finalized logo.png"
+  alt="RizSim"
+>
 
-    <img
-      class="gate-logo"
-      src="RizSim finalized logo.png"
-      alt="RizSim"
-    >
+<span
+  class="gate-kicker"
+  id="authKicker"
+>
+FACULTY ACCESS
+</span>
 
+<h1 id="authTitle">
+Faculty Dashboard
+</h1>
 
-    <span
-      class="gate-kicker"
-      id="authKicker"
-    >
-      FACULTY ACCESS
-    </span>
+<p id="authCopy">
+Sign in with Google to enter your RizSim Faculty Dashboard.
+Standard Faculty Access is available immediately.
+</p>
 
+<div
+  id="gateStatus"
+  class="gate-status"
+>
+Checking your RizSim identity…
+</div>
 
-    <h1 id="authTitle">
-      Faculty Dashboard
-    </h1>
+<button
+  id="googleLogin"
+  class="google-login-button"
+  type="button"
+>
 
+<span class="google-mark">
+G
+</span>
 
-    <p id="authCopy">
+<span>
+Continue with Google
+</span>
 
-      Sign in with Google to enter your RizSim Faculty Dashboard.
-      Standard Faculty Access is available immediately.
+</button>
 
-    </p>
+<p class="gate-note">
+Standard Faculty Access does not require Owner approval.
+Institution Access, Course Lead and Admin remain Owner-controlled.
+</p>
 
-
-    <div
-      id="gateStatus"
-      class="gate-status"
-    >
-      Checking your RizSim identity…
-    </div>
-
-
-    <button
-      id="googleLogin"
-      class="google-login-button"
-      type="button"
-    >
-
-      <span class="google-mark">
-        G
-      </span>
-
-      <span>
-        Continue with Google
-      </span>
-
-    </button>
-
-
-    <p class="gate-note">
-
-      Standard Faculty Access does not require Owner approval.
-      Institution Access, Course Lead, Admin and other elevated
-      access remain Owner-controlled.
-
-    </p>
-
-
-  </div>
+</div>
 
 </section>
 
 
 
 <!-- ==========================================================
-     DISABLED ACCESS
+     DISABLED
 =========================================================== -->
 
 <section
@@ -2599,89 +2497,77 @@
   class="access-gate hidden"
 >
 
-  <div class="gate-card">
+<div class="gate-card">
 
+<span class="gate-kicker">
+ACCESS UNAVAILABLE
+</span>
 
-    <span class="gate-kicker">
-      ACCESS UNAVAILABLE
-    </span>
+<h1>
+Faculty Access is disabled.
+</h1>
 
+<p>
+This Google identity has an existing RizSim membership,
+but that membership is currently disabled.
+</p>
 
-    <h1>
-      Faculty Access is disabled.
-    </h1>
+<div class="identity-box">
 
+<div
+  id="disabledAvatar"
+  class="identity-avatar"
+>
+R
+</div>
 
-    <p>
+<div>
 
-      This Google identity has an existing RizSim membership,
-      but that membership is currently disabled.
+<div
+  id="disabledName"
+  class="identity-name"
+>
+—
+</div>
 
-    </p>
+<div
+  id="disabledEmail"
+  class="identity-email"
+>
+—
+</div>
 
+</div>
 
-    <div class="identity-box">
+</div>
 
+<div class="gate-actions">
 
-      <div
-        id="disabledAvatar"
-        class="identity-avatar"
-      >
-        R
-      </div>
+<a
+  class="button button-primary"
+  href="contact.html"
+>
+Contact RizSim
+</a>
 
+<button
+  id="disabledSignOut"
+  class="button button-secondary"
+  type="button"
+>
+Sign Out
+</button>
 
-      <div>
+</div>
 
-        <div
-          id="disabledName"
-          class="identity-name"
-        >
-          —
-        </div>
-
-        <div
-          id="disabledEmail"
-          class="identity-email"
-        >
-          —
-        </div>
-
-      </div>
-
-
-    </div>
-
-
-    <div class="gate-actions">
-
-      <a
-        class="button button-primary"
-        href="contact.html"
-      >
-        Contact RizSim
-      </a>
-
-
-      <button
-        id="disabledSignOut"
-        class="button button-secondary"
-        type="button"
-      >
-        Sign Out
-      </button>
-
-    </div>
-
-
-  </div>
+</div>
 
 </section>
 
 
 
 <!-- ==========================================================
-     LEGACY ROLE
+     LEGACY
 =========================================================== -->
 
 <section
@@ -2689,62 +2575,51 @@
   class="access-gate hidden"
 >
 
-  <div class="gate-card">
+<div class="gate-card">
 
+<span class="gate-kicker">
+ACCESS UPDATE REQUIRED
+</span>
 
-    <span class="gate-kicker">
-      ACCESS UPDATE REQUIRED
-    </span>
+<h1>
+Role migration required.
+</h1>
 
+<p>
+This account contains an older RizSim role.
+It has not been automatically converted.
+</p>
 
-    <h1>
-      Role migration required.
-    </h1>
+<div class="legacy-warning">
 
+Existing role:
 
-    <p>
+<strong id="legacyRole">
+—
+</strong>
 
-      This account contains an older RizSim role.
-      It has not been automatically converted because
-      elevated access should not be reassigned without
-      an explicit decision.
+</div>
 
-    </p>
+<div class="gate-actions">
 
+<a
+  class="button button-primary"
+  href="contact.html"
+>
+Contact RizSim
+</a>
 
-    <div class="legacy-warning">
+<button
+  id="legacySignOut"
+  class="button button-secondary"
+  type="button"
+>
+Sign Out
+</button>
 
-      Existing role:
+</div>
 
-      <strong id="legacyRole">
-        —
-      </strong>
-
-    </div>
-
-
-    <div class="gate-actions">
-
-      <a
-        class="button button-primary"
-        href="contact.html"
-      >
-        Contact RizSim
-      </a>
-
-
-      <button
-        id="legacySignOut"
-        class="button button-secondary"
-        type="button"
-      >
-        Sign Out
-      </button>
-
-    </div>
-
-
-  </div>
+</div>
 
 </section>
 
@@ -2760,1195 +2635,1616 @@
 >
 
 
-  <aside class="portal-sidebar">
+<!-- SIDEBAR -->
 
+<aside class="portal-sidebar">
 
-    <div class="portal-sidebar-title">
+<div class="portal-sidebar-title">
 
-      <strong>
-        RizSim
-      </strong>
+<strong>
+RizSim
+</strong>
 
-      <span>
-        Faculty Portal
-      </span>
+<span>
+Faculty Portal
+</span>
 
-    </div>
+</div>
 
 
-    <div
-      id="sidebarRolePill"
-      class="portal-role-pill"
-    >
-      —
-    </div>
+<div
+  id="sidebarRolePill"
+  class="portal-role-pill"
+>
+—
+</div>
 
 
+<nav class="portal-nav">
 
-    <nav class="portal-nav">
 
+<button
+  class="portal-nav-button active"
+  type="button"
+  data-view="home"
+>
 
-      <button
-        class="portal-nav-button active"
-        type="button"
-        data-view="home"
-      >
+<span class="portal-nav-icon">
+01
+</span>
 
-        <span class="portal-nav-icon">
-          01
-        </span>
+<span class="portal-nav-label">
+Home
+</span>
 
-        <span class="portal-nav-label">
-          Home
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="simulations"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="simulations"
-      >
+<span class="portal-nav-icon">
+02
+</span>
 
-        <span class="portal-nav-icon">
-          02
-        </span>
+<span class="portal-nav-label">
+Simulations
+</span>
 
-        <span class="portal-nav-label">
-          Simulations
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="courses"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="courses"
-      >
+<span class="portal-nav-icon">
+03
+</span>
 
-        <span class="portal-nav-icon">
-          03
-        </span>
+<span class="portal-nav-label">
+Courses
+</span>
 
-        <span class="portal-nav-label">
-          Courses
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="classroom"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="classroom"
-      >
+<span class="portal-nav-icon">
+04
+</span>
 
-        <span class="portal-nav-icon">
-          04
-        </span>
+<span class="portal-nav-label">
+Classroom
+</span>
 
-        <span class="portal-nav-label">
-          Classroom
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="results"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="results"
-      >
+<span class="portal-nav-icon">
+05
+</span>
 
-        <span class="portal-nav-icon">
-          05
-        </span>
+<span class="portal-nav-label">
+Results
+</span>
 
-        <span class="portal-nav-label">
-          Results
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="institution"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="institution"
-      >
+<span class="portal-nav-icon">
+06
+</span>
 
-        <span class="portal-nav-icon">
-          06
-        </span>
+<span class="portal-nav-label">
+Institution
+</span>
 
-        <span class="portal-nav-label">
-          Institution
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="administration"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="administration"
-      >
+<span class="portal-nav-icon">
+07
+</span>
 
-        <span class="portal-nav-icon">
-          07
-        </span>
+<span class="portal-nav-label">
+Administration
+</span>
 
-        <span class="portal-nav-label">
-          Administration
-        </span>
+</button>
 
-      </button>
 
+<button
+  class="portal-nav-button"
+  type="button"
+  data-view="account"
+>
 
-      <button
-        class="portal-nav-button"
-        type="button"
-        data-view="account"
-      >
+<span class="portal-nav-icon">
+08
+</span>
 
-        <span class="portal-nav-icon">
-          08
-        </span>
+<span class="portal-nav-label">
+Account
+</span>
 
-        <span class="portal-nav-label">
-          Account
-        </span>
+</button>
 
-      </button>
 
+<a
+  class="portal-nav-link"
+  href="about.html"
+>
 
-      <a
-        class="portal-nav-link"
-        href="about.html"
-      >
+<span class="portal-nav-icon">
+A
+</span>
 
-        <span class="portal-nav-icon">
-          A
-        </span>
+<span class="portal-nav-label">
+About
+</span>
 
-        <span class="portal-nav-label">
-          About
-        </span>
+</a>
 
-      </a>
 
+<a
+  class="portal-nav-link"
+  href="contact.html"
+>
 
-      <a
-        class="portal-nav-link"
-        href="contact.html"
-      >
+<span class="portal-nav-icon">
+C
+</span>
 
-        <span class="portal-nav-icon">
-          C
-        </span>
+<span class="portal-nav-label">
+Contact
+</span>
 
-        <span class="portal-nav-label">
-          Contact
-        </span>
+</a>
 
-      </a>
 
+</nav>
 
-    </nav>
 
+<div class="portal-sidebar-bottom">
 
+<div class="sidebar-account">
 
-    <div class="portal-sidebar-bottom">
+<div
+  id="sidebarUserName"
+  class="sidebar-account-name"
+>
+—
+</div>
 
+<div
+  id="sidebarUserRole"
+  class="sidebar-account-role"
+>
+—
+</div>
 
-      <div class="sidebar-account">
+</div>
 
-        <div
-          id="sidebarUserName"
-          class="sidebar-account-name"
-        >
-          —
-        </div>
+<button
+  id="portalSignOut"
+  class="portal-signout"
+  type="button"
+>
+Sign Out
+</button>
 
-        <div
-          id="sidebarUserRole"
-          class="sidebar-account-role"
-        >
-          —
-        </div>
+</div>
 
-      </div>
+</aside>
 
 
-      <button
-        id="portalSignOut"
-        class="portal-signout"
-        type="button"
-      >
-        Sign Out
-      </button>
 
+<!-- MAIN -->
 
-    </div>
+<main class="portal-main">
 
 
-  </aside>
+<header class="portal-topbar">
 
+<div>
 
+<div
+  id="portalPageTitle"
+  class="portal-page-title"
+>
+Home
+</div>
 
-  <main class="portal-main">
+<div class="portal-page-subtitle">
+RizSim Faculty & Institution Portal
+</div>
 
+</div>
 
-    <header class="portal-topbar">
 
+<div class="portal-user">
 
-      <div>
+<div
+  id="portalUserAvatar"
+  class="portal-user-avatar"
+>
+R
+</div>
 
-        <div
-          id="portalPageTitle"
-          class="portal-page-title"
-        >
-          Home
-        </div>
+<div class="portal-user-copy">
 
-        <div class="portal-page-subtitle">
-          RizSim Faculty & Institution Portal
-        </div>
+<div
+  id="portalUserName"
+  class="portal-user-name"
+>
+—
+</div>
 
-      </div>
+<div
+  id="portalUserRole"
+  class="portal-user-role"
+>
+—
+</div>
 
+</div>
 
-      <div class="portal-user">
+</div>
 
+</header>
 
-        <div
-          id="portalUserAvatar"
-          class="portal-user-avatar"
-        >
-          R
-        </div>
 
 
-        <div class="portal-user-copy">
+<div class="portal-content">
 
-          <div
-            id="portalUserName"
-            class="portal-user-name"
-          >
-            —
-          </div>
 
-          <div
-            id="portalUserRole"
-            class="portal-user-role"
-          >
-            —
-          </div>
+<!-- ========================================================
+     HOME
+========================================================= -->
 
-        </div>
+<section
+  id="view-home"
+  class="portal-view active"
+>
 
+<span class="view-kicker">
+FACULTY & INSTITUTION PORTAL
+</span>
 
-      </div>
+<h1>
+Welcome to RizSim.
+</h1>
 
+<p class="view-description">
+Manage learning experiences available within
+your current role and authorized access.
+</p>
 
-    </header>
 
+<div class="role-hero">
 
+<div>
 
-    <div class="portal-content">
+<strong id="roleHeroTitle">
+—
+</strong>
 
+<p id="roleHeroCopy">
+—
+</p>
 
-      <!-- HOME -->
+</div>
 
-      <section
-        id="view-home"
-        class="portal-view active"
-      >
+<div
+  id="roleHeroChip"
+  class="role-chip"
+>
+—
+</div>
 
-        <span class="view-kicker">
-          FACULTY & INSTITUTION PORTAL
-        </span>
+</div>
 
 
-        <h1>
-          Welcome to RizSim.
-        </h1>
+<div
+  id="portalMetrics"
+  class="portal-metrics"
+></div>
 
 
-        <p class="view-description">
+<div class="portal-panel">
 
-          Manage learning experiences available within
-          your current role and authorized access.
+<div class="portal-panel-header">
 
-        </p>
+<div class="portal-panel-title">
+Recent Learning Activity
+</div>
 
+<div class="portal-panel-note">
+Within your permitted scope
+</div>
 
-        <div class="role-hero">
+</div>
 
+<div
+  id="homeRecentActivity"
+  class="portal-panel-body"
+></div>
 
-          <div>
+</div>
 
-            <strong id="roleHeroTitle">
-              —
-            </strong>
+</section>
 
-            <p id="roleHeroCopy">
-              —
-            </p>
 
-          </div>
 
+<!-- ========================================================
+     SIMULATIONS
+========================================================= -->
 
-          <div
-            id="roleHeroChip"
-            class="role-chip"
-          >
-            —
-          </div>
+<section
+  id="view-simulations"
+  class="portal-view"
+>
 
+<span class="view-kicker">
+SIMULATIONS
+</span>
 
-        </div>
+<h1>
+Your learning catalogue.
+</h1>
 
+<p class="view-description">
+Browse RizSim simulations and products available
+within your current access.
+</p>
 
-        <div
-          id="portalMetrics"
-          class="portal-metrics"
-        ></div>
+<div
+  id="portalSimulationGrid"
+  class="portal-simulation-grid"
+></div>
 
+</section>
 
-        <div class="portal-panel">
 
 
-          <div class="portal-panel-header">
+<!-- ========================================================
+     COURSES
+========================================================= -->
 
-            <div class="portal-panel-title">
-              Recent Learning Activity
-            </div>
+<section
+  id="view-courses"
+  class="portal-view"
+>
 
-            <div class="portal-panel-note">
-              Within your permitted scope
-            </div>
+<span class="view-kicker">
+COURSE LEAD
+</span>
 
-          </div>
+<h1>
+Courses
+</h1>
 
+<p class="view-description">
+Course Lead is Premium Faculty Access.
+It supports course structures, multiple classes,
+simulations and learner materials.
+</p>
 
-          <div
-            id="homeRecentActivity"
-            class="portal-panel-body"
-          ></div>
+<div class="portal-panel">
 
+<div class="empty-state">
 
-        </div>
+<div class="empty-state-icon">
+C
+</div>
 
+<strong>
+No courses created yet
+</strong>
 
-      </section>
+<p>
+Course structures and linked classes will appear here.
+</p>
 
+</div>
 
+</div>
 
-      <!-- SIMULATIONS -->
+</section>
 
-      <section
-        id="view-simulations"
-        class="portal-view"
-      >
 
-        <span class="view-kicker">
-          SIMULATIONS
-        </span>
 
+<!-- ========================================================
+     CLASSROOM
+========================================================= -->
 
-        <h1>
-          Your learning catalogue.
-        </h1>
+<section
+  id="view-classroom"
+  class="portal-view"
+>
 
+<span class="view-kicker">
+COURSE LEAD
+</span>
 
-        <p class="view-description">
+<h1>
+Classroom
+</h1>
 
-          Browse RizSim simulations and access products
-          available to your Faculty account.
+<p class="view-description">
+Manage Live Class and Practice experiences
+across your authorized courses.
+</p>
 
-        </p>
+<div class="workspace-grid">
 
+<article class="workspace-card">
 
-        <div
-          id="portalSimulationGrid"
-          class="portal-simulation-grid"
-        ></div>
+<span class="workspace-card-label">
+LIVE CLASS
+</span>
 
+<h3>
+Classroom sessions
+</h3>
 
-      </section>
+<p>
+Generate secure student codes and shareable links
+for authorized learning sessions.
+</p>
 
+</article>
 
 
-      <!-- COURSES -->
+<article class="workspace-card">
 
-      <section
-        id="view-courses"
-        class="portal-view"
-      >
+<span class="workspace-card-label">
+PRACTICE
+</span>
 
-        <span class="view-kicker">
-          COURSE LEAD
-        </span>
+<h3>
+Practice access
+</h3>
 
+<p>
+Control practice independently with its own
+start and expiry period.
+</p>
 
-        <h1>
-          Courses
-        </h1>
+</article>
 
+</div>
 
-        <p class="view-description">
+</section>
 
-          Course Lead is Premium Faculty Access.
-          It supports course structures, multiple classes,
-          simulations and learner materials.
 
-        </p>
 
+<!-- ========================================================
+     RESULTS
+========================================================= -->
 
-        <div class="portal-panel">
+<section
+  id="view-results"
+  class="portal-view"
+>
 
-          <div class="empty-state">
+<span class="view-kicker">
+LEARNING RESULTS
+</span>
 
-            <div class="empty-state-icon">
-              C
-            </div>
+<h1>
+Results
+</h1>
 
-            <strong>
-              No courses created yet
-            </strong>
+<p class="view-description">
+Participant activity visible within the
+current account's authorized scope.
+</p>
 
-            <p>
-              Course structures and linked classes will appear here.
-            </p>
+<div class="portal-panel">
 
-          </div>
+<div class="portal-panel-header">
 
-        </div>
+<div class="portal-panel-title">
+Submitted Attempts
+</div>
 
+<div
+  id="resultCount"
+  class="portal-panel-note"
+>
+—
+</div>
 
-      </section>
+</div>
 
 
+<div class="table-scroll">
 
-      <!-- CLASSROOM -->
+<table class="portal-table">
 
-      <section
-        id="view-classroom"
-        class="portal-view"
-      >
+<thead>
 
-        <span class="view-kicker">
-          COURSE LEAD
-        </span>
+<tr>
 
+<th>
+Participant
+</th>
 
-        <h1>
-          Classroom
-        </h1>
+<th>
+Simulation
+</th>
 
+<th>
+Progress
+</th>
 
-        <p class="view-description">
+<th>
+Submitted
+</th>
 
-          Manage Live Class and Practice experiences
-          across your authorized courses.
+<th></th>
 
-        </p>
+</tr>
 
+</thead>
 
-        <div class="workspace-grid">
+<tbody id="resultRows"></tbody>
 
+</table>
 
-          <article class="workspace-card">
+</div>
 
-            <span class="workspace-card-label">
-              LIVE CLASS
-            </span>
+</div>
 
-            <h3>
-              Classroom sessions
-            </h3>
+</section>
 
-            <p>
-              Generate secure student codes and shareable links
-              for authorized learning sessions.
-            </p>
 
-          </article>
 
+<!-- ========================================================
+     INSTITUTION
+========================================================= -->
 
-          <article class="workspace-card">
+<section
+  id="view-institution"
+  class="portal-view"
+>
 
-            <span class="workspace-card-label">
-              PRACTICE
-            </span>
+<span class="view-kicker">
+INSTITUTION ACCESS
+</span>
 
-            <h3>
-              Practice access
-            </h3>
+<h1>
+Institution
+</h1>
 
-            <p>
-              Control practice independently with its own
-              start and expiry period.
-            </p>
+<p class="view-description">
+Manage the institution's RizSim environment
+and request Faculty associations for Owner approval.
+</p>
 
-          </article>
 
+<!-- INSTITUTION SELECTOR -->
 
-        </div>
+<div
+  id="institutionSelectorPanel"
+  class="portal-panel"
+>
 
+<div class="portal-panel-header">
 
-      </section>
+<div>
 
+<div class="portal-panel-title">
+Institution Workspace
+</div>
 
+<div class="portal-panel-note">
+Your authorized institution
+</div>
 
-      <!-- RESULTS -->
+</div>
 
-      <section
-        id="view-results"
-        class="portal-view"
-      >
+</div>
 
-        <span class="view-kicker">
-          LEARNING RESULTS
-        </span>
+<div class="portal-panel-body">
 
+<div class="management-field">
 
-        <h1>
-          Results
-        </h1>
+<label for="institutionWorkspaceSelect">
+Institution
+</label>
 
+<select
+  id="institutionWorkspaceSelect"
+  class="management-select"
+>
+<option value="">
+Select institution
+</option>
+</select>
 
-        <p class="view-description">
+</div>
 
-          Participant activity visible within the current
-          account's authorized simulations and classes.
+</div>
 
-        </p>
+</div>
 
 
-        <div class="portal-panel">
 
+<!-- REQUEST FACULTY -->
 
-          <div class="portal-panel-header">
+<div
+  id="institutionRequestPanel"
+  class="portal-panel"
+>
 
-            <div class="portal-panel-title">
-              Submitted Attempts
-            </div>
+<div class="portal-panel-header">
 
-            <div
-              id="resultCount"
-              class="portal-panel-note"
-            >
-              —
-            </div>
+<div>
 
-          </div>
+<div class="portal-panel-title">
+Request Faculty
+</div>
 
+<div class="portal-panel-note">
+Owner approval required
+</div>
 
-          <div class="table-scroll">
+</div>
 
+</div>
 
-            <table class="portal-table">
 
+<div class="management-grid">
 
-              <thead>
+<div class="management-card">
 
-                <tr>
+<span class="management-card-kicker">
+FACULTY ASSOCIATION
+</span>
 
-                  <th>
-                    Participant
-                  </th>
+<h3>
+Request a Faculty member
+</h3>
 
-                  <th>
-                    Simulation
-                  </th>
+<p>
+Provide the Faculty member's details.
+The request goes to the RizSim Owner for approval.
+</p>
 
-                  <th>
-                    Progress
-                  </th>
 
-                  <th>
-                    Submitted
-                  </th>
+<div class="management-field">
 
-                  <th></th>
+<label for="institutionFacultyName">
+Faculty Name
+</label>
 
-                </tr>
+<input
+  id="institutionFacultyName"
+  class="management-input"
+  type="text"
+  maxlength="160"
+  placeholder="Faculty member name"
+>
 
-              </thead>
+</div>
 
 
-              <tbody id="resultRows"></tbody>
+<div class="management-field">
 
+<label for="institutionFacultyEmail">
+Faculty Email
+</label>
 
-            </table>
+<input
+  id="institutionFacultyEmail"
+  class="management-input"
+  type="email"
+  maxlength="200"
+  placeholder="faculty@example.com"
+>
 
+</div>
 
-          </div>
 
+<div class="management-field">
 
-        </div>
+<label for="institutionFacultyNote">
+Reason / Context
+</label>
 
+<textarea
+  id="institutionFacultyNote"
+  class="management-textarea"
+  maxlength="1000"
+  placeholder="Provide information relevant to the Owner's decision."
+></textarea>
 
-      </section>
+<span class="management-help">
+Approval links the Faculty to the institution.
+It does not change the Faculty member's main portal role.
+</span>
 
+</div>
 
 
-      <!-- INSTITUTION -->
+<button
+  id="submitInstitutionFacultyRequest"
+  class="management-action"
+  type="button"
+>
+Submit Faculty Request
+</button>
 
-      <section
-        id="view-institution"
-        class="portal-view"
-      >
+<div
+  id="institutionRequestMessage"
+  class="management-message"
+  aria-live="polite"
+></div>
 
-        <span class="view-kicker">
-          INSTITUTION ACCESS
-        </span>
+</div>
 
 
-        <h1>
-          Institution
-        </h1>
+<div class="management-card">
 
+<span class="management-card-kicker">
+ACCESS LOGIC
+</span>
 
-        <p class="view-description">
+<h3>
+What approval does
+</h3>
 
-          Manage the institution's approved RizSim environment.
-          Faculty associations require Owner approval.
+<p>
+An approved Faculty association inherits the institution's
+permitted RizSim access while remaining a Faculty account.
+</p>
 
-        </p>
+<div
+  style="
+    margin-top:18px;
+    padding:15px;
+    background:#f4faf9;
+    border:1px solid #d9e9e7;
+    border-radius:13px;
+    color:#536f7b;
+    font-size:.7rem;
+    line-height:1.65;
+  "
+>
+<strong style="color:#0b5760;">
+Institution requests
+</strong>
+<br>
+↓
+<br>
+<strong style="color:#0b5760;">
+Owner reviews
+</strong>
+<br>
+↓
+<br>
+<strong style="color:#0b5760;">
+Faculty association approved
+</strong>
+<br>
+↓
+<br>
+Faculty receives the institution's authorized scope.
+</div>
 
+</div>
 
-        <div class="workspace-grid">
+</div>
 
+</div>
 
-          <article class="workspace-card">
 
-            <span class="workspace-card-label">
-              FACULTY
-            </span>
 
-            <h3>
-              Institution faculty
-            </h3>
+<!-- CURRENT FACULTY -->
 
-            <p>
+<div class="portal-panel">
 
-              The institution can request that a Faculty account
-              be associated with the institution. Approval is
-              completed by the RizSim Owner.
+<div class="portal-panel-header">
 
-            </p>
+<div>
 
-          </article>
+<div class="portal-panel-title">
+Institution Faculty
+</div>
 
+<div class="portal-panel-note">
+Approved Faculty associations
+</div>
 
-          <article class="workspace-card">
+</div>
 
-            <span class="workspace-card-label">
-              SHARED ACCESS
-            </span>
+</div>
 
-            <h3>
-              Institution scope
-            </h3>
+<div class="table-scroll">
 
-            <p>
+<table class="portal-table">
 
-              Approved faculty members can use the simulations
-              and learning resources available to their institution.
+<thead>
 
-            </p>
+<tr>
 
-          </article>
+<th>
+Faculty
+</th>
 
+<th>
+Email
+</th>
 
-        </div>
+<th>
+Status
+</th>
 
+</tr>
 
-      </section>
+</thead>
 
+<tbody id="institutionFacultyRows"></tbody>
 
+</table>
 
-      <!-- ADMINISTRATION -->
+</div>
 
-      <section
-        id="view-administration"
-        class="portal-view"
-      >
+</div>
 
-        <span class="view-kicker">
-          PLATFORM OPERATIONS
-        </span>
 
 
-        <h1>
-          Administration
-        </h1>
+<!-- REQUEST HISTORY -->
 
+<div class="portal-panel">
 
-        <p
-          id="administrationDescription"
-          class="view-description"
-        >
-          —
-        </p>
+<div class="portal-panel-header">
 
+<div>
 
-        <div
-          id="administrationMetrics"
-          class="portal-metrics"
-        ></div>
+<div class="portal-panel-title">
+Faculty Request History
+</div>
 
+<div class="portal-panel-note">
+Pending and reviewed requests
+</div>
 
+</div>
 
-        <!-- ================================================
-             OWNER INSTITUTION MANAGEMENT
-        ================================================= -->
+</div>
 
-        <div
-          id="ownerInstitutionPanel"
-          class="portal-panel hidden"
-        >
+<div class="table-scroll">
 
+<table class="portal-table">
 
-          <div class="portal-panel-header">
+<thead>
 
-            <div>
+<tr>
 
-              <div class="portal-panel-title">
-                Institution Management
-              </div>
+<th>
+Faculty
+</th>
 
-              <div class="portal-panel-note">
-                Owner-controlled institution access
-              </div>
+<th>
+Requested
+</th>
 
-            </div>
+<th>
+Status
+</th>
 
-          </div>
+<th>
+Owner Decision
+</th>
 
+</tr>
 
+</thead>
 
-          <div class="owner-management-grid">
+<tbody id="institutionRequestRows"></tbody>
 
+</table>
 
-            <!-- CREATE INSTITUTION -->
+</div>
 
-            <div class="management-card">
+</div>
 
-              <span class="management-card-kicker">
-                CREATE
-              </span>
+</section>
 
 
-              <h3>
-                New Institution
-              </h3>
 
+<!-- ========================================================
+     ADMINISTRATION
+========================================================= -->
 
-              <p>
+<section
+  id="view-administration"
+  class="portal-view"
+>
 
-                Create the institution first.
-                No account or access is assigned automatically.
+<span class="view-kicker">
+PLATFORM OPERATIONS
+</span>
 
-              </p>
+<h1>
+Administration
+</h1>
 
+<p
+  id="administrationDescription"
+  class="view-description"
+>
+—
+</p>
 
-              <div class="management-field">
 
-                <label for="ownerInstitutionName">
-                  Institution Name
-                </label>
+<div
+  id="administrationMetrics"
+  class="portal-metrics"
+></div>
 
-                <input
-                  id="ownerInstitutionName"
-                  class="management-input"
-                  type="text"
-                  maxlength="160"
-                  placeholder="Institution name"
-                >
 
-              </div>
 
+<!-- OWNER INSTITUTION MANAGEMENT -->
 
-              <div class="management-field">
+<div
+  id="ownerInstitutionPanel"
+  class="portal-panel hidden"
+>
 
-                <label for="ownerInstitutionSlug">
-                  Institution Slug
-                </label>
+<div class="portal-panel-header">
 
-                <input
-                  id="ownerInstitutionSlug"
-                  class="management-input"
-                  type="text"
-                  maxlength="120"
-                  placeholder="Optional"
-                >
+<div>
 
-                <span class="management-help">
+<div class="portal-panel-title">
+Institution Management
+</div>
 
-                  Leave blank and RizSim will create
-                  the slug from the institution name.
+<div class="portal-panel-note">
+Owner-controlled institution access
+</div>
 
-                </span>
+</div>
 
-              </div>
+</div>
 
 
-              <button
-                id="createInstitutionButton"
-                class="management-action"
-                type="button"
-              >
-                Create Institution
-              </button>
+<div class="management-grid">
 
 
-              <div
-                id="createInstitutionMessage"
-                class="management-message"
-                aria-live="polite"
-              ></div>
+<div class="management-card">
 
-            </div>
+<span class="management-card-kicker">
+CREATE
+</span>
 
+<h3>
+New Institution
+</h3>
 
+<p>
+Create the institution first.
+No account or access is assigned automatically.
+</p>
 
-            <!-- ASSIGN INSTITUTION ACCOUNT -->
 
-            <div class="management-card">
+<div class="management-field">
 
-              <span class="management-card-kicker">
-                ASSIGN
-              </span>
+<label for="ownerInstitutionName">
+Institution Name
+</label>
 
+<input
+  id="ownerInstitutionName"
+  class="management-input"
+  type="text"
+  maxlength="160"
+  placeholder="Institution name"
+>
 
-              <h3>
-                Institution Account
-              </h3>
+</div>
 
 
-              <p>
+<div class="management-field">
 
-                Assign an existing RizSim user as the
-                account that manages an institution.
+<label for="ownerInstitutionSlug">
+Institution Slug
+</label>
 
-              </p>
+<input
+  id="ownerInstitutionSlug"
+  class="management-input"
+  type="text"
+  maxlength="120"
+  placeholder="Optional"
+>
 
+<span class="management-help">
+Leave blank and RizSim creates the slug automatically.
+</span>
 
-              <div class="management-field">
+</div>
 
-                <label for="ownerInstitutionSelect">
-                  Institution
-                </label>
 
-                <select
-                  id="ownerInstitutionSelect"
-                  class="management-select"
-                >
-                  <option value="">
-                    Select institution
-                  </option>
-                </select>
+<button
+  id="createInstitutionButton"
+  class="management-action"
+  type="button"
+>
+Create Institution
+</button>
 
-              </div>
+<div
+  id="createInstitutionMessage"
+  class="management-message"
+></div>
 
+</div>
 
-              <div class="management-field">
 
-                <label for="ownerInstitutionAccountEmail">
-                  RizSim Account Email
-                </label>
 
-                <input
-                  id="ownerInstitutionAccountEmail"
-                  class="management-input"
-                  type="email"
-                  maxlength="200"
-                  placeholder="name@example.com"
-                >
+<div class="management-card">
 
-                <span class="management-help">
+<span class="management-card-kicker">
+ASSIGN
+</span>
 
-                  The person must have signed into RizSim
-                  at least once so their account exists.
+<h3>
+Institution Account
+</h3>
 
-                </span>
+<p>
+Assign an existing RizSim user as the account
+that manages an institution.
+</p>
 
-              </div>
 
+<div class="management-field">
 
-              <button
-                id="assignInstitutionButton"
-                class="management-action"
-                type="button"
-              >
-                Assign Institution Account
-              </button>
+<label for="ownerInstitutionSelect">
+Institution
+</label>
 
+<select
+  id="ownerInstitutionSelect"
+  class="management-select"
+>
 
-              <div
-                id="assignInstitutionMessage"
-                class="management-message"
-                aria-live="polite"
-              ></div>
+<option value="">
+Select institution
+</option>
 
-            </div>
+</select>
 
+</div>
 
-          </div>
 
+<div class="management-field">
 
+<label for="ownerInstitutionAccountEmail">
+RizSim Account Email
+</label>
 
-          <!-- INSTITUTION LIST -->
+<input
+  id="ownerInstitutionAccountEmail"
+  class="management-input"
+  type="email"
+  maxlength="200"
+  placeholder="name@example.com"
+>
 
-          <div class="table-scroll">
+<span class="management-help">
+The person must have signed into RizSim at least once.
+</span>
 
-            <table class="portal-table">
+</div>
 
-              <thead>
 
-                <tr>
+<button
+  id="assignInstitutionButton"
+  class="management-action"
+  type="button"
+>
+Assign Institution Account
+</button>
 
-                  <th>
-                    Institution
-                  </th>
+<div
+  id="assignInstitutionMessage"
+  class="management-message"
+></div>
 
-                  <th>
-                    Institution Account
-                  </th>
+</div>
 
-                  <th>
-                    Faculty
-                  </th>
 
-                  <th>
-                    Status
-                  </th>
+</div>
 
-                  <th></th>
 
-                </tr>
+<div class="table-scroll">
 
-              </thead>
+<table class="portal-table">
 
+<thead>
 
-              <tbody id="institutionRows"></tbody>
+<tr>
 
-            </table>
+<th>
+Institution
+</th>
 
-          </div>
+<th>
+Institution Account
+</th>
 
+<th>
+Faculty
+</th>
 
-        </div>
+<th>
+Status
+</th>
 
+<th></th>
 
+</tr>
 
-        <!-- ================================================
-             OWNER PORTAL MEMBERSHIPS
-        ================================================= -->
+</thead>
 
-        <div
-          id="ownerMembershipPanel"
-          class="portal-panel hidden"
-        >
+<tbody id="institutionRows"></tbody>
 
+</table>
 
-          <div class="portal-panel-header">
+</div>
 
-            <div class="portal-panel-title">
-              Portal Memberships
-            </div>
+</div>
 
-            <div class="portal-panel-note">
-              Owner visibility
-            </div>
 
-          </div>
 
+<!-- OWNER FACULTY REQUEST QUEUE -->
 
-          <div class="table-scroll">
+<div
+  id="ownerFacultyRequestPanel"
+  class="portal-panel hidden"
+>
 
+<div class="portal-panel-header">
 
-            <table class="portal-table">
+<div>
 
+<div class="portal-panel-title">
+Faculty Association Requests
+</div>
 
-              <thead>
+<div
+  id="ownerRequestCount"
+  class="portal-panel-note"
+>
+Owner approval queue
+</div>
 
-                <tr>
+</div>
 
-                  <th>
-                    User
-                  </th>
+</div>
 
-                  <th>
-                    Role
-                  </th>
 
-                  <th>
-                    Status
-                  </th>
+<div class="table-scroll">
 
-                </tr>
+<table class="portal-table">
 
-              </thead>
+<thead>
 
+<tr>
 
-              <tbody id="membershipRows"></tbody>
+<th>
+Institution
+</th>
 
+<th>
+Faculty
+</th>
 
-            </table>
+<th>
+Requested By
+</th>
 
+<th>
+Status
+</th>
 
-          </div>
+<th></th>
 
+</tr>
 
-        </div>
+</thead>
 
+<tbody id="ownerFacultyRequestRows"></tbody>
 
-      </section>
+</table>
 
+</div>
 
+</div>
 
-      <!-- ACCOUNT -->
 
-      <section
-        id="view-account"
-        class="portal-view"
-      >
 
-        <span class="view-kicker">
-          ACCOUNT
-        </span>
+<!-- OWNER MEMBERSHIPS -->
 
+<div
+  id="ownerMembershipPanel"
+  class="portal-panel hidden"
+>
 
-        <h1>
-          Your RizSim identity.
-        </h1>
+<div class="portal-panel-header">
 
+<div class="portal-panel-title">
+Portal Memberships
+</div>
 
-        <p class="view-description">
+<div class="portal-panel-note">
+Owner visibility
+</div>
 
-          Identity and portal authorization associated
-          with this Google account.
+</div>
 
-        </p>
+<div class="table-scroll">
 
+<table class="portal-table">
 
-        <div class="account-grid">
+<thead>
 
+<tr>
 
-          <div class="account-detail">
+<th>
+User
+</th>
 
-            <div class="account-detail-label">
-              Name
-            </div>
+<th>
+Role
+</th>
 
-            <div
-              id="accountName"
-              class="account-detail-value"
-            >
-              —
-            </div>
+<th>
+Status
+</th>
 
-          </div>
+</tr>
 
+</thead>
 
-          <div class="account-detail">
+<tbody id="membershipRows"></tbody>
 
-            <div class="account-detail-label">
-              Email
-            </div>
+</table>
 
-            <div
-              id="accountEmail"
-              class="account-detail-value"
-            >
-              —
-            </div>
+</div>
 
-          </div>
+</div>
 
+</section>
 
-          <div class="account-detail">
 
-            <div class="account-detail-label">
-              RizSim UUID
-            </div>
 
-            <div
-              id="accountUUID"
-              class="account-detail-value"
-            >
-              —
-            </div>
+<!-- ========================================================
+     ACCOUNT
+========================================================= -->
 
-          </div>
+<section
+  id="view-account"
+  class="portal-view"
+>
 
+<span class="view-kicker">
+ACCOUNT
+</span>
 
-          <div class="account-detail">
+<h1>
+Your RizSim identity.
+</h1>
 
-            <div class="account-detail-label">
-              Portal Role
-            </div>
+<p class="view-description">
+Identity and portal authorization associated
+with this Google account.
+</p>
 
-            <div
-              id="accountRole"
-              class="account-detail-value"
-            >
-              —
-            </div>
+<div class="account-grid">
 
-          </div>
 
+<div class="account-detail">
 
-          <div class="account-detail">
+<div class="account-detail-label">
+Name
+</div>
 
-            <div class="account-detail-label">
-              Account Status
-            </div>
+<div
+  id="accountName"
+  class="account-detail-value"
+>
+—
+</div>
 
-            <div
-              id="accountStatus"
-              class="account-detail-value"
-            >
-              —
-            </div>
+</div>
 
-          </div>
 
+<div class="account-detail">
 
-          <div class="account-detail">
+<div class="account-detail-label">
+Email
+</div>
 
-            <div class="account-detail-label">
-              Access
-            </div>
+<div
+  id="accountEmail"
+  class="account-detail-value"
+>
+—
+</div>
 
-            <div
-              id="accountAccess"
-              class="account-detail-value"
-            >
-              —
-            </div>
+</div>
 
-          </div>
 
+<div class="account-detail">
 
-        </div>
+<div class="account-detail-label">
+RizSim UUID
+</div>
 
+<div
+  id="accountUUID"
+  class="account-detail-value"
+>
+—
+</div>
 
-      </section>
+</div>
 
 
-    </div>
+<div class="account-detail">
 
+<div class="account-detail-label">
+Portal Role
+</div>
 
-  </main>
+<div
+  id="accountRole"
+  class="account-detail-value"
+>
+—
+</div>
 
+</div>
+
+
+<div class="account-detail">
+
+<div class="account-detail-label">
+Account Status
+</div>
+
+<div
+  id="accountStatus"
+  class="account-detail-value"
+>
+—
+</div>
+
+</div>
+
+
+<div class="account-detail">
+
+<div class="account-detail-label">
+Access
+</div>
+
+<div
+  id="accountAccess"
+  class="account-detail-value"
+>
+—
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+
+<!-- ==========================================================
+     OWNER REVIEW MODAL
+=========================================================== -->
+
+<div
+  id="facultyReviewModal"
+  class="review-modal"
+>
+
+<div class="review-modal-card">
+
+
+<div class="review-modal-header">
+
+<div class="review-modal-title">
+Review Faculty Association
+</div>
+
+<button
+  id="facultyReviewClose"
+  class="review-modal-close"
+  type="button"
+  aria-label="Close"
+>
+×
+</button>
+
+</div>
+
+
+<div class="review-modal-body">
+
+
+<div class="review-summary">
+
+<div class="review-summary-label">
+FACULTY ASSOCIATION REQUEST
+</div>
+
+<h3 id="reviewFacultyName">
+—
+</h3>
+
+</div>
+
+
+<div class="review-details">
+
+
+<div class="review-detail">
+
+<span>
+Institution
+</span>
+
+<strong id="reviewInstitution">
+—
+</strong>
+
+</div>
+
+
+<div class="review-detail">
+
+<span>
+Faculty Email
+</span>
+
+<strong id="reviewFacultyEmail">
+—
+</strong>
+
+</div>
+
+
+<div class="review-detail">
+
+<span>
+Requested By
+</span>
+
+<strong id="reviewRequestedBy">
+—
+</strong>
+
+</div>
+
+
+<div class="review-detail">
+
+<span>
+Requested
+</span>
+
+<strong id="reviewCreatedAt">
+—
+</strong>
+
+</div>
+
+
+</div>
+
+
+<div
+  id="reviewRequestNote"
+  class="review-note-box"
+>
+—
+</div>
+
+
+<div class="management-field">
+
+<label for="reviewDecisionNote">
+Owner Decision Note
+</label>
+
+<textarea
+  id="reviewDecisionNote"
+  class="management-textarea"
+  maxlength="1000"
+  placeholder="Optional note for the institution."
+></textarea>
+
+</div>
+
+
+<div
+  id="reviewDecisionMessage"
+  class="management-message"
+></div>
+
+
+<div class="review-actions">
+
+<button
+  id="approveFacultyRequest"
+  class="review-approve"
+  type="button"
+>
+Approve Association
+</button>
+
+<button
+  id="rejectFacultyRequest"
+  class="review-reject"
+  type="button"
+>
+Reject Request
+</button>
+
+</div>
+
+
+</div>
+
+</div>
 
 </div>
 
@@ -3963,39 +4259,34 @@
   class="response-modal"
 >
 
-  <div class="response-modal-card">
+<div class="response-modal-card">
 
+<div class="response-modal-header">
 
-    <div class="response-modal-header">
+<div
+  id="responseModalTitle"
+  class="response-modal-title"
+>
+Submission
+</div>
 
-      <div
-        id="responseModalTitle"
-        class="response-modal-title"
-      >
-        Submission
-      </div>
+<button
+  id="responseModalClose"
+  class="response-modal-close"
+  type="button"
+  aria-label="Close"
+>
+×
+</button>
 
+</div>
 
-      <button
-        id="responseModalClose"
-        class="response-modal-close"
-        type="button"
-        aria-label="Close"
-      >
-        ×
-      </button>
+<div
+  id="responseModalBody"
+  class="response-modal-body"
+></div>
 
-
-    </div>
-
-
-    <div
-      id="responseModalBody"
-      class="response-modal-body"
-    ></div>
-
-
-  </div>
+</div>
 
 </div>
 
@@ -4010,7 +4301,7 @@
   class="portal-loading"
 >
 
-  <div class="portal-spinner"></div>
+<div class="portal-spinner"></div>
 
 </div>
 
@@ -4023,7 +4314,6 @@ import {
 }
 from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
 
 
 /* ============================================================
@@ -4043,7 +4333,6 @@ const supabase =
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
-
 
 
 /* ============================================================
@@ -4119,7 +4408,6 @@ const VIEW_TITLES = {
 };
 
 
-
 /* ============================================================
    STATE
 ============================================================ */
@@ -4148,6 +4436,8 @@ let submissions =
   [];
 
 
+/* Owner data */
+
 let ownerProfiles =
   [];
 
@@ -4164,6 +4454,41 @@ let ownerInstitutionMembers =
   [];
 
 
+let ownerFacultyRequests =
+  [];
+
+
+/* Institution data */
+
+let institutionMemberships =
+  [];
+
+
+let institutionList =
+  [];
+
+
+let institutionMembers =
+  [];
+
+
+let institutionRequests =
+  [];
+
+
+let institutionProfiles =
+  [];
+
+
+let selectedInstitutionId =
+  null;
+
+
+/* Owner review */
+
+let activeReviewRequestId =
+  null;
+
 
 /* ============================================================
    HELPERS
@@ -4175,7 +4500,8 @@ function showLoading() {
     .getElementById(
       "portalLoading"
     )
-    .classList.add(
+    .classList
+    .add(
       "show"
     );
 
@@ -4188,7 +4514,8 @@ function hideLoading() {
     .getElementById(
       "portalLoading"
     )
-    .classList.remove(
+    .classList
+    .remove(
       "show"
     );
 
@@ -4210,11 +4537,30 @@ function escapeHTML(value) {
 
   return String(value)
 
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
@@ -4222,7 +4568,9 @@ function escapeHTML(value) {
 function formatDate(value) {
 
   if(!value) {
+
     return "—";
+
   }
 
 
@@ -4267,7 +4615,9 @@ function roleLabel(role) {
 function getInitials(name) {
 
   if(!name) {
+
     return "R";
+
   }
 
 
@@ -4277,7 +4627,10 @@ function getInitials(name) {
 
     .split(/\s+/)
 
-    .slice(0,2)
+    .slice(
+      0,
+      2
+    )
 
     .map(
       part =>
@@ -4297,7 +4650,9 @@ function setAvatar(
 ) {
 
   if(!element) {
+
     return;
+
   }
 
 
@@ -4339,12 +4694,15 @@ function setAvatar(
 }
 
 
-function getCategoryName(categoryId) {
+function getCategoryName(
+  categoryId
+) {
 
   const category =
     categories.find(
       item =>
-        item.id === categoryId
+        item.id ===
+        categoryId
     );
 
 
@@ -4357,30 +4715,77 @@ function getCategoryName(categoryId) {
 }
 
 
-function getOwnerProfile(userId) {
+function getOwnerProfile(
+  userId
+) {
 
   return ownerProfiles.find(
     item =>
-      item.id === userId
+      item.id ===
+      userId
+  );
+
+}
+
+
+function getInstitutionProfile(
+  userId
+) {
+
+  return institutionProfiles.find(
+    item =>
+      item.id ===
+      userId
+  );
+
+}
+
+
+function getInstitutionName(
+  institutionId
+) {
+
+  const institution =
+    ownerInstitutions.find(
+      item =>
+        item.id ===
+        institutionId
+    )
+
+    ||
+
+    institutionList.find(
+      item =>
+        item.id ===
+        institutionId
+    );
+
+
+  return (
+    institution?.name
+    ||
+    "Institution"
   );
 
 }
 
 
 function setManagementMessage(
-  elementId,
+  id,
   text,
-  isError = false
+  error = false
 ) {
 
   const element =
     document.getElementById(
-      elementId
+      id
     );
 
 
   if(!element) {
+
     return;
+
   }
 
 
@@ -4392,11 +4797,10 @@ function setManagementMessage(
 
   element.classList.toggle(
     "error",
-    Boolean(isError)
+    Boolean(error)
   );
 
 }
-
 
 
 /* ============================================================
@@ -4438,7 +4842,6 @@ if(
     "Continue with Google to create your standard Faculty account and enter the RizSim Faculty Dashboard.";
 
 }
-
 
 
 /* ============================================================
@@ -4497,7 +4900,6 @@ async function signInWithGoogle() {
 }
 
 
-
 /* ============================================================
    PROFILE
 ============================================================ */
@@ -4505,7 +4907,7 @@ async function signInWithGoogle() {
 async function getOrCreateProfile() {
 
   let {
-    data:profile,
+    data: profile,
     error
   } =
 
@@ -4532,7 +4934,6 @@ async function getOrCreateProfile() {
       .maybeSingle();
 
 
-
   if(
     !error
     &&
@@ -4542,7 +4943,6 @@ async function getOrCreateProfile() {
     return profile;
 
   }
-
 
 
   const metadata =
@@ -4580,7 +4980,6 @@ async function getOrCreateProfile() {
   };
 
 
-
   const insertResult =
 
     await supabase
@@ -4605,7 +5004,6 @@ async function getOrCreateProfile() {
     return null;
 
   }
-
 
 
   const retry =
@@ -4640,7 +5038,6 @@ async function getOrCreateProfile() {
   );
 
 }
-
 
 
 /* ============================================================
@@ -4682,14 +5079,17 @@ async function getMembership() {
   }
 
 
-  return data || null;
+  return (
+    data
+    ||
+    null
+  );
 
 }
 
 
-
 /* ============================================================
-   AUTOMATIC STANDARD FACULTY ACCESS
+   STANDARD FACULTY ACCESS
 ============================================================ */
 
 async function ensureStandardFacultyAccess() {
@@ -4711,25 +5111,21 @@ async function ensureStandardFacultyAccess() {
   }
 
 
-  if(
+  return (
     Array.isArray(data)
     &&
     data.length
-  ) {
 
-    return data[0];
+      ? data[0]
 
-  }
-
-
-  return null;
+      : null
+  );
 
 }
 
 
-
 /* ============================================================
-   CLAIM APPROVED INSTITUTION ASSOCIATIONS
+   CLAIM APPROVED INSTITUTION ACCESS
 ============================================================ */
 
 async function claimApprovedInstitutionAccess() {
@@ -4760,15 +5156,11 @@ async function claimApprovedInstitutionAccess() {
 
   catch {
 
-    /*
-       Institution association should never prevent
-       normal Faculty Dashboard access.
-    */
+    /* Never block normal Faculty access. */
 
   }
 
 }
-
 
 
 /* ============================================================
@@ -4781,8 +5173,8 @@ async function verifyAccess() {
 
 
   const {
-    data:userData,
-    error:userError
+    data: userData,
+    error: userError
   } =
 
     await supabase
@@ -4794,7 +5186,6 @@ async function verifyAccess() {
     userData?.user
     ||
     null;
-
 
 
   if(
@@ -4817,13 +5208,13 @@ async function verifyAccess() {
   }
 
 
-
   currentProfile =
     await getOrCreateProfile();
 
 
-
-  if(!currentProfile) {
+  if(
+    !currentProfile
+  ) {
 
     hideLoading();
 
@@ -4839,19 +5230,13 @@ async function verifyAccess() {
   }
 
 
-
   currentMembership =
     await getMembership();
 
 
-
-  /*
-     No portal membership exists.
-
-     Create standard Faculty automatically.
-  */
-
-  if(!currentMembership) {
+  if(
+    !currentMembership
+  ) {
 
     try {
 
@@ -4883,27 +5268,16 @@ async function verifyAccess() {
   }
 
 
-
-  if(!currentMembership) {
+  if(
+    !currentMembership
+  ) {
 
     hideLoading();
-
-
-    document.getElementById(
-      "gateStatus"
-    ).textContent =
-      "Faculty Access could not be verified.";
-
 
     return;
 
   }
 
-
-
-  /*
-     Existing disabled memberships remain disabled.
-  */
 
   if(
     currentMembership.active !==
@@ -4918,11 +5292,6 @@ async function verifyAccess() {
 
   }
 
-
-
-  /*
-     Legacy roles are intentionally not auto-converted.
-  */
 
   if(
     LEGACY_PORTAL_ROLES.has(
@@ -4941,7 +5310,6 @@ async function verifyAccess() {
   }
 
 
-
   if(
     !ACTIVE_PORTAL_ROLES.has(
       currentMembership.role
@@ -4957,14 +5325,7 @@ async function verifyAccess() {
   }
 
 
-
-  /*
-     If an institution previously requested this Faculty
-     and the Owner approved it, claim that association now.
-  */
-
   await claimApprovedInstitutionAccess();
-
 
 
   showPortal();
@@ -4978,9 +5339,8 @@ async function verifyAccess() {
 }
 
 
-
 /* ============================================================
-   PRIMARY SCREENS
+   SCREEN STATES
 ============================================================ */
 
 function hideAllPrimaryScreens() {
@@ -4989,7 +5349,8 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "authGate"
     )
-    .classList.add(
+    .classList
+    .add(
       "hidden"
     );
 
@@ -4998,7 +5359,8 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "disabledGate"
     )
-    .classList.add(
+    .classList
+    .add(
       "hidden"
     );
 
@@ -5007,7 +5369,8 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "legacyGate"
     )
-    .classList.add(
+    .classList
+    .add(
       "hidden"
     );
 
@@ -5016,7 +5379,8 @@ function hideAllPrimaryScreens() {
     .getElementById(
       "facultyPortal"
     )
-    .classList.remove(
+    .classList
+    .remove(
       "show"
     );
 
@@ -5032,7 +5396,8 @@ function showDisabledGate() {
     .getElementById(
       "disabledGate"
     )
-    .classList.remove(
+    .classList
+    .remove(
       "hidden"
     );
 
@@ -5065,7 +5430,9 @@ function showDisabledGate() {
 }
 
 
-function showLegacyGate(role) {
+function showLegacyGate(
+  role
+) {
 
   hideAllPrimaryScreens();
 
@@ -5074,7 +5441,8 @@ function showLegacyGate(role) {
     .getElementById(
       "legacyGate"
     )
-    .classList.remove(
+    .classList
+    .remove(
       "hidden"
     );
 
@@ -5096,7 +5464,8 @@ function showPortal() {
     .getElementById(
       "facultyPortal"
     )
-    .classList.add(
+    .classList
+    .add(
       "show"
     );
 
@@ -5106,7 +5475,6 @@ function showPortal() {
   setPortalIdentity();
 
 }
-
 
 
 /* ============================================================
@@ -5127,7 +5495,6 @@ function configurePortalRole() {
     ]);
 
 
-
   if(
     role ===
     "faculty"
@@ -5138,7 +5505,6 @@ function configurePortalRole() {
     );
 
   }
-
 
 
   if(
@@ -5161,7 +5527,6 @@ function configurePortalRole() {
   }
 
 
-
   if(
     role ===
     "institution"
@@ -5181,7 +5546,6 @@ function configurePortalRole() {
   }
 
 
-
   if(
     role ===
     "admin"
@@ -5192,7 +5556,6 @@ function configurePortalRole() {
     );
 
   }
-
 
 
   if(
@@ -5217,7 +5580,6 @@ function configurePortalRole() {
   }
 
 
-
   document
     .querySelectorAll(
       ".portal-nav-button"
@@ -5238,14 +5600,14 @@ function configurePortalRole() {
     );
 
 
-
   let title =
-    roleLabel(role);
+    roleLabel(
+      role
+    );
 
 
   let copy =
     "Authorized RizSim portal access.";
-
 
 
   if(
@@ -5258,10 +5620,9 @@ function configurePortalRole() {
 
 
     copy =
-      "Standard Faculty Access. Browse and purchase simulations, run authorized learning experiences and review activity within your own Faculty scope.";
+      "Standard Faculty Access. Purchase and operate authorized simulations and review learning activity within your Faculty scope.";
 
   }
-
 
 
   if(
@@ -5274,10 +5635,9 @@ function configurePortalRole() {
 
 
     copy =
-      "Premium Faculty Access with Courses, multiple classes, learning materials and combined course/class/simulation management.";
+      "Premium Faculty Access with course structures, multiple classes, learning materials and combined course/class/simulation management.";
 
   }
-
 
 
   if(
@@ -5290,10 +5650,9 @@ function configurePortalRole() {
 
 
     copy =
-      "Institution-level access within the scope assigned by the RizSim Owner. Approved institution faculty can share that authorized access.";
+      "Institution-level access within the scope assigned by the RizSim Owner. Request Faculty associations and manage institution learning activity.";
 
   }
-
 
 
   if(
@@ -5306,10 +5665,9 @@ function configurePortalRole() {
 
 
     copy =
-      "Operational and content administration. User approval, elevated roles and access-control decisions remain Owner-controlled.";
+      "Operational and content administration. User approval and access-control decisions remain Owner-controlled.";
 
   }
-
 
 
   if(
@@ -5322,10 +5680,9 @@ function configurePortalRole() {
 
 
     copy =
-      "Complete platform authority including institutions, elevated roles, access scopes, entitlements and platform administration.";
+      "Complete platform authority including institutions, elevated roles, Faculty association approvals, access scopes and platform administration.";
 
   }
-
 
 
   document.getElementById(
@@ -5348,7 +5705,9 @@ function configurePortalRole() {
 
       ? "Premium Faculty"
 
-      : roleLabel(role);
+      : roleLabel(
+          role
+        );
 
 
   document.getElementById(
@@ -5359,14 +5718,15 @@ function configurePortalRole() {
 
       ? "Course Lead · Premium Faculty"
 
-      : roleLabel(role);
+      : roleLabel(
+          role
+        );
 
 }
 
 
-
 /* ============================================================
-   PORTAL IDENTITY
+   IDENTITY
 ============================================================ */
 
 function setPortalIdentity() {
@@ -5447,7 +5807,9 @@ function setPortalIdentity() {
     "accountAccess"
   ).textContent =
     currentMembership.active
+
       ? "Active"
+
       : "Disabled";
 
 
@@ -5461,7 +5823,6 @@ function setPortalIdentity() {
 }
 
 
-
 /* ============================================================
    LOAD PORTAL DATA
 ============================================================ */
@@ -5469,7 +5830,6 @@ function setPortalIdentity() {
 async function loadPortalData() {
 
   showLoading();
-
 
 
   const categoryResult =
@@ -5485,7 +5845,8 @@ async function loadPortalData() {
       .order(
         "name",
         {
-          ascending:true
+          ascending:
+            true
         }
       );
 
@@ -5494,7 +5855,6 @@ async function loadPortalData() {
     categoryResult.data
     ||
     [];
-
 
 
   const productResult =
@@ -5510,7 +5870,8 @@ async function loadPortalData() {
       .order(
         "created_at",
         {
-          ascending:false
+          ascending:
+            false
         }
       );
 
@@ -5519,7 +5880,6 @@ async function loadPortalData() {
     productResult.data
     ||
     [];
-
 
 
   const submissionResult =
@@ -5541,162 +5901,472 @@ async function loadPortalData() {
         );
 
 
-
-  ownerProfiles =
-    [];
-
-
-  ownerMembers =
-    [];
-
-
-  ownerInstitutions =
-    [];
-
-
-  ownerInstitutionMembers =
-    [];
-
-
-
   if(
     currentMembership.role ===
     "owner"
   ) {
 
-    const ownerResults =
-
-      await Promise.all([
-
-
-        supabase
-
-          .from(
-            "profiles"
-          )
-
-          .select(`
-            id,
-            display_name,
-            email,
-            account_status,
-            created_at
-          `)
-
-          .order(
-            "created_at",
-            {
-              ascending:false
-            }
-          ),
-
-
-        supabase
-
-          .from(
-            "access_out_members"
-          )
-
-          .select(`
-            user_id,
-            role,
-            active,
-            created_at
-          `)
-
-          .order(
-            "created_at",
-            {
-              ascending:false
-            }
-          ),
-
-
-        supabase
-
-          .from(
-            "institutions"
-          )
-
-          .select(`
-            id,
-            name,
-            slug,
-            active,
-            created_by,
-            created_at,
-            updated_at
-          `)
-
-          .order(
-            "name",
-            {
-              ascending:true
-            }
-          ),
-
-
-        supabase
-
-          .from(
-            "institution_members"
-          )
-
-          .select(`
-            institution_id,
-            user_id,
-            member_type,
-            active,
-            approved_by,
-            approved_at,
-            created_at
-          `)
-
-          .order(
-            "created_at",
-            {
-              ascending:false
-            }
-          )
-
-
-      ]);
-
-
-
-    ownerProfiles =
-      ownerResults[0].data
-      ||
-      [];
-
-
-    ownerMembers =
-      ownerResults[1].data
-      ||
-      [];
-
-
-    ownerInstitutions =
-      ownerResults[2].data
-      ||
-      [];
-
-
-    ownerInstitutionMembers =
-      ownerResults[3].data
-      ||
-      [];
+    await loadOwnerData();
 
   }
 
 
+  if(
+    currentMembership.role ===
+    "institution"
+  ) {
+
+    await loadInstitutionData();
+
+  }
+
 
   renderPortal();
+
 
   hideLoading();
 
 }
 
+
+/* ============================================================
+   OWNER DATA
+============================================================ */
+
+async function loadOwnerData() {
+
+  const results =
+
+    await Promise.all([
+
+
+      supabase
+
+        .from(
+          "profiles"
+        )
+
+        .select(`
+          id,
+          display_name,
+          email,
+          account_status,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "access_out_members"
+        )
+
+        .select(`
+          user_id,
+          role,
+          active,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "institutions"
+        )
+
+        .select(`
+          id,
+          name,
+          slug,
+          active,
+          created_by,
+          created_at,
+          updated_at
+        `)
+
+        .order(
+          "name",
+          {
+            ascending:
+              true
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "institution_members"
+        )
+
+        .select(`
+          institution_id,
+          user_id,
+          member_type,
+          active,
+          approved_by,
+          approved_at,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "institution_faculty_requests"
+        )
+
+        .select(`
+          id,
+          institution_id,
+          requested_by,
+          faculty_email,
+          faculty_name,
+          request_note,
+          status,
+          matched_user_id,
+          reviewed_by,
+          reviewed_at,
+          decision_note,
+          created_at,
+          updated_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        )
+
+
+    ]);
+
+
+  ownerProfiles =
+    results[0].data
+    ||
+    [];
+
+
+  ownerMembers =
+    results[1].data
+    ||
+    [];
+
+
+  ownerInstitutions =
+    results[2].data
+    ||
+    [];
+
+
+  ownerInstitutionMembers =
+    results[3].data
+    ||
+    [];
+
+
+  ownerFacultyRequests =
+    results[4].data
+    ||
+    [];
+
+}
+
+
+/* ============================================================
+   INSTITUTION DATA
+============================================================ */
+
+async function loadInstitutionData() {
+
+  const membershipResult =
+
+    await supabase
+
+      .from(
+        "institution_members"
+      )
+
+      .select(`
+        institution_id,
+        user_id,
+        member_type,
+        active,
+        approved_at
+      `)
+
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+
+      .eq(
+        "member_type",
+        "institution_admin"
+      )
+
+      .eq(
+        "active",
+        true
+      );
+
+
+  institutionMemberships =
+    membershipResult.data
+    ||
+    [];
+
+
+  const institutionResult =
+
+    await supabase
+
+      .from(
+        "institutions"
+      )
+
+      .select(`
+        id,
+        name,
+        slug,
+        active,
+        created_at
+      `)
+
+      .order(
+        "name",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  const permittedIds =
+    new Set(
+      institutionMemberships.map(
+        item =>
+          item.institution_id
+      )
+    );
+
+
+  institutionList =
+    (
+      institutionResult.data
+      ||
+      []
+    )
+    .filter(
+      item =>
+        permittedIds.has(
+          item.id
+        )
+    );
+
+
+  if(
+    !selectedInstitutionId
+    &&
+    institutionList.length
+  ) {
+
+    selectedInstitutionId =
+      institutionList[0].id;
+
+  }
+
+
+  await loadSelectedInstitutionData();
+
+}
+
+
+/* ============================================================
+   SELECTED INSTITUTION DATA
+============================================================ */
+
+async function loadSelectedInstitutionData() {
+
+  institutionMembers =
+    [];
+
+
+  institutionRequests =
+    [];
+
+
+  institutionProfiles =
+    [];
+
+
+  if(
+    !selectedInstitutionId
+  ) {
+
+    return;
+
+  }
+
+
+  const results =
+
+    await Promise.all([
+
+
+      supabase
+
+        .from(
+          "institution_members"
+        )
+
+        .select(`
+          institution_id,
+          user_id,
+          member_type,
+          active,
+          approved_at,
+          created_at
+        `)
+
+        .eq(
+          "institution_id",
+          selectedInstitutionId
+        ),
+
+
+      supabase
+
+        .from(
+          "institution_faculty_requests"
+        )
+
+        .select(`
+          id,
+          institution_id,
+          requested_by,
+          faculty_email,
+          faculty_name,
+          request_note,
+          status,
+          matched_user_id,
+          reviewed_by,
+          reviewed_at,
+          decision_note,
+          created_at
+        `)
+
+        .eq(
+          "institution_id",
+          selectedInstitutionId
+        )
+
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        )
+
+
+    ]);
+
+
+  institutionMembers =
+    results[0].data
+    ||
+    [];
+
+
+  institutionRequests =
+    results[1].data
+    ||
+    [];
+
+
+  /*
+     Try to load linked Faculty identity details.
+     If profile RLS does not expose them, the interface
+     falls back safely to approved request data.
+  */
+
+  const facultyIds =
+
+    institutionMembers
+
+      .filter(
+        member =>
+          member.member_type ===
+          "faculty"
+      )
+
+      .map(
+        member =>
+          member.user_id
+      );
+
+
+  if(
+    facultyIds.length
+  ) {
+
+    const profilesResult =
+
+      await supabase
+
+        .from(
+          "profiles"
+        )
+
+        .select(`
+          id,
+          display_name,
+          email
+        `)
+
+        .in(
+          "id",
+          facultyIds
+        );
+
+
+    institutionProfiles =
+      profilesResult.data
+      ||
+      [];
+
+  }
+
+}
 
 
 /* ============================================================
@@ -5713,8 +6383,9 @@ function renderPortal() {
 
   renderAdministration();
 
-}
+  renderInstitutionWorkspace();
 
+}
 
 
 /* ============================================================
@@ -5740,7 +6411,6 @@ function renderHome() {
           item.student_user_id
       )
     ).size;
-
 
 
   const metrics = [
@@ -5779,7 +6449,6 @@ function renderHome() {
   ];
 
 
-
   document.getElementById(
     "portalMetrics"
   ).innerHTML =
@@ -5814,8 +6483,8 @@ function renderHome() {
         </div>
 
       `
-    ).join("");
-
+    )
+    .join("");
 
 
   const recent =
@@ -5823,7 +6492,6 @@ function renderHome() {
       0,
       4
     );
-
 
 
   if(
@@ -5860,7 +6528,6 @@ function renderHome() {
   }
 
 
-
   document.getElementById(
     "homeRecentActivity"
   ).innerHTML =
@@ -5895,24 +6562,28 @@ function renderHome() {
               font-size:.67rem;
             "
           >
+
             ${escapeHTML(
               item.simulation_title
             )}
+
             ·
+
             ${escapeHTML(
               formatDate(
                 item.submitted_at
               )
             )}
+
           </span>
 
         </div>
 
       `
-    ).join("");
+    )
+    .join("");
 
 }
-
 
 
 /* ============================================================
@@ -5928,7 +6599,6 @@ function renderSimulations() {
         item.product_type ===
         "simulation"
     );
-
 
 
   if(
@@ -5950,11 +6620,6 @@ function renderSimulations() {
           No simulations available
         </strong>
 
-        <p>
-          RizSim simulations visible to this account
-          will appear here.
-        </p>
-
       </div>
 
     `;
@@ -5963,7 +6628,6 @@ function renderSimulations() {
     return;
 
   }
-
 
 
   document.getElementById(
@@ -5985,13 +6649,11 @@ function renderSimulations() {
 
           </span>
 
-
           <h3>
             ${escapeHTML(
               product.title
             )}
           </h3>
-
 
           <p>
 
@@ -6005,7 +6667,6 @@ function renderSimulations() {
 
           </p>
 
-
           <div class="portal-card-footer">
 
             <span
@@ -6018,13 +6679,14 @@ function renderSimulations() {
                   : "muted"
               }"
             >
+
               ${escapeHTML(
                 product.status
                 ||
                 "Available"
               )}
-            </span>
 
+            </span>
 
             <a
               class="small-action"
@@ -6043,10 +6705,10 @@ function renderSimulations() {
         </article>
 
       `
-    ).join("");
+    )
+    .join("");
 
 }
-
 
 
 /* ============================================================
@@ -6069,7 +6731,6 @@ function renderResults() {
     " submission(s)";
 
 
-
   if(
     submissions.length ===
     0
@@ -6087,7 +6748,8 @@ function renderResults() {
             color:#7a8d97;
           "
         >
-          No submissions are currently visible within this account's scope.
+          No submissions are currently visible
+          within this account's scope.
         </td>
 
       </tr>
@@ -6100,7 +6762,6 @@ function renderResults() {
   }
 
 
-
   body.innerHTML =
 
     submissions.map(
@@ -6109,15 +6770,12 @@ function renderResults() {
         <tr>
 
           <td>
-
             <div class="table-primary">
               ${escapeHTML(
                 item.student_name
               )}
             </div>
-
           </td>
-
 
           <td>
 
@@ -6137,8 +6795,8 @@ function renderResults() {
 
           </td>
 
-
           <td>
+
             ${
               Number(
                 item.progress_percent
@@ -6146,17 +6804,18 @@ function renderResults() {
                 0
               ).toFixed(0)
             }%
+
           </td>
 
-
           <td>
+
             ${escapeHTML(
               formatDate(
                 item.submitted_at
               )
             )}
-          </td>
 
+          </td>
 
           <td>
 
@@ -6177,10 +6836,545 @@ function renderResults() {
         </tr>
 
       `
-    ).join("");
+    )
+    .join("");
 
 }
 
+
+/* ============================================================
+   INSTITUTION WORKSPACE
+============================================================ */
+
+function renderInstitutionWorkspace() {
+
+  if(
+    currentMembership.role !==
+    "institution"
+  ) {
+
+    return;
+
+  }
+
+
+  const select =
+    document.getElementById(
+      "institutionWorkspaceSelect"
+    );
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Select institution
+    </option>
+
+    ${
+      institutionList.map(
+        institution => `
+
+          <option
+            value="${escapeHTML(
+              institution.id
+            )}"
+            ${
+              selectedInstitutionId ===
+              institution.id
+
+                ? "selected"
+
+                : ""
+            }
+          >
+
+            ${escapeHTML(
+              institution.name
+            )}
+
+          </option>
+
+        `
+      )
+      .join("")
+    }
+
+  `;
+
+
+  document.getElementById(
+    "submitInstitutionFacultyRequest"
+  ).disabled =
+    !selectedInstitutionId;
+
+
+  renderInstitutionFaculty();
+
+  renderInstitutionRequests();
+
+}
+
+
+/* ============================================================
+   CURRENT INSTITUTION FACULTY
+============================================================ */
+
+function renderInstitutionFaculty() {
+
+  const tbody =
+    document.getElementById(
+      "institutionFacultyRows"
+    );
+
+
+  const faculty =
+    institutionMembers.filter(
+      member =>
+        member.member_type ===
+        "faculty"
+
+        &&
+        member.active ===
+        true
+    );
+
+
+  if(
+    faculty.length ===
+    0
+  ) {
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="3"
+          style="
+            padding:32px;
+            text-align:center;
+            color:#7a8d97;
+          "
+        >
+          No Faculty members are currently associated
+          with this institution.
+        </td>
+
+      </tr>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+
+    faculty.map(
+      member => {
+
+
+        const profile =
+          getInstitutionProfile(
+            member.user_id
+          );
+
+
+        const request =
+
+          institutionRequests.find(
+            item =>
+              item.matched_user_id ===
+              member.user_id
+
+              &&
+              item.status ===
+              "approved"
+          );
+
+
+        const name =
+          profile?.display_name
+          ||
+          request?.faculty_name
+          ||
+          "Faculty Member";
+
+
+        const email =
+          profile?.email
+          ||
+          request?.faculty_email
+          ||
+          "—";
+
+
+        return `
+
+          <tr>
+
+            <td>
+
+              <div class="table-primary">
+                ${escapeHTML(name)}
+              </div>
+
+            </td>
+
+            <td>
+
+              ${escapeHTML(email)}
+
+            </td>
+
+            <td>
+
+              <span class="status-badge approved">
+                Approved
+              </span>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* ============================================================
+   INSTITUTION REQUEST HISTORY
+============================================================ */
+
+function renderInstitutionRequests() {
+
+  const tbody =
+    document.getElementById(
+      "institutionRequestRows"
+    );
+
+
+  if(
+    institutionRequests.length ===
+    0
+  ) {
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="4"
+          style="
+            padding:32px;
+            text-align:center;
+            color:#7a8d97;
+          "
+        >
+          No Faculty association requests have been submitted.
+        </td>
+
+      </tr>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+
+    institutionRequests.map(
+      request => `
+
+        <tr>
+
+          <td>
+
+            <div class="table-primary">
+
+              ${escapeHTML(
+                request.faculty_name
+                ||
+                "Faculty"
+              )}
+
+            </div>
+
+            <div class="table-secondary">
+
+              ${escapeHTML(
+                request.faculty_email
+              )}
+
+            </div>
+
+          </td>
+
+          <td>
+
+            ${escapeHTML(
+              formatDate(
+                request.created_at
+              )
+            )}
+
+          </td>
+
+          <td>
+
+            <span
+              class="status-badge ${
+                escapeHTML(
+                  request.status
+                )
+              }"
+            >
+
+              ${escapeHTML(
+                request.status
+              )}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            ${
+              request.decision_note
+
+                ? escapeHTML(
+                    request.decision_note
+                  )
+
+                : (
+                    request.status ===
+                    "pending"
+
+                      ? "Awaiting Owner review"
+
+                      : "—"
+                  )
+            }
+
+          </td>
+
+        </tr>
+
+      `
+    )
+    .join("");
+
+}
+
+
+/* ============================================================
+   SUBMIT INSTITUTION FACULTY REQUEST
+============================================================ */
+
+async function submitInstitutionFacultyRequest() {
+
+  if(
+    currentMembership.role !==
+    "institution"
+  ) {
+
+    return;
+
+  }
+
+
+  const name =
+    document
+      .getElementById(
+        "institutionFacultyName"
+      )
+      .value
+      .trim();
+
+
+  const email =
+    document
+      .getElementById(
+        "institutionFacultyEmail"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const note =
+    document
+      .getElementById(
+        "institutionFacultyNote"
+      )
+      .value
+      .trim();
+
+
+  const button =
+    document.getElementById(
+      "submitInstitutionFacultyRequest"
+    );
+
+
+  setManagementMessage(
+    "institutionRequestMessage",
+    ""
+  );
+
+
+  if(
+    !selectedInstitutionId
+  ) {
+
+    setManagementMessage(
+      "institutionRequestMessage",
+      "Select an institution.",
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    !name
+  ) {
+
+    setManagementMessage(
+      "institutionRequestMessage",
+      "Enter the Faculty member's name.",
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    !email
+    ||
+    !email.includes("@")
+  ) {
+
+    setManagementMessage(
+      "institutionRequestMessage",
+      "Enter a valid Faculty email address.",
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "Submitting…";
+
+
+  showLoading();
+
+
+  const {
+    error
+  } =
+
+    await supabase.rpc(
+      "submit_institution_faculty_request",
+      {
+
+        p_institution_id:
+          selectedInstitutionId,
+
+        p_faculty_email:
+          email,
+
+        p_faculty_name:
+          name,
+
+        p_request_note:
+          note
+          ||
+          null
+
+      }
+    );
+
+
+  hideLoading();
+
+
+  button.disabled =
+    false;
+
+
+  button.textContent =
+    "Submit Faculty Request";
+
+
+  if(error) {
+
+    setManagementMessage(
+      "institutionRequestMessage",
+      error.message,
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "institutionFacultyName"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "institutionFacultyEmail"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "institutionFacultyNote"
+  ).value =
+    "";
+
+
+  setManagementMessage(
+    "institutionRequestMessage",
+    "Faculty request submitted to the RizSim Owner."
+  );
+
+
+  await loadSelectedInstitutionData();
+
+
+  renderInstitutionWorkspace();
+
+}
 
 
 /* ============================================================
@@ -6199,17 +7393,14 @@ function renderOwnerInstitutionManagement() {
   }
 
 
-
-  const panel =
-    document.getElementById(
+  document
+    .getElementById(
       "ownerInstitutionPanel"
+    )
+    .classList
+    .remove(
+      "hidden"
     );
-
-
-  panel.classList.remove(
-    "hidden"
-  );
-
 
 
   const select =
@@ -6240,37 +7431,33 @@ function renderOwnerInstitutionManagement() {
 
             ${
               institution.active
+
                 ? ""
+
                 : " — Inactive"
             }
 
           </option>
 
         `
-      ).join("")
+      )
+      .join("")
     }
 
   `;
 
 
-
-  const assignButton =
-    document.getElementById(
-      "assignInstitutionButton"
-    );
-
-
-  assignButton.disabled =
+  document.getElementById(
+    "assignInstitutionButton"
+  ).disabled =
     ownerInstitutions.length ===
     0;
-
 
 
   const tbody =
     document.getElementById(
       "institutionRows"
     );
-
 
 
   if(
@@ -6303,7 +7490,6 @@ function renderOwnerInstitutionManagement() {
   }
 
 
-
   tbody.innerHTML =
 
     ownerInstitutions.map(
@@ -6312,110 +7498,90 @@ function renderOwnerInstitutionManagement() {
 
         const institutionAdmins =
 
-          ownerInstitutionMembers
-            .filter(
-              member =>
-                member.institution_id ===
-                  institution.id
+          ownerInstitutionMembers.filter(
+            member =>
+              member.institution_id ===
+              institution.id
 
-                &&
-                member.member_type ===
-                  "institution_admin"
+              &&
+              member.member_type ===
+              "institution_admin"
 
-                &&
-                member.active ===
-                  true
-            );
+              &&
+              member.active ===
+              true
+          );
 
 
         const institutionFaculty =
 
-          ownerInstitutionMembers
-            .filter(
-              member =>
-                member.institution_id ===
-                  institution.id
+          ownerInstitutionMembers.filter(
+            member =>
+              member.institution_id ===
+              institution.id
 
-                &&
-                member.member_type ===
-                  "faculty"
+              &&
+              member.member_type ===
+              "faculty"
 
-                &&
-                member.active ===
-                  true
-            );
-
-
-        let adminHTML = `
-
-          <span
-            style="
-              color:#8a9aa2;
-              font-size:.62rem;
-            "
-          >
-            Not assigned
-          </span>
-
-        `;
+              &&
+              member.active ===
+              true
+          );
 
 
-        if(
+        const adminHTML =
+
           institutionAdmins.length
-        ) {
 
-          adminHTML = `
+            ? institutionAdmins.map(
+                member => {
 
-            <div class="institution-admin-list">
-
-              ${
-                institutionAdmins.map(
-                  member => {
-
-                    const profile =
-                      getOwnerProfile(
-                        member.user_id
-                      );
+                  const profile =
+                    getOwnerProfile(
+                      member.user_id
+                    );
 
 
-                    return `
+                  return `
 
-                      <div>
+                    <div>
 
-                        <div class="institution-admin-name">
+                      <div class="table-primary">
 
-                          ${escapeHTML(
-                            profile?.display_name
-                            ||
-                            "RizSim User"
-                          )}
-
-                        </div>
-
-                        <div class="institution-admin-email">
-
-                          ${escapeHTML(
-                            profile?.email
-                            ||
-                            ""
-                          )}
-
-                        </div>
+                        ${escapeHTML(
+                          profile?.display_name
+                          ||
+                          "Institution Account"
+                        )}
 
                       </div>
 
-                    `;
+                      <div class="table-secondary">
 
-                  }
-                ).join("")
-              }
+                        ${escapeHTML(
+                          profile?.email
+                          ||
+                          ""
+                        )}
 
-            </div>
+                      </div>
 
-          `;
+                    </div>
 
-        }
+                  `;
 
+                }
+              )
+              .join("")
+
+            : `
+
+                <span class="table-secondary">
+                  Not assigned
+                </span>
+
+              `;
 
 
         return `
@@ -6424,7 +7590,7 @@ function renderOwnerInstitutionManagement() {
 
             <td>
 
-              <div class="institution-name">
+              <div class="table-primary">
 
                 ${escapeHTML(
                   institution.name
@@ -6432,7 +7598,7 @@ function renderOwnerInstitutionManagement() {
 
               </div>
 
-              <div class="institution-slug">
+              <div class="table-secondary">
 
                 ${escapeHTML(
                   institution.slug
@@ -6442,31 +7608,20 @@ function renderOwnerInstitutionManagement() {
 
             </td>
 
-
             <td>
-
               ${adminHTML}
-
             </td>
-
 
             <td>
-
-              <span class="institution-faculty-count">
-
-                ${institutionFaculty.length}
-
-              </span>
-
+              ${institutionFaculty.length}
             </td>
-
 
             <td>
 
               <span
                 class="status-badge ${
                   institution.active
-                    ? ""
+                    ? "approved"
                     : "muted"
                 }"
               >
@@ -6481,14 +7636,13 @@ function renderOwnerInstitutionManagement() {
 
             </td>
 
-
             <td>
 
               <button
                 class="small-action ${
                   institution.active
                     ? "danger"
-                    : "activate"
+                    : "primary-action"
                 }"
                 type="button"
                 data-institution-toggle="${
@@ -6518,10 +7672,536 @@ function renderOwnerInstitutionManagement() {
         `;
 
       }
-    ).join("");
+    )
+    .join("");
 
 }
 
+
+/* ============================================================
+   OWNER FACULTY REQUEST QUEUE
+============================================================ */
+
+function renderOwnerFacultyRequests() {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      "ownerFacultyRequestPanel"
+    )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  const pendingCount =
+
+    ownerFacultyRequests.filter(
+      item =>
+        item.status ===
+        "pending"
+    ).length;
+
+
+  document.getElementById(
+    "ownerRequestCount"
+  ).textContent =
+    pendingCount
+    +
+    " pending request(s)";
+
+
+  const tbody =
+    document.getElementById(
+      "ownerFacultyRequestRows"
+    );
+
+
+  if(
+    ownerFacultyRequests.length ===
+    0
+  ) {
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="5"
+          style="
+            padding:35px;
+            text-align:center;
+            color:#7a8d97;
+          "
+        >
+          No institution Faculty requests yet.
+        </td>
+
+      </tr>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+
+    ownerFacultyRequests.map(
+      request => {
+
+
+        const requester =
+          getOwnerProfile(
+            request.requested_by
+          );
+
+
+        const institution =
+          ownerInstitutions.find(
+            item =>
+              item.id ===
+              request.institution_id
+          );
+
+
+        return `
+
+          <tr>
+
+            <td>
+
+              <div class="table-primary">
+
+                ${escapeHTML(
+                  institution?.name
+                  ||
+                  "Institution"
+                )}
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="table-primary">
+
+                ${escapeHTML(
+                  request.faculty_name
+                  ||
+                  "Faculty"
+                )}
+
+              </div>
+
+              <div class="table-secondary">
+
+                ${escapeHTML(
+                  request.faculty_email
+                )}
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="table-primary">
+
+                ${escapeHTML(
+                  requester?.display_name
+                  ||
+                  "Institution Account"
+                )}
+
+              </div>
+
+              <div class="table-secondary">
+
+                ${escapeHTML(
+                  requester?.email
+                  ||
+                  ""
+                )}
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge ${
+                  escapeHTML(
+                    request.status
+                  )
+                }"
+              >
+
+                ${escapeHTML(
+                  request.status
+                )}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              ${
+                request.status ===
+                "pending"
+
+                  ? `
+
+                      <button
+                        class="small-action primary-action"
+                        type="button"
+                        data-review-request="${
+                          escapeHTML(
+                            request.id
+                          )
+                        }"
+                      >
+                        Review
+                      </button>
+
+                    `
+
+                  : `
+
+                      <span class="table-secondary">
+
+                        ${escapeHTML(
+                          formatDate(
+                            request.reviewed_at
+                          )
+                        )}
+
+                      </span>
+
+                    `
+              }
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* ============================================================
+   OWNER REVIEW MODAL
+============================================================ */
+
+function openFacultyReview(
+  requestId
+) {
+
+  const request =
+    ownerFacultyRequests.find(
+      item =>
+        item.id ===
+        requestId
+    );
+
+
+  if(!request) {
+
+    return;
+
+  }
+
+
+  activeReviewRequestId =
+    request.id;
+
+
+  const institution =
+    ownerInstitutions.find(
+      item =>
+        item.id ===
+        request.institution_id
+    );
+
+
+  const requester =
+    getOwnerProfile(
+      request.requested_by
+    );
+
+
+  document.getElementById(
+    "reviewFacultyName"
+  ).textContent =
+    request.faculty_name
+    ||
+    "Faculty Member";
+
+
+  document.getElementById(
+    "reviewInstitution"
+  ).textContent =
+    institution?.name
+    ||
+    "Institution";
+
+
+  document.getElementById(
+    "reviewFacultyEmail"
+  ).textContent =
+    request.faculty_email;
+
+
+  document.getElementById(
+    "reviewRequestedBy"
+  ).textContent =
+    requester
+
+      ? (
+          requester.display_name
+          +
+          (
+            requester.email
+              ? " · " + requester.email
+              : ""
+          )
+        )
+
+      : "Institution Account";
+
+
+  document.getElementById(
+    "reviewCreatedAt"
+  ).textContent =
+    formatDate(
+      request.created_at
+    );
+
+
+  document.getElementById(
+    "reviewRequestNote"
+  ).textContent =
+    request.request_note
+    ||
+    "No additional context was provided.";
+
+
+  document.getElementById(
+    "reviewDecisionNote"
+  ).value =
+    "";
+
+
+  setManagementMessage(
+    "reviewDecisionMessage",
+    ""
+  );
+
+
+  document
+    .getElementById(
+      "facultyReviewModal"
+    )
+    .classList
+    .add(
+      "show"
+    );
+
+}
+
+
+/* ============================================================
+   REVIEW DECISION
+============================================================ */
+
+async function reviewFacultyRequest(
+  decision
+) {
+
+  if(
+    currentMembership.role !==
+    "owner"
+
+    ||
+    !activeReviewRequestId
+  ) {
+
+    return;
+
+  }
+
+
+  const decisionNote =
+    document
+      .getElementById(
+        "reviewDecisionNote"
+      )
+      .value
+      .trim();
+
+
+  const approveButton =
+    document.getElementById(
+      "approveFacultyRequest"
+    );
+
+
+  const rejectButton =
+    document.getElementById(
+      "rejectFacultyRequest"
+    );
+
+
+  approveButton.disabled =
+    true;
+
+
+  rejectButton.disabled =
+    true;
+
+
+  showLoading();
+
+
+  const {
+    data,
+    error
+  } =
+
+    await supabase.rpc(
+      "review_institution_faculty_request",
+      {
+
+        p_request_id:
+          activeReviewRequestId,
+
+        p_decision:
+          decision,
+
+        p_decision_note:
+          decisionNote
+          ||
+          null
+
+      }
+    );
+
+
+  hideLoading();
+
+
+  approveButton.disabled =
+    false;
+
+
+  rejectButton.disabled =
+    false;
+
+
+  if(error) {
+
+    setManagementMessage(
+      "reviewDecisionMessage",
+      error.message,
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  let message =
+
+    decision ===
+    "approved"
+
+      ? "Faculty association approved."
+
+      : "Faculty request rejected.";
+
+
+  if(
+    decision ===
+    "approved"
+
+    &&
+    Array.isArray(data)
+
+    &&
+    data.length
+
+    &&
+    !data[0].matched_user_id
+  ) {
+
+    message =
+      "Approved. The Faculty member will be linked automatically when this email signs into RizSim.";
+
+  }
+
+
+  setManagementMessage(
+    "reviewDecisionMessage",
+    message
+  );
+
+
+  await loadOwnerData();
+
+
+  renderAdministration();
+
+
+  window.setTimeout(
+    () => {
+
+      closeFacultyReview();
+
+    },
+    650
+  );
+
+}
+
+
+function closeFacultyReview() {
+
+  activeReviewRequestId =
+    null;
+
+
+  document
+    .getElementById(
+      "facultyReviewModal"
+    )
+    .classList
+    .remove(
+      "show"
+    );
+
+}
 
 
 /* ============================================================
@@ -6566,15 +8246,15 @@ async function createInstitution() {
     slugInput.value.trim();
 
 
-
   setManagementMessage(
     "createInstitutionMessage",
     ""
   );
 
 
-
-  if(!name) {
+  if(
+    !name
+  ) {
 
     setManagementMessage(
       "createInstitutionMessage",
@@ -6582,10 +8262,10 @@ async function createInstitution() {
       true
     );
 
+
     return;
 
   }
-
 
 
   button.disabled =
@@ -6597,7 +8277,6 @@ async function createInstitution() {
 
 
   showLoading();
-
 
 
   const {
@@ -6620,7 +8299,6 @@ async function createInstitution() {
     );
 
 
-
   hideLoading();
 
 
@@ -6632,7 +8310,6 @@ async function createInstitution() {
     "Create Institution";
 
 
-
   if(error) {
 
     setManagementMessage(
@@ -6641,10 +8318,10 @@ async function createInstitution() {
       true
     );
 
+
     return;
 
   }
-
 
 
   nameInput.value =
@@ -6661,11 +8338,12 @@ async function createInstitution() {
   );
 
 
+  await loadOwnerData();
 
-  await refreshOwnerInstitutionData();
+
+  renderAdministration();
 
 }
-
 
 
 /* ============================================================
@@ -6684,16 +8362,22 @@ async function assignInstitutionAccount() {
   }
 
 
-  const select =
-    document.getElementById(
-      "ownerInstitutionSelect"
-    );
+  const institutionId =
+    document
+      .getElementById(
+        "ownerInstitutionSelect"
+      )
+      .value;
 
 
-  const emailInput =
-    document.getElementById(
-      "ownerInstitutionAccountEmail"
-    );
+  const email =
+    document
+      .getElementById(
+        "ownerInstitutionAccountEmail"
+      )
+      .value
+      .trim()
+      .toLowerCase();
 
 
   const button =
@@ -6702,25 +8386,15 @@ async function assignInstitutionAccount() {
     );
 
 
-  const institutionId =
-    select.value;
-
-
-  const email =
-    emailInput.value
-      .trim()
-      .toLowerCase();
-
-
-
   setManagementMessage(
     "assignInstitutionMessage",
     ""
   );
 
 
-
-  if(!institutionId) {
+  if(
+    !institutionId
+  ) {
 
     setManagementMessage(
       "assignInstitutionMessage",
@@ -6728,10 +8402,10 @@ async function assignInstitutionAccount() {
       true
     );
 
+
     return;
 
   }
-
 
 
   if(
@@ -6746,10 +8420,10 @@ async function assignInstitutionAccount() {
       true
     );
 
+
     return;
 
   }
-
 
 
   button.disabled =
@@ -6761,7 +8435,6 @@ async function assignInstitutionAccount() {
 
 
   showLoading();
-
 
 
   const {
@@ -6782,7 +8455,6 @@ async function assignInstitutionAccount() {
     );
 
 
-
   hideLoading();
 
 
@@ -6794,7 +8466,6 @@ async function assignInstitutionAccount() {
     "Assign Institution Account";
 
 
-
   if(error) {
 
     setManagementMessage(
@@ -6803,13 +8474,15 @@ async function assignInstitutionAccount() {
       true
     );
 
+
     return;
 
   }
 
 
-
-  emailInput.value =
+  document.getElementById(
+    "ownerInstitutionAccountEmail"
+  ).value =
     "";
 
 
@@ -6819,19 +8492,16 @@ async function assignInstitutionAccount() {
   );
 
 
+  await loadOwnerData();
 
-  /*
-     Role changed, so refresh all Owner access data.
-  */
 
-  await refreshOwnerAccessData();
+  renderAdministration();
 
 }
 
 
-
 /* ============================================================
-   ACTIVATE / DEACTIVATE INSTITUTION
+   TOGGLE INSTITUTION
 ============================================================ */
 
 async function toggleInstitution(
@@ -6849,11 +8519,6 @@ async function toggleInstitution(
   }
 
 
-  const nextActive =
-    !currentlyActive;
-
-
-
   const institution =
     ownerInstitutions.find(
       item =>
@@ -6862,15 +8527,13 @@ async function toggleInstitution(
     );
 
 
-
-  const action =
-    nextActive
-      ? "activate"
-      : "deactivate";
+  const nextActive =
+    !currentlyActive;
 
 
   const confirmed =
     window.confirm(
+
       `${
         nextActive
           ? "Activate"
@@ -6880,20 +8543,20 @@ async function toggleInstitution(
         ||
         "this institution"
       }?`
+
     );
 
 
-
-  if(!confirmed) {
+  if(
+    !confirmed
+  ) {
 
     return;
 
   }
 
 
-
   showLoading();
-
 
 
   const {
@@ -6914,282 +8577,27 @@ async function toggleInstitution(
     );
 
 
-
   hideLoading();
-
 
 
   if(error) {
 
     window.alert(
       error.message
-      ||
-      `Could not ${action} the institution.`
     );
 
-    return;
-
-  }
-
-
-
-  await refreshOwnerInstitutionData();
-
-}
-
-
-
-/* ============================================================
-   REFRESH OWNER INSTITUTION DATA
-============================================================ */
-
-async function refreshOwnerInstitutionData() {
-
-  if(
-    currentMembership.role !==
-    "owner"
-  ) {
 
     return;
 
   }
 
 
-  showLoading();
-
-
-
-  const results =
-
-    await Promise.all([
-
-
-      supabase
-
-        .from(
-          "institutions"
-        )
-
-        .select(`
-          id,
-          name,
-          slug,
-          active,
-          created_by,
-          created_at,
-          updated_at
-        `)
-
-        .order(
-          "name",
-          {
-            ascending:true
-          }
-        ),
-
-
-      supabase
-
-        .from(
-          "institution_members"
-        )
-
-        .select(`
-          institution_id,
-          user_id,
-          member_type,
-          active,
-          approved_by,
-          approved_at,
-          created_at
-        `)
-
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        )
-
-
-    ]);
-
-
-
-  ownerInstitutions =
-    results[0].data
-    ||
-    [];
-
-
-  ownerInstitutionMembers =
-    results[1].data
-    ||
-    [];
-
+  await loadOwnerData();
 
 
   renderAdministration();
 
-
-  hideLoading();
-
 }
-
-
-
-/* ============================================================
-   REFRESH OWNER ACCESS DATA
-============================================================ */
-
-async function refreshOwnerAccessData() {
-
-  if(
-    currentMembership.role !==
-    "owner"
-  ) {
-
-    return;
-
-  }
-
-
-  showLoading();
-
-
-
-  const results =
-
-    await Promise.all([
-
-
-      supabase
-
-        .from(
-          "profiles"
-        )
-
-        .select(`
-          id,
-          display_name,
-          email,
-          account_status,
-          created_at
-        `)
-
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        ),
-
-
-      supabase
-
-        .from(
-          "access_out_members"
-        )
-
-        .select(`
-          user_id,
-          role,
-          active,
-          created_at
-        `)
-
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        ),
-
-
-      supabase
-
-        .from(
-          "institutions"
-        )
-
-        .select(`
-          id,
-          name,
-          slug,
-          active,
-          created_by,
-          created_at,
-          updated_at
-        `)
-
-        .order(
-          "name",
-          {
-            ascending:true
-          }
-        ),
-
-
-      supabase
-
-        .from(
-          "institution_members"
-        )
-
-        .select(`
-          institution_id,
-          user_id,
-          member_type,
-          active,
-          approved_by,
-          approved_at,
-          created_at
-        `)
-
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        )
-
-
-    ]);
-
-
-
-  ownerProfiles =
-    results[0].data
-    ||
-    [];
-
-
-  ownerMembers =
-    results[1].data
-    ||
-    [];
-
-
-  ownerInstitutions =
-    results[2].data
-    ||
-    [];
-
-
-  ownerInstitutionMembers =
-    results[3].data
-    ||
-    [];
-
-
-
-  renderAdministration();
-
-
-  hideLoading();
-
-}
-
 
 
 /* ============================================================
@@ -7202,10 +8610,10 @@ function renderAdministration() {
     currentMembership.role;
 
 
-
   if(
     role !==
     "owner"
+
     &&
     role !==
     "admin"
@@ -7216,7 +8624,6 @@ function renderAdministration() {
   }
 
 
-
   document.getElementById(
     "administrationDescription"
   ).textContent =
@@ -7224,10 +8631,9 @@ function renderAdministration() {
     role ===
     "owner"
 
-      ? "Owner-level platform visibility and access authority. Create institutions, assign institution accounts and manage elevated RizSim access."
+      ? "Owner-level platform visibility and access authority. Manage institutions and review Institution → Faculty association requests."
 
       : "Operational and content administration. Elevated roles and access decisions remain Owner-controlled.";
-
 
 
   const simulationsCount =
@@ -7248,6 +8654,14 @@ function renderAdministration() {
     ).length;
 
 
+  const pendingRequestCount =
+
+    ownerFacultyRequests.filter(
+      item =>
+        item.status ===
+        "pending"
+    ).length;
+
 
   const metrics =
     role ===
@@ -7262,15 +8676,15 @@ function renderAdministration() {
           ],
 
           [
-            "Portal Members",
-            ownerMembers.length,
-            "Membership records"
-          ],
-
-          [
             "Institutions",
             ownerInstitutions.length,
             "Institution records"
+          ],
+
+          [
+            "Faculty Requests",
+            pendingRequestCount,
+            "Awaiting review"
           ],
 
           [
@@ -7310,7 +8724,6 @@ function renderAdministration() {
         ];
 
 
-
   document.getElementById(
     "administrationMetrics"
   ).innerHTML =
@@ -7345,8 +8758,8 @@ function renderAdministration() {
         </div>
 
       `
-    ).join("");
-
+    )
+    .join("");
 
 
   if(
@@ -7359,17 +8772,19 @@ function renderAdministration() {
   }
 
 
-
   renderOwnerInstitutionManagement();
 
+  renderOwnerFacultyRequests();
 
 
-  document.getElementById(
-    "ownerMembershipPanel"
-  ).classList.remove(
-    "hidden"
-  );
-
+  document
+    .getElementById(
+      "ownerMembershipPanel"
+    )
+    .classList
+    .remove(
+      "hidden"
+    );
 
 
   document.getElementById(
@@ -7380,6 +8795,7 @@ function renderAdministration() {
 
       ? ownerMembers.map(
           member => {
+
 
             const profile =
               getOwnerProfile(
@@ -7415,10 +8831,10 @@ function renderAdministration() {
 
                 </td>
 
-
                 <td>
 
                   ${escapeHTML(
+
                     ACTIVE_PORTAL_ROLES.has(
                       member.role
                     )
@@ -7430,25 +8846,27 @@ function renderAdministration() {
                       : "Legacy: "
                         +
                         member.role
+
                   )}
 
                 </td>
-
 
                 <td>
 
                   <span
                     class="status-badge ${
                       member.active
-                        ? ""
+                        ? "approved"
                         : "muted"
                     }"
                   >
+
                     ${
                       member.active
                         ? "Active"
                         : "Disabled"
                     }
+
                   </span>
 
                 </td>
@@ -7458,29 +8876,29 @@ function renderAdministration() {
             `;
 
           }
-        ).join("")
+        )
+        .join("")
 
       : `
 
-        <tr>
+          <tr>
 
-          <td
-            colspan="3"
-            style="
-              padding:35px;
-              text-align:center;
-              color:#7a8d97;
-            "
-          >
-            No portal membership records found.
-          </td>
+            <td
+              colspan="3"
+              style="
+                padding:35px;
+                text-align:center;
+                color:#7a8d97;
+              "
+            >
+              No portal membership records found.
+            </td>
 
-        </tr>
+          </tr>
 
-      `;
+        `;
 
 }
-
 
 
 /* ============================================================
@@ -7499,13 +8917,16 @@ async function openResponses(
     );
 
 
-  if(!attempt) {
+  if(
+    !attempt
+  ) {
+
     return;
+
   }
 
 
   showLoading();
-
 
 
   const {
@@ -7534,13 +8955,13 @@ async function openResponses(
       .order(
         "question_key",
         {
-          ascending:true
+          ascending:
+            true
         }
       );
 
 
   hideLoading();
-
 
 
   if(error) {
@@ -7549,10 +8970,10 @@ async function openResponses(
       error.message
     );
 
+
     return;
 
   }
-
 
 
   document.getElementById(
@@ -7564,7 +8985,6 @@ async function openResponses(
     " — "
     +
     attempt.simulation_title;
-
 
 
   let html = `
@@ -7598,7 +9018,6 @@ async function openResponses(
   `;
 
 
-
   if(
     !data
     ||
@@ -7627,20 +9046,27 @@ async function openResponses(
       data.map(
         item => {
 
+
           const questionText =
             item.response_data
               ?.question_text
+
             ||
+
             item.question_key;
 
 
           const answerText =
             item.response_data
               ?.answer_text
+
             ??
+
             item.response_data
               ?.value
+
             ??
+
             JSON.stringify(
               item.response_data
             );
@@ -7651,9 +9077,11 @@ async function openResponses(
             <article class="response-item">
 
               <div class="response-question">
+
                 ${escapeHTML(
                   questionText
                 )}
+
               </div>
 
               <div class="response-answer-label">
@@ -7661,9 +9089,11 @@ async function openResponses(
               </div>
 
               <div class="response-answer">
+
                 ${escapeHTML(
                   answerText
                 )}
+
               </div>
 
             </article>
@@ -7671,10 +9101,10 @@ async function openResponses(
           `;
 
         }
-      ).join("");
+      )
+      .join("");
 
   }
-
 
 
   document.getElementById(
@@ -7683,21 +9113,25 @@ async function openResponses(
     html;
 
 
-  document.getElementById(
-    "responseModal"
-  ).classList.add(
-    "show"
-  );
+  document
+    .getElementById(
+      "responseModal"
+    )
+    .classList
+    .add(
+      "show"
+    );
 
 }
 
 
-
 /* ============================================================
-   PORTAL NAVIGATION
+   NAVIGATION
 ============================================================ */
 
-function activateView(view) {
+function activateView(
+  view
+) {
 
   document
     .querySelectorAll(
@@ -7744,12 +9178,14 @@ function activateView(view) {
 
 
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top:
+      0,
+
+    behavior:
+      "smooth"
   });
 
 }
-
 
 
 /* ============================================================
@@ -7768,7 +9204,6 @@ async function signOut() {
   );
 
 }
-
 
 
 /* ============================================================
@@ -7807,14 +9242,12 @@ document.getElementById(
 );
 
 
-
 document.getElementById(
   "createInstitutionButton"
 ).addEventListener(
   "click",
   createInstitution
 );
-
 
 
 document.getElementById(
@@ -7824,6 +9257,76 @@ document.getElementById(
   assignInstitutionAccount
 );
 
+
+document.getElementById(
+  "submitInstitutionFacultyRequest"
+).addEventListener(
+  "click",
+  submitInstitutionFacultyRequest
+);
+
+
+document.getElementById(
+  "institutionWorkspaceSelect"
+).addEventListener(
+  "change",
+  async event => {
+
+    selectedInstitutionId =
+      event.target.value
+      ||
+      null;
+
+
+    showLoading();
+
+
+    await loadSelectedInstitutionData();
+
+
+    renderInstitutionWorkspace();
+
+
+    hideLoading();
+
+  }
+);
+
+
+document.getElementById(
+  "facultyReviewClose"
+).addEventListener(
+  "click",
+  closeFacultyReview
+);
+
+
+document.getElementById(
+  "approveFacultyRequest"
+).addEventListener(
+  "click",
+  () => {
+
+    reviewFacultyRequest(
+      "approved"
+    );
+
+  }
+);
+
+
+document.getElementById(
+  "rejectFacultyRequest"
+).addEventListener(
+  "click",
+  () => {
+
+    reviewFacultyRequest(
+      "rejected"
+    );
+
+  }
+);
 
 
 document
@@ -7848,10 +9351,10 @@ document
   );
 
 
-
 document.addEventListener(
   "click",
   event => {
+
 
     const responseButton =
       event.target.closest(
@@ -7859,16 +9362,18 @@ document.addEventListener(
       );
 
 
-    if(responseButton) {
+    if(
+      responseButton
+    ) {
 
       openResponses(
         responseButton.dataset.attemptId
       );
 
+
       return;
 
     }
-
 
 
     const institutionToggle =
@@ -7877,22 +9382,40 @@ document.addEventListener(
       );
 
 
-    if(institutionToggle) {
-
-      const institutionId =
-        institutionToggle.dataset
-          .institutionToggle;
-
-
-      const currentlyActive =
-        institutionToggle.dataset
-          .currentActive ===
-          "true";
-
+    if(
+      institutionToggle
+    ) {
 
       toggleInstitution(
-        institutionId,
-        currentlyActive
+
+        institutionToggle.dataset
+          .institutionToggle,
+
+        institutionToggle.dataset
+          .currentActive ===
+          "true"
+
+      );
+
+
+      return;
+
+    }
+
+
+    const reviewButton =
+      event.target.closest(
+        "[data-review-request]"
+      );
+
+
+    if(
+      reviewButton
+    ) {
+
+      openFacultyReview(
+        reviewButton.dataset
+          .reviewRequest
       );
 
     }
@@ -7901,6 +9424,24 @@ document.addEventListener(
 );
 
 
+document.getElementById(
+  "facultyReviewModal"
+).addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target.id ===
+      "facultyReviewModal"
+    ) {
+
+      closeFacultyReview();
+
+    }
+
+  }
+);
+
 
 document.getElementById(
   "responseModalClose"
@@ -7908,15 +9449,17 @@ document.getElementById(
   "click",
   () => {
 
-    document.getElementById(
-      "responseModal"
-    ).classList.remove(
-      "show"
-    );
+    document
+      .getElementById(
+        "responseModal"
+      )
+      .classList
+      .remove(
+        "show"
+      );
 
   }
 );
-
 
 
 document.getElementById(
@@ -7931,7 +9474,8 @@ document.getElementById(
     ) {
 
       event.currentTarget
-        .classList.remove(
+        .classList
+        .remove(
           "show"
         );
 
@@ -7939,7 +9483,6 @@ document.getElementById(
 
   }
 );
-
 
 
 document.addEventListener(
@@ -7951,17 +9494,22 @@ document.addEventListener(
       "Escape"
     ) {
 
-      document.getElementById(
-        "responseModal"
-      ).classList.remove(
-        "show"
-      );
+      closeFacultyReview();
+
+
+      document
+        .getElementById(
+          "responseModal"
+        )
+        .classList
+        .remove(
+          "show"
+        );
 
     }
 
   }
 );
-
 
 
 /* ============================================================
