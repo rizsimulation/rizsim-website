@@ -1,0 +1,2111 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Contact RizSim for faculty, institutional and learning simulation enquiries."
+  >
+
+  <meta
+    name="theme-color"
+    content="#9fc9c6"
+  >
+
+  <title>
+    Contact | RizSim
+  </title>
+
+  <link
+    rel="icon"
+    href="rizsim-r.png"
+    type="image/png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site.css"
+  >
+
+
+  <style>
+
+    /* ========================================================
+       CONTACT HERO
+    ========================================================= */
+
+    .contact-hero {
+      position: relative;
+
+      overflow: hidden;
+
+      padding: 82px 0 88px;
+
+      background-color: #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+
+      border-bottom:
+        1px solid #e5edef;
+    }
+
+
+    .contact-hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 570px;
+      height: 570px;
+
+      right: -240px;
+      top: -210px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(24,184,176,.105),
+          transparent 68%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .contact-hero::after {
+      content: "";
+
+      position: absolute;
+
+      width: 400px;
+      height: 400px;
+
+      left: -210px;
+      bottom: -240px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(45,118,169,.05),
+          transparent 70%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .contact-hero-grid {
+      position: relative;
+
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns:
+        1.03fr .97fr;
+
+      gap: 78px;
+
+      align-items: center;
+    }
+
+
+    .contact-kicker {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      color: #158c89;
+
+      font-size: .72rem;
+
+      font-weight: 900;
+
+      letter-spacing: .10em;
+
+      text-transform: uppercase;
+    }
+
+
+    .contact-kicker::before {
+      content: "";
+
+      width: 30px;
+      height: 2px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #18b8b0,
+          #efc15b
+        );
+    }
+
+
+    .contact-hero h1 {
+      max-width: 720px;
+
+      margin:
+        20px 0 21px;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          3.5rem,
+          6.6vw,
+          5.8rem
+        );
+
+      line-height: .96;
+
+      letter-spacing: -.06em;
+    }
+
+
+    .contact-hero h1 span {
+      display: block;
+
+      color: #18b8b0;
+    }
+
+
+    .contact-hero-copy p {
+      max-width: 650px;
+
+      margin: 0;
+
+      color: #687d8a;
+
+      font-size: 1.06rem;
+
+      line-height: 1.8;
+    }
+
+
+
+    /* ========================================================
+       CONTACT CARD
+    ========================================================= */
+
+    .contact-card {
+      position: relative;
+
+      overflow: hidden;
+
+      padding: 31px;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 95% 10%,
+          rgba(67,219,210,.14),
+          transparent 34%
+        ),
+        linear-gradient(
+          145deg,
+          #071b2a,
+          #0c3c4c
+        );
+
+      border:
+        1px solid
+        rgba(67,211,202,.18);
+
+      border-radius: 27px;
+
+      box-shadow:
+        0 30px 68px
+        rgba(6,35,55,.17);
+    }
+
+
+    .contact-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 260px;
+      height: 260px;
+
+      right: -130px;
+      bottom: -140px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(80,225,214,.12),
+          transparent 69%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .contact-card-header {
+      position: relative;
+
+      z-index: 2;
+    }
+
+
+    .contact-card .micro-label {
+      color: #64d5ce;
+    }
+
+
+    .contact-card h2 {
+      margin:
+        10px 0 8px;
+
+      color: #ffffff;
+
+      font-size: 1.72rem;
+
+      letter-spacing: -.025em;
+    }
+
+
+    .contact-card-header > p {
+      margin: 0;
+
+      color: #9eb7c1;
+
+      font-size: .84rem;
+
+      line-height: 1.65;
+    }
+
+
+
+    /* ========================================================
+       CONTACT IDENTITY
+    ========================================================= */
+
+    .contact-identity {
+      position: relative;
+
+      z-index: 2;
+
+      margin-top: 27px;
+
+      padding: 19px;
+
+      display: grid;
+
+      grid-template-columns:
+        54px 1fr;
+
+      gap: 15px;
+
+      align-items: center;
+
+      background:
+        rgba(255,255,255,.055);
+
+      border:
+        1px solid
+        rgba(255,255,255,.075);
+
+      border-radius: 16px;
+    }
+
+
+    .contact-avatar {
+      width: 54px;
+      height: 54px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          145deg,
+          #5471cf,
+          #6f84dd
+        );
+
+      border:
+        1px solid
+        rgba(255,255,255,.20);
+
+      border-radius: 50%;
+
+      font-size: 1.38rem;
+
+      font-weight: 500;
+
+      box-shadow:
+        0 8px 22px
+        rgba(3,16,27,.18);
+    }
+
+
+    .contact-identity strong {
+      display: block;
+
+      color: #ffffff;
+
+      font-size: 1rem;
+    }
+
+
+    .contact-identity a {
+      display: inline-block;
+
+      margin-top: 3px;
+
+      color: #75ddd6;
+
+      font-size: .82rem;
+
+      word-break: break-word;
+
+      transition:
+        color .18s ease;
+    }
+
+
+    .contact-identity a:hover {
+      color: #ffffff;
+    }
+
+
+
+    /* ========================================================
+       CONTACT ACTIONS
+    ========================================================= */
+
+    .contact-card-actions {
+      position: relative;
+
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 9px;
+
+      margin-top: 17px;
+    }
+
+
+    .contact-email-button {
+      color: #061827;
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffffff,
+          #eaf8f6
+        );
+
+      border:
+        1px solid
+        rgba(255,255,255,.40);
+
+      box-shadow:
+        0 8px 21px
+        rgba(3,16,27,.12);
+    }
+
+
+    .contact-email-button:hover {
+      background: #ffffff;
+    }
+
+
+    .contact-copy-button {
+      color: #d4e8ea;
+
+      background:
+        rgba(255,255,255,.06);
+
+      border:
+        1px solid
+        rgba(255,255,255,.11);
+    }
+
+
+    .contact-copy-button:hover {
+      color: #ffffff;
+
+      background:
+        rgba(255,255,255,.10);
+    }
+
+
+    .copy-confirmation {
+      position: relative;
+
+      z-index: 2;
+
+      min-height: 20px;
+
+      margin-top: 10px;
+
+      color: #78ddd6;
+
+      font-size: .68rem;
+
+      text-align: center;
+
+      opacity: 0;
+
+      transform:
+        translateY(-3px);
+
+      transition:
+        opacity .2s ease,
+        transform .2s ease;
+    }
+
+
+    .copy-confirmation.is-visible {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+
+
+
+    /* ========================================================
+       ENQUIRY TYPES
+    ========================================================= */
+
+    .contact-options-section {
+      padding:
+        94px 0;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(248,251,251,.96),
+          rgba(255,255,255,.98)
+        );
+
+      border-bottom:
+        1px solid #e5edef;
+    }
+
+
+    .contact-options-heading {
+      display: grid;
+
+      grid-template-columns:
+        1fr .72fr;
+
+      gap: 70px;
+
+      align-items: end;
+
+      margin-bottom: 37px;
+    }
+
+
+    .contact-options-heading h2 {
+      margin:
+        9px 0 0;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.25rem,
+          4.1vw,
+          3.55rem
+        );
+
+      line-height: 1.05;
+
+      letter-spacing: -.047em;
+    }
+
+
+    .contact-options-heading p {
+      margin: 0;
+
+      color: #70838e;
+
+      line-height: 1.75;
+    }
+
+
+    .contact-options-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 18px;
+    }
+
+
+    .contact-option-card {
+      min-height: 245px;
+
+      padding: 25px;
+
+      background:
+        rgba(255,255,255,.98);
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 9px 27px
+        rgba(4,25,40,.045);
+
+      transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease;
+    }
+
+
+    .contact-option-card:hover {
+      transform:
+        translateY(-4px);
+
+      border-color:
+        rgba(24,184,176,.28);
+
+      box-shadow:
+        0 18px 40px
+        rgba(4,25,40,.085);
+    }
+
+
+    .contact-option-icon {
+      width: 48px;
+      height: 48px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          145deg,
+          #0a3143,
+          #0d6670
+        );
+
+      border-radius: 13px;
+    }
+
+
+    .contact-option-icon svg {
+      width: 23px;
+      height: 23px;
+    }
+
+
+    .contact-option-card h3 {
+      margin:
+        20px 0 8px;
+
+      color: #061827;
+
+      font-size: 1.08rem;
+    }
+
+
+    .contact-option-card p {
+      margin: 0;
+
+      color: #718590;
+
+      font-size: .82rem;
+
+      line-height: 1.68;
+    }
+
+
+
+    /* ========================================================
+       HOW TO GET STARTED
+    ========================================================= */
+
+    .contact-path-section {
+      padding:
+        94px 0;
+
+      background-color: #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+    }
+
+
+    .contact-path-layout {
+      display: grid;
+
+      grid-template-columns:
+        .88fr 1.12fr;
+
+      gap: 88px;
+
+      align-items: center;
+    }
+
+
+    .contact-path-copy h2 {
+      margin:
+        9px 0 15px;
+
+      color: #061827;
+
+      font-size:
+        clamp(
+          2.2rem,
+          4vw,
+          3.5rem
+        );
+
+      line-height: 1.06;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .contact-path-copy p {
+      margin: 0;
+
+      color: #6e818c;
+
+      line-height: 1.8;
+    }
+
+
+    .contact-path-list {
+      padding: 28px;
+
+      background:
+        rgba(255,255,255,.97);
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 22px;
+
+      box-shadow:
+        0 15px 40px
+        rgba(4,25,40,.065);
+    }
+
+
+    .contact-path-item {
+      display: grid;
+
+      grid-template-columns:
+        44px 1fr;
+
+      gap: 15px;
+
+      align-items: center;
+
+      padding: 17px 0;
+
+      border-bottom:
+        1px solid #e4edef;
+    }
+
+
+    .contact-path-item:first-child {
+      padding-top: 0;
+    }
+
+
+    .contact-path-item:last-child {
+      padding-bottom: 0;
+
+      border-bottom: 0;
+    }
+
+
+    .contact-path-number {
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #0b7e80;
+
+      background: #ecf8f7;
+
+      border:
+        1px solid
+        rgba(24,184,176,.14);
+
+      border-radius: 11px;
+
+      font-size: .68rem;
+
+      font-weight: 900;
+    }
+
+
+    .contact-path-item strong {
+      display: block;
+
+      color: #102f41;
+
+      font-size: .87rem;
+    }
+
+
+    .contact-path-item span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: #788b95;
+
+      font-size: .76rem;
+
+      line-height: 1.55;
+    }
+
+
+
+    /* ========================================================
+       CTA
+    ========================================================= */
+
+    .contact-cta {
+      padding:
+        10px 0 90px;
+
+      background-color:
+        #ffffff;
+
+      background-image:
+        var(--rizsim-texture);
+
+      background-size:
+        var(--rizsim-texture-size);
+    }
+
+
+    .contact-cta-panel {
+      padding:
+        39px 42px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 40px;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 85% 20%,
+          rgba(83,226,216,.15),
+          transparent 32%
+        ),
+        linear-gradient(
+          130deg,
+          #061827,
+          #0a3445
+        );
+
+      border-radius: 26px;
+
+      box-shadow:
+        0 24px 60px
+        rgba(4,25,40,.13);
+    }
+
+
+    .contact-cta-panel h2 {
+      margin:
+        7px 0;
+
+      color: #ffffff;
+    }
+
+
+    .contact-cta-panel p {
+      max-width: 630px;
+
+      margin: 0;
+
+      color: #bdd0d8;
+    }
+
+
+
+    /* ========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1000px) {
+
+      .contact-hero-grid,
+      .contact-options-heading,
+      .contact-path-layout {
+        grid-template-columns: 1fr;
+      }
+
+
+      .contact-options-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .contact-hero {
+        padding:
+          57px 0 65px;
+      }
+
+
+      .contact-hero h1 {
+        font-size:
+          clamp(
+            3rem,
+            14vw,
+            4.8rem
+          );
+      }
+
+
+      .contact-card-actions {
+        grid-template-columns: 1fr;
+      }
+
+
+      .contact-cta-panel {
+        flex-direction: column;
+
+        align-items: flex-start;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body data-page="contact">
+
+
+  <!-- ========================================================
+       NAVIGATION
+  ========================================================= -->
+
+  <header class="site-header">
+
+    <div class="nav-glow"></div>
+
+
+    <div class="nav-shell">
+
+
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        type="button"
+        aria-label="Open sidebar"
+        aria-expanded="false"
+        aria-controls="siteSidebar"
+        data-swipe-block
+      >
+
+        <span class="sidebar-toggle-icon">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </span>
+
+      </button>
+
+
+
+      <a
+        class="nav-logo-link"
+        href="index.html"
+        data-page-link
+        aria-label="RizSim Home"
+      >
+
+        <img
+          class="nav-logo"
+          src="RizSim finalized logo.png"
+          alt="RizSim — From Knowing to Doing"
+        >
+
+      </a>
+
+
+
+      <nav
+        class="main-nav"
+        id="mainNav"
+      >
+
+        <a
+          href="index.html"
+          data-page-link
+          data-page="home"
+        >
+          Home
+        </a>
+
+
+        <a
+          href="simulations.html"
+          data-page-link
+          data-page="simulations"
+        >
+          Simulations
+        </a>
+
+
+        <a
+          href="about.html"
+          data-page-link
+          data-page="about"
+        >
+          About
+        </a>
+
+
+        <a
+          href="contact.html"
+          data-page-link
+          data-page="contact"
+        >
+          Contact
+        </a>
+
+      </nav>
+
+
+
+      <!-- LOGIN -->
+
+      <div class="nav-actions">
+
+        <div class="login-wrap">
+
+
+          <button
+            class="login-button"
+            id="loginButton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="loginMenu"
+          >
+
+            <span>
+              Login
+            </span>
+
+
+            <svg
+              class="login-chevron"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M5.5 7.5L10 12L14.5 7.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
+          </button>
+
+
+
+          <div
+            class="login-menu"
+            id="loginMenu"
+            aria-hidden="true"
+            data-swipe-block
+          >
+
+
+            <!-- STUDENT -->
+
+            <a
+              class="login-role-button"
+              href="access-in.html"
+            >
+
+              <span class="login-role-text">
+                Student
+              </span>
+
+
+              <span class="login-role-icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="M3.5 8.5L12 4.5L20.5 8.5L12 12.5L3.5 8.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                  />
+
+                  <path
+                    d="M7 10.5V15C7 16.8 9.25 18.3 12 18.3C14.75 18.3 17 16.8 17 15V10.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <!-- FACULTY -->
+
+            <a
+              class="login-role-button"
+              href="access-out.html"
+            >
+
+              <span class="login-role-text">
+                Faculty
+              </span>
+
+
+              <span
+                class="login-role-icon faculty-icon"
+              >
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <circle
+                    cx="12"
+                    cy="7"
+                    r="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  />
+
+                  <path
+                    d="M6 19V17C6 14.8 8.2 13 12 13C15.8 13 18 14.8 18 17V19"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                  <path
+                    d="M4 20H20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <button
+              class="login-collapse-button"
+              id="loginCollapseButton"
+              type="button"
+              aria-label="Close login options"
+            >
+
+              <svg
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M5 12.5L10 7.5L15 12.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+              </svg>
+
+            </button>
+
+
+          </div>
+
+        </div>
+
+
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ========================================================
+       SIDEBAR
+  ========================================================= -->
+
+  <div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <aside
+    class="site-sidebar"
+    id="siteSidebar"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div class="sidebar-inner"></div>
+
+  </aside>
+
+
+
+  <!-- ========================================================
+       PAGE
+  ========================================================= -->
+
+  <main class="page-content">
+
+
+    <!-- ======================================================
+         HERO
+    ======================================================= -->
+
+    <section class="contact-hero">
+
+      <div class="content-shell contact-hero-grid">
+
+
+        <div class="contact-hero-copy">
+
+
+          <span class="contact-kicker">
+            Contact RizSim
+          </span>
+
+
+          <h1>
+
+            Start a
+
+            <span>
+              conversation.
+            </span>
+
+          </h1>
+
+
+          <p>
+
+            Whether you are exploring RizSim for a class,
+            course, workshop or institution, you can contact
+            us directly about simulations, faculty access
+            and institutional use.
+
+          </p>
+
+
+          <div class="hero-buttons">
+
+            <a
+              class="button button-primary"
+              href="mailto:rizsimulation@gmail.com"
+            >
+              Email RizSim
+            </a>
+
+
+            <a
+              class="button button-secondary"
+              href="simulations.html"
+              data-page-link
+            >
+              Browse Simulations
+            </a>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- CONTACT CARD -->
+
+        <div
+          class="contact-card"
+          data-swipe-block
+        >
+
+
+          <div class="contact-card-header">
+
+            <span class="micro-label">
+              DIRECT CONTACT
+            </span>
+
+
+            <h2>
+              RizSim
+            </h2>
+
+
+            <p>
+
+              A direct point of contact for enquiries
+              about the RizSim learning platform.
+
+            </p>
+
+          </div>
+
+
+
+          <div class="contact-identity">
+
+
+            <div class="contact-avatar">
+              W
+            </div>
+
+
+            <div>
+
+              <strong>
+                Wajid Rizvi
+              </strong>
+
+
+              <a
+                href="mailto:rizsimulation@gmail.com"
+              >
+                rizsimulation@gmail.com
+              </a>
+
+            </div>
+
+
+          </div>
+
+
+
+          <div class="contact-card-actions">
+
+
+            <a
+              class="button contact-email-button"
+              href="mailto:rizsimulation@gmail.com"
+            >
+              Send Email
+            </a>
+
+
+            <button
+              class="button contact-copy-button"
+              id="copyEmailButton"
+              type="button"
+            >
+              Copy Email
+            </button>
+
+
+          </div>
+
+
+          <div
+            class="copy-confirmation"
+            id="copyConfirmation"
+            aria-live="polite"
+          >
+            Email copied
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         ENQUIRY TYPES
+    ======================================================= -->
+
+    <section class="contact-options-section">
+
+      <div class="content-shell">
+
+
+        <div class="contact-options-heading">
+
+
+          <div>
+
+            <span class="section-kicker">
+              HOW CAN WE HELP?
+            </span>
+
+
+            <h2>
+              Talk to RizSim about your learning context.
+            </h2>
+
+          </div>
+
+
+          <p>
+
+            Contact us about a simulation, faculty access
+            or the use of RizSim within an institution.
+
+          </p>
+
+
+        </div>
+
+
+
+        <div class="contact-options-grid">
+
+
+          <!-- FACULTY -->
+
+          <article class="contact-option-card">
+
+
+            <div class="contact-option-icon">
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+
+                <circle
+                  cx="12"
+                  cy="7"
+                  r="3"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                />
+
+                <path
+                  d="M6 19V17C6 14.8 8.2 13 12 13C15.8 13 18 14.8 18 17V19"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <h3>
+              Faculty enquiries
+            </h3>
+
+
+            <p>
+
+              Ask about simulations, licensing,
+              classroom use and bringing RizSim
+              into a course or learning session.
+
+            </p>
+
+
+          </article>
+
+
+
+          <!-- INSTITUTIONS -->
+
+          <article class="contact-option-card">
+
+
+            <div class="contact-option-icon">
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M4 20H20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+
+                <path
+                  d="M6 20V10H18V20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="M4 10L12 5L20 10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="M9 13V17M15 13V17"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <h3>
+              Institutional enquiries
+            </h3>
+
+
+            <p>
+
+              Discuss institutional access,
+              faculty participation and structured
+              use across classes, programmes or cohorts.
+
+            </p>
+
+
+          </article>
+
+
+
+          <!-- ACCESS -->
+
+          <article class="contact-option-card">
+
+
+            <div class="contact-option-icon">
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M7 11V8C7 5.2 9.2 3 12 3C14.8 3 17 5.2 17 8V11"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+
+                <rect
+                  x="5"
+                  y="11"
+                  width="14"
+                  height="10"
+                  rx="2"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                />
+
+                <path
+                  d="M12 15V17"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <h3>
+              Access enquiries
+            </h3>
+
+
+            <p>
+
+              Contact RizSim about faculty access,
+              student access, class codes or other
+              platform access questions.
+
+            </p>
+
+
+          </article>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         SIMPLE PATH
+    ======================================================= -->
+
+    <section class="contact-path-section">
+
+      <div class="content-shell contact-path-layout">
+
+
+        <div class="contact-path-copy">
+
+          <span class="section-kicker">
+            GET STARTED
+          </span>
+
+
+          <h2>
+            A simple path into RizSim.
+          </h2>
+
+
+          <p>
+
+            You can explore the public catalogue first.
+            When you are ready to bring a simulation
+            into a learning environment, Faculty Access
+            provides the route to licensing and classroom
+            management.
+
+          </p>
+
+        </div>
+
+
+
+        <div
+          class="contact-path-list"
+          data-swipe-block
+        >
+
+
+          <div class="contact-path-item">
+
+            <div class="contact-path-number">
+              01
+            </div>
+
+
+            <div>
+
+              <strong>
+                Browse
+              </strong>
+
+              <span>
+                Explore the available RizSim simulations publicly.
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="contact-path-item">
+
+            <div class="contact-path-number">
+              02
+            </div>
+
+
+            <div>
+
+              <strong>
+                Choose
+              </strong>
+
+              <span>
+                Identify the learning experience that fits your context.
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="contact-path-item">
+
+            <div class="contact-path-number">
+              03
+            </div>
+
+
+            <div>
+
+              <strong>
+                Access
+              </strong>
+
+              <span>
+                Faculty sign in or create Faculty Access to proceed.
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="contact-path-item">
+
+            <div class="contact-path-number">
+              04
+            </div>
+
+
+            <div>
+
+              <strong>
+                Run
+              </strong>
+
+              <span>
+                Create the learning session and share secure access with learners.
+              </span>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         CTA
+    ======================================================= -->
+
+    <section class="contact-cta">
+
+      <div class="content-shell">
+
+
+        <div class="contact-cta-panel">
+
+
+          <div>
+
+            <span class="section-kicker">
+              FROM KNOWING TO DOING
+            </span>
+
+
+            <h2>
+              Explore what RizSim can bring to learning.
+            </h2>
+
+
+            <p>
+
+              Browse the simulation catalogue or contact
+              RizSim directly to discuss your faculty or
+              institutional learning context.
+
+            </p>
+
+          </div>
+
+
+
+          <div class="hero-buttons">
+
+            <a
+              class="button button-light"
+              href="simulations.html"
+              data-page-link
+            >
+              Browse Simulations
+            </a>
+
+
+            <a
+              class="button button-primary"
+              href="mailto:rizsimulation@gmail.com"
+            >
+              Email RizSim
+            </a>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- ========================================================
+       FOOTER
+  ========================================================= -->
+
+  <footer class="site-footer">
+
+    <div class="content-shell footer-grid">
+
+
+      <div class="footer-brand">
+
+        <img
+          src="RizSim finalized logo.png"
+          alt="RizSim"
+        >
+
+        <p>
+          Interactive learning through decisions,
+          reflection and application.
+        </p>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Explore
+        </h4>
+
+
+        <a
+          href="simulations.html"
+          data-page-link
+        >
+          Simulations
+        </a>
+
+
+        <a
+          href="about.html"
+          data-page-link
+        >
+          About
+        </a>
+
+
+        <a
+          href="contact.html"
+          data-page-link
+        >
+          Contact
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Access
+        </h4>
+
+
+        <a href="access-in.html">
+          Student
+        </a>
+
+
+        <a href="access-out.html">
+          Faculty
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Policies
+        </h4>
+
+
+        <a href="privacy-policy.html">
+          Privacy Policy
+        </a>
+
+
+        <a href="terms.html">
+          Terms & Conditions
+        </a>
+
+
+        <a href="refund-policy.html">
+          Refund & Cancellation
+        </a>
+
+
+        <a href="service-delivery.html">
+          Digital Service Delivery
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="content-shell footer-bottom">
+
+      <span>
+        © <span id="footerYear"></span> RizSim.
+      </span>
+
+
+      <span>
+        From Knowing to Doing.
+      </span>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- ========================================================
+       SWIPE INDICATOR
+  ========================================================= -->
+
+  <div
+    class="swipe-indicator"
+    id="swipeIndicator"
+    aria-hidden="true"
+  >
+
+    <span id="swipeIndicatorIcon">
+      →
+    </span>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       GLOBAL JAVASCRIPT
+  ========================================================= -->
+
+  <script src="site.js"></script>
+
+
+
+  <!-- ========================================================
+       CONTACT PAGE FUNCTIONS
+  ========================================================= -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        const copyButton =
+          document.getElementById(
+            "copyEmailButton"
+          );
+
+
+        const confirmation =
+          document.getElementById(
+            "copyConfirmation"
+          );
+
+
+        const email =
+          "rizsimulation@gmail.com";
+
+
+        if (!copyButton) {
+          return;
+        }
+
+
+        copyButton.addEventListener(
+          "click",
+          async () => {
+
+            try {
+
+              await navigator.clipboard.writeText(
+                email
+              );
+
+
+              confirmation.textContent =
+                "Email copied";
+
+
+              confirmation.classList.add(
+                "is-visible"
+              );
+
+
+              window.setTimeout(
+                () => {
+
+                  confirmation.classList.remove(
+                    "is-visible"
+                  );
+
+                },
+                1800
+              );
+
+            } catch (error) {
+
+              confirmation.textContent =
+                email;
+
+
+              confirmation.classList.add(
+                "is-visible"
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>
