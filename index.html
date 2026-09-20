@@ -31,6 +31,62 @@
     type="image/png"
   >
 
+
+  <!-- ========================================================
+       PRE-PAINT SPLASH GUARD
+
+       This runs BEFORE the page is rendered.
+
+       If the splash has already been shown during this
+       browser session, Home loads directly with no splash
+       flash or replay.
+  ========================================================= -->
+
+  <script>
+
+    (function () {
+
+      try {
+
+        if (
+          sessionStorage.getItem(
+            "rizsimSplashSeen"
+          ) === "true"
+        ) {
+
+          document.documentElement
+            .classList.add(
+              "rizsim-splash-seen"
+            );
+
+        }
+
+      } catch (error) {
+
+        /* Continue normally */
+
+      }
+
+    })();
+
+  </script>
+
+
+  <style>
+
+    /*
+       Prevent the splash from being painted at all
+       when it has already been viewed this session.
+    */
+
+    html.rizsim-splash-seen
+    .splash-screen {
+      display: none !important;
+    }
+
+  </style>
+
+
   <link
     rel="stylesheet"
     href="site.css"
@@ -158,6 +214,7 @@
           Home
         </a>
 
+
         <a
           href="simulations.html"
           data-page-link
@@ -166,6 +223,7 @@
           Simulations
         </a>
 
+
         <a
           href="about.html"
           data-page-link
@@ -173,6 +231,7 @@
         >
           About
         </a>
+
 
         <a
           href="contact.html"
@@ -427,9 +486,7 @@
   >
 
 
-    <!-- ======================================================
-         HERO
-    ======================================================= -->
+    <!-- HERO -->
 
     <section class="home-hero">
 
@@ -1178,6 +1235,7 @@
               Browse Simulations
             </a>
 
+
             <a
               class="button button-primary"
               href="access-in.html"
@@ -1224,8 +1282,6 @@
 
 
 
-      <!-- EXPLORE -->
-
       <div class="footer-column">
 
         <h4>
@@ -1239,12 +1295,14 @@
           Simulations
         </a>
 
+
         <a
           href="about.html"
           data-page-link
         >
           About
         </a>
+
 
         <a
           href="contact.html"
@@ -1256,8 +1314,6 @@
       </div>
 
 
-
-      <!-- ACCESS -->
 
       <div class="footer-column">
 
@@ -1277,8 +1333,6 @@
 
 
 
-      <!-- POLICIES -->
-
       <div class="footer-column">
 
         <h4>
@@ -1289,13 +1343,16 @@
           Privacy Policy
         </a>
 
+
         <a href="terms.html">
           Terms & Conditions
         </a>
 
+
         <a href="refund-policy.html">
           Refund & Cancellation
         </a>
+
 
         <a href="service-delivery.html">
           Digital Service Delivery
@@ -1347,6 +1404,7 @@
   ========================================================= -->
 
   <script src="site.js"></script>
+
 
 </body>
 
