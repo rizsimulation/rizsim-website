@@ -1307,6 +1307,333 @@
 
 
     /* ========================================================
+       OWNER INSTITUTION MANAGEMENT
+    ========================================================= */
+
+    .owner-management-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap: 16px;
+
+      padding: 20px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fbfdfd,
+          #f7fbfb
+        );
+
+      border-bottom:
+        1px solid #e2ebee;
+    }
+
+
+    .management-card {
+      position: relative;
+
+      padding: 20px;
+
+      overflow: hidden;
+
+      background: #ffffff;
+
+      border:
+        1px solid #dce8eb;
+
+      border-radius: 17px;
+
+      box-shadow:
+        0 7px 22px rgba(4,25,40,.035);
+    }
+
+
+    .management-card::before {
+      content: "";
+
+      position: absolute;
+
+      width: 140px;
+      height: 140px;
+
+      right: -75px;
+      top: -75px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(24,184,176,.08),
+          transparent 70%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .management-card-kicker {
+      position: relative;
+
+      z-index: 1;
+
+      color: #118d89;
+
+      font-size: .57rem;
+
+      font-weight: 900;
+
+      letter-spacing: .08em;
+
+      text-transform: uppercase;
+    }
+
+
+    .management-card h3 {
+      position: relative;
+
+      z-index: 1;
+
+      margin:
+        8px 0 6px;
+
+      color: #0b3042;
+
+      font-size: 1rem;
+    }
+
+
+    .management-card > p {
+      position: relative;
+
+      z-index: 1;
+
+      margin: 0;
+
+      color: #718590;
+
+      font-size: .7rem;
+
+      line-height: 1.58;
+    }
+
+
+    .management-field {
+      position: relative;
+
+      z-index: 1;
+
+      margin-top: 13px;
+    }
+
+
+    .management-field label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #516c79;
+
+      font-size: .57rem;
+
+      font-weight: 900;
+
+      letter-spacing: .055em;
+
+      text-transform: uppercase;
+    }
+
+
+    .management-input,
+    .management-select {
+      width: 100%;
+
+      min-height: 43px;
+
+      padding:
+        0 11px;
+
+      color: #17394a;
+
+      background: #ffffff;
+
+      border:
+        1px solid #d6e4e7;
+
+      border-radius: 10px;
+
+      outline: 0;
+
+      transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+
+    .management-input:focus,
+    .management-select:focus {
+      border-color:
+        rgba(24,184,176,.58);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(24,184,176,.075);
+    }
+
+
+    .management-help {
+      display: block;
+
+      margin-top: 5px;
+
+      color: #95a4ab;
+
+      font-size: .56rem;
+
+      line-height: 1.42;
+    }
+
+
+    .management-action {
+      width: 100%;
+
+      min-height: 43px;
+
+      margin-top: 14px;
+
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          135deg,
+          #13aaa5,
+          #20b7b0
+        );
+
+      border: 0;
+
+      border-radius: 10px;
+
+      font-size: .68rem;
+
+      font-weight: 900;
+
+      box-shadow:
+        0 7px 18px rgba(24,184,176,.16);
+
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+    }
+
+
+    .management-action:hover:not(:disabled) {
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 10px 22px rgba(24,184,176,.20);
+    }
+
+
+    .management-action:disabled {
+      opacity: .52;
+
+      cursor: default;
+    }
+
+
+    .management-message {
+      min-height: 17px;
+
+      margin-top: 9px;
+
+      color: #087f86;
+
+      font-size: .61rem;
+
+      line-height: 1.45;
+    }
+
+
+    .management-message.error {
+      color: #b42318;
+    }
+
+
+    .institution-name {
+      color: #102f41;
+
+      font-size: .76rem;
+
+      font-weight: 850;
+    }
+
+
+    .institution-slug {
+      margin-top: 3px;
+
+      color: #85969f;
+
+      font-size: .59rem;
+    }
+
+
+    .institution-admin-list {
+      display: grid;
+
+      gap: 3px;
+    }
+
+
+    .institution-admin-name {
+      color: #234656;
+
+      font-size: .68rem;
+
+      font-weight: 800;
+    }
+
+
+    .institution-admin-email {
+      color: #81929b;
+
+      font-size: .58rem;
+
+      overflow-wrap: anywhere;
+    }
+
+
+    .institution-faculty-count {
+      color: #0f777b;
+
+      font-weight: 850;
+    }
+
+
+    .small-action.danger {
+      color: #a2342a;
+
+      border-color: #eed5d2;
+
+      background: #fffafa;
+    }
+
+
+    .small-action.activate {
+      color: #087f86;
+
+      border-color: #cae8e5;
+
+      background: #f4fcfb;
+    }
+
+
+
+    /* ========================================================
        SIMULATIONS
     ========================================================= */
 
@@ -1941,6 +2268,12 @@
           repeat(2,1fr);
       }
 
+
+      .owner-management-grid {
+        grid-template-columns:
+          1fr;
+      }
+
     }
 
 
@@ -2105,6 +2438,11 @@
         align-items: flex-start;
 
         flex-direction: column;
+      }
+
+
+      .owner-management-grid {
+        padding: 14px;
       }
 
     }
@@ -3135,7 +3473,7 @@
 
 
 
-      <!-- ADMIN -->
+      <!-- ADMINISTRATION -->
 
       <section
         id="view-administration"
@@ -3165,6 +3503,254 @@
           class="portal-metrics"
         ></div>
 
+
+
+        <!-- ================================================
+             OWNER INSTITUTION MANAGEMENT
+        ================================================= -->
+
+        <div
+          id="ownerInstitutionPanel"
+          class="portal-panel hidden"
+        >
+
+
+          <div class="portal-panel-header">
+
+            <div>
+
+              <div class="portal-panel-title">
+                Institution Management
+              </div>
+
+              <div class="portal-panel-note">
+                Owner-controlled institution access
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="owner-management-grid">
+
+
+            <!-- CREATE INSTITUTION -->
+
+            <div class="management-card">
+
+              <span class="management-card-kicker">
+                CREATE
+              </span>
+
+
+              <h3>
+                New Institution
+              </h3>
+
+
+              <p>
+
+                Create the institution first.
+                No account or access is assigned automatically.
+
+              </p>
+
+
+              <div class="management-field">
+
+                <label for="ownerInstitutionName">
+                  Institution Name
+                </label>
+
+                <input
+                  id="ownerInstitutionName"
+                  class="management-input"
+                  type="text"
+                  maxlength="160"
+                  placeholder="Institution name"
+                >
+
+              </div>
+
+
+              <div class="management-field">
+
+                <label for="ownerInstitutionSlug">
+                  Institution Slug
+                </label>
+
+                <input
+                  id="ownerInstitutionSlug"
+                  class="management-input"
+                  type="text"
+                  maxlength="120"
+                  placeholder="Optional"
+                >
+
+                <span class="management-help">
+
+                  Leave blank and RizSim will create
+                  the slug from the institution name.
+
+                </span>
+
+              </div>
+
+
+              <button
+                id="createInstitutionButton"
+                class="management-action"
+                type="button"
+              >
+                Create Institution
+              </button>
+
+
+              <div
+                id="createInstitutionMessage"
+                class="management-message"
+                aria-live="polite"
+              ></div>
+
+            </div>
+
+
+
+            <!-- ASSIGN INSTITUTION ACCOUNT -->
+
+            <div class="management-card">
+
+              <span class="management-card-kicker">
+                ASSIGN
+              </span>
+
+
+              <h3>
+                Institution Account
+              </h3>
+
+
+              <p>
+
+                Assign an existing RizSim user as the
+                account that manages an institution.
+
+              </p>
+
+
+              <div class="management-field">
+
+                <label for="ownerInstitutionSelect">
+                  Institution
+                </label>
+
+                <select
+                  id="ownerInstitutionSelect"
+                  class="management-select"
+                >
+                  <option value="">
+                    Select institution
+                  </option>
+                </select>
+
+              </div>
+
+
+              <div class="management-field">
+
+                <label for="ownerInstitutionAccountEmail">
+                  RizSim Account Email
+                </label>
+
+                <input
+                  id="ownerInstitutionAccountEmail"
+                  class="management-input"
+                  type="email"
+                  maxlength="200"
+                  placeholder="name@example.com"
+                >
+
+                <span class="management-help">
+
+                  The person must have signed into RizSim
+                  at least once so their account exists.
+
+                </span>
+
+              </div>
+
+
+              <button
+                id="assignInstitutionButton"
+                class="management-action"
+                type="button"
+              >
+                Assign Institution Account
+              </button>
+
+
+              <div
+                id="assignInstitutionMessage"
+                class="management-message"
+                aria-live="polite"
+              ></div>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- INSTITUTION LIST -->
+
+          <div class="table-scroll">
+
+            <table class="portal-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Institution
+                  </th>
+
+                  <th>
+                    Institution Account
+                  </th>
+
+                  <th>
+                    Faculty
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th></th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody id="institutionRows"></tbody>
+
+            </table>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- ================================================
+             OWNER PORTAL MEMBERSHIPS
+        ================================================= -->
 
         <div
           id="ownerMembershipPanel"
@@ -3570,6 +4156,14 @@ let ownerMembers =
   [];
 
 
+let ownerInstitutions =
+  [];
+
+
+let ownerInstitutionMembers =
+  [];
+
+
 
 /* ============================================================
    HELPERS
@@ -3768,6 +4362,37 @@ function getOwnerProfile(userId) {
   return ownerProfiles.find(
     item =>
       item.id === userId
+  );
+
+}
+
+
+function setManagementMessage(
+  elementId,
+  text,
+  isError = false
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+
+  if(!element) {
+    return;
+  }
+
+
+  element.textContent =
+    text
+    ||
+    "";
+
+
+  element.classList.toggle(
+    "error",
+    Boolean(isError)
   );
 
 }
@@ -4104,6 +4729,49 @@ async function ensureStandardFacultyAccess() {
 
 
 /* ============================================================
+   CLAIM APPROVED INSTITUTION ASSOCIATIONS
+============================================================ */
+
+async function claimApprovedInstitutionAccess() {
+
+  if(
+    !currentMembership
+    ||
+    ![
+      "faculty",
+      "course_lead"
+    ].includes(
+      currentMembership.role
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await supabase.rpc(
+      "claim_approved_institution_access"
+    );
+
+  }
+
+  catch {
+
+    /*
+       Institution association should never prevent
+       normal Faculty Dashboard access.
+    */
+
+  }
+
+}
+
+
+
+/* ============================================================
    VERIFY ACCESS
 ============================================================ */
 
@@ -4290,6 +4958,15 @@ async function verifyAccess() {
 
 
 
+  /*
+     If an institution previously requested this Faculty
+     and the Owner approved it, claim that association now.
+  */
+
+  await claimApprovedInstitutionAccess();
+
+
+
   showPortal();
 
 
@@ -4451,10 +5128,6 @@ function configurePortalRole() {
 
 
 
-  /*
-     Standard Faculty
-  */
-
   if(
     role ===
     "faculty"
@@ -4467,10 +5140,6 @@ function configurePortalRole() {
   }
 
 
-
-  /*
-     Course Lead = Premium Faculty
-  */
 
   if(
     role ===
@@ -4493,10 +5162,6 @@ function configurePortalRole() {
 
 
 
-  /*
-     Institution
-  */
-
   if(
     role ===
     "institution"
@@ -4517,10 +5182,6 @@ function configurePortalRole() {
 
 
 
-  /*
-     Admin
-  */
-
   if(
     role ===
     "admin"
@@ -4533,10 +5194,6 @@ function configurePortalRole() {
   }
 
 
-
-  /*
-     Owner
-  */
 
   if(
     role ===
@@ -4893,6 +5550,14 @@ async function loadPortalData() {
     [];
 
 
+  ownerInstitutions =
+    [];
+
+
+  ownerInstitutionMembers =
+    [];
+
+
 
   if(
     currentMembership.role ===
@@ -4944,10 +5609,59 @@ async function loadPortalData() {
             {
               ascending:false
             }
+          ),
+
+
+        supabase
+
+          .from(
+            "institutions"
+          )
+
+          .select(`
+            id,
+            name,
+            slug,
+            active,
+            created_by,
+            created_at,
+            updated_at
+          `)
+
+          .order(
+            "name",
+            {
+              ascending:true
+            }
+          ),
+
+
+        supabase
+
+          .from(
+            "institution_members"
+          )
+
+          .select(`
+            institution_id,
+            user_id,
+            member_type,
+            active,
+            approved_by,
+            approved_at,
+            created_at
+          `)
+
+          .order(
+            "created_at",
+            {
+              ascending:false
+            }
           )
 
 
       ]);
+
 
 
     ownerProfiles =
@@ -4958,6 +5672,18 @@ async function loadPortalData() {
 
     ownerMembers =
       ownerResults[1].data
+      ||
+      [];
+
+
+    ownerInstitutions =
+      ownerResults[2].data
+      ||
+      [];
+
+
+    ownerInstitutionMembers =
+      ownerResults[3].data
       ||
       [];
 
@@ -5458,6 +6184,1015 @@ function renderResults() {
 
 
 /* ============================================================
+   OWNER INSTITUTION MANAGEMENT
+============================================================ */
+
+function renderOwnerInstitutionManagement() {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+
+  const panel =
+    document.getElementById(
+      "ownerInstitutionPanel"
+    );
+
+
+  panel.classList.remove(
+    "hidden"
+  );
+
+
+
+  const select =
+    document.getElementById(
+      "ownerInstitutionSelect"
+    );
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Select institution
+    </option>
+
+    ${
+      ownerInstitutions.map(
+        institution => `
+
+          <option
+            value="${escapeHTML(
+              institution.id
+            )}"
+          >
+
+            ${escapeHTML(
+              institution.name
+            )}
+
+            ${
+              institution.active
+                ? ""
+                : " — Inactive"
+            }
+
+          </option>
+
+        `
+      ).join("")
+    }
+
+  `;
+
+
+
+  const assignButton =
+    document.getElementById(
+      "assignInstitutionButton"
+    );
+
+
+  assignButton.disabled =
+    ownerInstitutions.length ===
+    0;
+
+
+
+  const tbody =
+    document.getElementById(
+      "institutionRows"
+    );
+
+
+
+  if(
+    ownerInstitutions.length ===
+    0
+  ) {
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="5"
+          style="
+            padding:35px;
+            text-align:center;
+            color:#7a8d97;
+          "
+        >
+          No institutions have been created yet.
+        </td>
+
+      </tr>
+
+    `;
+
+
+    return;
+
+  }
+
+
+
+  tbody.innerHTML =
+
+    ownerInstitutions.map(
+      institution => {
+
+
+        const institutionAdmins =
+
+          ownerInstitutionMembers
+            .filter(
+              member =>
+                member.institution_id ===
+                  institution.id
+
+                &&
+                member.member_type ===
+                  "institution_admin"
+
+                &&
+                member.active ===
+                  true
+            );
+
+
+        const institutionFaculty =
+
+          ownerInstitutionMembers
+            .filter(
+              member =>
+                member.institution_id ===
+                  institution.id
+
+                &&
+                member.member_type ===
+                  "faculty"
+
+                &&
+                member.active ===
+                  true
+            );
+
+
+        let adminHTML = `
+
+          <span
+            style="
+              color:#8a9aa2;
+              font-size:.62rem;
+            "
+          >
+            Not assigned
+          </span>
+
+        `;
+
+
+        if(
+          institutionAdmins.length
+        ) {
+
+          adminHTML = `
+
+            <div class="institution-admin-list">
+
+              ${
+                institutionAdmins.map(
+                  member => {
+
+                    const profile =
+                      getOwnerProfile(
+                        member.user_id
+                      );
+
+
+                    return `
+
+                      <div>
+
+                        <div class="institution-admin-name">
+
+                          ${escapeHTML(
+                            profile?.display_name
+                            ||
+                            "RizSim User"
+                          )}
+
+                        </div>
+
+                        <div class="institution-admin-email">
+
+                          ${escapeHTML(
+                            profile?.email
+                            ||
+                            ""
+                          )}
+
+                        </div>
+
+                      </div>
+
+                    `;
+
+                  }
+                ).join("")
+              }
+
+            </div>
+
+          `;
+
+        }
+
+
+
+        return `
+
+          <tr>
+
+            <td>
+
+              <div class="institution-name">
+
+                ${escapeHTML(
+                  institution.name
+                )}
+
+              </div>
+
+              <div class="institution-slug">
+
+                ${escapeHTML(
+                  institution.slug
+                )}
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              ${adminHTML}
+
+            </td>
+
+
+            <td>
+
+              <span class="institution-faculty-count">
+
+                ${institutionFaculty.length}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="status-badge ${
+                  institution.active
+                    ? ""
+                    : "muted"
+                }"
+              >
+
+                ${
+                  institution.active
+                    ? "Active"
+                    : "Inactive"
+                }
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <button
+                class="small-action ${
+                  institution.active
+                    ? "danger"
+                    : "activate"
+                }"
+                type="button"
+                data-institution-toggle="${
+                  escapeHTML(
+                    institution.id
+                  )
+                }"
+                data-current-active="${
+                  institution.active
+                    ? "true"
+                    : "false"
+                }"
+              >
+
+                ${
+                  institution.active
+                    ? "Deactivate"
+                    : "Activate"
+                }
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+
+/* ============================================================
+   CREATE INSTITUTION
+============================================================ */
+
+async function createInstitution() {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+  const nameInput =
+    document.getElementById(
+      "ownerInstitutionName"
+    );
+
+
+  const slugInput =
+    document.getElementById(
+      "ownerInstitutionSlug"
+    );
+
+
+  const button =
+    document.getElementById(
+      "createInstitutionButton"
+    );
+
+
+  const name =
+    nameInput.value.trim();
+
+
+  const slug =
+    slugInput.value.trim();
+
+
+
+  setManagementMessage(
+    "createInstitutionMessage",
+    ""
+  );
+
+
+
+  if(!name) {
+
+    setManagementMessage(
+      "createInstitutionMessage",
+      "Enter the institution name.",
+      true
+    );
+
+    return;
+
+  }
+
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "Creating…";
+
+
+  showLoading();
+
+
+
+  const {
+    error
+  } =
+
+    await supabase.rpc(
+      "owner_create_rizsim_institution",
+      {
+
+        p_name:
+          name,
+
+        p_slug:
+          slug
+          ||
+          null
+
+      }
+    );
+
+
+
+  hideLoading();
+
+
+  button.disabled =
+    false;
+
+
+  button.textContent =
+    "Create Institution";
+
+
+
+  if(error) {
+
+    setManagementMessage(
+      "createInstitutionMessage",
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+
+  nameInput.value =
+    "";
+
+
+  slugInput.value =
+    "";
+
+
+  setManagementMessage(
+    "createInstitutionMessage",
+    "Institution created successfully."
+  );
+
+
+
+  await refreshOwnerInstitutionData();
+
+}
+
+
+
+/* ============================================================
+   ASSIGN INSTITUTION ACCOUNT
+============================================================ */
+
+async function assignInstitutionAccount() {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+  const select =
+    document.getElementById(
+      "ownerInstitutionSelect"
+    );
+
+
+  const emailInput =
+    document.getElementById(
+      "ownerInstitutionAccountEmail"
+    );
+
+
+  const button =
+    document.getElementById(
+      "assignInstitutionButton"
+    );
+
+
+  const institutionId =
+    select.value;
+
+
+  const email =
+    emailInput.value
+      .trim()
+      .toLowerCase();
+
+
+
+  setManagementMessage(
+    "assignInstitutionMessage",
+    ""
+  );
+
+
+
+  if(!institutionId) {
+
+    setManagementMessage(
+      "assignInstitutionMessage",
+      "Select an institution.",
+      true
+    );
+
+    return;
+
+  }
+
+
+
+  if(
+    !email
+    ||
+    !email.includes("@")
+  ) {
+
+    setManagementMessage(
+      "assignInstitutionMessage",
+      "Enter a valid RizSim account email.",
+      true
+    );
+
+    return;
+
+  }
+
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "Assigning…";
+
+
+  showLoading();
+
+
+
+  const {
+    error
+  } =
+
+    await supabase.rpc(
+      "owner_assign_institution_account",
+      {
+
+        p_institution_id:
+          institutionId,
+
+        p_user_email:
+          email
+
+      }
+    );
+
+
+
+  hideLoading();
+
+
+  button.disabled =
+    false;
+
+
+  button.textContent =
+    "Assign Institution Account";
+
+
+
+  if(error) {
+
+    setManagementMessage(
+      "assignInstitutionMessage",
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+
+  emailInput.value =
+    "";
+
+
+  setManagementMessage(
+    "assignInstitutionMessage",
+    "Institution account assigned successfully."
+  );
+
+
+
+  /*
+     Role changed, so refresh all Owner access data.
+  */
+
+  await refreshOwnerAccessData();
+
+}
+
+
+
+/* ============================================================
+   ACTIVATE / DEACTIVATE INSTITUTION
+============================================================ */
+
+async function toggleInstitution(
+  institutionId,
+  currentlyActive
+) {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+  const nextActive =
+    !currentlyActive;
+
+
+
+  const institution =
+    ownerInstitutions.find(
+      item =>
+        item.id ===
+        institutionId
+    );
+
+
+
+  const action =
+    nextActive
+      ? "activate"
+      : "deactivate";
+
+
+  const confirmed =
+    window.confirm(
+      `${
+        nextActive
+          ? "Activate"
+          : "Deactivate"
+      } ${
+        institution?.name
+        ||
+        "this institution"
+      }?`
+    );
+
+
+
+  if(!confirmed) {
+
+    return;
+
+  }
+
+
+
+  showLoading();
+
+
+
+  const {
+    error
+  } =
+
+    await supabase.rpc(
+      "owner_set_institution_active",
+      {
+
+        p_institution_id:
+          institutionId,
+
+        p_active:
+          nextActive
+
+      }
+    );
+
+
+
+  hideLoading();
+
+
+
+  if(error) {
+
+    window.alert(
+      error.message
+      ||
+      `Could not ${action} the institution.`
+    );
+
+    return;
+
+  }
+
+
+
+  await refreshOwnerInstitutionData();
+
+}
+
+
+
+/* ============================================================
+   REFRESH OWNER INSTITUTION DATA
+============================================================ */
+
+async function refreshOwnerInstitutionData() {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+  showLoading();
+
+
+
+  const results =
+
+    await Promise.all([
+
+
+      supabase
+
+        .from(
+          "institutions"
+        )
+
+        .select(`
+          id,
+          name,
+          slug,
+          active,
+          created_by,
+          created_at,
+          updated_at
+        `)
+
+        .order(
+          "name",
+          {
+            ascending:true
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "institution_members"
+        )
+
+        .select(`
+          institution_id,
+          user_id,
+          member_type,
+          active,
+          approved_by,
+          approved_at,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+
+
+    ]);
+
+
+
+  ownerInstitutions =
+    results[0].data
+    ||
+    [];
+
+
+  ownerInstitutionMembers =
+    results[1].data
+    ||
+    [];
+
+
+
+  renderAdministration();
+
+
+  hideLoading();
+
+}
+
+
+
+/* ============================================================
+   REFRESH OWNER ACCESS DATA
+============================================================ */
+
+async function refreshOwnerAccessData() {
+
+  if(
+    currentMembership.role !==
+    "owner"
+  ) {
+
+    return;
+
+  }
+
+
+  showLoading();
+
+
+
+  const results =
+
+    await Promise.all([
+
+
+      supabase
+
+        .from(
+          "profiles"
+        )
+
+        .select(`
+          id,
+          display_name,
+          email,
+          account_status,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "access_out_members"
+        )
+
+        .select(`
+          user_id,
+          role,
+          active,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "institutions"
+        )
+
+        .select(`
+          id,
+          name,
+          slug,
+          active,
+          created_by,
+          created_at,
+          updated_at
+        `)
+
+        .order(
+          "name",
+          {
+            ascending:true
+          }
+        ),
+
+
+      supabase
+
+        .from(
+          "institution_members"
+        )
+
+        .select(`
+          institution_id,
+          user_id,
+          member_type,
+          active,
+          approved_by,
+          approved_at,
+          created_at
+        `)
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+
+
+    ]);
+
+
+
+  ownerProfiles =
+    results[0].data
+    ||
+    [];
+
+
+  ownerMembers =
+    results[1].data
+    ||
+    [];
+
+
+  ownerInstitutions =
+    results[2].data
+    ||
+    [];
+
+
+  ownerInstitutionMembers =
+    results[3].data
+    ||
+    [];
+
+
+
+  renderAdministration();
+
+
+  hideLoading();
+
+}
+
+
+
+/* ============================================================
    ADMINISTRATION
 ============================================================ */
 
@@ -5489,7 +7224,7 @@ function renderAdministration() {
     role ===
     "owner"
 
-      ? "Owner-level platform visibility and access authority."
+      ? "Owner-level platform visibility and access authority. Create institutions, assign institution accounts and manage elevated RizSim access."
 
       : "Operational and content administration. Elevated roles and access decisions remain Owner-controlled.";
 
@@ -5533,15 +7268,15 @@ function renderAdministration() {
           ],
 
           [
-            "Simulations",
-            simulationsCount,
-            "Catalogue"
+            "Institutions",
+            ownerInstitutions.length,
+            "Institution records"
           ],
 
           [
-            "Published",
-            publishedCount,
-            "Products"
+            "Simulations",
+            simulationsCount,
+            "Catalogue"
           ]
 
         ]
@@ -5622,6 +7357,10 @@ function renderAdministration() {
     return;
 
   }
+
+
+
+  renderOwnerInstitutionManagement();
 
 
 
@@ -6069,6 +7808,24 @@ document.getElementById(
 
 
 
+document.getElementById(
+  "createInstitutionButton"
+).addEventListener(
+  "click",
+  createInstitution
+);
+
+
+
+document.getElementById(
+  "assignInstitutionButton"
+).addEventListener(
+  "click",
+  assignInstitutionAccount
+);
+
+
+
 document
   .querySelectorAll(
     ".portal-nav-button"
@@ -6106,6 +7863,36 @@ document.addEventListener(
 
       openResponses(
         responseButton.dataset.attemptId
+      );
+
+      return;
+
+    }
+
+
+
+    const institutionToggle =
+      event.target.closest(
+        "[data-institution-toggle]"
+      );
+
+
+    if(institutionToggle) {
+
+      const institutionId =
+        institutionToggle.dataset
+          .institutionToggle;
+
+
+      const currentlyActive =
+        institutionToggle.dataset
+          .currentActive ===
+          "true";
+
+
+      toggleInstitution(
+        institutionId,
+        currentlyActive
       );
 
     }
