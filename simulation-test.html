@@ -949,6 +949,30 @@ let currentAttempt =
   null;
 
 
+const launchParams =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const launchedAttemptId =
+  launchParams.get(
+    "attempt"
+  );
+
+
+const launchedSessionId =
+  launchParams.get(
+    "session"
+  );
+
+
+const launchedAccessType =
+  launchParams.get(
+    "access"
+  );
+
+
 
 const loginButton =
   document.getElementById(
@@ -1015,7 +1039,9 @@ async function signInWithGoogle() {
   const redirectURL =
     window.location.origin
     +
-    "/simulation-test.html";
+    window.location.pathname
+    +
+    window.location.search;
 
 
   const {
@@ -1220,11 +1246,8 @@ async function loadProduct() {
 async function findExistingAttempt() {
 
 
-  const {
-    data,
-    error
-  } =
-    await supabase
+  let query =
+    supabase
 
       .from(
         "simulation_attempts"
@@ -1236,29 +1259,66 @@ async function findExistingAttempt() {
         status,
         progress_percent,
         started_at,
-        submitted_at
+        submitted_at,
+        classroom_session_id,
+        classroom_access_type,
+        joined_at
       `)
 
       .eq(
         "product_id",
         currentProduct.id
-      )
+      );
 
-      .eq(
-        "status",
-        "in_progress"
-      )
 
-      .order(
-        "started_at",
-        {
-          ascending:false
-        }
-      )
+  if(launchedAttemptId) {
 
-      .limit(1)
 
-      .maybeSingle();
+    query =
+      query
+
+        .eq(
+          "id",
+          launchedAttemptId
+        )
+
+        .limit(1)
+
+        .maybeSingle();
+
+  }
+
+
+  else {
+
+
+    query =
+      query
+
+        .eq(
+          "status",
+          "in_progress"
+        )
+
+        .order(
+          "started_at",
+          {
+            ascending:false
+          }
+        )
+
+        .limit(1)
+
+        .maybeSingle();
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await query;
 
 
   if(error) {
@@ -1280,19 +1340,91 @@ async function findExistingAttempt() {
   }
 
 
-  if(data) {
+  if(!data) {
 
 
-    currentAttempt =
-      data;
+    if(launchedAttemptId) {
 
 
-    return true;
+      setStatus(
+
+        "The classroom attempt in this launch link could not be loaded.",
+
+        "error"
+
+      );
+
+    }
+
+
+    return false;
 
   }
 
 
-  return false;
+  if(
+    launchedSessionId
+    &&
+    String(
+      data.classroom_session_id
+      ||
+      ""
+    )
+    !==
+    String(
+      launchedSessionId
+    )
+  ) {
+
+
+    setStatus(
+
+      "This launch link does not match the classroom session attached to the attempt.",
+
+      "error"
+
+    );
+
+
+    return false;
+
+  }
+
+
+  if(
+    launchedAccessType
+    &&
+    String(
+      data.classroom_access_type
+      ||
+      ""
+    )
+    !==
+    String(
+      launchedAccessType
+    )
+  ) {
+
+
+    setStatus(
+
+      "This launch link does not match the access mode attached to the attempt.",
+
+      "error"
+
+    );
+
+
+    return false;
+
+  }
+
+
+  currentAttempt =
+    data;
+
+
+  return true;
 
 }
 
@@ -1332,7 +1464,11 @@ async function createAttempt() {
         product_id,
         status,
         progress_percent,
-        started_at
+        started_at,
+        submitted_at,
+        classroom_session_id,
+        classroom_access_type,
+        joined_at
       `)
 
       .single();
@@ -1486,6 +1622,21 @@ async function saveResponse(
 
 
   if(!currentAttempt) {
+
+    return;
+
+  }
+
+
+  if(
+    currentAttempt.status ===
+    "submitted"
+  ) {
+
+    setStatus(
+      "This simulation has already been submitted. Responses are locked.",
+      "success"
+    );
 
     return;
 
@@ -1733,30 +1884,66 @@ async function updateProgress() {
     " responses saved)";
 
 
-  await supabase
-
-    .from(
-      "simulation_attempts"
-    )
-
-    .update({
-
-      progress_percent:
-        percent
-
-    })
-
-    .eq(
-      "id",
-      currentAttempt.id
-    );
+  if(
+    currentAttempt.status !==
+    "submitted"
+  ) {
 
 
-  currentAttempt.progress_percent =
-    percent;
+    const {
+      error:updateError
+    } =
+      await supabase
+
+        .from(
+          "simulation_attempts"
+        )
+
+        .update({
+
+          progress_percent:
+            percent
+
+        })
+
+        .eq(
+          "id",
+          currentAttempt.id
+        );
+
+
+    if(updateError) {
+
+
+      setStatus(
+
+        "Progress could not be updated: "
+        +
+        updateError.message,
+
+        "error"
+
+      );
+
+
+      return;
+
+    }
+
+
+    currentAttempt.progress_percent =
+      percent;
+
+  }
 
 
   submitButton.disabled =
+
+    currentAttempt.status ===
+    "submitted"
+
+    ||
+
     answered !==
     totalQuestions;
 
@@ -1802,6 +1989,20 @@ async function submitSimulation() {
   );
 
 
+  const isClassroomAttempt =
+    Boolean(
+      currentAttempt.classroom_session_id
+    );
+
+
+  const rpcName =
+    isClassroomAttempt
+
+      ? "submit_my_rizsim_classroom_attempt"
+
+      : "submit_simulation_attempt";
+
+
   const {
     data,
     error
@@ -1809,7 +2010,7 @@ async function submitSimulation() {
     await supabase
 
       .rpc(
-        "submit_simulation_attempt",
+        rpcName,
         {
 
           p_attempt_id:
@@ -1842,14 +2043,76 @@ async function submitSimulation() {
   }
 
 
-  currentAttempt =
-    data;
+  const submittedAttempt =
+    Array.isArray(
+      data
+    )
+
+      ? (
+          data[0]
+          ||
+          null
+        )
+
+      : data;
+
+
+  if(!submittedAttempt) {
+
+
+    setStatus(
+
+      "Submission failed: RizSim did not return the submitted attempt.",
+
+      "error"
+
+    );
+
+
+    submitButton.disabled =
+      false;
+
+
+    return;
+
+  }
+
+
+  currentAttempt = {
+
+    ...currentAttempt,
+
+    id:
+      submittedAttempt.attempt_id
+      ||
+      submittedAttempt.id
+      ||
+      currentAttempt.id,
+
+    status:
+      submittedAttempt.status
+      ||
+      "submitted",
+
+    progress_percent:
+      submittedAttempt.progress_percent
+      ??
+      100,
+
+    submitted_at:
+      submittedAttempt.submitted_at
+      ||
+      currentAttempt.submitted_at
+      ||
+      new Date().toISOString()
+
+  };
 
 
   document.getElementById(
     "attemptStatus"
   ).textContent =
-    "submitted";
+    currentAttempt.status;
 
 
   document.getElementById(
@@ -1921,6 +2184,46 @@ function showAttempt() {
     "show"
   );
 
+
+  if(
+    currentAttempt.status ===
+    "submitted"
+  ) {
+
+
+    document.getElementById(
+      "progressBar"
+    ).style.width =
+      "100%";
+
+
+    document.getElementById(
+      "progressText"
+    ).textContent =
+      "Progress: 100% — Submitted";
+
+
+    submitButton.disabled =
+      true;
+
+
+    document
+      .querySelectorAll(
+        'input[type="radio"]'
+      )
+      .forEach(
+
+        function(input) {
+
+          input.disabled =
+            true;
+
+        }
+
+      );
+
+  }
+
 }
 
 
@@ -1966,6 +2269,13 @@ async function initialize() {
   if(!hasAttempt) {
 
 
+    if(launchedAttemptId) {
+
+      return;
+
+    }
+
+
     const created =
       await createAttempt();
 
@@ -1985,10 +2295,27 @@ async function initialize() {
   await loadResponses();
 
 
-  setStatus(
-    "Secure simulation session ready.",
-    "success"
-  );
+  if(
+    currentAttempt.status ===
+    "submitted"
+  ) {
+
+    setStatus(
+      "✓ Simulation already submitted. Responses are locked.",
+      "success"
+    );
+
+  }
+
+
+  else {
+
+    setStatus(
+      "Secure simulation session ready.",
+      "success"
+    );
+
+  }
 
 }
 
