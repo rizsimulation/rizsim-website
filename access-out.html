@@ -3242,20 +3242,52 @@ Courses
 </h1>
 
 <p>
-
-Build structured course experiences by combining
-simulations, classes, learning materials and results.
-
+Build and manage structured course experiences
+using simulations that are actively licensed
+to your Course Lead account.
 </p>
 
 </div>
 
-<div class="workspace-grid">
 
-<article class="workspace-card">
+<div
+class="portal-metrics"
+id="courseMetrics"
+></div>
 
-<span class="workspace-card-label">
-COURSE STRUCTURE
+
+<!-- =========================================================
+     CREATE COURSE
+========================================================= -->
+
+<div
+class="portal-panel"
+id="courseCreatePanel"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+Create Course
+</div>
+
+<div class="portal-panel-note">
+Course Lead workspace
+</div>
+
+</div>
+
+</div>
+
+
+<div class="management-grid">
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+NEW COURSE
 </span>
 
 <h3>
@@ -3263,37 +3295,139 @@ Build a course
 </h3>
 
 <p>
-
-Course Lead access will support multiple
-simulations, classes and learning resources
-within a single course structure.
-
+Create the course structure first.
+Licensed simulations can then be added
+and managed inside the course.
 </p>
 
-</article>
 
-<article class="workspace-card">
+<div class="management-field">
 
-<span class="workspace-card-label">
-COURSE RESULTS
-</span>
+<label for="courseTitle">
+Course Title
+</label>
 
-<h3>
-Combined learning view
-</h3>
-
-<p>
-
-Review learning activity across course,
-class and simulation levels.
-
-</p>
-
-</article>
+<input
+class="management-input"
+id="courseTitle"
+type="text"
+maxlength="160"
+placeholder="e.g. Psychology for Business"
+>
 
 </div>
 
-<div class="portal-panel">
+
+<div class="management-field">
+
+<label for="courseDescription">
+Description
+</label>
+
+<textarea
+class="management-textarea"
+id="courseDescription"
+maxlength="1200"
+placeholder="Briefly describe the course."
+></textarea>
+
+</div>
+
+
+<button
+class="management-action"
+id="createCourseButton"
+type="button"
+>
+Create Course
+</button>
+
+
+<div
+class="management-message"
+id="courseCreateMessage"
+aria-live="polite"
+></div>
+
+</div>
+
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+COURSE LOGIC
+</span>
+
+<h3>
+How Courses work
+</h3>
+
+<p>
+A Course Lead can combine multiple licensed
+RizSim simulations inside one structured course.
+</p>
+
+
+<div
+style="
+margin-top:18px;
+padding:16px;
+background:#f4faf9;
+border:1px solid #d9e9e7;
+border-radius:14px;
+color:#536f7b;
+font-size:.72rem;
+line-height:1.75;
+"
+>
+
+<strong style="color:#0b5760;">
+Create Course
+</strong>
+
+<br>
+↓
+<br>
+
+<strong style="color:#0b5760;">
+Add Licensed Simulations
+</strong>
+
+<br>
+↓
+<br>
+
+<strong style="color:#0b5760;">
+Connect Classes & Materials
+</strong>
+
+<br>
+↓
+<br>
+
+<strong style="color:#0b5760;">
+Combined Course Results
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     OWNER / NON-COURSE-LEAD NOTICE
+========================================================= -->
+
+<div
+class="portal-panel hidden"
+id="courseCreateUnavailable"
+>
+
+<div class="portal-panel-body">
 
 <div class="empty-state">
 
@@ -3301,16 +3435,329 @@ class and simulation levels.
 C
 </div>
 
-<strong>
-No courses created yet
+<strong id="courseUnavailableTitle">
+Course management unavailable
 </strong>
 
-<p>
-
-Course creation will be connected after
-the licence and classroom structure is finalized.
-
+<p id="courseUnavailableCopy">
+Course creation and simulation management
+are available to active Course Lead accounts.
 </p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     MY COURSES
+========================================================= -->
+
+<div class="portal-panel">
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+My Courses
+</div>
+
+<div
+class="portal-panel-note"
+id="courseCount"
+>
+—
+</div>
+
+</div>
+
+</div>
+
+
+<div class="table-scroll">
+
+<table
+class="portal-table"
+style="min-width:850px;"
+>
+
+<thead>
+
+<tr>
+
+<th>
+Course
+</th>
+
+<th>
+Simulations
+</th>
+
+<th>
+Updated
+</th>
+
+<th>
+Status
+</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="courseRows">
+
+<tr>
+
+<td
+colspan="5"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+Loading Courses…
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     SELECTED COURSE MANAGER
+========================================================= -->
+
+<div
+class="portal-panel hidden"
+id="selectedCoursePanel"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div
+class="portal-panel-title"
+id="selectedCourseTitle"
+>
+Selected Course
+</div>
+
+<div
+class="portal-panel-note"
+id="selectedCourseMeta"
+>
+—
+</div>
+
+</div>
+
+
+<button
+class="small-action"
+id="closeCourseManager"
+type="button"
+>
+Close
+</button>
+
+</div>
+
+
+<div class="management-grid">
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+ADD SIMULATION
+</span>
+
+<h3>
+Licensed Simulations
+</h3>
+
+<p>
+Only simulations covered by an active licence
+can be added to this course.
+</p>
+
+
+<div class="management-field">
+
+<label for="courseSimulationSelect">
+Simulation
+</label>
+
+<select
+class="management-select"
+id="courseSimulationSelect"
+>
+
+<option value="">
+Select licensed simulation
+</option>
+
+</select>
+
+</div>
+
+
+<button
+class="management-action"
+id="addCourseSimulationButton"
+type="button"
+>
+Add Simulation
+</button>
+
+
+<div
+class="management-message"
+id="courseSimulationMessage"
+aria-live="polite"
+></div>
+
+</div>
+
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+COURSE SUMMARY
+</span>
+
+<h3 id="selectedCourseSummaryTitle">
+Course
+</h3>
+
+<p id="selectedCourseDescription">
+—
+</p>
+
+
+<div
+style="
+margin-top:18px;
+padding:16px;
+background:#f4faf9;
+border:1px solid #d9e9e7;
+border-radius:14px;
+"
+>
+
+<div
+class="table-secondary"
+style="margin-bottom:5px;"
+>
+SIMULATIONS
+</div>
+
+<div
+style="
+font-size:1.45rem;
+font-weight:800;
+color:#0b3446;
+"
+id="selectedCourseSimulationCount"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="portal-panel"
+style="
+margin:18px;
+"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+Course Simulations
+</div>
+
+<div class="portal-panel-note">
+Current course structure
+</div>
+
+</div>
+
+</div>
+
+
+<div class="table-scroll">
+
+<table
+class="portal-table"
+style="min-width:720px;"
+>
+
+<thead>
+
+<tr>
+
+<th>
+Order
+</th>
+
+<th>
+Simulation
+</th>
+
+<th>
+Added
+</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="courseSimulationRows">
+
+<tr>
+
+<td
+colspan="4"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+Select a Course to manage its simulations.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
 
 </div>
 
@@ -5829,6 +6276,18 @@ let ownerLicenses =
 let selectedOwnerLicenseTerm =
 "semester";
 
+let courses =
+[];
+
+let selectedCourseId =
+null;
+
+let selectedCourseSimulations =
+[];
+
+let courseLoading =
+false;
+
 let classroomSessions =
 [];
 
@@ -7507,6 +7966,61 @@ myLicenseResult.data
 []
 );
 
+courses =
+[];
+
+selectedCourseSimulations =
+[];
+
+if(
+[
+"course_lead",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+const courseResult =
+
+await supabase.rpc(
+"get_my_rizsim_courses"
+);
+
+courses =
+courseResult.error
+
+? []
+
+: (
+courseResult.data
+||
+[]
+);
+
+
+if(
+selectedCourseId
+&&
+!courses.some(
+course =>
+String(
+course.course_id
+)
+===
+String(
+selectedCourseId
+)
+)
+) {
+
+selectedCourseId =
+null;
+
+}
+
+}
+
 classroomSessions =
 [];
 
@@ -8141,6 +8655,8 @@ renderHome();
 
 renderSimulations();
 
+renderCourses();
+
 renderClassroom();
 
 renderResults();
@@ -8148,6 +8664,1156 @@ renderResults();
 renderAdministration();
 
 renderInstitutionWorkspace();
+
+}
+
+function getSelectedCourse() {
+
+return courses.find(
+course =>
+String(
+course.course_id
+)
+===
+String(
+selectedCourseId
+)
+)
+||
+null;
+
+}
+
+
+function getAvailableCourseSimulations() {
+
+const alreadyAdded =
+new Set(
+
+selectedCourseSimulations.map(
+item =>
+String(
+item.product_id
+)
+)
+
+);
+
+return getActiveLicensedSimulations()
+
+.filter(
+product =>
+!alreadyAdded.has(
+String(
+product.id
+)
+)
+);
+
+}
+
+
+async function loadSelectedCourseSimulations(
+courseId
+) {
+
+selectedCourseSimulations =
+[];
+
+if(!courseId) {
+
+return;
+
+}
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_my_rizsim_course_simulations",
+{
+
+p_course_id:
+courseId
+
+}
+);
+
+if(error) {
+
+selectedCourseSimulations =
+[];
+
+setManagementMessage(
+"courseSimulationMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+selectedCourseSimulations =
+data
+||
+[];
+
+}
+
+
+async function reloadCourses() {
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_my_rizsim_courses"
+);
+
+courses =
+error
+? []
+: (
+data
+||
+[]
+);
+
+if(
+selectedCourseId
+&&
+!courses.some(
+course =>
+String(
+course.course_id
+)
+===
+String(
+selectedCourseId
+)
+)
+) {
+
+selectedCourseId =
+null;
+
+selectedCourseSimulations =
+[];
+
+}
+
+}
+
+
+function renderCourses() {
+
+if(
+!allowedViewOrder.includes(
+"courses"
+)
+) {
+
+return;
+
+}
+
+const role =
+currentMembership.role;
+
+const canManage =
+role ===
+"course_lead";
+
+
+const createPanel =
+document.getElementById(
+"courseCreatePanel"
+);
+
+const unavailablePanel =
+document.getElementById(
+"courseCreateUnavailable"
+);
+
+
+createPanel.classList.toggle(
+"hidden",
+!canManage
+);
+
+unavailablePanel.classList.toggle(
+"hidden",
+canManage
+);
+
+
+if(!canManage) {
+
+document.getElementById(
+"courseUnavailableTitle"
+).textContent =
+"Owner supervisory view";
+
+document.getElementById(
+"courseUnavailableCopy"
+).textContent =
+"Owner can inspect Course Lead course structures. Course creation and simulation management remain tied to the Course Lead account.";
+
+}
+
+
+const activeCourses =
+courses.filter(
+course =>
+course.active ===
+true
+).length;
+
+
+const totalCourseSimulations =
+courses.reduce(
+(total,course) =>
+total
++
+Number(
+course.simulation_count
+||
+0
+),
+0
+);
+
+
+const activeLicensedSimulations =
+getActiveLicensedSimulations()
+.length;
+
+
+document.getElementById(
+"courseMetrics"
+).innerHTML = [
+
+[
+"Courses",
+courses.length
+],
+
+[
+"Active Courses",
+activeCourses
+],
+
+[
+"Course Simulations",
+totalCourseSimulations
+],
+
+[
+"Licensed Simulations",
+activeLicensedSimulations
+]
+
+]
+
+.map(
+item => `
+
+<div class="portal-metric">
+
+<div class="portal-metric-label">
+
+${escapeHTML(
+item[0]
+)}
+
+</div>
+
+<div class="portal-metric-value">
+
+${escapeHTML(
+item[1]
+)}
+
+</div>
+
+</div>
+
+`
+)
+
+.join("");
+
+
+document.getElementById(
+"courseCount"
+).textContent =
+courses.length
++
+" course(s)";
+
+
+const rows =
+document.getElementById(
+"courseRows"
+);
+
+
+if(
+courses.length ===
+0
+) {
+
+rows.innerHTML = `
+
+<tr>
+
+<td
+colspan="5"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+
+${
+canManage
+? "No Courses created yet. Create your first Course above."
+: "No Course Lead courses are available yet."
+}
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+else {
+
+rows.innerHTML =
+
+courses.map(
+course => `
+
+<tr>
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+course.title
+)}
+
+</div>
+
+<div class="table-secondary">
+
+${escapeHTML(
+course.description
+||
+"No description"
+)}
+
+</div>
+
+</td>
+
+<td>
+
+${escapeHTML(
+Number(
+course.simulation_count
+||
+0
+)
+)}
+
+</td>
+
+<td>
+
+${escapeHTML(
+formatDate(
+course.updated_at
+)
+)}
+
+</td>
+
+<td>
+
+<span
+class="status-badge ${
+course.active
+? "approved"
+: "muted"
+}"
+>
+
+${
+course.active
+? "Active"
+: "Inactive"
+}
+
+</span>
+
+</td>
+
+<td>
+
+<button
+class="small-action primary-action"
+type="button"
+data-course-id="${escapeHTML(
+course.course_id
+)}"
+>
+
+${
+canManage
+? "Manage"
+: "Inspect"
+}
+
+</button>
+
+</td>
+
+</tr>
+
+`
+)
+
+.join("");
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+
+const selectedPanel =
+document.getElementById(
+"selectedCoursePanel"
+);
+
+
+if(!selectedCourse) {
+
+selectedPanel.classList.add(
+"hidden"
+);
+
+return;
+
+}
+
+
+selectedPanel.classList.remove(
+"hidden"
+);
+
+
+document.getElementById(
+"selectedCourseTitle"
+).textContent =
+selectedCourse.title;
+
+
+document.getElementById(
+"selectedCourseMeta"
+).textContent =
+"Updated "
++
+formatDate(
+selectedCourse.updated_at
+);
+
+
+document.getElementById(
+"selectedCourseSummaryTitle"
+).textContent =
+selectedCourse.title;
+
+
+document.getElementById(
+"selectedCourseDescription"
+).textContent =
+selectedCourse.description
+||
+"No description provided.";
+
+
+document.getElementById(
+"selectedCourseSimulationCount"
+).textContent =
+selectedCourseSimulations.length;
+
+
+const addSimulationCard =
+document
+.getElementById(
+"courseSimulationSelect"
+)
+.closest(
+".management-card"
+);
+
+
+addSimulationCard.classList.toggle(
+"hidden",
+!canManage
+);
+
+
+if(canManage) {
+
+const simulationSelect =
+document.getElementById(
+"courseSimulationSelect"
+);
+
+const available =
+getAvailableCourseSimulations();
+
+
+simulationSelect.innerHTML = `
+
+<option value="">
+Select licensed simulation
+</option>
+
+${
+available.map(
+product => `
+
+<option value="${escapeHTML(
+product.id
+)}">
+
+${escapeHTML(
+product.title
+)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+
+document.getElementById(
+"addCourseSimulationButton"
+).disabled =
+available.length ===
+0;
+
+
+if(
+available.length ===
+0
+) {
+
+setManagementMessage(
+"courseSimulationMessage",
+"All currently licensed simulations are already included in this Course."
+);
+
+}
+
+else {
+
+setManagementMessage(
+"courseSimulationMessage",
+""
+);
+
+}
+
+}
+
+
+const simulationRows =
+document.getElementById(
+"courseSimulationRows"
+);
+
+
+if(
+selectedCourseSimulations.length ===
+0
+) {
+
+simulationRows.innerHTML = `
+
+<tr>
+
+<td
+colspan="4"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+
+No simulations have been added to this Course yet.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+simulationRows.innerHTML =
+
+selectedCourseSimulations.map(
+item => `
+
+<tr>
+
+<td>
+
+${escapeHTML(
+item.sort_order
+)}
+
+</td>
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+item.simulation_title
+)}
+
+</div>
+
+</td>
+
+<td>
+
+${escapeHTML(
+formatDate(
+item.added_at
+)
+)}
+
+</td>
+
+<td>
+
+${
+canManage
+
+? `
+
+<button
+class="small-action danger"
+type="button"
+data-remove-course-simulation="${escapeHTML(
+item.product_id
+)}"
+>
+Remove
+</button>
+
+`
+
+: `
+
+<span class="table-secondary">
+View only
+</span>
+
+`
+}
+
+</td>
+
+</tr>
+
+`
+)
+
+.join("");
+
+}
+
+
+async function createCourse() {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const title =
+document
+.getElementById(
+"courseTitle"
+)
+.value
+.trim();
+
+
+const description =
+document
+.getElementById(
+"courseDescription"
+)
+.value
+.trim();
+
+
+const button =
+document.getElementById(
+"createCourseButton"
+);
+
+
+setManagementMessage(
+"courseCreateMessage",
+""
+);
+
+
+if(!title) {
+
+setManagementMessage(
+"courseCreateMessage",
+"Enter a Course title.",
+true
+);
+
+return;
+
+}
+
+
+courseLoading =
+true;
+
+button.disabled =
+true;
+
+button.textContent =
+"Creating…";
+
+showLoading();
+
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"create_my_rizsim_course",
+{
+
+p_title:
+title,
+
+p_description:
+description
+||
+null
+
+}
+);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Create Course";
+
+
+if(error) {
+
+setManagementMessage(
+"courseCreateMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+
+const created =
+Array.isArray(
+data
+)
+&&
+data.length
+
+? data[0]
+
+: null;
+
+
+if(
+created?.course_id
+) {
+
+selectedCourseId =
+created.course_id;
+
+}
+
+
+document.getElementById(
+"courseTitle"
+).value =
+"";
+
+
+document.getElementById(
+"courseDescription"
+).value =
+"";
+
+
+setManagementMessage(
+"courseCreateMessage",
+"Course created successfully."
+);
+
+
+await reloadCourses();
+
+
+if(
+selectedCourseId
+) {
+
+await loadSelectedCourseSimulations(
+selectedCourseId
+);
+
+}
+
+
+renderCourses();
+
+}
+
+
+async function openCourseManager(
+courseId
+) {
+
+if(!courseId) {
+
+return;
+
+}
+
+
+selectedCourseId =
+courseId;
+
+
+showLoading();
+
+
+await loadSelectedCourseSimulations(
+courseId
+);
+
+
+hideLoading();
+
+
+renderCourses();
+
+}
+
+
+function closeCourseManager() {
+
+selectedCourseId =
+null;
+
+selectedCourseSimulations =
+[];
+
+
+setManagementMessage(
+"courseSimulationMessage",
+""
+);
+
+
+renderCourses();
+
+}
+
+
+async function addCourseSimulation() {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const productId =
+document.getElementById(
+"courseSimulationSelect"
+).value;
+
+
+if(!productId) {
+
+setManagementMessage(
+"courseSimulationMessage",
+"Select a licensed simulation.",
+true
+);
+
+return;
+
+}
+
+
+const button =
+document.getElementById(
+"addCourseSimulationButton"
+);
+
+
+courseLoading =
+true;
+
+button.disabled =
+true;
+
+button.textContent =
+"Adding…";
+
+showLoading();
+
+
+const {
+error
+} =
+
+await supabase.rpc(
+"add_simulation_to_my_rizsim_course",
+{
+
+p_course_id:
+selectedCourseId,
+
+p_product_id:
+productId
+
+}
+);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Add Simulation";
+
+
+if(error) {
+
+setManagementMessage(
+"courseSimulationMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+
+setManagementMessage(
+"courseSimulationMessage",
+"Simulation added successfully."
+);
+
+
+await reloadCourses();
+
+
+await loadSelectedCourseSimulations(
+selectedCourseId
+);
+
+
+renderCourses();
+
+}
+
+
+async function removeCourseSimulation(
+productId
+) {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+!productId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const simulation =
+selectedCourseSimulations.find(
+item =>
+String(
+item.product_id
+)
+===
+String(
+productId
+)
+);
+
+
+const confirmed =
+window.confirm(
+
+"Remove "
++
+(
+simulation?.simulation_title
+||
+"this simulation"
+)
++
+" from the Course?"
+
+);
+
+
+if(!confirmed) {
+
+return;
+
+}
+
+
+courseLoading =
+true;
+
+showLoading();
+
+
+const {
+error
+} =
+
+await supabase.rpc(
+"remove_simulation_from_my_rizsim_course",
+{
+
+p_course_id:
+selectedCourseId,
+
+p_product_id:
+productId
+
+}
+);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+
+if(error) {
+
+setManagementMessage(
+"courseSimulationMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+
+setManagementMessage(
+"courseSimulationMessage",
+"Simulation removed from the Course."
+);
+
+
+await reloadCourses();
+
+
+await loadSelectedCourseSimulations(
+selectedCourseId
+);
+
+
+renderCourses();
 
 }
 
@@ -17260,6 +18926,80 @@ return;
 
 }
 
+const createCourseButton =
+event.target.closest(
+"#createCourseButton"
+);
+
+if(createCourseButton) {
+
+createCourse();
+
+return;
+
+}
+
+
+const courseManagerButton =
+event.target.closest(
+"[data-course-id]"
+);
+
+if(courseManagerButton) {
+
+openCourseManager(
+courseManagerButton.dataset
+.courseId
+);
+
+return;
+
+}
+
+
+const closeCourseManagerButton =
+event.target.closest(
+"#closeCourseManager"
+);
+
+if(closeCourseManagerButton) {
+
+closeCourseManager();
+
+return;
+
+}
+
+
+const addCourseSimulationButton =
+event.target.closest(
+"#addCourseSimulationButton"
+);
+
+if(addCourseSimulationButton) {
+
+addCourseSimulation();
+
+return;
+
+}
+
+
+const removeCourseSimulationButton =
+event.target.closest(
+"[data-remove-course-simulation]"
+);
+
+if(removeCourseSimulationButton) {
+
+removeCourseSimulation(
+removeCourseSimulationButton.dataset
+.removeCourseSimulation
+);
+
+return;
+
+}
 
 const productButton =
 event.target.closest(
