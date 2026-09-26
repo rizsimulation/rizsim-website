@@ -4088,6 +4088,10 @@ Status
 Created
 </th>
 
+<th>
+Actions
+</th>
+  
 </tr>
 
 </thead>
@@ -4097,7 +4101,7 @@ Created
 <tr>
 
 <td
-colspan="6"
+colspan="7"
 style="
 padding:35px;
 text-align:center;
@@ -10038,6 +10042,86 @@ session.created_at
 
 </td>
 
+<td>
+
+<div
+style="
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+"
+>
+
+<button
+class="small-action"
+type="button"
+data-copy-value="${escapeHTML(
+session.class_code
+||
+""
+)}"
+>
+Copy Code
+</button>
+
+
+<button
+class="small-action"
+type="button"
+data-copy-value="${escapeHTML(
+classroomShareLink(
+session
+)
+)}"
+>
+Copy Link
+</button>
+
+
+<button
+class="small-action"
+type="button"
+data-course-session-progress="${escapeHTML(
+session.session_id
+)}"
+>
+Students & Progress
+</button>
+
+
+${
+selectedCourseCanManage
+&&
+session.active ===
+true
+
+? `
+
+<button
+class="small-action danger"
+type="button"
+data-close-course-session="${escapeHTML(
+session.session_id
+)}"
+>
+End Session
+</button>
+
+`
+
+: `
+
+<span class="table-secondary">
+Ended
+</span>
+
+`
+}
+
+</div>
+
+</td>
+
 </tr>
 
 `
@@ -15042,7 +15126,144 @@ End Session
 
 }
 
+async function openCourseSessionProgress(
+sessionId
+) {
 
+if(!sessionId) {
+
+return;
+
+}
+
+selectedClassroomSessionId =
+sessionId;
+
+showLoading();
+
+await reloadClassroomSessions();
+
+await loadClassroomStudents(
+sessionId,
+true
+);
+
+hideLoading();
+
+renderClassroom();
+
+navigateInternal(
+"classroom"
+);
+
+}
+
+
+async function closeCourseClassroomSession(
+sessionId
+) {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!sessionId
+) {
+
+return;
+
+}
+
+
+const confirmed =
+window.confirm(
+
+"End this Course classroom session?\n\n"
++
+"Student access will stop immediately. "
++
+"The session, student progress and results will remain preserved."
+
+);
+
+
+if(!confirmed) {
+
+return;
+
+}
+
+
+showLoading();
+
+
+const {
+error
+} =
+
+await supabase.rpc(
+"close_rizsim_classroom_session",
+{
+
+p_session_id:
+sessionId
+
+}
+);
+
+
+if(error) {
+
+hideLoading();
+
+window.alert(
+error.message
+);
+
+return;
+
+}
+
+
+await reloadClassroomSessions();
+
+
+if(selectedCourseId) {
+
+await loadSelectedCourseClassroomSessions(
+selectedCourseId
+);
+
+}
+
+
+if(
+String(
+selectedClassroomSessionId
+)
+===
+String(
+sessionId
+)
+) {
+
+await loadClassroomStudents(
+sessionId,
+true
+);
+
+}
+
+
+hideLoading();
+
+
+renderCourses();
+
+renderClassroom();
+
+}
+  
 async function closeClassroomSession(
 sessionId
 ) {
@@ -20539,7 +20760,39 @@ return;
 
 }
 
+const courseSessionProgressButton =
+event.target.closest(
+"[data-course-session-progress]"
+);
 
+if(courseSessionProgressButton) {
+
+openCourseSessionProgress(
+courseSessionProgressButton.dataset
+.courseSessionProgress
+);
+
+return;
+
+}
+
+
+const closeCourseSessionButton =
+event.target.closest(
+"[data-close-course-session]"
+);
+
+if(closeCourseSessionButton) {
+
+closeCourseClassroomSession(
+closeCourseSessionButton.dataset
+.closeCourseSession
+);
+
+return;
+
+}
+  
 const closeClassroomButton =
 event.target.closest(
 "[data-close-classroom-session]"
