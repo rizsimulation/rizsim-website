@@ -1268,6 +1268,144 @@ font-weight: 900;
 letter-spacing: .07em;
 }
 
+.classroom-active-stack {
+display: grid;
+gap: 14px;
+}
+
+.classroom-session-meta-grid {
+margin-top: 14px;
+display: grid;
+grid-template-columns: repeat(3,1fr);
+gap: 9px;
+}
+
+.classroom-session-meta {
+padding: 11px 12px;
+background: rgba(255,255,255,.065);
+border: 1px solid rgba(255,255,255,.10);
+border-radius: 11px;
+}
+
+.classroom-session-meta span {
+display: block;
+color: #79d9d2;
+font-size: .53rem;
+font-weight: 900;
+letter-spacing: .06em;
+text-transform: uppercase;
+}
+
+.classroom-session-meta strong {
+display: block;
+margin-top: 5px;
+color: #ffffff;
+font-size: .66rem;
+line-height: 1.5;
+}
+
+.classroom-end-button {
+color: #ffe7e3 !important;
+background: rgba(173,61,49,.24) !important;
+border-color: rgba(255,196,188,.22) !important;
+}
+
+.classroom-roster-header-tools {
+min-width: 290px;
+}
+
+.classroom-roster-header-tools .management-select {
+min-height: 38px;
+font-size: .66rem;
+}
+
+.classroom-roster-metrics {
+display: grid;
+grid-template-columns: repeat(4,1fr);
+gap: 11px;
+margin-bottom: 18px;
+}
+
+.classroom-roster-metric {
+padding: 15px;
+background: linear-gradient(180deg,#fbfdfd,#f4faf9);
+border: 1px solid #dce8eb;
+border-radius: 14px;
+}
+
+.classroom-roster-metric span {
+display: block;
+color: #7b8f99;
+font-size: .54rem;
+font-weight: 900;
+letter-spacing: .06em;
+text-transform: uppercase;
+}
+
+.classroom-roster-metric strong {
+display: block;
+margin-top: 8px;
+color: #061827;
+font-size: 1.35rem;
+font-weight: 950;
+letter-spacing: -.03em;
+}
+
+.classroom-student-cell {
+display: flex;
+align-items: center;
+gap: 9px;
+min-width: 190px;
+}
+
+.classroom-student-avatar {
+width: 32px;
+height: 32px;
+flex: 0 0 32px;
+display: grid;
+place-items: center;
+color: #ffffff;
+background: linear-gradient(145deg,#0a3143,#12aaa5);
+border-radius: 50%;
+font-size: .58rem;
+font-weight: 900;
+}
+
+.classroom-progress-cell {
+min-width: 130px;
+}
+
+.classroom-progress-track {
+height: 7px;
+overflow: hidden;
+background: #e5edef;
+border-radius: 999px;
+}
+
+.classroom-progress-fill {
+height: 100%;
+background: linear-gradient(90deg,#087f86,#18b8b0);
+border-radius: 999px;
+}
+
+.classroom-progress-label {
+margin-top: 5px;
+color: #607681;
+font-size: .59rem;
+font-weight: 800;
+}
+
+.classroom-roster-message {
+min-height: 16px;
+margin-bottom: 9px;
+color: #7c9099;
+font-size: .61rem;
+}
+
+.classroom-roster-message.error {
+color: #b42318;
+}
+
 .management-grid {
 display: grid;
 grid-template-columns: repeat(2,1fr);
@@ -2237,6 +2375,14 @@ repeat(2,1fr);
 grid-template-columns: 1fr;
 }
 
+.classroom-roster-metrics {
+grid-template-columns: repeat(2,1fr);
+}
+
+.classroom-session-meta-grid {
+grid-template-columns: 1fr 1fr;
+}
+
 }
 
 @media (max-width: 980px) {
@@ -2314,6 +2460,16 @@ padding: 14px;
 .classroom-window-grid {
 grid-template-columns:
 1fr;
+}
+
+.classroom-roster-metrics,
+.classroom-session-meta-grid {
+grid-template-columns: 1fr;
+}
+
+.classroom-roster-header-tools {
+min-width: 0;
+width: 100%;
 }
 
 }
@@ -3354,11 +3510,11 @@ required to create a classroom session.
 <div>
 
 <div class="portal-panel-title">
-Session Access
+Active Session Access
 </div>
 
 <div class="portal-panel-note">
-Class code and shareable student link
+Persistent class codes, links and session controls
 </div>
 
 </div>
@@ -3377,18 +3533,101 @@ id="classroomCreatedResult"
 </div>
 
 <strong>
-No session created in this visit
+No active classroom session
 </strong>
 
 <p>
 
-Once a Faculty member creates a session,
-RizSim will show its class code and shareable
-student link here.
+Active session codes and student links remain here
+until the scheduled access period ends or Faculty
+selects End Session.
 
 </p>
 
 </div>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+class="portal-panel"
+id="classroomRosterPanel"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+Students & Progress
+</div>
+
+<div
+class="portal-panel-note"
+id="classroomRosterNote"
+>
+Live enrollment and progress for the selected session
+</div>
+
+</div>
+
+<div class="classroom-roster-header-tools">
+
+<select
+class="management-select"
+id="classroomRosterSessionSelect"
+aria-label="Select classroom session for student progress"
+>
+<option value="">
+Select classroom session
+</option>
+</select>
+
+</div>
+
+</div>
+
+<div class="portal-panel-body">
+
+<div
+class="classroom-roster-metrics"
+id="classroomRosterMetrics"
+></div>
+
+<div
+class="classroom-roster-message"
+id="classroomRosterMessage"
+aria-live="polite"
+></div>
+
+<div class="table-scroll">
+
+<table
+class="portal-table"
+style="min-width:1120px;"
+>
+
+<thead>
+
+<tr>
+<th>Student</th>
+<th>Access</th>
+<th>Joined</th>
+<th>Progress</th>
+<th>Status</th>
+<th>Last Activity</th>
+<th>Submitted</th>
+<th></th>
+</tr>
+
+</thead>
+
+<tbody id="classroomStudentRows"></tbody>
+
+</table>
 
 </div>
 
@@ -5290,8 +5529,20 @@ let selectedOwnerLicenseTerm =
 let classroomSessions =
 [];
 
-let lastCreatedClassroomSession =
+let selectedClassroomSessionId =
 null;
+
+let classroomStudents =
+[];
+
+let classroomRosterError =
+"";
+
+let classroomRefreshTimer =
+null;
+
+let classroomRefreshBusy =
+false;
 
 let submissions =
 [];
@@ -6873,6 +7124,13 @@ classroomResult.data
 []
 );
 
+ensureClassroomRosterSessionSelection();
+
+await loadClassroomStudents(
+selectedClassroomSessionId,
+true
+);
+
 }
 
 const submissionResult =
@@ -6909,6 +7167,8 @@ await loadInstitutionData();
 }
 
 renderPortal();
+
+startClassroomLiveRefresh();
 
 hideLoading();
 
@@ -8926,14 +9186,24 @@ updateClassroomModeFields();
 
 }
 
+const activeSessionCount =
+getPersistentActiveClassroomSessions()
+.length;
+
 document.getElementById(
 "classroomSessionCount"
 ).textContent =
+activeSessionCount
++
+" active · "
++
 classroomSessions.length
 +
-" session(s)";
+" total";
 
 renderClassroomCreatedResult();
+
+renderClassroomRoster();
 
 renderClassroomSessionRows();
 
@@ -9604,86 +9874,12 @@ return;
 
 }
 
-const selectedProduct =
-products.find(
-product =>
-String(product.id) ===
-String(productId)
-);
-
-lastCreatedClassroomSession = {
-
-...created,
-
-product_id:
-productId,
-
-simulation_title:
-selectedProduct?.title
+selectedClassroomSessionId =
+created.session_id
 ||
-"Simulation",
-
-class_name:
-className,
-
-access_mode:
-mode,
-
-live_starts_at:
-[
-"live",
-"both"
-].includes(
-mode
-)
-? asISO(
-liveStart
-)
-: null,
-
-live_ends_at:
-[
-"live",
-"both"
-].includes(
-mode
-)
-? asISO(
-liveEnd
-)
-: null,
-
-practice_starts_at:
-[
-"practice",
-"both"
-].includes(
-mode
-)
-? asISO(
-practiceStart
-)
-: null,
-
-practice_ends_at:
-[
-"practice",
-"both"
-].includes(
-mode
-)
-? asISO(
-practiceEnd
-)
-: null,
-
-active:
-true,
-
-session_status:
-"scheduled"
-
-};
+created.id
+||
+null;
 
 setManagementMessage(
 "classroomCreateMessage",
@@ -9696,6 +9892,13 @@ document.getElementById(
 "";
 
 await reloadClassroomSessions();
+
+ensureClassroomRosterSessionSelection();
+
+await loadClassroomStudents(
+selectedClassroomSessionId,
+true
+);
 
 renderClassroom();
 
@@ -9718,6 +9921,257 @@ result.data
 []
 );
 
+ensureClassroomRosterSessionSelection();
+
+}
+
+function classroomSessionEndTime(
+session
+) {
+
+const times = [
+
+session?.live_ends_at,
+session?.practice_ends_at
+
+]
+
+.filter(Boolean)
+
+.map(
+value =>
+new Date(value).getTime()
+)
+
+.filter(
+value =>
+!Number.isNaN(value)
+);
+
+if(!times.length) {
+
+return null;
+
+}
+
+return Math.max(
+...times
+);
+
+}
+
+function classroomSessionIsPersistentActive(
+session
+) {
+
+if(
+!session
+||
+session.active !==
+true
+) {
+
+return false;
+
+}
+
+const status =
+classroomStatusInfo(
+session
+);
+
+if(
+[
+"Closed",
+"Licence Revoked",
+"Licence Expired",
+"Ended"
+].includes(
+status.label
+)
+) {
+
+return false;
+
+}
+
+const endTime =
+classroomSessionEndTime(
+session
+);
+
+if(
+endTime !==
+null
+&&
+Date.now() >=
+endTime
+) {
+
+return false;
+
+}
+
+return true;
+
+}
+
+function getPersistentActiveClassroomSessions() {
+
+return classroomSessions
+
+.filter(
+classroomSessionIsPersistentActive
+)
+
+.slice()
+
+.sort(
+(a,b) =>
+new Date(
+b.created_at
+||
+0
+).getTime()
+-
+new Date(
+a.created_at
+||
+0
+).getTime()
+);
+
+}
+
+function ensureClassroomRosterSessionSelection() {
+
+if(
+selectedClassroomSessionId
+&&
+classroomSessions.some(
+session =>
+String(
+session.session_id
+)
+===
+String(
+selectedClassroomSessionId
+)
+)
+) {
+
+return;
+
+}
+
+const activeSessions =
+getPersistentActiveClassroomSessions();
+
+const fallback =
+activeSessions[0]
+||
+classroomSessions
+.slice()
+.sort(
+(a,b) =>
+new Date(
+b.created_at
+||
+0
+).getTime()
+-
+new Date(
+a.created_at
+||
+0
+).getTime()
+)[0]
+||
+null;
+
+selectedClassroomSessionId =
+fallback?.session_id
+||
+null;
+
+}
+
+function getSelectedClassroomSession() {
+
+return classroomSessions.find(
+session =>
+String(
+session.session_id
+)
+===
+String(
+selectedClassroomSessionId
+)
+)
+||
+null;
+
+}
+
+async function loadClassroomStudents(
+sessionId,
+silent = false
+) {
+
+classroomRosterError =
+"";
+
+if(!sessionId) {
+
+classroomStudents =
+[];
+
+return;
+
+}
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_my_classroom_session_students",
+{
+
+p_session_id:
+sessionId
+
+}
+);
+
+if(error) {
+
+classroomStudents =
+[];
+
+classroomRosterError =
+error.message
+||
+"Student progress could not be loaded.";
+
+if(!silent) {
+
+window.alert(
+classroomRosterError
+);
+
+}
+
+return;
+
+}
+
+classroomStudents =
+data
+||
+[];
+
 }
 
 function renderClassroomCreatedResult() {
@@ -9727,7 +10181,13 @@ document.getElementById(
 "classroomCreatedResult"
 );
 
-if(!lastCreatedClassroomSession) {
+const activeSessions =
+getPersistentActiveClassroomSessions();
+
+if(
+activeSessions.length ===
+0
+) {
 
 container.innerHTML = `
 
@@ -9738,14 +10198,14 @@ container.innerHTML = `
 </div>
 
 <strong>
-No session created in this visit
+No active classroom session
 </strong>
 
 <p>
 
-Once a Faculty member creates a session,
-RizSim will show its class code and shareable
-student link here.
+Active session codes and student links remain here
+through refreshes and tab changes until the scheduled
+access period ends or Faculty selects End Session.
 
 </p>
 
@@ -9757,45 +10217,69 @@ return;
 
 }
 
-const session =
-lastCreatedClassroomSession;
+container.innerHTML = `
+
+<div class="classroom-active-stack">
+
+${
+activeSessions.map(
+session => {
 
 const link =
 classroomShareLink(
 session
 );
 
-container.innerHTML = `
+const status =
+classroomStatusInfo(
+session
+);
+
+const canEnd =
+[
+"faculty",
+"course_lead",
+"owner"
+].includes(
+currentMembership.role
+);
+
+return `
 
 <div class="classroom-created-card">
 
 <div class="classroom-created-label">
-SESSION CREATED
+ACTIVE SESSION · ${escapeHTML(status.label)}
 </div>
 
 <h3>
-
-${escapeHTML(
-session.class_name
-)}
-
+${escapeHTML(session.class_name)}
 </h3>
 
 <p>
-
-${escapeHTML(
-session.simulation_title
-)}
-
+${escapeHTML(session.simulation_title)}
 ·
-
-${escapeHTML(
-classroomModeLabel(
-session.access_mode
-)
-)}
-
+${escapeHTML(classroomModeLabel(session.access_mode))}
 </p>
+
+<div class="classroom-session-meta-grid">
+
+<div class="classroom-session-meta">
+<span>Schedule</span>
+<strong>${classroomScheduleHTML(session)}</strong>
+</div>
+
+<div class="classroom-session-meta">
+<span>Licence Expires</span>
+<strong>${escapeHTML(formatDate(session.license_expires_at))}</strong>
+</div>
+
+<div class="classroom-session-meta">
+<span>Created</span>
+<strong>${escapeHTML(formatDate(session.created_at))}</strong>
+</div>
+
+</div>
 
 <div class="classroom-code-box">
 
@@ -9806,11 +10290,7 @@ CLASS CODE
 </div>
 
 <div class="classroom-code-value">
-
-${escapeHTML(
-session.class_code
-)}
-
+${escapeHTML(session.class_code)}
 </div>
 
 </div>
@@ -9818,9 +10298,7 @@ session.class_code
 <button
 class="small-action"
 type="button"
-data-copy-value="${escapeHTML(
-session.class_code
-)}"
+data-copy-value="${escapeHTML(session.class_code)}"
 >
 Copy Code
 </button>
@@ -9828,9 +10306,7 @@ Copy Code
 </div>
 
 <div class="classroom-link-box">
-
 ${escapeHTML(link)}
-
 </div>
 
 <div class="classroom-created-actions">
@@ -9843,11 +10319,475 @@ data-copy-value="${escapeHTML(link)}"
 Copy Student Link
 </button>
 
+<button
+class="small-action"
+type="button"
+data-roster-session="${escapeHTML(session.session_id)}"
+>
+View Students
+</button>
+
+${
+canEnd
+? `
+<button
+class="small-action classroom-end-button"
+type="button"
+data-close-classroom-session="${escapeHTML(session.session_id)}"
+>
+End Session
+</button>
+`
+: ""
+}
+
 </div>
 
 </div>
 
 `;
+
+}
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
+
+function renderClassroomRoster() {
+
+const select =
+document.getElementById(
+"classroomRosterSessionSelect"
+);
+
+const note =
+document.getElementById(
+"classroomRosterNote"
+);
+
+const metrics =
+document.getElementById(
+"classroomRosterMetrics"
+);
+
+const message =
+document.getElementById(
+"classroomRosterMessage"
+);
+
+const rows =
+document.getElementById(
+"classroomStudentRows"
+);
+
+if(
+!select
+||
+!metrics
+||
+!rows
+) {
+
+return;
+
+}
+
+const orderedSessions =
+classroomSessions
+.slice()
+.sort(
+(a,b) => {
+
+const activeDelta =
+Number(
+classroomSessionIsPersistentActive(b)
+)
+-
+Number(
+classroomSessionIsPersistentActive(a)
+);
+
+if(activeDelta !== 0) {
+
+return activeDelta;
+
+}
+
+return new Date(
+b.created_at
+||
+0
+).getTime()
+-
+new Date(
+a.created_at
+||
+0
+).getTime();
+
+}
+);
+
+select.innerHTML = `
+
+<option value="">
+Select classroom session
+</option>
+
+${
+orderedSessions.map(
+session => {
+
+const status =
+classroomStatusInfo(
+session
+);
+
+return `
+<option value="${escapeHTML(session.session_id)}">
+${escapeHTML(session.class_name)} · ${escapeHTML(session.simulation_title)} · ${escapeHTML(status.label)}
+</option>
+`;
+
+}
+)
+.join("")
+}
+
+`;
+
+if(selectedClassroomSessionId) {
+
+select.value =
+selectedClassroomSessionId;
+
+}
+
+const session =
+getSelectedClassroomSession();
+
+if(!session) {
+
+select.disabled =
+orderedSessions.length ===
+0;
+
+note.textContent =
+"Create or select a classroom session to view students.";
+
+metrics.innerHTML =
+"";
+
+message.textContent =
+"";
+
+rows.innerHTML = `
+<tr>
+<td colspan="8" style="padding:35px;text-align:center;color:#7a8d97;">
+No classroom session selected.
+</td>
+</tr>
+`;
+
+return;
+
+}
+
+select.disabled =
+false;
+
+const submitted =
+classroomStudents.filter(
+student =>
+student.attempt_status ===
+"submitted"
+).length;
+
+const inProgress =
+classroomStudents.filter(
+student =>
+student.attempt_status !==
+"submitted"
+).length;
+
+const average =
+classroomStudents.length
+? Math.round(
+classroomStudents.reduce(
+(total,student) =>
+total +
+Number(
+student.progress_percent
+||
+0
+),
+0
+)
+/
+classroomStudents.length
+)
+: 0;
+
+metrics.innerHTML = [
+[
+"Enrolled",
+classroomStudents.length
+],
+[
+"In Progress",
+inProgress
+],
+[
+"Submitted",
+submitted
+],
+[
+"Average Progress",
+average + "%"
+]
+]
+.map(
+item => `
+<div class="classroom-roster-metric">
+<span>${escapeHTML(item[0])}</span>
+<strong>${escapeHTML(item[1])}</strong>
+</div>
+`
+)
+.join("");
+
+note.textContent =
+classroomSessionIsPersistentActive(
+session
+)
+? "Live enrollment and progress · refreshes automatically"
+: "Session history · final learner progress";
+
+message.textContent =
+classroomRosterError
+||
+(
+classroomStudents.length
+? "Student progress refreshes automatically while Classroom is open."
+: "No students have joined this session yet."
+);
+
+message.classList.toggle(
+"error",
+Boolean(
+classroomRosterError
+)
+);
+
+if(
+classroomStudents.length ===
+0
+) {
+
+rows.innerHTML = `
+<tr>
+<td colspan="8" style="padding:35px;text-align:center;color:#7a8d97;">
+No students have joined this classroom session yet.
+</td>
+</tr>
+`;
+
+return;
+
+}
+
+rows.innerHTML =
+classroomStudents.map(
+student => {
+
+const progress =
+Math.max(
+0,
+Math.min(
+100,
+Number(
+student.progress_percent
+||
+0
+)
+)
+);
+
+const submittedStudent =
+student.attempt_status ===
+"submitted";
+
+return `
+
+<tr>
+
+<td>
+<div class="classroom-student-cell">
+<div class="classroom-student-avatar">
+${escapeHTML(getInitials(student.student_name))}
+</div>
+<div>
+<div class="table-primary">
+${escapeHTML(student.student_name)}
+</div>
+<div class="table-secondary">
+${escapeHTML(student.student_email || "")}
+</div>
+</div>
+</div>
+</td>
+
+<td>
+${escapeHTML(classroomModeLabel(student.classroom_access_type))}
+</td>
+
+<td>
+${escapeHTML(formatDate(student.joined_at))}
+</td>
+
+<td>
+<div class="classroom-progress-cell">
+<div class="classroom-progress-track">
+<div class="classroom-progress-fill" style="width:${progress}%;"></div>
+</div>
+<div class="classroom-progress-label">
+${escapeHTML(Math.round(progress))}% · ${escapeHTML(student.response_count)} response(s)
+</div>
+</div>
+</td>
+
+<td>
+<span class="status-badge ${submittedStudent ? "approved" : "future"}">
+${submittedStudent ? "Submitted" : "In Progress"}
+</span>
+</td>
+
+<td>
+${escapeHTML(formatDate(student.last_activity_at))}
+</td>
+
+<td>
+${submittedStudent ? escapeHTML(formatDate(student.submitted_at)) : "—"}
+</td>
+
+<td>
+${
+submittedStudent
+? `
+<button
+class="small-action"
+type="button"
+data-attempt-id="${escapeHTML(student.attempt_id)}"
+>
+View
+</button>
+`
+: "—"
+}
+</td>
+
+</tr>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+async function selectClassroomRosterSession(
+sessionId
+) {
+
+if(!sessionId) {
+
+return;
+
+}
+
+selectedClassroomSessionId =
+sessionId;
+
+await loadClassroomStudents(
+sessionId,
+true
+);
+
+renderClassroomRoster();
+
+}
+
+async function refreshClassroomLiveData() {
+
+if(
+classroomRefreshBusy
+||
+!currentUser
+||
+!currentMembership
+||
+activeView !==
+"classroom"
+||
+!allowedViewOrder.includes(
+"classroom"
+)
+) {
+
+return;
+
+}
+
+classroomRefreshBusy =
+true;
+
+try {
+
+await reloadClassroomSessions();
+
+await loadClassroomStudents(
+selectedClassroomSessionId,
+true
+);
+
+renderClassroom();
+
+}
+
+finally {
+
+classroomRefreshBusy =
+false;
+
+}
+
+}
+
+function startClassroomLiveRefresh() {
+
+if(classroomRefreshTimer) {
+
+window.clearInterval(
+classroomRefreshTimer
+);
+
+}
+
+classroomRefreshTimer =
+window.setInterval(
+() => {
+
+refreshClassroomLiveData();
+
+},
+10000
+);
 
 }
 
@@ -9902,8 +10842,9 @@ session
 );
 
 const canClose =
-session.active ===
-true
+classroomSessionIsPersistentActive(
+session
+)
 &&
 [
 "faculty",
@@ -10053,7 +10994,7 @@ data-close-classroom-session="${escapeHTML(
 session.session_id
 )}"
 >
-Close
+End Session
 </button>
 
 `
@@ -10100,7 +11041,7 @@ return;
 const confirmed =
 window.confirm(
 
-"Close this classroom session? The session will remain in RizSim history but student access will stop."
+"End this classroom session? Student access will stop immediately. The session and student progress will remain available in RizSim history."
 
 );
 
@@ -10139,6 +11080,11 @@ return;
 }
 
 await reloadClassroomSessions();
+
+await loadClassroomStudents(
+selectedClassroomSessionId,
+true
+);
 
 renderClassroom();
 
@@ -13312,12 +14258,48 @@ async function openResponses(
 attemptId
 ) {
 
-const attempt =
+let attempt =
 submissions.find(
 item =>
 item.attempt_id ===
 attemptId
 );
+
+if(!attempt) {
+
+const rosterAttempt =
+classroomStudents.find(
+item =>
+item.attempt_id ===
+attemptId
+);
+
+const rosterSession =
+getSelectedClassroomSession();
+
+if(rosterAttempt) {
+
+attempt = {
+
+attempt_id:
+rosterAttempt.attempt_id,
+
+student_name:
+rosterAttempt.student_name,
+
+simulation_title:
+rosterSession?.simulation_title
+||
+"RizSim Simulation",
+
+submitted_at:
+rosterAttempt.submitted_at
+
+};
+
+}
+
+}
 
 if(!attempt) {
 
@@ -13634,6 +14616,12 @@ closeMobileNavigation();
 
 closeAccountMenu();
 
+if(view === "classroom") {
+
+refreshClassroomLiveData();
+
+}
+
 return;
 
 }
@@ -13685,6 +14673,12 @@ window.setTimeout(
 setViewImmediately(
 view
 );
+
+if(view === "classroom") {
+
+refreshClassroomLiveData();
+
+}
 
 content.classList.remove(
 "exit-next",
@@ -14667,6 +15661,22 @@ return;
 
 }
 
+const rosterSessionButton =
+event.target.closest(
+"[data-roster-session]"
+);
+
+if(rosterSessionButton) {
+
+selectClassroomRosterSession(
+rosterSessionButton.dataset
+.rosterSession
+);
+
+return;
+
+}
+
 const closeClassroomButton =
 event.target.closest(
 "[data-close-classroom-session]"
@@ -14763,6 +15773,30 @@ document
 .addEventListener(
 "click",
 createClassroomSession
+);
+
+document
+.getElementById(
+"classroomRosterSessionSelect"
+)
+.addEventListener(
+"change",
+async event => {
+
+const sessionId =
+event.target.value;
+
+if(!sessionId) {
+
+return;
+
+}
+
+await selectClassroomRosterSession(
+sessionId
+);
+
+}
 );
 
 document
