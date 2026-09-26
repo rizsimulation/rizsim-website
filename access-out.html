@@ -1091,8 +1091,7 @@ font-size: .79rem;
 font-weight: 800;
 overflow-wrap: anywhere;
 }
-
-.classroom-highlight {
+  .classroom-highlight {
 margin-top: 28px;
 padding: 29px;
 color: #ffffff;
@@ -1328,8 +1327,14 @@ margin-bottom: 18px;
 
 .classroom-roster-metric {
 padding: 15px;
-background: linear-gradient(180deg,#fbfdfd,#f4faf9);
-border: 1px solid #dce8eb;
+background:
+linear-gradient(
+180deg,
+#fbfdfd,
+#f4faf9
+);
+border:
+1px solid #dce8eb;
 border-radius: 14px;
 }
 
@@ -1365,7 +1370,12 @@ flex: 0 0 32px;
 display: grid;
 place-items: center;
 color: #ffffff;
-background: linear-gradient(145deg,#0a3143,#12aaa5);
+background:
+linear-gradient(
+145deg,
+#0a3143,
+#12aaa5
+);
 border-radius: 50%;
 font-size: .58rem;
 font-weight: 900;
@@ -1384,7 +1394,12 @@ border-radius: 999px;
 
 .classroom-progress-fill {
 height: 100%;
-background: linear-gradient(90deg,#087f86,#18b8b0);
+background:
+linear-gradient(
+90deg,
+#087f86,
+#18b8b0
+);
 border-radius: 999px;
 }
 
@@ -1404,6 +1419,39 @@ font-size: .61rem;
 
 .classroom-roster-message.error {
 color: #b42318;
+}
+
+.results-filter-grid {
+display: grid;
+grid-template-columns:
+repeat(4,minmax(0,1fr))
+auto;
+gap: 10px;
+align-items: end;
+}
+
+.results-filter-field label {
+display: block;
+margin-bottom: 6px;
+color: #516c79;
+font-size: .56rem;
+font-weight: 900;
+letter-spacing: .055em;
+text-transform: uppercase;
+}
+
+.results-clear-button {
+min-height: 43px;
+padding: 0 14px;
+white-space: nowrap;
+}
+
+.results-session-cell {
+min-width: 190px;
+}
+
+.results-access-badge {
+white-space: nowrap;
 }
 
 .management-grid {
@@ -1587,7 +1635,8 @@ align-items: center;
 justify-content: center;
 color: #355968;
 background: #f4f8f9;
-border: 1px solid #d7e4e7;
+border:
+1px solid #d7e4e7;
 border-radius: 10px;
 font-size: .66rem;
 font-weight: 850;
@@ -1601,7 +1650,8 @@ box-shadow .18s ease;
 
 .license-term-button:hover {
 transform: translateY(-1px);
-border-color: rgba(24,184,176,.38);
+border-color:
+rgba(24,184,176,.38);
 }
 
 .license-term-button.is-selected {
@@ -1629,7 +1679,8 @@ linear-gradient(
 #f4faf9,
 #f8fbfb
 );
-border: 1px solid #dbe9e8;
+border:
+1px solid #dbe9e8;
 border-radius: 12px;
 font-size: .67rem;
 line-height: 1.6;
@@ -1643,7 +1694,8 @@ color: #0b5760;
 margin-top: 15px;
 padding: 11px 12px;
 background: #f7fafb;
-border: 1px solid #e1eaed;
+border:
+1px solid #e1eaed;
 border-radius: 12px;
 }
 
@@ -1670,7 +1722,8 @@ linear-gradient(
 #f8fbfb,
 #f3f9f8
 );
-border: 1px solid #dce9e8;
+border:
+1px solid #dce9e8;
 border-radius: 15px;
 }
 
@@ -1699,7 +1752,8 @@ margin-top: 13px;
 padding: 13px;
 color: #526f7b;
 background: #ffffff;
-border: 1px solid #dce8eb;
+border:
+1px solid #dce8eb;
 border-radius: 11px;
 font-size: .66rem;
 line-height: 1.55;
@@ -2376,11 +2430,22 @@ grid-template-columns: 1fr;
 }
 
 .classroom-roster-metrics {
-grid-template-columns: repeat(2,1fr);
+grid-template-columns:
+repeat(2,1fr);
+}
+
+.results-filter-grid {
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+}
+
+.results-clear-button {
+width: 100%;
 }
 
 .classroom-session-meta-grid {
-grid-template-columns: 1fr 1fr;
+grid-template-columns:
+1fr 1fr;
 }
 
 }
@@ -2464,12 +2529,18 @@ grid-template-columns:
 
 .classroom-roster-metrics,
 .classroom-session-meta-grid {
-grid-template-columns: 1fr;
+grid-template-columns:
+1fr;
 }
 
 .classroom-roster-header-tools {
 min-width: 0;
 width: 100%;
+}
+
+.results-filter-grid {
+grid-template-columns:
+1fr;
 }
 
 }
@@ -2551,11 +2622,17 @@ id="mainNav"
 aria-label="RizSim authenticated navigation"
 >
 
-<a href="#home" data-auth-view="home">
+<a
+href="#home"
+data-auth-view="home"
+>
 Home
 </a>
 
-<a href="#simulations" data-auth-view="simulations">
+<a
+href="#simulations"
+data-auth-view="simulations"
+>
 Simulations
 </a>
 
@@ -2566,7 +2643,6 @@ data-role-view="courses"
 >
 Courses
 </a>
-
 <a
 href="#classroom"
 data-auth-view="classroom"
@@ -2599,15 +2675,24 @@ data-role-view="administration"
 Administration
 </a>
 
-<a href="#about" data-auth-view="about">
+<a
+href="#about"
+data-auth-view="about"
+>
 About
 </a>
 
-<a href="#contact" data-auth-view="contact">
+<a
+href="#contact"
+data-auth-view="contact"
+>
 Contact
 </a>
 
-<a href="#account" data-auth-view="account">
+<a
+href="#account"
+data-auth-view="account"
+>
 Account
 </a>
 
@@ -3581,9 +3666,11 @@ class="management-select"
 id="classroomRosterSessionSelect"
 aria-label="Select classroom session for student progress"
 >
+
 <option value="">
 Select classroom session
 </option>
+
 </select>
 
 </div>
@@ -3613,14 +3700,37 @@ style="min-width:1120px;"
 <thead>
 
 <tr>
-<th>Student</th>
-<th>Access</th>
-<th>Joined</th>
-<th>Progress</th>
-<th>Status</th>
-<th>Last Activity</th>
-<th>Submitted</th>
+
+<th>
+Student
+</th>
+
+<th>
+Access
+</th>
+
+<th>
+Joined
+</th>
+
+<th>
+Progress
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Last Activity
+</th>
+
+<th>
+Submitted
+</th>
+
 <th></th>
+
 </tr>
 
 </thead>
@@ -3705,32 +3815,23 @@ Status
 </div>
 
 </section>
-
 <section
 class="auth-view"
 id="view-results"
 data-view="results"
 >
-
 <div class="content-shell">
-
 <div class="auth-section-heading">
-
 <span class="auth-kicker">
 LEARNING RESULTS
 </span>
-
 <h1>
 Results
 </h1>
-
 <p>
-
 Review participant activity that is visible
 within your authorized scope.
-
 </p>
-
 </div>
 
 <div class="portal-panel">
@@ -3740,7 +3841,7 @@ within your authorized scope.
 <div>
 
 <div class="portal-panel-title">
-Submitted Attempts
+Classroom Results
 </div>
 
 <div
@@ -3754,20 +3855,140 @@ id="resultCount"
 
 </div>
 
+<div class="portal-panel-body">
+
+<div
+class="classroom-roster-metrics"
+id="resultsMetrics"
+></div>
+
+<div class="results-filter-grid">
+
+<div class="results-filter-field">
+
+<label for="resultSessionFilter">
+Class / Session
+</label>
+
+<select
+class="management-select"
+id="resultSessionFilter"
+>
+
+<option value="all">
+All Sessions
+</option>
+
+</select>
+
+</div>
+
+<div class="results-filter-field">
+
+<label for="resultSimulationFilter">
+Simulation
+</label>
+
+<select
+class="management-select"
+id="resultSimulationFilter"
+>
+
+<option value="all">
+All Simulations
+</option>
+
+</select>
+
+</div>
+
+<div class="results-filter-field">
+
+<label for="resultStudentFilter">
+Student
+</label>
+
+<select
+class="management-select"
+id="resultStudentFilter"
+>
+
+<option value="all">
+All Students
+</option>
+
+</select>
+
+</div>
+
+<div class="results-filter-field">
+
+<label for="resultAccessFilter">
+Access
+</label>
+
+<select
+class="management-select"
+id="resultAccessFilter"
+>
+
+<option value="all">
+All Access Types
+</option>
+
+<option value="live">
+Live Class
+</option>
+
+<option value="practice">
+Practice
+</option>
+
+<option value="independent">
+Independent
+</option>
+
+</select>
+
+</div>
+
+<button
+class="small-action results-clear-button"
+id="clearResultFilters"
+type="button"
+>
+Clear Filters
+</button>
+
+</div>
+
+</div>
+
 <div class="table-scroll">
 
-<table class="portal-table">
+<table
+class="portal-table"
+style="min-width:1100px;"
+>
 
 <thead>
 
 <tr>
 
 <th>
-Participant
+Class / Session
 </th>
 
 <th>
 Simulation
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Access
 </th>
 
 <th>
@@ -3796,6 +4017,7 @@ Submitted
 
 </section>
 
+
 <section
 class="auth-view"
 id="view-institution"
@@ -3822,6 +4044,7 @@ environment and Faculty association workflow.
 </p>
 
 </div>
+
 
 <div
 class="portal-panel"
@@ -3869,6 +4092,7 @@ Select institution
 
 </div>
 
+
 <div
 class="portal-panel"
 id="institutionRequestPanel"
@@ -3890,6 +4114,7 @@ Owner approval required
 
 </div>
 
+
 <div class="management-grid">
 
 <div class="management-card">
@@ -3910,6 +4135,7 @@ for approval.
 
 </p>
 
+
 <div class="management-field">
 
 <label for="institutionFacultyName">
@@ -3926,6 +4152,7 @@ placeholder="Faculty member name"
 
 </div>
 
+
 <div class="management-field">
 
 <label for="institutionFacultyEmail">
@@ -3941,6 +4168,7 @@ placeholder="faculty@example.com"
 >
 
 </div>
+
 
 <div class="management-field">
 
@@ -3965,6 +4193,7 @@ Faculty member's main role.
 
 </div>
 
+
 <button
 class="management-action"
 id="submitInstitutionFacultyRequest"
@@ -3973,6 +4202,7 @@ type="button"
 Submit Faculty Request
 </button>
 
+
 <div
 class="management-message"
 id="institutionRequestMessage"
@@ -3980,6 +4210,7 @@ aria-live="polite"
 ></div>
 
 </div>
+
 
 <div class="management-card">
 
@@ -3998,6 +4229,7 @@ the institution's permitted RizSim access
 while remaining a Faculty account.
 
 </p>
+
 
 <div
 style="
@@ -4047,6 +4279,7 @@ authorized scope.
 
 </div>
 
+
 <div class="portal-panel">
 
 <div class="portal-panel-header">
@@ -4064,6 +4297,7 @@ Approved Faculty associations
 </div>
 
 </div>
+
 
 <div class="table-scroll">
 
@@ -4097,6 +4331,7 @@ Status
 
 </div>
 
+
 <div class="portal-panel">
 
 <div class="portal-panel-header">
@@ -4114,6 +4349,7 @@ Pending and reviewed requests
 </div>
 
 </div>
+
 
 <div class="table-scroll">
 
@@ -4155,6 +4391,7 @@ Owner Decision
 
 </section>
 
+
 <section
 class="auth-view"
 id="view-administration"
@@ -4179,10 +4416,12 @@ Administration
 
 </div>
 
+
 <div
 class="portal-metrics"
 id="administrationMetrics"
 ></div>
+
 
 <div
 class="portal-panel hidden"
@@ -4205,7 +4444,9 @@ Owner-controlled Faculty and Institution simulation licences
 
 </div>
 
+
 <div class="management-grid">
+
 
 <div class="management-card">
 
@@ -4223,6 +4464,7 @@ Grant a direct Faculty licence or an Institution licence.
 Semester is the default term. Prices are not connected yet.
 
 </p>
+
 
 <div class="management-field">
 
@@ -4242,6 +4484,7 @@ Select simulation
 </select>
 
 </div>
+
 
 <div class="management-field">
 
@@ -4265,6 +4508,7 @@ Institution
 </select>
 
 </div>
+
 
 <div
 class="license-holder-fields"
@@ -4298,6 +4542,7 @@ Only active Faculty and Course Lead accounts are listed.
 
 </div>
 
+
 <div
 class="license-holder-fields hidden"
 id="ownerLicenseInstitutionFields"
@@ -4330,6 +4575,7 @@ Only active Institutions are listed.
 
 </div>
 
+
 <div class="management-field">
 
 <label>
@@ -4361,6 +4607,7 @@ data-owner-license-term="two_weeks"
 
 </div>
 
+
 <div class="management-field">
 
 <label for="ownerLicenseStart">
@@ -4374,6 +4621,7 @@ type="datetime-local"
 >
 
 </div>
+
 
 <div
 class="management-field"
@@ -4399,6 +4647,7 @@ Set the actual expiry for this licence.
 
 </div>
 
+
 <div class="management-field">
 
 <label for="ownerLicenseReference">
@@ -4415,6 +4664,7 @@ placeholder="Optional"
 
 </div>
 
+
 <div
 class="license-preview"
 id="ownerLicensePreview"
@@ -4428,6 +4678,7 @@ is selected. Set the actual semester expiry date.
 
 </div>
 
+
 <button
 class="management-action"
 id="grantLicenseButton"
@@ -4436,6 +4687,7 @@ type="button"
 Grant Licence
 </button>
 
+
 <div
 class="management-message"
 id="grantLicenseMessage"
@@ -4443,6 +4695,7 @@ aria-live="polite"
 ></div>
 
 </div>
+
 
 <div class="management-card">
 
@@ -4462,6 +4715,7 @@ associated with that Institution.
 
 </p>
 
+
 <div class="license-preview">
 
 <strong>
@@ -4475,6 +4729,7 @@ start and expiry dates.
 
 </div>
 
+
 <div class="license-preview">
 
 <strong>
@@ -4487,6 +4742,7 @@ Expires automatically exactly 14 days after
 the selected start date.
 
 </div>
+
 
 <div class="license-preview">
 
@@ -4504,6 +4760,7 @@ history and audit visibility but no longer grants access.
 </div>
 
 </div>
+
 
 <div class="table-scroll">
 
@@ -4551,6 +4808,7 @@ Status
 
 </div>
 
+
 <div
 class="portal-panel hidden"
 id="ownerInstitutionPanel"
@@ -4572,7 +4830,9 @@ Owner-controlled institution access
 
 </div>
 
+
 <div class="management-grid">
+
 
 <div class="management-card">
 
@@ -4592,6 +4852,7 @@ automatically.
 
 </p>
 
+
 <div class="management-field">
 
 <label for="ownerInstitutionName">
@@ -4607,6 +4868,7 @@ placeholder="Institution name"
 >
 
 </div>
+
 
 <div class="management-field">
 
@@ -4631,6 +4893,7 @@ the slug automatically.
 
 </div>
 
+
 <button
 class="management-action"
 id="createInstitutionButton"
@@ -4639,12 +4902,14 @@ type="button"
 Create Institution
 </button>
 
+
 <div
 class="management-message"
 id="createInstitutionMessage"
 ></div>
 
 </div>
+
 
 <div class="management-card">
 
@@ -4662,6 +4927,7 @@ Assign an existing RizSim user as
 the account that manages an institution.
 
 </p>
+
 
 <div class="management-field">
 
@@ -4681,6 +4947,7 @@ Select institution
 </select>
 
 </div>
+
 
 <div class="management-field">
 
@@ -4705,6 +4972,7 @@ RizSim at least once.
 
 </div>
 
+
 <button
 class="management-action"
 id="assignInstitutionButton"
@@ -4712,6 +4980,7 @@ type="button"
 >
 Assign Institution Account
 </button>
+
 
 <div
 class="management-message"
@@ -4721,6 +4990,7 @@ id="assignInstitutionMessage"
 </div>
 
 </div>
+
 
 <div class="table-scroll">
 
@@ -4760,6 +5030,7 @@ Status
 
 </div>
 
+
 <div
 class="portal-panel hidden"
 id="ownerFacultyRequestPanel"
@@ -4783,6 +5054,7 @@ Owner approval queue
 </div>
 
 </div>
+
 
 <div class="table-scroll">
 
@@ -4822,6 +5094,7 @@ Status
 
 </div>
 
+
 <div
 class="portal-panel hidden"
 id="ownerMembershipPanel"
@@ -4842,6 +5115,7 @@ Owner visibility
 </div>
 
 </div>
+
 
 <div class="table-scroll">
 
@@ -4879,6 +5153,7 @@ Status
 
 </section>
 
+
 <section
 class="auth-view"
 id="view-about"
@@ -4894,12 +5169,11 @@ ABOUT RIZSIM
 </span>
 
 <h1>
-
 Learning becomes meaningful when thinking becomes active.
-
 </h1>
 
 </div>
+
 
 <div class="about-layout">
 
@@ -4914,6 +5188,7 @@ Learning should be experienced.
 </h2>
 
 </div>
+
 
 <div class="about-copy-card">
 
@@ -4951,6 +5226,7 @@ redirected into a separate website.
 
 </section>
 
+
 <section
 class="auth-view"
 id="view-contact"
@@ -4977,6 +5253,7 @@ for access, institution or platform-support questions.
 </p>
 
 </div>
+
 
 <div class="contact-layout">
 
@@ -5008,6 +5285,7 @@ View My Account
 
 </div>
 
+
 <div class="contact-card">
 
 <span class="auth-kicker">
@@ -5033,6 +5311,7 @@ and support workflow are approved.
 </div>
 
 </section>
+
 
 <section
 class="auth-view"
@@ -5061,7 +5340,9 @@ with this Google account.
 
 </div>
 
+
 <div class="account-grid">
+
 
 <div class="account-detail">
 
@@ -5078,6 +5359,7 @@ id="accountName"
 
 </div>
 
+
 <div class="account-detail">
 
 <div class="account-detail-label">
@@ -5092,6 +5374,7 @@ id="accountEmail"
 </div>
 
 </div>
+
 
 <div class="account-detail">
 
@@ -5108,6 +5391,7 @@ id="accountUUID"
 
 </div>
 
+
 <div class="account-detail">
 
 <div class="account-detail-label">
@@ -5123,6 +5407,7 @@ id="accountRole"
 
 </div>
 
+
 <div class="account-detail">
 
 <div class="account-detail-label">
@@ -5137,6 +5422,7 @@ id="accountStatus"
 </div>
 
 </div>
+
 
 <div class="account-detail">
 
@@ -5154,6 +5440,7 @@ id="accountAccess"
 </div>
 
 </div>
+
 
 <div
 class="portal-panel hidden"
@@ -5209,6 +5496,7 @@ Open Public Site
 
 </div>
 
+
 <div
 class="review-modal"
 id="facultyReviewModal"
@@ -5233,6 +5521,7 @@ aria-label="Close"
 
 </div>
 
+
 <div class="review-modal-body">
 
 <div class="review-summary">
@@ -5247,7 +5536,9 @@ FACULTY ASSOCIATION REQUEST
 
 </div>
 
+
 <div class="review-details">
+
 
 <div class="review-detail">
 
@@ -5261,6 +5552,7 @@ Institution
 
 </div>
 
+
 <div class="review-detail">
 
 <span>
@@ -5273,6 +5565,7 @@ Faculty Email
 
 </div>
 
+
 <div class="review-detail">
 
 <span>
@@ -5284,6 +5577,7 @@ Requested By
 </strong>
 
 </div>
+
 
 <div class="review-detail">
 
@@ -5299,12 +5593,14 @@ Requested
 
 </div>
 
+
 <div
 class="review-note-box"
 id="reviewRequestNote"
 >
 —
 </div>
+
 
 <div class="management-field">
 
@@ -5321,10 +5617,12 @@ placeholder="Optional note for the institution."
 
 </div>
 
+
 <div
 class="management-message"
 id="reviewDecisionMessage"
 ></div>
+
 
 <div class="review-actions">
 
@@ -5351,6 +5649,7 @@ Reject Request
 </div>
 
 </div>
+
 
 <div
 class="response-modal"
@@ -5379,6 +5678,7 @@ aria-label="Close"
 
 </div>
 
+
 <div
 class="response-modal-body"
 id="responseModalBody"
@@ -5387,6 +5687,7 @@ id="responseModalBody"
 </div>
 
 </div>
+
 
 <div
 class="product-detail-modal"
@@ -5412,6 +5713,7 @@ aria-label="Close"
 
 </div>
 
+
 <div
 class="product-detail-body"
 id="productDetailBody"
@@ -5421,6 +5723,7 @@ id="productDetailBody"
 
 </div>
 
+
 <div
 class="portal-loading"
 id="portalLoading"
@@ -5429,6 +5732,7 @@ id="portalLoading"
 <div class="portal-spinner"></div>
 
 </div>
+
 
 <div
 class="auth-swipe-indicator"
@@ -5441,7 +5745,6 @@ aria-hidden="true"
 </span>
 
 </div>
-
 <script type="module">
 
 import {
@@ -5547,6 +5850,18 @@ false;
 let submissions =
 [];
 
+let resultSessionFilter =
+"all";
+
+let resultSimulationFilter =
+"all";
+
+let resultStudentFilter =
+"all";
+
+let resultAccessFilter =
+"all";
+
 let ownerProfiles =
 [];
 
@@ -5589,6 +5904,7 @@ let activeView =
 let allowedViewOrder =
 [];
 
+
 function showLoading() {
 
 document
@@ -5601,6 +5917,7 @@ document
 );
 
 }
+
 
 function hideLoading() {
 
@@ -5615,6 +5932,7 @@ document
 
 }
 
+
 function escapeHTML(value) {
 
 if(
@@ -5627,7 +5945,9 @@ return "—";
 
 }
 
-return String(value)
+return String(
+value
+)
 
 .replaceAll(
 "&",
@@ -5656,6 +5976,7 @@ return String(value)
 
 }
 
+
 function formatDate(value) {
 
 if(!value) {
@@ -5666,14 +5987,19 @@ return "—";
 
 try {
 
-return new Date(value)
+return new Date(
+value
+)
 .toLocaleString(
 undefined,
 {
+
 dateStyle:
 "medium",
+
 timeStyle:
 "short"
+
 }
 );
 
@@ -5681,16 +6007,21 @@ timeStyle:
 
 catch {
 
-return String(value);
+return String(
+value
+);
 
 }
 
 }
+
 
 function roleLabel(role) {
 
 return (
-ROLE_LABELS[role]
+ROLE_LABELS[
+role
+]
 ||
 role
 ||
@@ -5698,6 +6029,7 @@ role
 );
 
 }
+
 
 function getInitials(name) {
 
@@ -5711,7 +6043,9 @@ return name
 
 .trim()
 
-.split(/\s+/)
+.split(
+/\s+/
+)
 
 .slice(
 0,
@@ -5721,13 +6055,18 @@ return name
 .map(
 part =>
 part
-.charAt(0)
+.charAt(
+0
+)
 .toUpperCase()
 )
 
-.join("");
+.join(
+""
+);
 
 }
+
 
 function getFirstName(name) {
 
@@ -5738,12 +6077,19 @@ return "Faculty";
 }
 
 return name
+
 .trim()
-.split(/\s+/)[0]
+
+.split(
+/\s+/
+)[0]
+
 ||
+
 "Faculty";
 
 }
+
 
 function setAvatar(
 element,
@@ -5756,7 +6102,9 @@ return;
 
 }
 
-if(profile?.avatar_url) {
+if(
+profile?.avatar_url
+) {
 
 const img =
 document.createElement(
@@ -5789,6 +6137,7 @@ profile?.display_name
 
 }
 
+
 function getCategoryName(
 categoryId
 ) {
@@ -5807,6 +6156,7 @@ category?.name
 );
 
 }
+
 
 function licenseTermLabel(term) {
 
@@ -5834,6 +6184,7 @@ return term
 
 }
 
+
 function getMyLicenseRecord(
 productId
 ) {
@@ -5853,6 +6204,7 @@ null;
 
 }
 
+
 function getProductLicenseOptions(
 productId
 ) {
@@ -5868,7 +6220,9 @@ item.product_id
 String(
 productId
 )
+
 &&
+
 item.enabled ===
 true
 )
@@ -5890,14 +6244,19 @@ b.sort_order
 
 }
 
+
 function toLocalDateTimeInput(
 date
 ) {
 
 const value =
 date instanceof Date
+
 ? date
-: new Date(date);
+
+: new Date(
+date
+);
 
 if(
 Number.isNaN(
@@ -5919,13 +6278,16 @@ value.getTimezoneOffset()
 );
 
 return local
+
 .toISOString()
+
 .slice(
 0,
 16
 );
 
 }
+
 
 function licenseRecordStatus(
 license
@@ -5974,6 +6336,7 @@ return "active";
 
 }
 
+
 function getOwnerProfile(
 userId
 ) {
@@ -5986,6 +6349,7 @@ userId
 
 }
 
+
 function getInstitutionProfile(
 userId
 ) {
@@ -5997,6 +6361,7 @@ userId
 );
 
 }
+
 
 function setManagementMessage(
 id,
@@ -6022,10 +6387,13 @@ text
 
 element.classList.toggle(
 "error",
-Boolean(error)
+Boolean(
+error
+)
 );
 
 }
+
 
 const query =
 new URLSearchParams(
@@ -6059,12 +6427,15 @@ document.getElementById(
 
 }
 
+
 async function signInWithGoogle() {
 
 const suffix =
 intent ===
 "signup"
+
 ? "?intent=signup"
+
 : "";
 
 const redirectURL =
@@ -6104,6 +6475,7 @@ error.message;
 }
 
 }
+
 
 async function getOrCreateProfile() {
 
@@ -6188,8 +6560,10 @@ await supabase
 .upsert(
 profilePayload,
 {
+
 onConflict:
 "id"
+
 }
 );
 
@@ -6233,6 +6607,7 @@ null
 
 }
 
+
 async function getMembership() {
 
 const {
@@ -6274,6 +6649,7 @@ null
 
 }
 
+
 async function ensureStandardFacultyAccess() {
 
 const {
@@ -6292,14 +6668,19 @@ throw error;
 }
 
 return (
-Array.isArray(data)
+Array.isArray(
+data
+)
 &&
 data.length
+
 ? data[0]
+
 : null
 );
 
 }
+
 
 async function claimApprovedInstitutionAccess() {
 
@@ -6331,6 +6712,7 @@ catch {
 }
 
 }
+
 
 async function verifyAccess() {
 
@@ -6483,6 +6865,7 @@ hideLoading();
 
 }
 
+
 function hideAllPrimaryScreens() {
 
 document
@@ -6523,6 +6906,7 @@ document
 
 }
 
+
 function showUnauthenticatedHeader() {
 
 document
@@ -6535,6 +6919,7 @@ document
 );
 
 }
+
 
 function showDisabledGate() {
 
@@ -6576,6 +6961,7 @@ currentProfile
 
 }
 
+
 function showLegacyGate(role) {
 
 hideAllPrimaryScreens();
@@ -6597,6 +6983,7 @@ document.getElementById(
 role;
 
 }
+
 
 function showAuthenticatedApp() {
 
@@ -6625,6 +7012,7 @@ configureRoleNavigation();
 setAuthenticatedIdentity();
 
 }
+
 
 function configureRoleNavigation() {
 
@@ -6739,7 +7127,9 @@ link.style.display =
 allowed.has(
 view
 )
+
 ? ""
+
 : "none";
 
 }
@@ -6869,9 +7259,12 @@ copy;
 document.getElementById(
 "roleHeroChip"
 ).textContent =
+
 role ===
 "course_lead"
+
 ? "Premium Faculty"
+
 : roleLabel(
 role
 );
@@ -6887,7 +7280,9 @@ activeView =
 allowed.has(
 requested
 )
+
 ? requested
+
 : "home";
 
 setViewImmediately(
@@ -6895,6 +7290,7 @@ activeView
 );
 
 }
+
 
 function setAuthenticatedIdentity() {
 
@@ -6930,9 +7326,12 @@ name;
 document.getElementById(
 "accountMenuRole"
 ).textContent =
+
 currentMembership.role ===
 "course_lead"
+
 ? "Course Lead · Premium Faculty"
+
 : role;
 
 document.getElementById(
@@ -6957,9 +7356,12 @@ currentProfile.id;
 document.getElementById(
 "accountRole"
 ).textContent =
+
 currentMembership.role ===
 "course_lead"
+
 ? "Course Lead · Premium Faculty"
+
 : role;
 
 document.getElementById(
@@ -6972,8 +7374,11 @@ currentProfile.account_status
 document.getElementById(
 "accountAccess"
 ).textContent =
+
 currentMembership.active
+
 ? "Active"
+
 : "Disabled";
 
 setAvatar(
@@ -6992,6 +7397,7 @@ currentProfile
 
 }
 
+
 async function loadPortalData() {
 
 showLoading();
@@ -7004,7 +7410,9 @@ await supabase
 "categories"
 )
 
-.select("*")
+.select(
+"*"
+)
 
 .order(
 "name",
@@ -7027,7 +7435,9 @@ await supabase
 "products"
 )
 
-.select("*")
+.select(
+"*"
+)
 
 .order(
 "created_at",
@@ -7088,7 +7498,9 @@ await supabase.rpc(
 
 myLicenseCatalogue =
 myLicenseResult.error
+
 ? []
+
 : (
 myLicenseResult.data
 ||
@@ -7117,7 +7529,9 @@ await supabase.rpc(
 
 classroomSessions =
 classroomResult.error
+
 ? []
+
 : (
 classroomResult.data
 ||
@@ -7141,11 +7555,124 @@ await supabase.rpc(
 
 submissions =
 submissionResult.error
+
 ? []
+
 : (
 submissionResult.data
 ||
 []
+);
+
+const submissionContextResult =
+
+await supabase.rpc(
+"get_visible_simulation_submission_context"
+);
+
+const submissionContext =
+submissionContextResult.error
+
+? []
+
+: (
+submissionContextResult.data
+||
+[]
+);
+
+const submissionContextByAttempt =
+new Map(
+
+submissionContext.map(
+item => [
+String(
+item.attempt_id
+),
+item
+]
+)
+
+);
+
+submissions =
+submissions.map(
+item => {
+
+const context =
+submissionContextByAttempt.get(
+String(
+item.attempt_id
+)
+);
+
+return {
+
+...item,
+
+classroom_session_id:
+context?.classroom_session_id
+||
+null,
+
+class_name:
+context?.class_name
+||
+null,
+
+class_code:
+context?.class_code
+||
+null,
+
+session_access_mode:
+context?.session_access_mode
+||
+null,
+
+student_access_type:
+context?.student_access_type
+||
+null,
+
+session_created_at:
+context?.session_created_at
+||
+null,
+
+live_starts_at:
+context?.live_starts_at
+||
+null,
+
+live_ends_at:
+context?.live_ends_at
+||
+null,
+
+practice_starts_at:
+context?.practice_starts_at
+||
+null,
+
+practice_ends_at:
+context?.practice_ends_at
+||
+null,
+
+session_active:
+context?.session_active
+??
+null,
+
+session_closed_at:
+context?.session_closed_at
+||
+null
+
+};
+
+}
 );
 
 if(
@@ -7173,6 +7700,7 @@ startClassroomLiveRefresh();
 hideLoading();
 
 }
+
 
 async function loadOwnerData() {
 
@@ -7367,6 +7895,7 @@ results[5].data
 
 }
 
+
 async function loadInstitutionData() {
 
 const membershipResult =
@@ -7431,10 +7960,12 @@ true
 
 const permittedIds =
 new Set(
+
 institutionMemberships.map(
 item =>
 item.institution_id
 )
+
 );
 
 institutionList =
@@ -7443,6 +7974,7 @@ institutionResult.data
 ||
 []
 )
+
 .filter(
 item =>
 permittedIds.has(
@@ -7464,6 +7996,7 @@ institutionList[0].id;
 await loadSelectedInstitutionData();
 
 }
+
 
 async function loadSelectedInstitutionData() {
 
@@ -7601,6 +8134,7 @@ profilesResult.data
 
 }
 
+
 function renderPortal() {
 
 renderHome();
@@ -7616,6 +8150,7 @@ renderAdministration();
 renderInstitutionWorkspace();
 
 }
+
 
 function renderHome() {
 
@@ -7663,7 +8198,9 @@ currentMembership.role
 ),
 currentMembership.role ===
 "course_lead"
+
 ? "Premium Faculty"
+
 : "Authenticated"
 ]
 
@@ -7679,7 +8216,11 @@ item => `
 <div class="portal-metric">
 
 <div class="portal-metric-label">
-${escapeHTML(item[0])}
+
+${escapeHTML(
+item[0]
+)}
+
 </div>
 
 <div
@@ -7687,21 +8228,32 @@ class="portal-metric-value"
 style="${
 typeof item[1] ===
 "string"
+
 ? "font-size:1rem;line-height:1.35;margin-top:19px;"
+
 : ""
 }"
 >
-${escapeHTML(item[1])}
+
+${escapeHTML(
+item[1]
+)}
+
 </div>
 
 <div class="portal-metric-note">
-${escapeHTML(item[2])}
+
+${escapeHTML(
+item[2]
+)}
+
 </div>
 
 </div>
 
 `
 )
+
 .join("");
 
 renderQuickAccess();
@@ -7767,9 +8319,11 @@ color:#123548;
 font-size:.78rem;
 "
 >
+
 ${escapeHTML(
 item.student_name
 )}
+
 </strong>
 
 <span
@@ -7799,9 +8353,11 @@ item.submitted_at
 
 `
 )
+
 .join("");
 
 }
+
 
 function renderQuickAccess() {
 
@@ -7815,14 +8371,19 @@ allowedViewOrder.includes(
 ) {
 
 cards.push({
+
 number:
 "01",
+
 title:
 "Simulations",
+
 note:
 "Explore the RizSim catalogue.",
+
 view:
 "simulations"
+
 });
 
 }
@@ -7834,14 +8395,19 @@ allowedViewOrder.includes(
 ) {
 
 cards.push({
+
 number:
 "02",
+
 title:
 "Classroom",
+
 note:
 "Manage Live Class and Practice.",
+
 view:
 "classroom"
+
 });
 
 }
@@ -7853,14 +8419,19 @@ allowedViewOrder.includes(
 ) {
 
 cards.push({
+
 number:
 "03",
+
 title:
 "Results",
+
 note:
 "Review visible learner activity.",
+
 view:
 "results"
+
 });
 
 }
@@ -7872,14 +8443,19 @@ allowedViewOrder.includes(
 ) {
 
 cards.push({
+
 number:
 "04",
+
 title:
 "Institution",
+
 note:
 "Manage institution access and Faculty requests.",
+
 view:
 "institution"
+
 });
 
 }
@@ -7891,14 +8467,19 @@ allowedViewOrder.includes(
 ) {
 
 cards.push({
+
 number:
 "05",
+
 title:
 "Administration",
+
 note:
 "Manage authorized platform operations.",
+
 view:
 "administration"
+
 });
 
 }
@@ -7908,6 +8489,7 @@ document.getElementById(
 ).innerHTML =
 
 cards
+
 .slice(
 0,
 4
@@ -7919,11 +8501,7 @@ card => `
 <button
 class="quick-access-card"
 type="button"
-data-auth-view-button="${
-escapeHTML(
-card.view
-)
-}"
+data-auth-view-button="${escapeHTML(card.view)}"
 >
 
 <span class="quick-access-number">
@@ -7946,6 +8524,7 @@ ${escapeHTML(card.note)}
 .join("");
 
 }
+
 
 function renderSimulations() {
 
@@ -8004,7 +8583,9 @@ product.status
 let statusClass =
 product.status ===
 "published"
+
 ? "approved"
+
 : "muted";
 
 let licenseDetail =
@@ -8044,7 +8625,9 @@ licenseDetail = `
 ${
 license.access_source ===
 "institution"
+
 ? "Institution Access"
+
 : "Direct Faculty Licence"
 }
 
@@ -8054,11 +8637,13 @@ license.access_source ===
 
 ${
 license.institution_name
+
 ? escapeHTML(
 license.institution_name
 )
 +
 " · "
+
 : ""
 }
 
@@ -8088,11 +8673,13 @@ statusText =
 +
 (
 license.license_term
+
 ? " · "
 +
 licenseTermLabel(
 license.license_term
 )
+
 : ""
 );
 
@@ -8179,11 +8766,7 @@ ${licenseDetail}
 <div class="portal-card-footer">
 
 <span
-class="status-badge ${
-escapeHTML(
-statusClass
-)
-}"
+class="status-badge ${escapeHTML(statusClass)}"
 >
 
 ${escapeHTML(
@@ -8195,11 +8778,7 @@ statusText
 <button
 class="small-action"
 type="button"
-data-product-details="${
-escapeHTML(
-product.id
-)
-}"
+data-product-details="${escapeHTML(product.id)}"
 >
 View Details
 </button>
@@ -8217,6 +8796,7 @@ View Details
 
 }
 
+
 function openProductDetails(
 productId
 ) {
@@ -8224,8 +8804,13 @@ productId
 const product =
 products.find(
 item =>
-String(item.id) ===
-String(productId)
+String(
+item.id
+)
+===
+String(
+productId
+)
 );
 
 if(!product) {
@@ -8241,29 +8826,41 @@ product.id
 
 const optionsToRender =
 availableOptions.length
+
 ? availableOptions
+
 : [
 
 {
+
 license_term:
 "semester",
+
 display_name:
 "Semester",
+
 price_pkr:
 null,
+
 is_default:
 true
+
 },
 
 {
+
 license_term:
 "two_weeks",
+
 display_name:
 "2 Weeks",
+
 price_pkr:
 null,
+
 is_default:
 false
+
 }
 
 ];
@@ -8274,7 +8871,9 @@ option =>
 option.license_term ===
 "semester"
 )
+
 ||
+
 optionsToRender[0];
 
 const currentLicense =
@@ -8309,7 +8908,9 @@ currentLicense.license_term
 ${
 currentLicense.access_source ===
 "institution"
+
 ? "Institution Access"
+
 : "Direct Faculty Licence"
 }
 
@@ -8401,21 +9002,14 @@ product.short_description
 ${
 product.product_type ===
 "simulation"
+
 ? `
 
 <div
 class="license-detail-block"
 id="productLicenseBlock"
-data-product-id="${
-escapeHTML(
-product.id
-)
-}"
-data-selected-license-term="${
-escapeHTML(
-selectedOption.license_term
-)
-}"
+data-product-id="${escapeHTML(product.id)}"
+data-selected-license-term="${escapeHTML(selectedOption.license_term)}"
 >
 
 <div class="license-detail-title">
@@ -8432,15 +9026,13 @@ option => `
 class="license-term-button ${
 option.license_term ===
 selectedOption.license_term
+
 ? "is-selected"
+
 : ""
 }"
 type="button"
-data-product-license-term="${
-escapeHTML(
-option.license_term
-)
-}"
+data-product-license-term="${escapeHTML(option.license_term)}"
 >
 
 ${escapeHTML(
@@ -8455,6 +9047,7 @@ option.license_term
 
 `
 )
+
 .join("")
 }
 
@@ -8478,6 +9071,7 @@ ${currentLicenseHTML}
 </div>
 
 `
+
 : ""
 }
 
@@ -8518,6 +9112,7 @@ closeProductDetails
 );
 
 }
+
 
 function updateProductLicenseSelection(
 button
@@ -8597,7 +9192,8 @@ PKR
 ${escapeHTML(
 Number(
 option.price_pkr
-).toLocaleString()
+)
+.toLocaleString()
 )}
 
 </span>
@@ -8622,6 +9218,7 @@ To be announced
 
 }
 
+
 function closeProductDetails() {
 
 document
@@ -8638,6 +9235,7 @@ document.body.classList.remove(
 );
 
 }
+
 
 function getActiveLicensedSimulations() {
 
@@ -8667,41 +9265,66 @@ licence?.license_status ===
 
 .sort(
 (a,b) =>
-String(a.title || "")
+String(
+a.title
+||
+""
+)
 .localeCompare(
-String(b.title || "")
+String(
+b.title
+||
+""
+)
 )
 );
 
 }
 
+
 function classroomModeLabel(mode) {
 
-if(mode === "live") {
+if(
+mode ===
+"live"
+) {
 
 return "Live Class";
 
 }
 
-if(mode === "practice") {
+if(
+mode ===
+"practice"
+) {
 
 return "Practice";
 
 }
 
-if(mode === "both") {
+if(
+mode ===
+"both"
+) {
 
 return "Live + Practice";
 
 }
 
-return mode || "—";
+return mode
+||
+"—";
 
 }
 
-function classroomShareLink(session) {
 
-if(!session?.share_token) {
+function classroomShareLink(
+session
+) {
+
+if(
+!session?.share_token
+) {
 
 return "";
 
@@ -8719,15 +9342,21 @@ session.share_token
 
 }
 
-function classroomStatusInfo(session) {
+
+function classroomStatusInfo(
+session
+) {
 
 if(!session) {
 
 return {
+
 key:
 "muted",
+
 label:
 "Unknown"
+
 };
 
 }
@@ -8741,10 +9370,13 @@ session.session_status ===
 ) {
 
 return {
+
 key:
 "muted",
+
 label:
 "Closed"
+
 };
 
 }
@@ -8755,10 +9387,13 @@ session.session_status ===
 ) {
 
 return {
+
 key:
 "revoked",
+
 label:
 "Licence Revoked"
+
 };
 
 }
@@ -8769,10 +9404,13 @@ session.session_status ===
 ) {
 
 return {
+
 key:
 "expired",
+
 label:
 "Licence Expired"
+
 };
 
 }
@@ -8782,30 +9420,38 @@ Date.now();
 
 const liveStart =
 session.live_starts_at
+
 ? new Date(
 session.live_starts_at
 ).getTime()
+
 : null;
 
 const liveEnd =
 session.live_ends_at
+
 ? new Date(
 session.live_ends_at
 ).getTime()
+
 : null;
 
 const practiceStart =
 session.practice_starts_at
+
 ? new Date(
 session.practice_starts_at
 ).getTime()
+
 : null;
 
 const practiceEnd =
 session.practice_ends_at
+
 ? new Date(
 session.practice_ends_at
-).getTime()
+  ).getTime()
+
 : null;
 
 if(
@@ -8819,10 +9465,13 @@ now < liveEnd
 ) {
 
 return {
+
 key:
 "licensed",
+
 label:
 "Live"
+
 };
 
 }
@@ -8838,10 +9487,13 @@ now < practiceEnd
 ) {
 
 return {
+
 key:
 "licensed",
+
 label:
 "Practice Open"
+
 };
 
 }
@@ -8864,10 +9516,13 @@ value > now
 ) {
 
 return {
+
 key:
 "future",
+
 label:
 "Scheduled"
+
 };
 
 }
@@ -8892,24 +9547,33 @@ value <= now
 ) {
 
 return {
+
 key:
 "expired",
+
 label:
 "Ended"
+
 };
 
 }
 
 return {
+
 key:
 "future",
+
 label:
 "Scheduled"
+
 };
 
 }
 
-function classroomScheduleHTML(session) {
+
+function classroomScheduleHTML(
+session
+) {
 
 const parts =
 [];
@@ -8964,6 +9628,7 @@ return parts.length
 
 }
 
+
 function renderClassroom() {
 
 if(
@@ -9012,7 +9677,10 @@ unavailable.classList.remove(
 "hidden"
 );
 
-if(role === "owner") {
+if(
+role ===
+"owner"
+) {
 
 document.getElementById(
 "classroomUnavailableTitle"
@@ -9120,8 +9788,13 @@ previousValue
 &&
 licensed.some(
 product =>
-String(product.id) ===
-String(previousValue)
+String(
+product.id
+)
+===
+String(
+previousValue
+)
 )
 ) {
 
@@ -9168,7 +9841,8 @@ else {
 if(
 !select.value
 &&
-licensed.length === 1
+licensed.length ===
+1
 ) {
 
 select.value =
@@ -9208,6 +9882,7 @@ renderClassroomRoster();
 renderClassroomSessionRows();
 
 }
+
 
 function updateClassroomLicenseSummary() {
 
@@ -9252,6 +9927,7 @@ return;
 const source =
 licence.access_source ===
 "institution"
+
 ? (
 "Institution Access"
 +
@@ -9263,6 +9939,7 @@ licence.institution_name
 : ""
 )
 )
+
 : "Direct Faculty Licence";
 
 summary.innerHTML = `
@@ -9279,7 +9956,9 @@ licence.license_term
 
 ·
 
-${escapeHTML(source)}
+${escapeHTML(
+source
+)}
 
 <br>
 
@@ -9300,6 +9979,7 @@ true
 );
 
 }
+
 
 function initialiseClassroomDateDefaults(
 preserveExisting = false
@@ -9451,6 +10131,7 @@ proposed
 
 }
 
+
 function updateClassroomModeFields() {
 
 const mode =
@@ -9483,6 +10164,7 @@ mode
 );
 
 }
+
 
 function validateClassroomWindow(
 label,
@@ -9533,7 +10215,10 @@ label
 
 }
 
-if(end <= start) {
+if(
+end <=
+start
+) {
 
 return (
 label
@@ -9580,6 +10265,7 @@ label
 return null;
 
 }
+
 
 async function createClassroomSession() {
 
@@ -9856,7 +10542,9 @@ return;
 }
 
 const created =
-Array.isArray(data)
+Array.isArray(
+data
+)
 &&
 data.length
 ? data[0]
@@ -9904,6 +10592,7 @@ renderClassroom();
 
 }
 
+
 async function reloadClassroomSessions() {
 
 const result =
@@ -9925,6 +10614,7 @@ ensureClassroomRosterSessionSelection();
 
 }
 
+
 function classroomSessionEndTime(
 session
 ) {
@@ -9936,19 +10626,27 @@ session?.practice_ends_at
 
 ]
 
-.filter(Boolean)
+.filter(
+Boolean
+)
 
 .map(
 value =>
-new Date(value).getTime()
+new Date(
+value
+).getTime()
 )
 
 .filter(
 value =>
-!Number.isNaN(value)
+!Number.isNaN(
+value
+)
 );
 
-if(!times.length) {
+if(
+!times.length
+) {
 
 return null;
 
@@ -9959,6 +10657,7 @@ return Math.max(
 );
 
 }
+
 
 function classroomSessionIsPersistentActive(
 session
@@ -10016,6 +10715,7 @@ return true;
 
 }
 
+
 function getPersistentActiveClassroomSessions() {
 
 return classroomSessions
@@ -10028,20 +10728,25 @@ classroomSessionIsPersistentActive
 
 .sort(
 (a,b) =>
+
 new Date(
 b.created_at
 ||
 0
 ).getTime()
+
 -
+
 new Date(
 a.created_at
 ||
 0
 ).getTime()
+
 );
 
 }
+
 
 function ensureClassroomRosterSessionSelection() {
 
@@ -10069,9 +10774,13 @@ getPersistentActiveClassroomSessions();
 
 const fallback =
 activeSessions[0]
+
 ||
+
 classroomSessions
+
 .slice()
+
 .sort(
 (a,b) =>
 new Date(
@@ -10086,7 +10795,9 @@ a.created_at
 0
 ).getTime()
 )[0]
+
 ||
+
 null;
 
 selectedClassroomSessionId =
@@ -10095,6 +10806,7 @@ fallback?.session_id
 null;
 
 }
+
 
 function getSelectedClassroomSession() {
 
@@ -10112,6 +10824,7 @@ selectedClassroomSessionId
 null;
 
 }
+
 
 async function loadClassroomStudents(
 sessionId,
@@ -10173,6 +10886,7 @@ data
 [];
 
 }
+
 
 function renderClassroomCreatedResult() {
 
@@ -10265,18 +10979,39 @@ ${escapeHTML(classroomModeLabel(session.access_mode))}
 <div class="classroom-session-meta-grid">
 
 <div class="classroom-session-meta">
-<span>Schedule</span>
-<strong>${classroomScheduleHTML(session)}</strong>
+
+<span>
+Schedule
+</span>
+
+<strong>
+${classroomScheduleHTML(session)}
+</strong>
+
 </div>
 
 <div class="classroom-session-meta">
-<span>Licence Expires</span>
-<strong>${escapeHTML(formatDate(session.license_expires_at))}</strong>
+
+<span>
+Licence Expires
+</span>
+
+<strong>
+${escapeHTML(formatDate(session.license_expires_at))}
+</strong>
+
 </div>
 
 <div class="classroom-session-meta">
-<span>Created</span>
-<strong>${escapeHTML(formatDate(session.created_at))}</strong>
+
+<span>
+Created
+</span>
+
+<strong>
+${escapeHTML(formatDate(session.created_at))}
+</strong>
+
 </div>
 
 </div>
@@ -10329,7 +11064,9 @@ View Students
 
 ${
 canEnd
+
 ? `
+
 <button
 class="small-action classroom-end-button"
 type="button"
@@ -10337,8 +11074,11 @@ data-close-classroom-session="${escapeHTML(session.session_id)}"
 >
 End Session
 </button>
+
 `
+
 : ""
+
 }
 
 </div>
@@ -10357,6 +11097,7 @@ End Session
 `;
 
 }
+
 
 function renderClassroomRoster() {
 
@@ -10399,20 +11140,32 @@ return;
 
 const orderedSessions =
 classroomSessions
+
 .slice()
+
 .sort(
 (a,b) => {
 
 const activeDelta =
+
 Number(
-classroomSessionIsPersistentActive(b)
+classroomSessionIsPersistentActive(
+b
 )
+)
+
 -
+
 Number(
-classroomSessionIsPersistentActive(a)
+classroomSessionIsPersistentActive(
+a
+)
 );
 
-if(activeDelta !== 0) {
+if(
+activeDelta !==
+0
+) {
 
 return activeDelta;
 
@@ -10423,7 +11176,9 @@ b.created_at
 ||
 0
 ).getTime()
+
 -
+
 new Date(
 a.created_at
 ||
@@ -10449,9 +11204,17 @@ session
 );
 
 return `
+
 <option value="${escapeHTML(session.session_id)}">
-${escapeHTML(session.class_name)} · ${escapeHTML(session.simulation_title)} · ${escapeHTML(status.label)}
+
+${escapeHTML(session.class_name)}
+·
+${escapeHTML(session.simulation_title)}
+·
+${escapeHTML(status.label)}
+
 </option>
+
 `;
 
 }
@@ -10461,7 +11224,9 @@ ${escapeHTML(session.class_name)} · ${escapeHTML(session.simulation_title)} · 
 
 `;
 
-if(selectedClassroomSessionId) {
+if(
+selectedClassroomSessionId
+) {
 
 select.value =
 selectedClassroomSessionId;
@@ -10487,11 +11252,24 @@ message.textContent =
 "";
 
 rows.innerHTML = `
+
 <tr>
-<td colspan="8" style="padding:35px;text-align:center;color:#7a8d97;">
+
+<td
+colspan="8"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+
 No classroom session selected.
+
 </td>
+
 </tr>
+
 `;
 
 return;
@@ -10517,10 +11295,13 @@ student.attempt_status !==
 
 const average =
 classroomStudents.length
+
 ? Math.round(
+
 classroomStudents.reduce(
 (total,student) =>
-total +
+total
++
 Number(
 student.progress_percent
 ||
@@ -10528,52 +11309,82 @@ student.progress_percent
 ),
 0
 )
+
 /
+
 classroomStudents.length
+
 )
+
 : 0;
 
 metrics.innerHTML = [
+
 [
 "Enrolled",
 classroomStudents.length
 ],
+
 [
 "In Progress",
 inProgress
 ],
+
 [
 "Submitted",
 submitted
 ],
+
 [
 "Average Progress",
-average + "%"
+average
++
+"%"
 ]
+
 ]
+
 .map(
 item => `
+
 <div class="classroom-roster-metric">
-<span>${escapeHTML(item[0])}</span>
-<strong>${escapeHTML(item[1])}</strong>
+
+<span>
+${escapeHTML(item[0])}
+</span>
+
+<strong>
+${escapeHTML(item[1])}
+</strong>
+
 </div>
+
 `
 )
+
 .join("");
 
 note.textContent =
+
 classroomSessionIsPersistentActive(
 session
 )
+
 ? "Live enrollment and progress · refreshes automatically"
+
 : "Session history · final learner progress";
 
 message.textContent =
+
 classroomRosterError
+
 ||
+
 (
 classroomStudents.length
+
 ? "Student progress refreshes automatically while Classroom is open."
+
 : "No students have joined this session yet."
 );
 
@@ -10590,11 +11401,24 @@ classroomStudents.length ===
 ) {
 
 rows.innerHTML = `
+
 <tr>
-<td colspan="8" style="padding:35px;text-align:center;color:#7a8d97;">
+
+<td
+colspan="8"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+
 No students have joined this classroom session yet.
+
 </td>
+
 </tr>
+
 `;
 
 return;
@@ -10602,6 +11426,7 @@ return;
 }
 
 rows.innerHTML =
+
 classroomStudents.map(
 student => {
 
@@ -10627,58 +11452,152 @@ return `
 <tr>
 
 <td>
+
 <div class="classroom-student-cell">
+
 <div class="classroom-student-avatar">
-${escapeHTML(getInitials(student.student_name))}
+
+${escapeHTML(
+getInitials(
+student.student_name
+)
+)}
+
 </div>
+
 <div>
+
 <div class="table-primary">
-${escapeHTML(student.student_name)}
+
+${escapeHTML(
+student.student_name
+)}
+
 </div>
+
 <div class="table-secondary">
-${escapeHTML(student.student_email || "")}
+
+${escapeHTML(
+student.student_email
+||
+""
+)}
+
 </div>
+
 </div>
+
 </div>
+
 </td>
 
 <td>
-${escapeHTML(classroomModeLabel(student.classroom_access_type))}
+
+${escapeHTML(
+classroomModeLabel(
+student.classroom_access_type
+)
+)}
+
 </td>
 
 <td>
-${escapeHTML(formatDate(student.joined_at))}
+
+${escapeHTML(
+formatDate(
+student.joined_at
+)
+)}
+
 </td>
 
 <td>
+
 <div class="classroom-progress-cell">
+
 <div class="classroom-progress-track">
-<div class="classroom-progress-fill" style="width:${progress}%;"></div>
+
+<div
+class="classroom-progress-fill"
+style="width:${progress}%;"
+></div>
+
 </div>
+
 <div class="classroom-progress-label">
-${escapeHTML(Math.round(progress))}% · ${escapeHTML(student.response_count)} response(s)
+
+${escapeHTML(
+Math.round(
+progress
+)
+)}%
+
+·
+
+${escapeHTML(
+student.response_count
+)}
+response(s)
+
 </div>
+
 </div>
+
 </td>
 
 <td>
-<span class="status-badge ${submittedStudent ? "approved" : "future"}">
-${submittedStudent ? "Submitted" : "In Progress"}
-</span>
-</td>
 
-<td>
-${escapeHTML(formatDate(student.last_activity_at))}
-</td>
+<span
+class="status-badge ${
+submittedStudent
+? "approved"
+: "future"
+}"
+>
 
-<td>
-${submittedStudent ? escapeHTML(formatDate(student.submitted_at)) : "—"}
-</td>
-
-<td>
 ${
 submittedStudent
+? "Submitted"
+: "In Progress"
+}
+
+</span>
+
+</td>
+
+<td>
+
+${escapeHTML(
+formatDate(
+student.last_activity_at
+)
+)}
+
+</td>
+
+<td>
+
+${
+submittedStudent
+
+? escapeHTML(
+formatDate(
+student.submitted_at
+)
+)
+
+: "—"
+}
+
+</td>
+
+<td>
+
+${
+submittedStudent
+
 ? `
+
 <button
 class="small-action"
 type="button"
@@ -10686,9 +11605,12 @@ data-attempt-id="${escapeHTML(student.attempt_id)}"
 >
 View
 </button>
+
 `
+
 : "—"
 }
+
 </td>
 
 </tr>
@@ -10697,9 +11619,11 @@ View
 
 }
 )
+
 .join("");
 
 }
+
 
 async function selectClassroomRosterSession(
 sessionId
@@ -10722,6 +11646,7 @@ true
 renderClassroomRoster();
 
 }
+
 
 async function refreshClassroomLiveData() {
 
@@ -10769,9 +11694,12 @@ false;
 
 }
 
+
 function startClassroomLiveRefresh() {
 
-if(classroomRefreshTimer) {
+if(
+classroomRefreshTimer
+) {
 
 window.clearInterval(
 classroomRefreshTimer
@@ -10780,6 +11708,7 @@ classroomRefreshTimer
 }
 
 classroomRefreshTimer =
+
 window.setInterval(
 () => {
 
@@ -10790,6 +11719,7 @@ refreshClassroomLiveData();
 );
 
 }
+
 
 function renderClassroomSessionRows() {
 
@@ -10815,7 +11745,9 @@ text-align:center;
 color:#7a8d97;
 "
 >
+
 No classroom sessions yet.
+
 </td>
 
 </tr>
@@ -10842,10 +11774,13 @@ session
 );
 
 const canClose =
+
 classroomSessionIsPersistentActive(
 session
 )
+
 &&
+
 [
 "faculty",
 "course_lead",
@@ -10938,9 +11873,7 @@ flex-wrap:wrap;
 <button
 class="small-action"
 type="button"
-data-copy-value="${escapeHTML(
-session.class_code
-)}"
+data-copy-value="${escapeHTML(session.class_code)}"
 >
 Copy Code
 </button>
@@ -10968,9 +11901,7 @@ session
 <td>
 
 <span
-class="status-badge ${escapeHTML(
-status.key
-)}"
+class="status-badge ${escapeHTML(status.key)}"
 >
 
 ${escapeHTML(
@@ -10985,19 +11916,19 @@ status.label
 
 ${
 canClose
+
 ? `
 
 <button
 class="small-action danger"
 type="button"
-data-close-classroom-session="${escapeHTML(
-session.session_id
-)}"
+data-close-classroom-session="${escapeHTML(session.session_id)}"
 >
 End Session
 </button>
 
 `
+
 : `
 
 <span class="table-secondary">
@@ -11019,6 +11950,7 @@ End Session
 .join("");
 
 }
+
 
 async function closeClassroomSession(
 sessionId
@@ -11089,6 +12021,7 @@ true
 renderClassroom();
 
 }
+
 
 async function copyValue(
 value,
@@ -11185,6 +12118,536 @@ original;
 
 }
 
+
+function resultSessionKey(
+item
+) {
+
+if(
+item.classroom_session_id
+) {
+
+return String(
+item.classroom_session_id
+);
+
+}
+
+return "independent";
+
+}
+
+
+function resultSessionLabel(
+item
+) {
+
+if(
+item.classroom_session_id
+) {
+
+return item.class_name
+||
+"Classroom Session";
+
+}
+
+return "Independent / No Classroom";
+
+}
+
+
+function resultStudentKey(
+item
+) {
+
+return String(
+item.student_user_id
+||
+item.student_name
+||
+"unknown"
+);
+
+}
+
+
+function resultAccessKey(
+item
+) {
+
+if(
+item.student_access_type ===
+"live"
+) {
+
+return "live";
+
+}
+
+if(
+item.student_access_type ===
+"practice"
+) {
+
+return "practice";
+
+}
+
+return "independent";
+
+}
+
+
+function resultAccessLabel(
+item
+) {
+
+const key =
+resultAccessKey(
+item
+);
+
+if(
+key ===
+"live"
+) {
+
+return "Live Class";
+
+}
+
+if(
+key ===
+"practice"
+) {
+
+return "Practice";
+
+}
+
+return "Independent";
+
+}
+
+
+function uniqueResultOptions(
+items,
+keyGetter,
+labelGetter
+) {
+
+const map =
+new Map();
+
+items.forEach(
+item => {
+
+const key =
+keyGetter(
+item
+);
+
+if(
+!map.has(
+key
+)
+) {
+
+map.set(
+key,
+labelGetter(
+item
+)
+);
+
+}
+
+}
+);
+
+return Array.from(
+map.entries()
+)
+
+.sort(
+(a,b) =>
+String(
+a[1]
+)
+.localeCompare(
+String(
+b[1]
+)
+)
+);
+
+}
+
+
+function renderResultFilterOptions() {
+
+const sessionSelect =
+document.getElementById(
+"resultSessionFilter"
+);
+
+const simulationSelect =
+document.getElementById(
+"resultSimulationFilter"
+);
+
+const studentSelect =
+document.getElementById(
+"resultStudentFilter"
+);
+
+const accessSelect =
+document.getElementById(
+"resultAccessFilter"
+);
+
+if(
+!sessionSelect
+||
+!simulationSelect
+||
+!studentSelect
+||
+!accessSelect
+) {
+
+return;
+
+}
+
+const sessionOptions =
+uniqueResultOptions(
+submissions,
+resultSessionKey,
+resultSessionLabel
+);
+
+const simulationOptions =
+uniqueResultOptions(
+submissions,
+
+item =>
+String(
+item.simulation_title
+||
+"Simulation"
+),
+
+item =>
+item.simulation_title
+||
+"Simulation"
+);
+
+const studentOptions =
+uniqueResultOptions(
+submissions,
+resultStudentKey,
+
+item =>
+item.student_name
+||
+"Student"
+);
+
+const validSessionValues =
+new Set([
+"all",
+...sessionOptions.map(
+item =>
+item[0]
+)
+]);
+
+const validSimulationValues =
+new Set([
+"all",
+...simulationOptions.map(
+item =>
+item[0]
+)
+]);
+
+const validStudentValues =
+new Set([
+"all",
+...studentOptions.map(
+item =>
+item[0]
+)
+]);
+
+if(
+!validSessionValues.has(
+resultSessionFilter
+)
+) {
+
+resultSessionFilter =
+"all";
+
+}
+
+if(
+!validSimulationValues.has(
+resultSimulationFilter
+)
+) {
+
+resultSimulationFilter =
+"all";
+
+}
+
+if(
+!validStudentValues.has(
+resultStudentFilter
+)
+) {
+
+resultStudentFilter =
+"all";
+
+}
+
+sessionSelect.innerHTML = `
+
+<option value="all">
+All Sessions
+</option>
+
+${
+sessionOptions.map(
+([key,label]) => `
+
+<option value="${escapeHTML(key)}">
+
+${escapeHTML(label)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+simulationSelect.innerHTML = `
+
+<option value="all">
+All Simulations
+</option>
+
+${
+simulationOptions.map(
+([key,label]) => `
+
+<option value="${escapeHTML(key)}">
+
+${escapeHTML(label)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+studentSelect.innerHTML = `
+
+<option value="all">
+All Students
+</option>
+
+${
+studentOptions.map(
+([key,label]) => `
+
+<option value="${escapeHTML(key)}">
+
+${escapeHTML(label)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+sessionSelect.value =
+resultSessionFilter;
+
+simulationSelect.value =
+resultSimulationFilter;
+
+studentSelect.value =
+resultStudentFilter;
+
+accessSelect.value =
+resultAccessFilter;
+
+}
+
+
+function getFilteredResults() {
+
+return submissions
+
+.filter(
+item =>
+resultSessionFilter ===
+"all"
+||
+resultSessionKey(
+item
+)
+===
+resultSessionFilter
+)
+
+.filter(
+item =>
+resultSimulationFilter ===
+"all"
+||
+String(
+item.simulation_title
+||
+"Simulation"
+)
+===
+resultSimulationFilter
+)
+
+.filter(
+item =>
+resultStudentFilter ===
+"all"
+||
+resultStudentKey(
+item
+)
+===
+resultStudentFilter
+)
+
+.filter(
+item =>
+resultAccessFilter ===
+"all"
+||
+resultAccessKey(
+item
+)
+===
+resultAccessFilter
+)
+
+.slice()
+
+.sort(
+(a,b) => {
+
+const sessionCompare =
+String(
+resultSessionLabel(
+a
+)
+)
+.localeCompare(
+String(
+resultSessionLabel(
+b
+)
+)
+);
+
+if(
+sessionCompare !==
+0
+) {
+
+return sessionCompare;
+
+}
+
+const simulationCompare =
+String(
+a.simulation_title
+||
+""
+)
+.localeCompare(
+String(
+b.simulation_title
+||
+""
+)
+);
+
+if(
+simulationCompare !==
+0
+) {
+
+return simulationCompare;
+
+}
+
+const studentCompare =
+String(
+a.student_name
+||
+""
+)
+.localeCompare(
+String(
+b.student_name
+||
+""
+)
+);
+
+if(
+studentCompare !==
+0
+) {
+
+return studentCompare;
+
+}
+
+return new Date(
+b.submitted_at
+||
+0
+).getTime()
+
+-
+
+new Date(
+a.submitted_at
+||
+0
+).getTime();
+
+}
+);
+
+}
+
+
 function renderResults() {
 
 const body =
@@ -11192,15 +12655,129 @@ document.getElementById(
 "resultRows"
 );
 
+const metrics =
+document.getElementById(
+"resultsMetrics"
+);
+
+renderResultFilterOptions();
+
+const filtered =
+getFilteredResults();
+
+const uniqueStudents =
+new Set(
+filtered.map(
+resultStudentKey
+)
+).size;
+
+const classroomSessionCount =
+new Set(
+
+filtered
+
+.filter(
+item =>
+Boolean(
+item.classroom_session_id
+)
+)
+
+.map(
+item =>
+String(
+item.classroom_session_id
+)
+)
+
+).size;
+
+const averageProgress =
+filtered.length
+
+? Math.round(
+
+filtered.reduce(
+(total,item) =>
+total
++
+Number(
+item.progress_percent
+||
+0
+),
+0
+)
+
+/
+
+filtered.length
+
+)
+
+: 0;
+
 document.getElementById(
 "resultCount"
 ).textContent =
+
+filtered.length
++
+" shown of "
++
 submissions.length
 +
 " submission(s)";
 
+metrics.innerHTML = [
+
+[
+"Submissions",
+filtered.length
+],
+
+[
+"Students",
+uniqueStudents
+],
+
+[
+"Classroom Sessions",
+classroomSessionCount
+],
+
+[
+"Average Progress",
+averageProgress
++
+"%"
+]
+
+]
+
+.map(
+item => `
+
+<div class="classroom-roster-metric">
+
+<span>
+${escapeHTML(item[0])}
+</span>
+
+<strong>
+${escapeHTML(item[1])}
+</strong>
+
+</div>
+
+`
+)
+
+.join("");
+
 if(
-submissions.length ===
+filtered.length ===
 0
 ) {
 
@@ -11209,7 +12786,7 @@ body.innerHTML = `
 <tr>
 
 <td
-colspan="5"
+colspan="7"
 style="
 padding:35px;
 text-align:center;
@@ -11217,8 +12794,7 @@ color:#7a8d97;
 "
 >
 
-No submissions are currently visible
-within this account's scope.
+No submissions match the selected Results filters.
 
 </td>
 
@@ -11232,17 +12808,50 @@ return;
 
 body.innerHTML =
 
-submissions.map(
-item => `
+filtered.map(
+item => {
+
+const classroomLinked =
+Boolean(
+item.classroom_session_id
+);
+
+const classTitle =
+resultSessionLabel(
+item
+);
+
+const classNote =
+classroomLinked
+
+? (
+item.class_code
+? "Code: "
++
+item.class_code
+: "Classroom-linked submission"
+)
+
+: "Legacy or non-classroom submission";
+
+return `
 
 <tr>
 
-<td>
+<td class="results-session-cell">
 
 <div class="table-primary">
 
 ${escapeHTML(
-item.student_name
+classTitle
+)}
+
+</div>
+
+<div class="table-secondary">
+
+${escapeHTML(
+classNote
 )}
 
 </div>
@@ -11273,12 +12882,46 @@ item.category_name
 
 <td>
 
+<div class="table-primary">
+
+${escapeHTML(
+item.student_name
+)}
+
+</div>
+
+</td>
+
+<td>
+
+<span
+class="status-badge ${
+classroomLinked
+? "approved"
+: "muted"
+} results-access-badge"
+>
+
+${escapeHTML(
+resultAccessLabel(
+item
+)
+)}
+
+</span>
+
+</td>
+
+<td>
+
 ${
 Number(
 item.progress_percent
 ||
 0
-).toFixed(0)
+).toFixed(
+0
+)
 }%
 
 </td>
@@ -11298,11 +12941,7 @@ item.submitted_at
 <button
 class="small-action"
 type="button"
-data-attempt-id="${
-escapeHTML(
-item.attempt_id
-)
-}"
+data-attempt-id="${escapeHTML(item.attempt_id)}"
 >
 View
 </button>
@@ -11311,14 +12950,15 @@ View
 
 </tr>
 
-`
+`;
+
+}
 )
 
 .join("");
 
 }
-
-function renderInstitutionWorkspace() {
+  function renderInstitutionWorkspace() {
 
 if(
 currentMembership.role !==
@@ -11351,7 +12991,9 @@ institution.id
 ${
 selectedInstitutionId ===
 institution.id
+
 ? "selected"
+
 : ""
 }
 >
@@ -11379,6 +13021,7 @@ renderInstitutionFaculty();
 renderInstitutionRequests();
 
 }
+
 
 function renderInstitutionFaculty() {
 
@@ -11497,6 +13140,7 @@ Approved
 
 }
 
+
 function renderInstitutionRequests() {
 
 const tbody =
@@ -11596,13 +13240,17 @@ request.status
 
 ${
 request.decision_note
+
 ? escapeHTML(
 request.decision_note
 )
+
 : (
 request.status ===
 "pending"
+
 ? "Awaiting Owner review"
+
 : "—"
 )
 }
@@ -11617,6 +13265,7 @@ request.status ===
 .join("");
 
 }
+
 
 async function submitInstitutionFacultyRequest() {
 
@@ -11787,6 +13436,7 @@ renderInstitutionWorkspace();
 
 }
 
+
 function setDefaultOwnerLicenseDates() {
 
 const startInput =
@@ -11810,6 +13460,7 @@ new Date()
 updateOwnerLicenseTermUI();
 
 }
+
 
 function setOwnerLicenseTerm(
 term
@@ -11851,6 +13502,7 @@ term
 updateOwnerLicenseTermUI();
 
 }
+
 
 function updateOwnerLicenseTermUI() {
 
@@ -11965,6 +13617,7 @@ RizSim does not assume a universal semester duration.
 
 }
 
+
 function updateOwnerLicenseHolderFields() {
 
 const holderType =
@@ -11995,6 +13648,7 @@ holderType !==
 );
 
 }
+
 
 function renderOwnerLicenseManagement() {
 
@@ -12195,6 +13849,7 @@ renderOwnerLicenseRows();
 
 }
 
+
 function renderOwnerLicenseRows() {
 
 const tbody =
@@ -12312,15 +13967,21 @@ license
 const statusLabel =
 status ===
 "active"
+
 ? "Active"
+
 : (
 status ===
 "future"
+
 ? "Future"
+
 : (
 status ===
 "expired"
+
 ? "Expired"
+
 : "Revoked"
 )
 );
@@ -12407,7 +14068,9 @@ class="status-badge ${
 escapeHTML(
 status ===
 "active"
+
 ? "licensed"
+
 : status
 )
 }"
@@ -12425,21 +14088,21 @@ statusLabel
 
 ${
 canRevoke
+
 ? `
 
 <button
 class="small-action danger"
 type="button"
-data-revoke-license="${
-escapeHTML(
+data-revoke-license="${escapeHTML(
 license.id
-)
-}"
+)}"
 >
 Revoke
 </button>
 
 `
+
 : `
 
 <span class="table-secondary">
@@ -12461,8 +14124,7 @@ Revoke
 .join("");
 
 }
-
-async function grantOwnerLicense() {
+  async function grantOwnerLicense() {
 
 if(
 currentMembership.role !==
@@ -12801,6 +14463,7 @@ renderSimulations();
 
 }
 
+
 async function revokeOwnerLicense(
 licenseId
 ) {
@@ -12891,6 +14554,7 @@ renderAdministration();
 renderSimulations();
 
 }
+
 
 function renderOwnerInstitutionManagement() {
 
@@ -13139,11 +14803,9 @@ institution.active
 : "primary-action"
 }"
 type="button"
-data-institution-toggle="${
-escapeHTML(
+data-institution-toggle="${escapeHTML(
 institution.id
-)
-}"
+)}"
 data-current-active="${
 institution.active
 ? "true"
@@ -13171,6 +14833,7 @@ institution.active
 .join("");
 
 }
+
 
 function renderOwnerFacultyRequests() {
 
@@ -13326,11 +14989,9 @@ requester?.email
 <td>
 
 <span
-class="status-badge ${
-escapeHTML(
+class="status-badge ${escapeHTML(
 request.status
-)
-}"
+)}"
 >
 
 ${escapeHTML(
@@ -13352,11 +15013,9 @@ request.status ===
 <button
 class="small-action primary-action"
 type="button"
-data-review-request="${
-escapeHTML(
+data-review-request="${escapeHTML(
 request.id
-)
-}"
+)}"
 >
 Review
 </button>
@@ -13390,6 +15049,7 @@ request.reviewed_at
 .join("");
 
 }
+
 
 function openFacultyReview(
 requestId
@@ -13496,6 +15156,7 @@ document.body.classList.add(
 
 }
 
+
 function closeFacultyReview() {
 
 activeReviewRequestId =
@@ -13515,6 +15176,7 @@ document.body.classList.remove(
 );
 
 }
+
 
 async function reviewFacultyRequest(
 decision
@@ -13611,7 +15273,9 @@ if(
 decision ===
 "approved"
 &&
-Array.isArray(data)
+Array.isArray(
+data
+)
 &&
 data.length
 &&
@@ -13638,8 +15302,7 @@ closeFacultyReview,
 );
 
 }
-
-async function createInstitution() {
+  async function createInstitution() {
 
 if(
 currentMembership.role !==
@@ -13751,6 +15414,7 @@ await loadOwnerData();
 renderAdministration();
 
 }
+
 
 async function assignInstitutionAccount() {
 
@@ -13880,6 +15544,7 @@ renderAdministration();
 
 }
 
+
 async function toggleInstitution(
 institutionId,
 currentlyActive
@@ -13961,6 +15626,7 @@ await loadOwnerData();
 renderAdministration();
 
 }
+
 
 function renderAdministration() {
 
@@ -14085,7 +15751,9 @@ item => `
 
 <div class="portal-metric-label">
 
-${escapeHTML(item[0])}
+${escapeHTML(
+item[0]
+)}
 
 </div>
 
@@ -14099,13 +15767,17 @@ typeof item[1] ===
 }"
 >
 
-${escapeHTML(item[1])}
+${escapeHTML(
+item[1]
+)}
 
 </div>
 
 <div class="portal-metric-note">
 
-${escapeHTML(item[2])}
+${escapeHTML(
+item[2]
+)}
 
 </div>
 
@@ -14185,7 +15857,6 @@ profile?.email
 <td>
 
 ${escapeHTML(
-
 ACTIVE_PORTAL_ROLES.has(
 member.role
 )
@@ -14197,7 +15868,6 @@ member.role
 : "Legacy: "
 +
 member.role
-
 )}
 
 </td>
@@ -14253,6 +15923,7 @@ No portal membership records found.
 `;
 
 }
+
 
 async function openResponses(
 attemptId
@@ -14494,6 +16165,7 @@ document.body.classList.add(
 
 }
 
+
 function closeResponseModal() {
 
 document
@@ -14510,6 +16182,7 @@ document.body.classList.remove(
 );
 
 }
+
 
 function setViewImmediately(
 view
@@ -14593,6 +16266,7 @@ window.scrollTo(
 
 }
 
+
 function navigateInternal(
 view
 ) {
@@ -14616,7 +16290,10 @@ closeMobileNavigation();
 
 closeAccountMenu();
 
-if(view === "classroom") {
+if(
+view ===
+"classroom"
+) {
 
 refreshClassroomLiveData();
 
@@ -14674,7 +16351,10 @@ setViewImmediately(
 view
 );
 
-if(view === "classroom") {
+if(
+view ===
+"classroom"
+) {
 
 refreshClassroomLiveData();
 
@@ -14712,6 +16392,7 @@ content.classList.remove(
 
 }
 
+
 function openAccountMenu() {
 
 const button =
@@ -14748,6 +16429,7 @@ document.body.classList.add(
 
 }
 
+
 function closeAccountMenu() {
 
 const button =
@@ -14779,6 +16461,7 @@ document.body.classList.remove(
 );
 
 }
+
 
 function initialiseAccountMenu() {
 
@@ -14874,8 +16557,7 @@ closeAccountMenu();
 );
 
 }
-
-function openSidebar() {
+  function openSidebar() {
 
 const button =
 document.getElementById(
@@ -14922,6 +16604,7 @@ overlay.setAttribute(
 
 }
 
+
 function closeSidebar() {
 
 const button =
@@ -14964,6 +16647,7 @@ overlay.setAttribute(
 );
 
 }
+
 
 function initialiseSidebar() {
 
@@ -15008,6 +16692,7 @@ closeSidebar
 
 }
 
+
 function closeMobileNavigation() {
 
 const navigation =
@@ -15030,6 +16715,7 @@ button.setAttribute(
 );
 
 }
+
 
 function initialiseMobileNavigation() {
 
@@ -15067,6 +16753,7 @@ String(open)
 );
 
 }
+
 
 function initialiseSafeSwipe() {
 
@@ -15146,9 +16833,7 @@ event.touches[0];
 if(
 touch.clientX <=
 edgeGuard
-
 ||
-
 touch.clientX >=
 window.innerWidth
 -
@@ -15214,9 +16899,7 @@ deltaY
 )
 >
 70
-
 ||
-
 Math.abs(
 deltaY
 )
@@ -15264,27 +16947,19 @@ if(
 document.body.classList.contains(
 "sidebar-open"
 )
-
 ||
-
 document.body.classList.contains(
 "account-menu-open"
 )
-
 ||
-
 document.body.classList.contains(
 "review-open"
 )
-
 ||
-
 document.body.classList.contains(
 "response-open"
 )
-
 ||
-
 document.body.classList.contains(
 "product-detail-open"
 )
@@ -15327,15 +17002,12 @@ deltaY
 const valid =
 absX >=
 120
-
 &&
 absY <=
 70
-
 &&
 absX >
 absY * 1.65
-
 &&
 duration <=
 750;
@@ -15380,6 +17052,7 @@ false;
 
 }
 
+
 function navigateAdjacentInternalView(
 direction
 ) {
@@ -15407,9 +17080,7 @@ direction ===
 if(
 destinationIndex <
 0
-
 ||
-
 destinationIndex >=
 allowedViewOrder.length
 ) {
@@ -15436,6 +17107,7 @@ destinationIndex
 );
 
 }
+
 
 function showAuthSwipeIndicator(
 direction
@@ -15490,6 +17162,7 @@ indicator.classList.remove(
 
 }
 
+
 async function signOut() {
 
 await supabase
@@ -15502,6 +17175,7 @@ window.location.replace(
 
 }
 
+
 document
 .getElementById(
 "googleLogin"
@@ -15510,6 +17184,7 @@ document
 "click",
 signInWithGoogle
 );
+
 
 document
 .getElementById(
@@ -15520,6 +17195,7 @@ document
 signOut
 );
 
+
 document
 .getElementById(
 "disabledAccountSignOut"
@@ -15529,6 +17205,7 @@ document
 signOut
 );
 
+
 document
 .getElementById(
 "legacySignOut"
@@ -15537,6 +17214,7 @@ document
 "click",
 signOut
 );
+
 
 document
 .querySelectorAll(
@@ -15561,6 +17239,7 @@ link.dataset.authView
 }
 );
 
+
 document.addEventListener(
 "click",
 event => {
@@ -15581,6 +17260,7 @@ return;
 
 }
 
+
 const productButton =
 event.target.closest(
 "[data-product-details]"
@@ -15597,6 +17277,7 @@ return;
 
 }
 
+
 const productLicenseTermButton =
 event.target.closest(
 "[data-product-license-term]"
@@ -15611,6 +17292,7 @@ productLicenseTermButton
 return;
 
 }
+
 
 const ownerLicenseTermButton =
 event.target.closest(
@@ -15628,6 +17310,7 @@ return;
 
 }
 
+
 const revokeLicenseButton =
 event.target.closest(
 "[data-revoke-license]"
@@ -15643,6 +17326,7 @@ revokeLicenseButton.dataset
 return;
 
 }
+
 
 const copyButton =
 event.target.closest(
@@ -15661,6 +17345,7 @@ return;
 
 }
 
+
 const rosterSessionButton =
 event.target.closest(
 "[data-roster-session]"
@@ -15676,6 +17361,7 @@ rosterSessionButton.dataset
 return;
 
 }
+
 
 const closeClassroomButton =
 event.target.closest(
@@ -15693,6 +17379,7 @@ return;
 
 }
 
+
 const responseButton =
 event.target.closest(
 "[data-attempt-id]"
@@ -15709,6 +17396,7 @@ return;
 
 }
 
+
 const institutionToggle =
 event.target.closest(
 "[data-institution-toggle]"
@@ -15717,19 +17405,17 @@ event.target.closest(
 if(institutionToggle) {
 
 toggleInstitution(
-
 institutionToggle.dataset
 .institutionToggle,
-
 institutionToggle.dataset
 .currentActive ===
 "true"
-
 );
 
 return;
 
 }
+
 
 const reviewButton =
 event.target.closest(
@@ -15748,6 +17434,7 @@ reviewButton.dataset
 }
 );
 
+
 document
 .getElementById(
 "classroomSimulationSelect"
@@ -15756,6 +17443,7 @@ document
 "change",
 updateClassroomLicenseSummary
 );
+
 
 document
 .getElementById(
@@ -15766,6 +17454,7 @@ document
 updateClassroomModeFields
 );
 
+
 document
 .getElementById(
 "createClassroomSessionButton"
@@ -15774,6 +17463,7 @@ document
 "click",
 createClassroomSession
 );
+
 
 document
 .getElementById(
@@ -15799,7 +17489,100 @@ sessionId
 }
 );
 
+
 document
+.getElementById(
+"resultSessionFilter"
+)
+.addEventListener(
+"change",
+event => {
+
+resultSessionFilter =
+event.target.value;
+
+renderResults();
+
+}
+);
+
+
+document
+.getElementById(
+"resultSimulationFilter"
+)
+.addEventListener(
+"change",
+event => {
+
+resultSimulationFilter =
+event.target.value;
+
+renderResults();
+
+}
+);
+
+
+document
+.getElementById(
+"resultStudentFilter"
+)
+.addEventListener(
+"change",
+event => {
+
+resultStudentFilter =
+event.target.value;
+
+renderResults();
+
+}
+);
+
+
+document
+.getElementById(
+"resultAccessFilter"
+)
+.addEventListener(
+"change",
+event => {
+
+resultAccessFilter =
+event.target.value;
+
+renderResults();
+
+}
+);
+
+
+document
+.getElementById(
+"clearResultFilters"
+)
+.addEventListener(
+"click",
+() => {
+
+resultSessionFilter =
+"all";
+
+resultSimulationFilter =
+"all";
+
+resultStudentFilter =
+"all";
+
+resultAccessFilter =
+"all";
+
+renderResults();
+
+}
+);
+  document
 .getElementById(
 "ownerLicenseHolderType"
 )
@@ -15807,6 +17590,7 @@ document
 "change",
 updateOwnerLicenseHolderFields
 );
+
 
 document
 .getElementById(
@@ -15817,6 +17601,7 @@ document
 updateOwnerLicenseTermUI
 );
 
+
 document
 .getElementById(
 "grantLicenseButton"
@@ -15825,6 +17610,7 @@ document
 "click",
 grantOwnerLicense
 );
+
 
 document
 .getElementById(
@@ -15835,6 +17621,7 @@ document
 createInstitution
 );
 
+
 document
 .getElementById(
 "assignInstitutionButton"
@@ -15844,6 +17631,7 @@ document
 assignInstitutionAccount
 );
 
+
 document
 .getElementById(
 "submitInstitutionFacultyRequest"
@@ -15852,6 +17640,7 @@ document
 "click",
 submitInstitutionFacultyRequest
 );
+
 
 document
 .getElementById(
@@ -15877,6 +17666,7 @@ hideLoading();
 }
 );
 
+
 document
 .getElementById(
 "facultyReviewClose"
@@ -15885,6 +17675,7 @@ document
 "click",
 closeFacultyReview
 );
+
 
 document
 .getElementById(
@@ -15901,6 +17692,7 @@ reviewFacultyRequest(
 }
 );
 
+
 document
 .getElementById(
 "rejectFacultyRequest"
@@ -15915,6 +17707,7 @@ reviewFacultyRequest(
 
 }
 );
+
 
 document
 .getElementById(
@@ -15936,6 +17729,7 @@ closeFacultyReview();
 }
 );
 
+
 document
 .getElementById(
 "responseModalClose"
@@ -15944,6 +17738,7 @@ document
 "click",
 closeResponseModal
 );
+
 
 document
 .getElementById(
@@ -15965,6 +17760,7 @@ closeResponseModal();
 }
 );
 
+
 document
 .getElementById(
 "productDetailClose"
@@ -15973,6 +17769,7 @@ document
 "click",
 closeProductDetails
 );
+
 
 document
 .getElementById(
@@ -15993,6 +17790,7 @@ closeProductDetails();
 
 }
 );
+
 
 document.addEventListener(
 "keydown",
@@ -16022,6 +17820,7 @@ closeProductDetails();
 }
 );
 
+
 initialiseAccountMenu();
 
 initialiseSidebar();
@@ -16035,4 +17834,5 @@ verifyAccess();
 </script>
 
 </body>
+
 </html>
