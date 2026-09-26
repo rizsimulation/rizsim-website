@@ -4120,6 +4120,326 @@ No Course sessions yet.
 </div>
 
 </div>
+
+<!-- =========================================================
+     COMBINED COURSE RESULTS
+========================================================= -->
+
+<div
+class="portal-panel"
+style="margin:18px;"
+id="courseResultsPanel"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+Combined Course Results
+</div>
+
+<div
+class="portal-panel-note"
+id="courseResultsCount"
+>
+0 result(s)
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="management-grid"
+style="margin-bottom:18px;"
+>
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+COURSE ANALYTICS
+</span>
+
+<h3>
+Combined learning view
+</h3>
+
+<p>
+Review student submissions across every Class,
+Session and Simulation connected to this Course.
+</p>
+
+</div>
+
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+COURSE SUMMARY
+</span>
+
+<div
+style="
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px;
+margin-top:10px;
+"
+>
+
+<div
+style="
+padding:14px;
+background:#f4faf9;
+border:1px solid #d9e9e7;
+border-radius:14px;
+"
+>
+
+<div class="table-secondary">
+RESULTS
+</div>
+
+<div
+style="
+font-size:1.35rem;
+font-weight:800;
+color:#0b3446;
+"
+id="courseResultTotal"
+>
+0
+</div>
+
+</div>
+
+
+<div
+style="
+padding:14px;
+background:#f4faf9;
+border:1px solid #d9e9e7;
+border-radius:14px;
+"
+>
+
+<div class="table-secondary">
+STUDENTS
+</div>
+
+<div
+style="
+font-size:1.35rem;
+font-weight:800;
+color:#0b3446;
+"
+id="courseResultStudents"
+>
+0
+</div>
+
+</div>
+
+
+<div
+style="
+padding:14px;
+background:#f4faf9;
+border:1px solid #d9e9e7;
+border-radius:14px;
+"
+>
+
+<div class="table-secondary">
+SESSIONS
+</div>
+
+<div
+style="
+font-size:1.35rem;
+font-weight:800;
+color:#0b3446;
+"
+id="courseResultSessions"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+style="
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px;
+margin:0 18px 18px;
+"
+>
+
+<div class="management-field">
+
+<label for="courseResultSessionFilter">
+Class / Session
+</label>
+
+<select
+class="management-select"
+id="courseResultSessionFilter"
+>
+
+<option value="all">
+All Classes / Sessions
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseResultSimulationFilter">
+Simulation
+</label>
+
+<select
+class="management-select"
+id="courseResultSimulationFilter"
+>
+
+<option value="all">
+All Simulations
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseResultStudentFilter">
+Student
+</label>
+
+<select
+class="management-select"
+id="courseResultStudentFilter"
+>
+
+<option value="all">
+All Students
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseResultAccessFilter">
+Access
+</label>
+
+<select
+class="management-select"
+id="courseResultAccessFilter"
+>
+
+<option value="all">
+All Access
+</option>
+
+<option value="live">
+Live Class
+</option>
+
+<option value="practice">
+Practice
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="table-scroll">
+
+<table
+class="portal-table"
+style="min-width:1180px;"
+>
+
+<thead>
+
+<tr>
+
+<th>
+Class / Session
+</th>
+
+<th>
+Simulation
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Access
+</th>
+
+<th>
+Progress
+</th>
+
+<th>
+Submitted
+</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="courseResultRows">
+
+<tr>
+
+<td
+colspan="7"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+No Course results yet.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
   
 </div>
 
@@ -6647,6 +6967,21 @@ let selectedCourseSimulations =
 
 let courseClassroomSessions =
 [];
+
+let courseResults =
+[];
+
+let courseResultSessionFilter =
+"all";
+
+let courseResultSimulationFilter =
+"all";
+
+let courseResultStudentFilter =
+"all";
+
+let courseResultAccessFilter =
+"all";
 
 let courseLoading =
 false;
@@ -9178,6 +9513,53 @@ data
 [];
 
 }
+
+async function loadSelectedCourseResults(
+courseId
+) {
+
+courseResults =
+[];
+
+if(!courseId) {
+
+return;
+
+}
+
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_my_rizsim_course_results",
+{
+
+p_course_id:
+courseId
+
+}
+);
+
+
+if(error) {
+
+courseResults =
+[];
+
+return;
+
+}
+
+
+courseResults =
+data
+||
+[];
+
+}
   
 async function reloadCourses() {
 
@@ -10135,6 +10517,594 @@ Ended
 
 }
 
+function renderCourseResultsPanel() {
+
+const rows =
+document.getElementById(
+"courseResultRows"
+);
+
+if(!rows) {
+
+return;
+
+}
+
+
+/* =========================================================
+   SUMMARY METRICS
+========================================================= */
+
+document.getElementById(
+"courseResultTotal"
+).textContent =
+courseResults.length;
+
+
+const uniqueStudents =
+new Set(
+
+courseResults.map(
+item =>
+String(
+item.student_user_id
+||
+item.student_name
+||
+""
+)
+)
+
+.filter(Boolean)
+
+);
+
+
+document.getElementById(
+"courseResultStudents"
+).textContent =
+uniqueStudents.size;
+
+
+const uniqueSessions =
+new Set(
+
+courseResults.map(
+item =>
+String(
+item.classroom_session_id
+||
+""
+)
+)
+
+.filter(Boolean)
+
+);
+
+
+document.getElementById(
+"courseResultSessions"
+).textContent =
+uniqueSessions.size;
+
+
+/* =========================================================
+   FILTER OPTIONS
+========================================================= */
+
+const sessionSelect =
+document.getElementById(
+"courseResultSessionFilter"
+);
+
+const simulationSelect =
+document.getElementById(
+"courseResultSimulationFilter"
+);
+
+const studentSelect =
+document.getElementById(
+"courseResultStudentFilter"
+);
+
+const accessSelect =
+document.getElementById(
+"courseResultAccessFilter"
+);
+
+
+const sessionOptions =
+Array.from(
+
+new Map(
+
+courseResults.map(
+item => [
+
+String(
+item.classroom_session_id
+),
+
+item.class_name
+||
+"Unnamed Session"
+
+]
+)
+
+).entries()
+
+)
+
+.sort(
+(a,b) =>
+String(a[1])
+.localeCompare(
+String(b[1])
+)
+)
+);
+
+
+sessionSelect.innerHTML = `
+
+<option value="all">
+All Classes / Sessions
+</option>
+
+${
+sessionOptions.map(
+item => `
+
+<option value="${escapeHTML(
+item[0]
+)}">
+
+${escapeHTML(
+item[1]
+)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+
+const simulationOptions =
+Array.from(
+
+new Map(
+
+courseResults.map(
+item => [
+
+String(
+item.product_id
+),
+
+item.simulation_title
+||
+"Simulation"
+
+]
+)
+
+).entries()
+
+)
+
+.sort(
+(a,b) =>
+String(a[1])
+.localeCompare(
+String(b[1])
+)
+)
+);
+
+
+simulationSelect.innerHTML = `
+
+<option value="all">
+All Simulations
+</option>
+
+${
+simulationOptions.map(
+item => `
+
+<option value="${escapeHTML(
+item[0]
+)}">
+
+${escapeHTML(
+item[1]
+)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+
+const studentOptions =
+Array.from(
+
+new Map(
+
+courseResults.map(
+item => [
+
+String(
+item.student_user_id
+||
+item.student_name
+),
+
+item.student_name
+||
+"Student"
+
+]
+)
+
+).entries()
+
+)
+
+.sort(
+(a,b) =>
+String(a[1])
+.localeCompare(
+String(b[1])
+)
+)
+);
+
+
+studentSelect.innerHTML = `
+
+<option value="all">
+All Students
+</option>
+
+${
+studentOptions.map(
+item => `
+
+<option value="${escapeHTML(
+item[0]
+)}">
+
+${escapeHTML(
+item[1]
+)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+
+/* Preserve selected filters */
+
+sessionSelect.value =
+sessionOptions.some(
+item =>
+item[0] ===
+courseResultSessionFilter
+)
+? courseResultSessionFilter
+: "all";
+
+
+simulationSelect.value =
+simulationOptions.some(
+item =>
+item[0] ===
+courseResultSimulationFilter
+)
+? courseResultSimulationFilter
+: "all";
+
+
+studentSelect.value =
+studentOptions.some(
+item =>
+item[0] ===
+courseResultStudentFilter
+)
+? courseResultStudentFilter
+: "all";
+
+
+accessSelect.value =
+courseResultAccessFilter;
+
+
+courseResultSessionFilter =
+sessionSelect.value;
+
+courseResultSimulationFilter =
+simulationSelect.value;
+
+courseResultStudentFilter =
+studentSelect.value;
+
+
+/* =========================================================
+   APPLY FILTERS
+========================================================= */
+
+const filtered =
+courseResults.filter(
+item => {
+
+if(
+courseResultSessionFilter !==
+"all"
+&&
+String(
+item.classroom_session_id
+)
+!==
+courseResultSessionFilter
+) {
+
+return false;
+
+}
+
+
+if(
+courseResultSimulationFilter !==
+"all"
+&&
+String(
+item.product_id
+)
+!==
+courseResultSimulationFilter
+) {
+
+return false;
+
+}
+
+
+if(
+courseResultStudentFilter !==
+"all"
+&&
+String(
+item.student_user_id
+||
+item.student_name
+)
+!==
+courseResultStudentFilter
+) {
+
+return false;
+
+}
+
+
+if(
+courseResultAccessFilter !==
+"all"
+&&
+String(
+item.access_type
+)
+!==
+courseResultAccessFilter
+) {
+
+return false;
+
+}
+
+
+return true;
+
+}
+);
+
+
+document.getElementById(
+"courseResultsCount"
+).textContent =
+filtered.length
++
+" result(s)";
+
+
+/* =========================================================
+   RESULTS TABLE
+========================================================= */
+
+if(
+filtered.length ===
+0
+) {
+
+rows.innerHTML = `
+
+<tr>
+
+<td
+colspan="7"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+
+${
+courseResults.length ===
+0
+? "No Course results yet."
+: "No results match the selected filters."
+}
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+rows.innerHTML =
+
+filtered.map(
+item => `
+
+<tr>
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+item.class_name
+||
+"Unnamed Session"
+)}
+
+</div>
+
+<div class="table-secondary">
+
+${escapeHTML(
+item.class_code
+||
+""
+)}
+
+</div>
+
+</td>
+
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+item.simulation_title
+||
+"Simulation"
+)}
+
+</div>
+
+<div class="table-secondary">
+
+${escapeHTML(
+item.category_name
+||
+"Uncategorized"
+)}
+
+</div>
+
+</td>
+
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+item.student_name
+||
+"Student"
+)}
+
+</div>
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+classroomModeLabel(
+item.access_type
+)
+)}
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+Number(
+item.progress_percent
+||
+0
+).toFixed(0)
+)}%
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+formatDate(
+item.submitted_at
+)
+)}
+
+</td>
+
+
+<td>
+
+<button
+class="small-action"
+type="button"
+data-attempt-id="${escapeHTML(
+item.attempt_id
+)}"
+>
+View
+</button>
+
+</td>
+
+</tr>
+
+`
+)
+
+.join("");
+
+renderCourseResultsPanel();
+  
+}
+
 function updateCourseClassroomModeFields() {
 
 const mode =
@@ -10942,7 +11912,30 @@ return;
 
 }
 
+if(
+String(
+selectedCourseId
+)
+!==
+String(
+courseId
+)
+) {
 
+courseResultSessionFilter =
+"all";
+
+courseResultSimulationFilter =
+"all";
+
+courseResultStudentFilter =
+"all";
+
+courseResultAccessFilter =
+"all";
+
+}
+  
 selectedCourseId =
 courseId;
 
@@ -10955,6 +11948,10 @@ courseId
 );
 
 await loadSelectedCourseClassroomSessions(
+courseId
+);
+
+await loadSelectedCourseResults(
 courseId
 );
 
@@ -10978,6 +11975,20 @@ selectedCourseSimulations =
 courseClassroomSessions =
 [];
 
+courseResults =
+[];
+
+courseResultSessionFilter =
+"all";
+
+courseResultSimulationFilter =
+"all";
+
+courseResultStudentFilter =
+"all";
+
+courseResultAccessFilter =
+"all";
 
 setManagementMessage(
 "courseSimulationMessage",
@@ -20937,6 +21948,72 @@ document
 createCourseClassroomSession
 );
 
+document
+.getElementById(
+"courseResultSessionFilter"
+)
+?.addEventListener(
+"change",
+event => {
+
+courseResultSessionFilter =
+event.target.value;
+
+renderCourseResultsPanel();
+
+}
+);
+
+
+document
+.getElementById(
+"courseResultSimulationFilter"
+)
+?.addEventListener(
+"change",
+event => {
+
+courseResultSimulationFilter =
+event.target.value;
+
+renderCourseResultsPanel();
+
+}
+);
+
+
+document
+.getElementById(
+"courseResultStudentFilter"
+)
+?.addEventListener(
+"change",
+event => {
+
+courseResultStudentFilter =
+event.target.value;
+
+renderCourseResultsPanel();
+
+}
+);
+
+
+document
+.getElementById(
+"courseResultAccessFilter"
+)
+?.addEventListener(
+"change",
+event => {
+
+courseResultAccessFilter =
+event.target.value;
+
+renderCourseResultsPanel();
+
+}
+);
 
 document
 .getElementById(
