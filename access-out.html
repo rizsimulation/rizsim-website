@@ -3566,6 +3566,23 @@ id="selectedCourseMeta"
 </div>
 
 
+<div
+style="
+display:flex;
+gap:10px;
+align-items:center;
+flex-wrap:wrap;
+"
+>
+
+<button
+class="small-action danger"
+id="endCourseButton"
+type="button"
+>
+End Course
+</button>
+
 <button
 class="small-action"
 id="closeCourseManager"
@@ -9079,9 +9096,13 @@ course.course_id
 >
 
 ${
+course.active
+? (
 canManage
 ? "Manage"
 : "Inspect"
+)
+: "View"
 }
 
 </button>
@@ -9160,6 +9181,25 @@ document.getElementById(
 selectedCourseSimulations.length;
 
 
+const selectedCourseCanManage =
+canManage
+&&
+selectedCourse.active ===
+true;
+
+
+const endCourseButton =
+document.getElementById(
+"endCourseButton"
+);
+
+
+endCourseButton.classList.toggle(
+"hidden",
+!selectedCourseCanManage
+);
+
+
 const addSimulationCard =
 document
 .getElementById(
@@ -9172,11 +9212,11 @@ document
 
 addSimulationCard.classList.toggle(
 "hidden",
-!canManage
+!selectedCourseCanManage
 );
 
 
-if(canManage) {
+if(selectedCourseCanManage) {
 
 const simulationSelect =
 document.getElementById(
@@ -9323,7 +9363,7 @@ item.added_at
 <td>
 
 ${
-canManage
+selectedCourseCanManage
 
 ? `
 
@@ -9699,7 +9739,111 @@ renderCourses();
 
 }
 
+async function endCourse() {
 
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+
+if(
+!selectedCourse
+||
+selectedCourse.active !==
+true
+) {
+
+return;
+
+}
+
+
+const confirmed =
+window.confirm(
+
+"End "
++
+selectedCourse.title
++
+"?\n\n"
++
+"This will make the Course read-only. "
++
+"Simulations, activity and results will remain preserved."
+
+);
+
+
+if(!confirmed) {
+
+return;
+
+}
+
+
+courseLoading =
+true;
+
+showLoading();
+
+
+const {
+error
+} =
+
+await supabase.rpc(
+"end_my_rizsim_course",
+{
+
+p_course_id:
+selectedCourseId
+
+}
+);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+
+if(error) {
+
+window.alert(
+error.message
+);
+
+return;
+
+}
+
+
+await reloadCourses();
+
+
+await loadSelectedCourseSimulations(
+selectedCourseId
+);
+
+
+renderCourses();
+
+}
+  
 async function removeCourseSimulation(
 productId
 ) {
@@ -16453,7 +16597,7 @@ institution.active
 ${
 institution.active
 ? "Active"
-: "Inactive"
+: "Ended"
 }
 
 </span>
@@ -18956,7 +19100,19 @@ return;
 
 }
 
+const endCourseButton =
+event.target.closest(
+"#endCourseButton"
+);
 
+if(endCourseButton) {
+
+endCourse();
+
+return;
+
+}
+  
 const closeCourseManagerButton =
 event.target.closest(
 "#closeCourseManager"
