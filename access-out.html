@@ -3780,6 +3780,343 @@ Select a Course to manage its simulations.
 
 </div>
 
+<!-- =========================================================
+     COURSE CLASSES & SESSIONS
+========================================================= -->
+
+<div
+class="portal-panel"
+style="margin:18px;"
+id="courseClassroomPanel"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+Classes & Sessions
+</div>
+
+<div
+class="portal-panel-note"
+id="courseClassroomCount"
+>
+0 session(s)
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="management-grid"
+id="courseClassroomCreateArea"
+>
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+NEW CLASS / SESSION
+</span>
+
+<h3>
+Create Course Session
+</h3>
+
+<p>
+Create a Live Class, Practice session, or both
+using a simulation already included in this Course.
+</p>
+
+
+<div class="management-field">
+
+<label for="courseClassroomSimulationSelect">
+Course Simulation
+</label>
+
+<select
+class="management-select"
+id="courseClassroomSimulationSelect"
+>
+
+<option value="">
+Select Course simulation
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseClassroomSessionName">
+Class / Session Name
+</label>
+
+<input
+class="management-input"
+id="courseClassroomSessionName"
+type="text"
+maxlength="160"
+placeholder="e.g. Psychology for Business — Section 101559"
+>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseClassroomAccessMode">
+Access Mode
+</label>
+
+<select
+class="management-select"
+id="courseClassroomAccessMode"
+>
+
+<option value="live">
+Live Class
+</option>
+
+<option value="practice">
+Practice
+</option>
+
+<option value="both">
+Live + Practice
+</option>
+
+</select>
+
+</div>
+
+
+<div
+class="management-field"
+id="courseClassroomLiveStartField"
+>
+
+<label for="courseClassroomLiveStart">
+Live Starts At
+</label>
+
+<input
+class="management-input"
+id="courseClassroomLiveStart"
+type="datetime-local"
+>
+
+</div>
+
+
+<div
+class="management-field"
+id="courseClassroomLiveEndField"
+>
+
+<label for="courseClassroomLiveEnd">
+Live Ends At
+</label>
+
+<input
+class="management-input"
+id="courseClassroomLiveEnd"
+type="datetime-local"
+>
+
+</div>
+
+
+<div
+class="management-field hidden"
+id="courseClassroomPracticeStartField"
+>
+
+<label for="courseClassroomPracticeStart">
+Practice Starts At
+</label>
+
+<input
+class="management-input"
+id="courseClassroomPracticeStart"
+type="datetime-local"
+>
+
+</div>
+
+
+<div
+class="management-field hidden"
+id="courseClassroomPracticeEndField"
+>
+
+<label for="courseClassroomPracticeEnd">
+Practice Ends At
+</label>
+
+<input
+class="management-input"
+id="courseClassroomPracticeEnd"
+type="datetime-local"
+>
+
+</div>
+
+
+<button
+class="management-action"
+id="createCourseClassroomSessionButton"
+type="button"
+>
+Create Session
+</button>
+
+
+<div
+class="management-message"
+id="courseClassroomCreateMessage"
+aria-live="polite"
+></div>
+
+</div>
+
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+COURSE CLASSROOM
+</span>
+
+<h3>
+Course-linked learning
+</h3>
+
+<p>
+Each Course can contain multiple classes and sessions.
+Students continue to join through the normal RizSim
+class code or shareable link.
+</p>
+
+<div
+style="
+margin-top:18px;
+padding:16px;
+background:#f4faf9;
+border:1px solid #d9e9e7;
+border-radius:14px;
+color:#536f7b;
+font-size:.72rem;
+line-height:1.75;
+"
+>
+
+<strong style="color:#0b5760;">
+Course
+</strong>
+
+<br>
+↓
+
+<br>
+
+<strong style="color:#0b5760;">
+Class / Session
+</strong>
+
+<br>
+↓
+
+<br>
+
+<strong style="color:#0b5760;">
+Students
+</strong>
+
+<br>
+↓
+
+<br>
+
+<strong style="color:#0b5760;">
+Simulation Responses & Results
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="table-scroll">
+
+<table
+class="portal-table"
+style="min-width:1100px;"
+>
+
+<thead>
+
+<tr>
+
+<th>
+Class / Session
+</th>
+
+<th>
+Simulation
+</th>
+
+<th>
+Access
+</th>
+
+<th>
+Class Code
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Created
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="courseClassroomRows">
+
+<tr>
+
+<td
+colspan="6"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+No Course sessions yet.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+  
 </div>
 
 </div>
@@ -6304,6 +6641,9 @@ null;
 let selectedCourseSimulations =
 [];
 
+let courseClassroomSessions =
+[];
+
 let courseLoading =
 false;
 
@@ -8782,7 +9122,59 @@ data
 
 }
 
+async function loadSelectedCourseClassroomSessions(
+courseId
+) {
 
+courseClassroomSessions =
+[];
+
+if(!courseId) {
+
+return;
+
+}
+
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_my_rizsim_course_classroom_sessions",
+{
+
+p_course_id:
+courseId
+
+}
+);
+
+
+if(error) {
+
+courseClassroomSessions =
+[];
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+
+courseClassroomSessions =
+data
+||
+[];
+
+}
+  
 async function reloadCourses() {
 
 const {
@@ -9320,7 +9712,6 @@ No simulations have been added to this Course yet.
 
 `;
 
-return;
 
 }
 
@@ -9398,10 +9789,891 @@ View only
 )
 
 .join("");
+/* =========================================================
+   COURSE CLASSES & SESSIONS
+========================================================= */
+
+const courseClassroomCount =
+document.getElementById(
+"courseClassroomCount"
+);
+
+if(courseClassroomCount) {
+
+courseClassroomCount.textContent =
+courseClassroomSessions.length
++
+" session(s)";
 
 }
 
 
+const courseClassroomCreateArea =
+document.getElementById(
+"courseClassroomCreateArea"
+);
+
+if(courseClassroomCreateArea) {
+
+courseClassroomCreateArea.classList.toggle(
+"hidden",
+!selectedCourseCanManage
+);
+
+}
+
+
+const courseClassroomSimulationSelect =
+document.getElementById(
+"courseClassroomSimulationSelect"
+);
+
+if(
+courseClassroomSimulationSelect
+&&
+selectedCourseCanManage
+) {
+
+const previousValue =
+courseClassroomSimulationSelect.value;
+
+courseClassroomSimulationSelect.innerHTML = `
+
+<option value="">
+Select Course simulation
+</option>
+
+${
+selectedCourseSimulations.map(
+item => `
+
+<option value="${escapeHTML(
+item.product_id
+)}">
+
+${escapeHTML(
+item.simulation_title
+)}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+if(
+previousValue
+&&
+selectedCourseSimulations.some(
+item =>
+String(
+item.product_id
+)
+===
+String(
+previousValue
+)
+)
+) {
+
+courseClassroomSimulationSelect.value =
+previousValue;
+
+}
+
+const createCourseClassroomSessionButton =
+document.getElementById(
+"createCourseClassroomSessionButton"
+);
+
+if(createCourseClassroomSessionButton) {
+
+createCourseClassroomSessionButton.disabled =
+selectedCourseSimulations.length ===
+0;
+
+}
+
+}
+
+if(
+selectedCourseCanManage
+&&
+selectedCourseSimulations.length >
+0
+) {
+
+updateCourseClassroomModeFields();
+
+initialiseCourseClassroomDateDefaults(
+true
+);
+
+}
+  
+const courseClassroomRows =
+document.getElementById(
+"courseClassroomRows"
+);
+
+if(courseClassroomRows) {
+
+if(
+courseClassroomSessions.length ===
+0
+) {
+
+courseClassroomRows.innerHTML = `
+
+<tr>
+
+<td
+colspan="6"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+No Course Classes or Sessions have been created yet.
+</td>
+
+</tr>
+
+`;
+
+}
+
+else {
+
+courseClassroomRows.innerHTML =
+
+courseClassroomSessions.map(
+session => `
+
+<tr>
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+session.class_name
+||
+"Unnamed Session"
+)}
+
+</div>
+
+</td>
+
+<td>
+
+${escapeHTML(
+session.simulation_title
+||
+"—"
+)}
+
+</td>
+
+<td>
+
+${escapeHTML(
+classroomModeLabel(
+session.access_mode
+)
+)}
+
+</td>
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+session.class_code
+||
+"—"
+)}
+
+</div>
+
+</td>
+
+<td>
+
+<span
+class="status-badge ${
+session.active
+? "approved"
+: "muted"
+}"
+>
+
+${escapeHTML(
+session.session_status
+||
+(
+session.active
+? "Active"
+: "Closed"
+)
+)}
+
+</span>
+
+</td>
+
+<td>
+
+${escapeHTML(
+formatDate(
+session.created_at
+)
+)}
+
+</td>
+
+</tr>
+
+`
+)
+
+.join("");
+
+}
+
+}
+
+}
+
+function updateCourseClassroomModeFields() {
+
+const mode =
+document.getElementById(
+"courseClassroomAccessMode"
+)?.value
+||
+"live";
+
+
+const showLive =
+[
+"live",
+"both"
+].includes(
+mode
+);
+
+
+const showPractice =
+[
+"practice",
+"both"
+].includes(
+mode
+);
+
+
+document.getElementById(
+"courseClassroomLiveStartField"
+)?.classList.toggle(
+"hidden",
+!showLive
+);
+
+
+document.getElementById(
+"courseClassroomLiveEndField"
+)?.classList.toggle(
+"hidden",
+!showLive
+);
+
+
+document.getElementById(
+"courseClassroomPracticeStartField"
+)?.classList.toggle(
+"hidden",
+!showPractice
+);
+
+
+document.getElementById(
+"courseClassroomPracticeEndField"
+)?.classList.toggle(
+"hidden",
+!showPractice
+);
+
+}
+
+
+function initialiseCourseClassroomDateDefaults(
+preserveExisting = false
+) {
+
+const productId =
+document.getElementById(
+"courseClassroomSimulationSelect"
+)?.value;
+
+
+const licence =
+getMyLicenseRecord(
+productId
+);
+
+
+const now =
+new Date();
+
+
+const licenceExpiry =
+licence?.expires_at
+? new Date(
+licence.expires_at
+)
+: null;
+
+
+const liveStart =
+document.getElementById(
+"courseClassroomLiveStart"
+);
+
+
+const liveEnd =
+document.getElementById(
+"courseClassroomLiveEnd"
+);
+
+
+const practiceStart =
+document.getElementById(
+"courseClassroomPracticeStart"
+);
+
+
+const practiceEnd =
+document.getElementById(
+"courseClassroomPracticeEnd"
+);
+
+
+if(
+liveStart
+&&
+(
+!preserveExisting
+||
+!liveStart.value
+)
+) {
+
+liveStart.value =
+toLocalDateTimeInput(
+now
+);
+
+}
+
+
+if(
+practiceStart
+&&
+(
+!preserveExisting
+||
+!practiceStart.value
+)
+) {
+
+practiceStart.value =
+toLocalDateTimeInput(
+now
+);
+
+}
+
+
+if(
+liveEnd
+&&
+(
+!preserveExisting
+||
+!liveEnd.value
+)
+) {
+
+let proposed =
+new Date(
+now.getTime()
++
+3
+*
+60
+*
+60
+*
+1000
+);
+
+
+if(
+licenceExpiry
+&&
+proposed >
+licenceExpiry
+) {
+
+proposed =
+licenceExpiry;
+
+}
+
+
+liveEnd.value =
+toLocalDateTimeInput(
+proposed
+);
+
+}
+
+
+if(
+practiceEnd
+&&
+(
+!preserveExisting
+||
+!practiceEnd.value
+)
+) {
+
+let proposed =
+new Date(
+now.getTime()
++
+7
+*
+24
+*
+60
+*
+60
+*
+1000
+);
+
+
+if(
+licenceExpiry
+&&
+proposed >
+licenceExpiry
+) {
+
+proposed =
+licenceExpiry;
+
+}
+
+
+practiceEnd.value =
+toLocalDateTimeInput(
+proposed
+);
+
+}
+
+}
+
+
+async function createCourseClassroomSession() {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+
+if(
+!selectedCourse
+||
+selectedCourse.active !==
+true
+) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+"Only an active Course can create new Classes or Sessions.",
+true
+);
+
+return;
+
+}
+
+
+const productId =
+document.getElementById(
+"courseClassroomSimulationSelect"
+).value;
+
+
+const className =
+document.getElementById(
+"courseClassroomSessionName"
+).value
+.trim();
+
+
+const mode =
+document.getElementById(
+"courseClassroomAccessMode"
+).value;
+
+
+const liveStart =
+document.getElementById(
+"courseClassroomLiveStart"
+).value;
+
+
+const liveEnd =
+document.getElementById(
+"courseClassroomLiveEnd"
+).value;
+
+
+const practiceStart =
+document.getElementById(
+"courseClassroomPracticeStart"
+).value;
+
+
+const practiceEnd =
+document.getElementById(
+"courseClassroomPracticeEnd"
+).value;
+
+
+const button =
+document.getElementById(
+"createCourseClassroomSessionButton"
+);
+
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+""
+);
+
+
+if(!productId) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+"Select a Course simulation.",
+true
+);
+
+return;
+
+}
+
+
+if(
+!selectedCourseSimulations.some(
+item =>
+String(
+item.product_id
+)
+===
+String(
+productId
+)
+)
+) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+"The selected simulation is not included in this Course.",
+true
+);
+
+return;
+
+}
+
+
+if(!className) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+"Enter the Class or Session name.",
+true
+);
+
+return;
+
+}
+
+
+const licence =
+getMyLicenseRecord(
+productId
+);
+
+
+if(
+!licence
+||
+licence.license_status !==
+"licensed"
+) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+"An active simulation licence is required.",
+true
+);
+
+return;
+
+}
+
+
+if(
+[
+"live",
+"both"
+].includes(
+mode
+)
+) {
+
+const message =
+validateClassroomWindow(
+"Live Class",
+liveStart,
+liveEnd,
+licence
+);
+
+
+if(message) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+message,
+true
+);
+
+return;
+
+}
+
+}
+
+
+if(
+[
+"practice",
+"both"
+].includes(
+mode
+)
+) {
+
+const message =
+validateClassroomWindow(
+"Practice",
+practiceStart,
+practiceEnd,
+licence
+);
+
+
+if(message) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+message,
+true
+);
+
+return;
+
+}
+
+}
+
+
+const asISO =
+value =>
+value
+? new Date(
+value
+).toISOString()
+: null;
+
+
+courseLoading =
+true;
+
+button.disabled =
+true;
+
+button.textContent =
+"Creating…";
+
+
+showLoading();
+
+
+const {
+error
+} =
+
+await supabase.rpc(
+"create_rizsim_course_classroom_session",
+{
+
+p_course_id:
+selectedCourseId,
+
+p_product_id:
+productId,
+
+p_class_name:
+className,
+
+p_access_mode:
+mode,
+
+p_live_starts_at:
+[
+"live",
+"both"
+].includes(
+mode
+)
+? asISO(
+liveStart
+)
+: null,
+
+p_live_ends_at:
+[
+"live",
+"both"
+].includes(
+mode
+)
+? asISO(
+liveEnd
+)
+: null,
+
+p_practice_starts_at:
+[
+"practice",
+"both"
+].includes(
+mode
+)
+? asISO(
+practiceStart
+)
+: null,
+
+p_practice_ends_at:
+[
+"practice",
+"both"
+].includes(
+mode
+)
+? asISO(
+practiceEnd
+)
+: null
+
+}
+);
+
+
+hideLoading();
+
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Create Session";
+
+
+if(error) {
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+
+document.getElementById(
+"courseClassroomSessionName"
+).value =
+"";
+
+
+setManagementMessage(
+"courseClassroomCreateMessage",
+"Course Session created successfully."
+);
+
+
+await loadSelectedCourseClassroomSessions(
+selectedCourseId
+);
+
+
+await reloadClassroomSessions();
+
+
+renderCourses();
+
+renderClassroom();
+
+}
+  
 async function createCourse() {
 
 if(
@@ -9598,6 +10870,10 @@ await loadSelectedCourseSimulations(
 courseId
 );
 
+await loadSelectedCourseClassroomSessions(
+courseId
+);
+
 
 hideLoading();
 
@@ -9613,6 +10889,9 @@ selectedCourseId =
 null;
 
 selectedCourseSimulations =
+[];
+
+courseClassroomSessions =
 [];
 
 
@@ -19360,6 +20639,49 @@ document
 .addEventListener(
 "click",
 createClassroomSession
+);
+
+document
+.getElementById(
+"courseClassroomSimulationSelect"
+)
+?.addEventListener(
+"change",
+() => {
+
+initialiseCourseClassroomDateDefaults(
+false
+);
+
+}
+);
+
+
+document
+.getElementById(
+"courseClassroomAccessMode"
+)
+?.addEventListener(
+"change",
+() => {
+
+updateCourseClassroomModeFields();
+
+initialiseCourseClassroomDateDefaults(
+true
+);
+
+}
+);
+
+
+document
+.getElementById(
+"createCourseClassroomSessionButton"
+)
+?.addEventListener(
+"click",
+createCourseClassroomSession
 );
 
 
