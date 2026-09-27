@@ -2750,6 +2750,409 @@ flex-direction:column;
 }
 
 }
+
+/* ============================================================
+   ADMIN CONTENT WORKSPACE
+   ============================================================ */
+
+.admin-command{
+margin-top:26px;
+padding:28px 30px;
+display:grid;
+grid-template-columns:1.2fr .8fr;
+gap:24px;
+align-items:center;
+overflow:hidden;
+color:#fff;
+background:
+radial-gradient(
+circle at 90% 8%,
+rgba(89,222,214,.18),
+transparent 31%
+),
+linear-gradient(
+135deg,
+#061827,
+#0a394b
+);
+border-radius:24px;
+box-shadow:
+0 22px 52px rgba(4,25,40,.12);
+}
+
+.admin-command-label{
+color:#72d8d2;
+font-size:.61rem;
+font-weight:900;
+letter-spacing:.09em;
+text-transform:uppercase;
+}
+
+.admin-command h2{
+margin:9px 0 7px;
+color:#fff;
+font-size:
+clamp(
+1.55rem,
+3vw,
+2.25rem
+);
+line-height:1.08;
+letter-spacing:-.035em;
+}
+
+.admin-command p{
+max-width:690px;
+margin:0;
+color:#b7ccd4;
+font-size:.75rem;
+line-height:1.7;
+}
+
+.admin-command-status{
+justify-self:end;
+padding:10px 13px;
+color:#d9fffb;
+background:rgba(24,184,176,.13);
+border:1px solid rgba(89,222,214,.23);
+border-radius:999px;
+font-size:.6rem;
+font-weight:900;
+white-space:nowrap;
+}
+
+.admin-hub{
+margin-top:23px;
+overflow:hidden;
+background:#fff;
+border:1px solid var(--line);
+border-radius:22px;
+box-shadow:
+0 10px 30px rgba(4,25,40,.05);
+}
+
+.admin-tab-nav{
+padding:10px;
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:7px;
+background:#f6fafb;
+border-bottom:1px solid #e0eaed;
+}
+
+.admin-tab-button{
+min-height:44px;
+padding:0 11px;
+color:#66808d;
+background:transparent;
+border:1px solid transparent;
+border-radius:11px;
+font-size:.63rem;
+font-weight:900;
+transition:
+background .18s ease,
+color .18s ease,
+box-shadow .18s ease;
+}
+
+.admin-tab-button:hover{
+color:#0b5d63;
+background:#edf8f7;
+}
+
+.admin-tab-button.is-active{
+color:#fff;
+background:
+linear-gradient(
+135deg,
+#13aaa5,
+#20b7b0
+);
+box-shadow:
+0 7px 18px rgba(24,184,176,.18);
+}
+
+.admin-tab-panel{
+display:none;
+padding:23px;
+}
+
+.admin-tab-panel.active{
+display:block;
+}
+
+.admin-section-heading{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:18px;
+margin-bottom:18px;
+}
+
+.admin-section-heading h3{
+margin:0;
+color:#0d3042;
+font-size:1rem;
+}
+
+.admin-section-heading p{
+max-width:690px;
+margin:5px 0 0;
+color:#7c9099;
+font-size:.69rem;
+line-height:1.62;
+}
+
+.admin-scope-chip{
+padding:8px 10px;
+color:#0b6c69;
+background:#e9f8f6;
+border:1px solid #cfeae6;
+border-radius:999px;
+font-size:.55rem;
+font-weight:900;
+white-space:nowrap;
+}
+
+.admin-overview-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:13px;
+}
+
+.admin-overview-card{
+min-height:115px;
+padding:18px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+background:
+linear-gradient(
+180deg,
+#fbfdfd,
+#f5faf9
+);
+border:1px solid #dce8eb;
+border-radius:16px;
+}
+
+.admin-overview-value{
+color:var(--navy);
+font-size:1.85rem;
+font-weight:950;
+letter-spacing:-.045em;
+}
+
+.admin-overview-label{
+margin-top:4px;
+color:#728792;
+font-size:.6rem;
+font-weight:850;
+}
+
+.admin-operation-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.admin-operation-card{
+padding:20px;
+background:#fff;
+border:1px solid #dce8eb;
+border-radius:16px;
+box-shadow:
+0 7px 20px rgba(4,25,40,.035);
+}
+
+.admin-operation-card span{
+color:#118d89;
+font-size:.57rem;
+font-weight:900;
+letter-spacing:.07em;
+text-transform:uppercase;
+}
+
+.admin-operation-card h4{
+margin:8px 0 6px;
+color:#14384a;
+font-size:.9rem;
+}
+
+.admin-operation-card p{
+margin:0;
+color:#718690;
+font-size:.68rem;
+line-height:1.65;
+}
+
+.admin-operation-action{
+margin-top:16px;
+min-height:38px;
+padding:0 13px;
+color:#fff;
+background:
+linear-gradient(
+135deg,
+#13aaa5,
+#20b7b0
+);
+border:0;
+border-radius:10px;
+font-size:.62rem;
+font-weight:900;
+}
+
+.admin-operation-action:disabled{
+cursor:not-allowed;
+opacity:.48;
+}
+
+.admin-list{
+display:grid;
+gap:10px;
+}
+
+.admin-list-item{
+padding:15px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+background:#f8fbfc;
+border:1px solid #dfe9ec;
+border-radius:14px;
+}
+
+.admin-list-copy{
+min-width:0;
+}
+
+.admin-list-copy strong{
+display:block;
+color:#15384a;
+font-size:.75rem;
+}
+
+.admin-list-copy span{
+display:block;
+margin-top:3px;
+color:#80939c;
+font-size:.59rem;
+line-height:1.5;
+}
+
+.admin-item-actions{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+justify-content:flex-end;
+}
+
+.admin-mini-button{
+min-height:32px;
+padding:0 10px;
+color:#173c4d;
+background:#fff;
+border:1px solid #d7e4e7;
+border-radius:8px;
+font-size:.57rem;
+font-weight:850;
+}
+
+.admin-mini-button.primary{
+color:#fff;
+background:#13aaa5;
+border-color:#13aaa5;
+}
+
+.admin-mini-button:disabled{
+opacity:.45;
+cursor:not-allowed;
+}
+
+.admin-empty{
+padding:36px 20px;
+text-align:center;
+color:#788b95;
+}
+
+.admin-empty strong{
+display:block;
+color:#17394a;
+font-size:.84rem;
+}
+
+.admin-empty p{
+max-width:540px;
+margin:6px auto 0;
+font-size:.68rem;
+line-height:1.6;
+}
+
+.admin-boundary{
+margin-top:16px;
+padding:15px 16px;
+color:#5f7782;
+background:#f6fafb;
+border:1px solid #dfe9ec;
+border-radius:13px;
+font-size:.67rem;
+line-height:1.65;
+}
+
+.admin-boundary strong{
+color:#0b5960;
+}
+
+@media(max-width:1080px){
+
+.admin-command{
+grid-template-columns:1fr;
+}
+
+.admin-command-status{
+justify-self:start;
+}
+
+.admin-overview-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.admin-operation-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:680px){
+
+.admin-overview-grid{
+grid-template-columns:1fr;
+}
+
+.admin-tab-nav{
+grid-template-columns:repeat(2,1fr);
+}
+
+.admin-tab-panel{
+padding:16px;
+}
+
+.admin-section-heading{
+flex-direction:column;
+}
+
+.admin-list-item{
+align-items:flex-start;
+flex-direction:column;
+}
+
+.admin-item-actions{
+justify-content:flex-start;
+}
+
+}
   
 @media (max-width: 1240px) {
 
@@ -6642,6 +7045,462 @@ class="portal-metrics"
 id="administrationMetrics"
 ></div>
 
+<div class="admin-command">
+
+<div>
+
+<div class="admin-command-label">
+CONTENT OPERATIONS
+</div>
+
+<h2>
+Build and maintain the RizSim catalogue.
+</h2>
+
+<p>
+Manage categories, simulations, learning resources and publishing
+operations without entering Owner-only user, licence or access governance.
+</p>
+
+</div>
+
+<div class="admin-command-status">
+ADMIN OPERATIONS
+</div>
+
+</div>
+
+
+<div
+class="admin-hub"
+id="adminContentWorkspace"
+data-swipe-block
+>
+
+<div
+class="admin-tab-nav"
+id="adminTabNav"
+role="tablist"
+aria-label="Administration content sections"
+>
+
+<button
+class="admin-tab-button is-active"
+type="button"
+data-admin-tab="overview"
+aria-selected="true"
+>
+Overview
+</button>
+
+<button
+class="admin-tab-button"
+type="button"
+data-admin-tab="categories"
+aria-selected="false"
+>
+Categories
+</button>
+
+<button
+class="admin-tab-button"
+type="button"
+data-admin-tab="simulations"
+aria-selected="false"
+>
+Simulations
+</button>
+
+<button
+class="admin-tab-button"
+type="button"
+data-admin-tab="materials"
+aria-selected="false"
+>
+Materials & eBooks
+</button>
+
+<button
+class="admin-tab-button"
+type="button"
+data-admin-tab="publishing"
+aria-selected="false"
+>
+Publishing
+</button>
+
+</div>
+
+
+<!-- OVERVIEW -->
+
+<div
+class="admin-tab-panel active"
+data-admin-panel="overview"
+>
+
+<div class="admin-section-heading">
+
+<div>
+
+<h3>
+Content Operations Overview
+</h3>
+
+<p>
+The operational layer for maintaining RizSim learning products and
+supporting resources.
+</p>
+
+</div>
+
+<div class="admin-scope-chip">
+CONTENT ONLY
+</div>
+
+</div>
+
+
+<div
+class="admin-overview-grid"
+id="adminOverviewMetrics"
+></div>
+
+
+<div class="admin-boundary">
+
+<strong>
+Admin boundary:
+</strong>
+
+Admin manages catalogue and content operations.
+Role assignment, Institution approval, Faculty approval,
+licence grants, permanent deletion and platform governance
+remain Owner-controlled.
+
+</div>
+
+</div>
+
+
+<!-- CATEGORIES -->
+
+<div
+class="admin-tab-panel"
+data-admin-panel="categories"
+>
+
+<div class="admin-section-heading">
+
+<div>
+
+<h3>
+Categories
+</h3>
+
+<p>
+Organize simulations and learning products into clear RizSim learning areas.
+</p>
+
+</div>
+
+<div class="admin-scope-chip">
+CONTENT STRUCTURE
+</div>
+
+</div>
+
+
+<div class="admin-operation-grid">
+
+<div class="admin-operation-card">
+
+<span>
+CREATE
+</span>
+
+<h4>
+New Category
+</h4>
+
+<p>
+Create a new learning category and prepare it for published simulations.
+</p>
+
+<button
+class="admin-operation-action"
+type="button"
+disabled
+>
+Create Category
+</button>
+
+</div>
+
+
+<div class="admin-operation-card">
+
+<span>
+MANAGE
+</span>
+
+<h4>
+Category Structure
+</h4>
+
+<p>
+Review existing categories, visibility and the number of simulations
+currently associated with each category.
+</p>
+
+</div>
+
+</div>
+
+
+<div
+id="adminCategoryList"
+style="margin-top:16px;"
+></div>
+
+</div>
+
+
+<!-- SIMULATIONS -->
+
+<div
+class="admin-tab-panel"
+data-admin-panel="simulations"
+>
+
+<div class="admin-section-heading">
+
+<div>
+
+<h3>
+Simulations
+</h3>
+
+<p>
+Manage the product record, description, category, runner and publication
+state for RizSim simulations.
+</p>
+
+</div>
+
+<div class="admin-scope-chip">
+LEARNING PRODUCTS
+</div>
+
+</div>
+
+
+<div class="admin-operation-grid">
+
+<div class="admin-operation-card">
+
+<span>
+CREATE
+</span>
+
+<h4>
+New Simulation
+</h4>
+
+<p>
+Create the catalogue record before connecting the Student runner,
+Faculty dashboard and supporting materials.
+</p>
+
+<button
+class="admin-operation-action"
+type="button"
+disabled
+>
+Create Simulation
+</button>
+
+</div>
+
+
+<div class="admin-operation-card">
+
+<span>
+INTEGRATE
+</span>
+
+<h4>
+Simulation Package
+</h4>
+
+<p>
+The production workflow will connect Student dashboard, Faculty dashboard,
+live adapter, handouts and launch route to the simulation record.
+</p>
+
+</div>
+
+</div>
+
+
+<div
+id="adminSimulationList"
+style="margin-top:16px;"
+></div>
+
+</div>
+
+
+<!-- MATERIALS -->
+
+<div
+class="admin-tab-panel"
+data-admin-panel="materials"
+>
+
+<div class="admin-section-heading">
+
+<div>
+
+<h3>
+Materials & eBooks
+</h3>
+
+<p>
+Manage platform-level learning resources that belong to the RizSim
+catalogue rather than an individual Course Lead's Course.
+</p>
+
+</div>
+
+<div class="admin-scope-chip">
+PLATFORM CONTENT
+</div>
+
+</div>
+
+
+<div class="admin-operation-grid">
+
+<div class="admin-operation-card">
+
+<span>
+RESOURCE
+</span>
+
+<h4>
+Learning Materials
+</h4>
+
+<p>
+Prepare platform handouts, readings, teaching resources and supporting
+documents for simulation products.
+</p>
+
+<button
+class="admin-operation-action"
+type="button"
+disabled
+>
+Add Material
+</button>
+
+</div>
+
+
+<div class="admin-operation-card">
+
+<span>
+EBOOK
+</span>
+
+<h4>
+eBooks & Guides
+</h4>
+
+<p>
+Create or attach structured RizSim reading resources while preserving
+the platform's access-control rules.
+</p>
+
+<button
+class="admin-operation-action"
+type="button"
+disabled
+>
+Add eBook
+</button>
+
+</div>
+
+</div>
+
+
+<div class="admin-empty">
+
+<strong>
+Content commands will be connected next
+</strong>
+
+<p>
+This interface establishes the Admin resource workspace first.
+Storage, editing and publication commands will be attached after
+the interface is approved.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- PUBLISHING -->
+
+<div
+class="admin-tab-panel"
+data-admin-panel="publishing"
+>
+
+<div class="admin-section-heading">
+
+<div>
+
+<h3>
+Publishing
+</h3>
+
+<p>
+Review catalogue readiness and control whether completed learning
+products are visible on the public RizSim simulation catalogue.
+</p>
+
+</div>
+
+<div class="admin-scope-chip">
+PUBLISH / UNPUBLISH
+</div>
+
+</div>
+
+
+<div
+id="adminPublishingList"
+></div>
+
+<div class="admin-boundary">
+
+<strong>
+Permanent deletion is not an Admin operation.
+</strong>
+
+Admin publishing actions will change product visibility while preserving
+the underlying product record and history.
+
+</div>
+
+</div>
+
+
+</div>
 
 <div
 class="portal-panel hidden"
@@ -8153,6 +9012,9 @@ let activeInstitutionTab =
 
 let activeReviewRequestId =
 null;
+
+let activeAdministrationTab =
+"overview";
 
 let activeView =
 "home";
@@ -23149,6 +24011,13 @@ item[2]
 
 .join("");
 
+renderAdminContentWorkspace();
+
+setAdministrationTab(
+activeAdministrationTab,
+false
+);
+
 if(
 role !==
 "owner"
@@ -23285,6 +24154,549 @@ No portal membership records found.
 
 }
 
+function setAdministrationTab(
+tab,
+updateState = true
+) {
+
+const validTabs =
+new Set([
+"overview",
+"categories",
+"simulations",
+"materials",
+"publishing"
+]);
+
+const nextTab =
+validTabs.has(
+tab
+)
+?
+tab
+:
+"overview";
+
+if(updateState) {
+
+activeAdministrationTab =
+nextTab;
+
+}
+
+document
+.querySelectorAll(
+"[data-admin-tab]"
+)
+.forEach(
+button => {
+
+const active =
+button.dataset.adminTab ===
+nextTab;
+
+button.classList.toggle(
+"is-active",
+active
+);
+
+button.setAttribute(
+"aria-selected",
+String(active)
+);
+
+}
+);
+
+document
+.querySelectorAll(
+"[data-admin-panel]"
+)
+.forEach(
+panel => {
+
+panel.classList.toggle(
+"active",
+panel.dataset.adminPanel ===
+nextTab
+);
+
+}
+);
+
+}
+
+
+function renderAdminContentWorkspace() {
+
+const simulations =
+products.filter(
+item =>
+item.product_type ===
+"simulation"
+);
+
+const published =
+products.filter(
+item =>
+item.status ===
+"published"
+);
+
+const unpublished =
+products.filter(
+item =>
+item.status !==
+"published"
+);
+
+
+document.getElementById(
+"adminOverviewMetrics"
+).innerHTML = `
+
+<div class="admin-overview-card">
+
+<div class="admin-overview-value">
+${escapeHTML(
+categories.length
+)}
+</div>
+
+<div class="admin-overview-label">
+Categories
+</div>
+
+</div>
+
+
+<div class="admin-overview-card">
+
+<div class="admin-overview-value">
+${escapeHTML(
+simulations.length
+)}
+</div>
+
+<div class="admin-overview-label">
+Simulations
+</div>
+
+</div>
+
+
+<div class="admin-overview-card">
+
+<div class="admin-overview-value">
+${escapeHTML(
+published.length
+)}
+</div>
+
+<div class="admin-overview-label">
+Published Products
+</div>
+
+</div>
+
+
+<div class="admin-overview-card">
+
+<div class="admin-overview-value">
+${escapeHTML(
+unpublished.length
+)}
+</div>
+
+<div class="admin-overview-label">
+Not Published
+</div>
+
+</div>
+
+`;
+
+
+renderAdminCategories();
+
+renderAdminSimulations();
+
+renderAdminPublishing();
+
+}
+
+
+function renderAdminCategories() {
+
+const container =
+document.getElementById(
+"adminCategoryList"
+);
+
+if(
+!categories.length
+) {
+
+container.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+No categories available
+</strong>
+
+<p>
+Categories will appear here when they exist in the RizSim catalogue.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div class="admin-list">
+
+${
+categories.map(
+category => {
+
+const count =
+products.filter(
+product =>
+String(
+product.category_id
+)
+===
+String(
+category.id
+)
+).length;
+
+return `
+
+<div class="admin-list-item">
+
+<div class="admin-list-copy">
+
+<strong>
+${escapeHTML(
+category.name
+)}
+</strong>
+
+<span>
+${escapeHTML(
+count
+)}
+product${count === 1 ? "" : "s"} currently associated
+</span>
+
+</div>
+
+
+<div class="admin-item-actions">
+
+<button
+class="admin-mini-button"
+type="button"
+disabled
+>
+Edit
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
+
+
+function renderAdminSimulations() {
+
+const container =
+document.getElementById(
+"adminSimulationList"
+);
+
+const simulations =
+products.filter(
+item =>
+item.product_type ===
+"simulation"
+);
+
+
+if(
+!simulations.length
+) {
+
+container.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+No simulations available
+</strong>
+
+<p>
+Simulation records will appear here after they are created.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div class="admin-list">
+
+${
+simulations.map(
+product => {
+
+const category =
+categories.find(
+item =>
+String(
+item.id
+)
+===
+String(
+product.category_id
+)
+);
+
+return `
+
+<div class="admin-list-item">
+
+<div class="admin-list-copy">
+
+<strong>
+${escapeHTML(
+product.title
+||
+"RizSim Simulation"
+)}
+</strong>
+
+<span>
+
+${escapeHTML(
+category?.name
+||
+"Uncategorized"
+)}
+
+·
+
+${escapeHTML(
+product.status
+||
+"draft"
+)}
+
+</span>
+
+</div>
+
+
+<div class="admin-item-actions">
+
+<button
+class="admin-mini-button"
+type="button"
+disabled
+>
+Edit
+</button>
+
+<button
+class="admin-mini-button"
+type="button"
+disabled
+>
+Assets
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
+
+
+function renderAdminPublishing() {
+
+const container =
+document.getElementById(
+"adminPublishingList"
+);
+
+if(
+!products.length
+) {
+
+container.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+No products available
+</strong>
+
+<p>
+Publishing controls will appear when catalogue products exist.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div class="admin-list">
+
+${
+products.map(
+product => {
+
+const isPublished =
+product.status ===
+"published";
+
+return `
+
+<div class="admin-list-item">
+
+<div class="admin-list-copy">
+
+<strong>
+${escapeHTML(
+product.title
+||
+"RizSim Product"
+)}
+</strong>
+
+<span>
+
+${escapeHTML(
+product.product_type
+||
+"product"
+)}
+
+·
+
+${isPublished
+?
+"Visible in catalogue"
+:
+"Not publicly visible"
+}
+
+</span>
+
+</div>
+
+
+<div class="admin-item-actions">
+
+<span
+class="status-badge ${
+isPublished
+?
+"approved"
+:
+"muted"
+}"
+>
+
+${isPublished
+?
+"Published"
+:
+"Unpublished"
+}
+
+</span>
+
+<button
+class="admin-mini-button ${
+isPublished
+?
+""
+:
+"primary"
+}"
+type="button"
+disabled
+>
+
+${isPublished
+?
+"Unpublish"
+:
+"Publish"
+}
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
 
 async function openResponses(
 attemptId
@@ -25222,6 +26634,33 @@ renderResults();
 
 }
 );
+
+document
+.getElementById(
+"adminTabNav"
+)
+.addEventListener(
+"click",
+event => {
+
+const button =
+event.target.closest(
+"[data-admin-tab]"
+);
+
+if(!button) {
+
+return;
+
+}
+
+setAdministrationTab(
+button.dataset.adminTab
+);
+
+}
+);
+  
   document
 .getElementById(
 "ownerLicenseHolderType"
