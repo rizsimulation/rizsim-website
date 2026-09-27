@@ -12483,6 +12483,336 @@ setManagementMessage(
 renderCourseMaterialsPanel();
 
 } 
+
+async function openCourseMaterial(
+materialId
+) {
+
+const material =
+courseMaterials.find(
+item =>
+String(
+item.id
+)
+===
+String(
+materialId
+)
+);
+
+
+if(!material) {
+
+return;
+
+}
+
+
+/* =========================================================
+   EXTERNAL LINK
+========================================================= */
+
+if(
+material.source_type ===
+"link"
+) {
+
+if(!material.external_url) {
+
+window.alert(
+"This resource does not contain a valid link."
+);
+
+return;
+
+}
+
+
+window.open(
+material.external_url,
+"_blank",
+"noopener,noreferrer"
+);
+
+return;
+
+}
+
+
+/* =========================================================
+   PRIVATE FILE
+========================================================= */
+
+if(
+material.source_type !==
+"file"
+||
+!material.storage_path
+) {
+
+return;
+
+}
+
+
+/*
+  Open a blank tab immediately so the browser does not
+  block it while RizSim requests the secure signed URL.
+*/
+const materialWindow =
+window.open(
+"",
+"_blank"
+);
+
+
+if(materialWindow) {
+
+materialWindow.opener =
+null;
+
+materialWindow.document.write(
+"<p style='font-family:Arial,sans-serif;padding:24px;'>Opening RizSim material…</p>"
+);
+
+}
+
+
+const {
+data,
+error
+} =
+
+await supabase
+.storage
+.from(
+"course-materials"
+)
+.createSignedUrl(
+material.storage_path,
+60
+);
+
+
+if(
+error
+||
+!data?.signedUrl
+) {
+
+if(materialWindow) {
+
+materialWindow.close();
+
+}
+
+window.alert(
+error?.message
+||
+"RizSim could not open this material."
+);
+
+return;
+
+}
+
+
+if(materialWindow) {
+
+materialWindow.location.href =
+data.signedUrl;
+
+}
+
+else {
+
+window.location.href =
+data.signedUrl;
+
+}
+
+}
+
+
+async function removeCourseMaterial(
+materialId
+) {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+
+if(
+!selectedCourse
+||
+selectedCourse.active !==
+true
+) {
+
+return;
+
+}
+
+
+const material =
+courseMaterials.find(
+item =>
+String(
+item.id
+)
+===
+String(
+materialId
+)
+);
+
+
+if(!material) {
+
+return;
+
+}
+
+
+const confirmed =
+window.confirm(
+
+"Remove "
++
+material.title
++
+" from this Course?\n\n"
++
+"This removes the resource from the Course. "
++
+"Existing Course results and student activity are not affected."
+
+);
+
+
+if(!confirmed) {
+
+return;
+
+}
+
+
+courseLoading =
+true;
+
+showLoading();
+
+
+/* =========================================================
+   REMOVE METADATA
+========================================================= */
+
+const {
+error:
+deleteError
+} =
+
+await supabase
+.from(
+"rizsim_course_materials"
+)
+.delete()
+.eq(
+"id",
+material.id
+)
+.eq(
+"course_id",
+selectedCourseId
+);
+
+
+if(deleteError) {
+
+hideLoading();
+
+courseLoading =
+false;
+
+window.alert(
+deleteError.message
+);
+
+return;
+
+}
+
+
+/* =========================================================
+   REMOVE PRIVATE FILE IF THIS IS A FILE RESOURCE
+========================================================= */
+
+if(
+material.source_type ===
+"file"
+&&
+material.storage_path
+) {
+
+const {
+error:
+storageError
+} =
+
+await supabase
+.storage
+.from(
+"course-materials"
+)
+.remove([
+material.storage_path
+]);
+
+
+if(storageError) {
+
+/*
+  Metadata is already removed, so the Course UI remains
+  consistent. Log the storage cleanup problem for diagnosis.
+*/
+console.error(
+"Course material storage cleanup failed:",
+storageError
+);
+
+}
+
+}
+
+
+await loadSelectedCourseMaterials(
+selectedCourseId
+);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+
+renderCourseMaterialsPanel();
+
+}
   
 function updateCourseClassroomModeFields() {
 
@@ -23156,6 +23486,39 @@ return;
 
 }
 
+const openCourseMaterialButton =
+event.target.closest(
+"[data-open-course-material]"
+);
+
+if(openCourseMaterialButton) {
+
+openCourseMaterial(
+openCourseMaterialButton.dataset
+.openCourseMaterial
+);
+
+return;
+
+}
+
+
+const removeCourseMaterialButton =
+event.target.closest(
+"[data-remove-course-material]"
+);
+
+if(removeCourseMaterialButton) {
+
+removeCourseMaterial(
+removeCourseMaterialButton.dataset
+.removeCourseMaterial
+);
+
+return;
+
+}
+  
 const courseSessionProgressButton =
 event.target.closest(
 "[data-course-session-progress]"
