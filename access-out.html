@@ -4440,7 +4440,359 @@ No Course results yet.
 </div>
 
 </div>
-  
+
+<!-- =========================================================
+     COURSE MATERIALS & HANDOUTS
+========================================================= -->
+
+<div
+class="portal-panel"
+style="margin:18px;"
+id="courseMaterialsPanel"
+>
+
+<div class="portal-panel-header">
+
+<div>
+
+<div class="portal-panel-title">
+Materials & Handouts
+</div>
+
+<div
+class="portal-panel-note"
+id="courseMaterialsCount"
+>
+0 material(s)
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     MATERIAL MANAGEMENT
+========================================================= -->
+
+<div
+class="management-grid"
+id="courseMaterialsCreateArea"
+>
+
+
+<!-- FILE UPLOAD -->
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+UPLOAD FILE
+</span>
+
+<h3>
+Add Course Material
+</h3>
+
+<p>
+Upload a handout, reading, slides, worksheet
+or other learning resource for this Course.
+</p>
+
+
+<div class="management-field">
+
+<label for="courseMaterialFileType">
+Material Type
+</label>
+
+<select
+class="management-select"
+id="courseMaterialFileType"
+>
+
+<option value="student_handout">
+Student Handout
+</option>
+
+<option value="reading">
+Reading
+</option>
+
+<option value="slides">
+Slides
+</option>
+
+<option value="worksheet">
+Worksheet
+</option>
+
+<option value="teaching_material">
+Teaching Material
+</option>
+
+<option value="other">
+Other
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseMaterialFileTitle">
+Title
+</label>
+
+<input
+class="management-input"
+id="courseMaterialFileTitle"
+type="text"
+maxlength="160"
+placeholder="e.g. Brain Networks Student Handout"
+>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseMaterialFileDescription">
+Description
+</label>
+
+<textarea
+class="management-textarea"
+id="courseMaterialFileDescription"
+maxlength="1000"
+placeholder="Optional description of this material."
+></textarea>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseMaterialFile">
+Choose File
+</label>
+
+<input
+class="management-input"
+id="courseMaterialFile"
+type="file"
+accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg"
+>
+
+</div>
+
+
+<button
+class="management-action"
+id="uploadCourseMaterialButton"
+type="button"
+>
+Upload Material
+</button>
+
+
+<div
+class="management-message"
+id="courseMaterialFileMessage"
+aria-live="polite"
+></div>
+
+</div>
+
+
+<!-- EXTERNAL LINK -->
+
+<div class="management-card">
+
+<span class="management-card-kicker">
+EXTERNAL RESOURCE
+</span>
+
+<h3>
+Add External Link
+</h3>
+
+<p>
+Add a web-based reading, video, document,
+resource or other approved Course link.
+</p>
+
+
+<div class="management-field">
+
+<label for="courseMaterialLinkType">
+Material Type
+</label>
+
+<select
+class="management-select"
+id="courseMaterialLinkType"
+>
+
+<option value="external_link">
+External Link
+</option>
+
+<option value="reading">
+Reading
+</option>
+
+<option value="slides">
+Slides
+</option>
+
+<option value="teaching_material">
+Teaching Material
+</option>
+
+<option value="other">
+Other
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseMaterialLinkTitle">
+Title
+</label>
+
+<input
+class="management-input"
+id="courseMaterialLinkTitle"
+type="text"
+maxlength="160"
+placeholder="e.g. Recommended Reading"
+>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseMaterialLinkDescription">
+Description
+</label>
+
+<textarea
+class="management-textarea"
+id="courseMaterialLinkDescription"
+maxlength="1000"
+placeholder="Optional description of this resource."
+></textarea>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="courseMaterialExternalUrl">
+External URL
+</label>
+
+<input
+class="management-input"
+id="courseMaterialExternalUrl"
+type="url"
+placeholder="https://..."
+>
+
+</div>
+
+
+<button
+class="management-action"
+id="addCourseMaterialLinkButton"
+type="button"
+>
+Add Link
+</button>
+
+
+<div
+class="management-message"
+id="courseMaterialLinkMessage"
+aria-live="polite"
+></div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     MATERIAL LIST
+========================================================= -->
+
+<div class="table-scroll">
+
+<table
+class="portal-table"
+style="min-width:1050px;"
+>
+
+<thead>
+
+<tr>
+
+<th>
+Material
+</th>
+
+<th>
+Type
+</th>
+
+<th>
+Source
+</th>
+
+<th>
+Added
+</th>
+
+<th>
+Actions
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="courseMaterialRows">
+
+<tr>
+
+<td
+colspan="5"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+No Course materials added yet.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -6969,6 +7321,9 @@ let courseClassroomSessions =
 [];
 
 let courseResults =
+[];
+
+let courseMaterials =
 [];
 
 let courseResultSessionFilter =
@@ -9560,6 +9915,87 @@ data
 [];
 
 }
+
+async function loadSelectedCourseMaterials(
+courseId
+) {
+
+courseMaterials =
+[];
+
+if(!courseId) {
+
+return;
+
+}
+
+
+const {
+data,
+error
+} =
+
+await supabase
+.from(
+"rizsim_course_materials"
+)
+.select(`
+id,
+course_id,
+material_type,
+title,
+description,
+source_type,
+storage_path,
+external_url,
+file_name,
+mime_type,
+file_size,
+sort_order,
+active,
+created_at,
+updated_at
+`)
+.eq(
+"course_id",
+courseId
+)
+.eq(
+"active",
+true
+)
+.order(
+"sort_order",
+{
+ascending:
+true
+}
+)
+.order(
+"created_at",
+{
+ascending:
+true
+}
+);
+
+
+if(error) {
+
+courseMaterials =
+[];
+
+return;
+
+}
+
+
+courseMaterials =
+data
+||
+[];
+
+}
   
 async function reloadCourses() {
 
@@ -11102,9 +11538,952 @@ View
 .join("");
 
 renderCourseResultsPanel();
+
+renderCourseMaterialsPanel();
   
 }
 
+function courseMaterialTypeLabel(
+type
+) {
+
+const labels = {
+
+student_handout:
+"Student Handout",
+
+reading:
+"Reading",
+
+slides:
+"Slides",
+
+worksheet:
+"Worksheet",
+
+teaching_material:
+"Teaching Material",
+
+external_link:
+"External Link",
+
+other:
+"Other"
+
+};
+
+return labels[type]
+||
+type
+||
+"Other";
+
+}
+
+
+function formatFileSize(
+bytes
+) {
+
+const value =
+Number(
+bytes
+||
+0
+);
+
+if(!value) {
+
+return "—";
+
+}
+
+if(value < 1024) {
+
+return value
++
+" B";
+
+}
+
+if(value < 1024 * 1024) {
+
+return (
+value / 1024
+).toFixed(1)
++
+" KB";
+
+}
+
+return (
+value /
+(
+1024 * 1024
+)
+).toFixed(1)
++
+" MB";
+
+}
+
+
+function renderCourseMaterialsPanel() {
+
+const rows =
+document.getElementById(
+"courseMaterialRows"
+);
+
+if(!rows) {
+
+return;
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+
+const canManageMaterials =
+currentMembership.role ===
+"course_lead"
+&&
+selectedCourse
+&&
+selectedCourse.active ===
+true;
+
+
+const createArea =
+document.getElementById(
+"courseMaterialsCreateArea"
+);
+
+
+if(createArea) {
+
+createArea.classList.toggle(
+"hidden",
+!canManageMaterials
+);
+
+}
+
+
+const count =
+document.getElementById(
+"courseMaterialsCount"
+);
+
+
+if(count) {
+
+count.textContent =
+courseMaterials.length
++
+" material(s)";
+
+}
+
+
+if(
+courseMaterials.length ===
+0
+) {
+
+rows.innerHTML = `
+
+<tr>
+
+<td
+colspan="5"
+style="
+padding:35px;
+text-align:center;
+color:#7a8d97;
+"
+>
+
+No Course materials added yet.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+rows.innerHTML =
+
+courseMaterials.map(
+material => `
+
+<tr>
+
+<td>
+
+<div class="table-primary">
+
+${escapeHTML(
+material.title
+)}
+
+</div>
+
+<div class="table-secondary">
+
+${escapeHTML(
+material.description
+||
+material.file_name
+||
+""
+)}
+
+</div>
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+courseMaterialTypeLabel(
+material.material_type
+)
+)}
+
+</td>
+
+
+<td>
+
+<div class="table-primary">
+
+${
+material.source_type ===
+"file"
+? "File"
+: "External Link"
+}
+
+</div>
+
+<div class="table-secondary">
+
+${
+material.source_type ===
+"file"
+
+? escapeHTML(
+formatFileSize(
+material.file_size
+)
+)
+
+: "Web resource"
+}
+
+</div>
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+formatDate(
+material.created_at
+)
+)}
+
+</td>
+
+
+<td>
+
+<div
+style="
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+"
+>
+
+<button
+class="small-action"
+type="button"
+data-open-course-material="${escapeHTML(
+material.id
+)}"
+>
+Open
+</button>
+
+
+${
+canManageMaterials
+
+? `
+
+<button
+class="small-action danger"
+type="button"
+data-remove-course-material="${escapeHTML(
+material.id
+)}"
+>
+Remove
+</button>
+
+`
+
+: `
+
+<span class="table-secondary">
+View only
+</span>
+
+`
+}
+
+</div>
+
+</td>
+
+</tr>
+
+`
+)
+
+.join("");
+
+}
+
+function nextCourseMaterialSortOrder() {
+
+if(
+courseMaterials.length ===
+0
+) {
+
+return 0;
+
+}
+
+return Math.max(
+...courseMaterials.map(
+item =>
+Number(
+item.sort_order
+||
+0
+)
+)
+)
++
+1;
+
+}
+
+
+async function uploadCourseMaterial() {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+if(
+!selectedCourse
+||
+selectedCourse.active !==
+true
+) {
+
+return;
+
+}
+
+
+const materialType =
+document.getElementById(
+"courseMaterialFileType"
+).value;
+
+
+const title =
+document.getElementById(
+"courseMaterialFileTitle"
+).value
+.trim();
+
+
+const description =
+document.getElementById(
+"courseMaterialFileDescription"
+).value
+.trim();
+
+
+const fileInput =
+document.getElementById(
+"courseMaterialFile"
+);
+
+
+const file =
+fileInput.files?.[0]
+||
+null;
+
+
+const button =
+document.getElementById(
+"uploadCourseMaterialButton"
+);
+
+
+setManagementMessage(
+"courseMaterialFileMessage",
+""
+);
+
+
+if(!title) {
+
+setManagementMessage(
+"courseMaterialFileMessage",
+"Enter a material title.",
+true
+);
+
+return;
+
+}
+
+
+if(!file) {
+
+setManagementMessage(
+"courseMaterialFileMessage",
+"Choose a file to upload.",
+true
+);
+
+return;
+
+}
+
+
+if(
+file.size >
+25 * 1024 * 1024
+) {
+
+setManagementMessage(
+"courseMaterialFileMessage",
+"Files must be 25 MB or smaller.",
+true
+);
+
+return;
+
+}
+
+
+const safeName =
+file.name
+.replace(
+/[^a-zA-Z0-9._-]+/g,
+"-"
+)
+.replace(
+/^-+|-+$/g,
+""
+)
+||
+"material";
+
+
+const objectId =
+globalThis.crypto?.randomUUID
+? globalThis.crypto.randomUUID()
+: (
+Date.now()
++
+"-"
++
+Math.random()
+.toString(36)
+.slice(2)
+);
+
+
+const storagePath =
+selectedCourseId
++
+"/"
++
+objectId
++
+"-"
++
+safeName;
+
+
+courseLoading =
+true;
+
+button.disabled =
+true;
+
+button.textContent =
+"Uploading…";
+
+showLoading();
+
+
+const uploadResult =
+
+await supabase
+.storage
+.from(
+"course-materials"
+)
+.upload(
+storagePath,
+file,
+{
+
+cacheControl:
+"3600",
+
+upsert:
+false,
+
+contentType:
+file.type
+||
+undefined
+
+}
+);
+
+
+if(uploadResult.error) {
+
+hideLoading();
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Upload Material";
+
+
+setManagementMessage(
+"courseMaterialFileMessage",
+uploadResult.error.message,
+true
+);
+
+return;
+
+}
+
+
+const insertResult =
+
+await supabase
+.from(
+"rizsim_course_materials"
+)
+.insert({
+
+course_id:
+selectedCourseId,
+
+material_type:
+materialType,
+
+title:
+title,
+
+description:
+description
+||
+null,
+
+source_type:
+"file",
+
+storage_path:
+storagePath,
+
+file_name:
+file.name,
+
+mime_type:
+file.type
+||
+null,
+
+file_size:
+file.size,
+
+sort_order:
+nextCourseMaterialSortOrder()
+
+});
+
+
+if(insertResult.error) {
+
+/* Roll back uploaded file if metadata fails */
+
+await supabase
+.storage
+.from(
+"course-materials"
+)
+.remove([
+storagePath
+]);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Upload Material";
+
+
+setManagementMessage(
+"courseMaterialFileMessage",
+insertResult.error.message,
+true
+);
+
+return;
+
+}
+
+
+await loadSelectedCourseMaterials(
+selectedCourseId
+);
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Upload Material";
+
+
+document.getElementById(
+"courseMaterialFileTitle"
+).value =
+"";
+
+
+document.getElementById(
+"courseMaterialFileDescription"
+).value =
+"";
+
+
+fileInput.value =
+"";
+
+
+setManagementMessage(
+"courseMaterialFileMessage",
+"Material uploaded successfully."
+);
+
+
+renderCourseMaterialsPanel();
+
+}
+
+
+async function addCourseMaterialLink() {
+
+if(
+currentMembership.role !==
+"course_lead"
+||
+!selectedCourseId
+||
+courseLoading
+) {
+
+return;
+
+}
+
+
+const selectedCourse =
+getSelectedCourse();
+
+if(
+!selectedCourse
+||
+selectedCourse.active !==
+true
+) {
+
+return;
+
+}
+
+
+const materialType =
+document.getElementById(
+"courseMaterialLinkType"
+).value;
+
+
+const title =
+document.getElementById(
+"courseMaterialLinkTitle"
+).value
+.trim();
+
+
+const description =
+document.getElementById(
+"courseMaterialLinkDescription"
+).value
+.trim();
+
+
+const rawUrl =
+document.getElementById(
+"courseMaterialExternalUrl"
+).value
+.trim();
+
+
+const button =
+document.getElementById(
+"addCourseMaterialLinkButton"
+);
+
+
+setManagementMessage(
+"courseMaterialLinkMessage",
+""
+);
+
+
+if(!title) {
+
+setManagementMessage(
+"courseMaterialLinkMessage",
+"Enter a material title.",
+true
+);
+
+return;
+
+}
+
+
+if(!rawUrl) {
+
+setManagementMessage(
+"courseMaterialLinkMessage",
+"Enter the external URL.",
+true
+);
+
+return;
+
+}
+
+
+let normalizedUrl;
+
+try {
+
+const parsed =
+new URL(
+rawUrl
+);
+
+
+if(
+![
+"http:",
+"https:"
+].includes(
+parsed.protocol
+)
+) {
+
+throw new Error();
+
+}
+
+
+normalizedUrl =
+parsed.href;
+
+}
+
+catch {
+
+setManagementMessage(
+"courseMaterialLinkMessage",
+"Enter a valid http or https URL.",
+true
+);
+
+return;
+
+}
+
+
+courseLoading =
+true;
+
+button.disabled =
+true;
+
+button.textContent =
+"Adding…";
+
+showLoading();
+
+
+const {
+error
+} =
+
+await supabase
+.from(
+"rizsim_course_materials"
+)
+.insert({
+
+course_id:
+selectedCourseId,
+
+material_type:
+materialType,
+
+title:
+title,
+
+description:
+description
+||
+null,
+
+source_type:
+"link",
+
+external_url:
+normalizedUrl,
+
+sort_order:
+nextCourseMaterialSortOrder()
+
+});
+
+
+hideLoading();
+
+courseLoading =
+false;
+
+button.disabled =
+false;
+
+button.textContent =
+"Add Link";
+
+
+if(error) {
+
+setManagementMessage(
+"courseMaterialLinkMessage",
+error.message,
+true
+);
+
+return;
+
+}
+
+
+await loadSelectedCourseMaterials(
+selectedCourseId
+);
+
+
+document.getElementById(
+"courseMaterialLinkTitle"
+).value =
+"";
+
+
+document.getElementById(
+"courseMaterialLinkDescription"
+).value =
+"";
+
+
+document.getElementById(
+"courseMaterialExternalUrl"
+).value =
+"";
+
+
+setManagementMessage(
+"courseMaterialLinkMessage",
+"Link added successfully."
+);
+
+
+renderCourseMaterialsPanel();
+
+} 
+  
 function updateCourseClassroomModeFields() {
 
 const mode =
@@ -11955,6 +13334,9 @@ await loadSelectedCourseResults(
 courseId
 );
 
+await loadSelectedCourseMaterials(
+courseId
+);
 
 hideLoading();
 
@@ -11976,6 +13358,9 @@ courseClassroomSessions =
 [];
 
 courseResults =
+[];
+
+courseMaterials =
 [];
 
 courseResultSessionFilter =
@@ -22015,6 +23400,25 @@ renderCourseResultsPanel();
 }
 );
 
+document
+.getElementById(
+"uploadCourseMaterialButton"
+)
+?.addEventListener(
+"click",
+uploadCourseMaterial
+);
+
+
+document
+.getElementById(
+"addCourseMaterialLinkButton"
+)
+?.addEventListener(
+"click",
+addCourseMaterialLink
+);
+  
 document
 .getElementById(
 "classroomRosterSessionSelect"
