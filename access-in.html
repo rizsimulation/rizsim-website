@@ -987,6 +987,323 @@ font-size:.59rem;
 
 
 /* ============================================================
+   MY LEARNING HUB
+   ============================================================ */
+
+.learning-command{
+margin-top:28px;
+padding:28px;
+display:grid;
+grid-template-columns:1.2fr .8fr;
+gap:24px;
+align-items:center;
+color:#fff;
+background:
+radial-gradient(
+circle at 90% 8%,
+rgba(89,222,214,.17),
+transparent 31%
+),
+linear-gradient(
+135deg,
+#061827,
+#0a394b
+);
+border-radius:24px;
+box-shadow:
+0 24px 55px rgba(4,25,40,.12);
+}
+
+.learning-command-label{
+color:#72d8d2;
+font-size:.61rem;
+font-weight:900;
+letter-spacing:.09em;
+text-transform:uppercase;
+}
+
+.learning-command h2{
+margin:9px 0 8px;
+color:#fff;
+font-size:clamp(1.55rem,3vw,2.25rem);
+line-height:1.08;
+letter-spacing:-.035em;
+}
+
+.learning-command p{
+max-width:690px;
+margin:0;
+color:#b7ccd4;
+font-size:.76rem;
+line-height:1.68;
+}
+
+.learning-command-actions{
+display:flex;
+flex-wrap:wrap;
+justify-content:flex-end;
+gap:10px;
+}
+
+.learning-command-actions .hero-primary,
+.learning-command-actions .hero-secondary{
+min-width:142px;
+}
+
+.learning-overview-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-top:22px;
+}
+
+.learning-overview-card{
+min-height:118px;
+padding:19px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+box-shadow:
+0 8px 24px rgba(4,25,40,.045);
+}
+
+.learning-overview-value{
+color:var(--navy);
+font-size:1.9rem;
+font-weight:950;
+letter-spacing:-.045em;
+}
+
+.learning-overview-label{
+margin-top:4px;
+color:#6f8490;
+font-size:.62rem;
+font-weight:850;
+}
+
+.learning-hub{
+margin-top:24px;
+overflow:hidden;
+background:#fff;
+border:1px solid var(--line);
+border-radius:22px;
+box-shadow:
+0 10px 30px rgba(4,25,40,.05);
+}
+
+.learning-hub-nav{
+padding:10px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+background:#f6fafb;
+border-bottom:1px solid #e1eaed;
+}
+
+.learning-tab-button{
+min-height:44px;
+padding:0 12px;
+color:#66808d;
+background:transparent;
+border:1px solid transparent;
+border-radius:11px;
+font-size:.66rem;
+font-weight:900;
+transition:
+background .18s ease,
+color .18s ease,
+box-shadow .18s ease,
+border-color .18s ease;
+}
+
+.learning-tab-button:hover{
+color:#0b5d63;
+background:#edf8f7;
+}
+
+.learning-tab-button.is-active{
+color:#fff;
+background:
+linear-gradient(
+135deg,
+#13aaa5,
+#20b7b0
+);
+border-color:rgba(255,255,255,.18);
+box-shadow:
+0 7px 18px rgba(24,184,176,.18);
+}
+
+.learning-tab-panel{
+display:none;
+padding:24px;
+}
+
+.learning-tab-panel.active{
+display:block;
+}
+
+.learning-section-heading{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:18px;
+margin-bottom:18px;
+}
+
+.learning-section-heading h3{
+margin:0;
+color:#0d3042;
+font-size:1.02rem;
+}
+
+.learning-section-heading p{
+max-width:680px;
+margin:5px 0 0;
+color:#7b8f99;
+font-size:.7rem;
+line-height:1.6;
+}
+
+.learning-status-note{
+padding:9px 11px;
+color:#0c6d6b;
+background:#eaf8f6;
+border:1px solid #d1ece8;
+border-radius:10px;
+font-size:.58rem;
+font-weight:850;
+white-space:nowrap;
+}
+
+.learning-empty-action{
+margin-top:15px;
+}
+
+.learning-progress-list{
+display:grid;
+gap:11px;
+}
+
+.learning-progress-row{
+padding:15px 16px;
+display:grid;
+grid-template-columns:minmax(0,1.3fr) minmax(150px,.7fr) auto;
+gap:14px;
+align-items:center;
+background:#f8fbfc;
+border:1px solid #e0e9ec;
+border-radius:14px;
+}
+
+.learning-progress-title{
+min-width:0;
+}
+
+.learning-progress-title strong{
+display:block;
+color:#15384a;
+font-size:.76rem;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.learning-progress-title span{
+display:block;
+margin-top:3px;
+color:#81939c;
+font-size:.59rem;
+}
+
+.learning-progress-meter{
+min-width:0;
+}
+
+.learning-progress-meter .progress-track{
+margin-top:0;
+}
+
+.learning-progress-meter .progress-meta{
+margin-top:5px;
+}
+
+.material-type-strip{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:13px;
+}
+
+.material-type-chip{
+padding:7px 10px;
+color:#436371;
+background:#f2f8f8;
+border:1px solid #dce9e8;
+border-radius:999px;
+font-size:.57rem;
+font-weight:850;
+}
+
+.course-preview-shell{
+padding:18px;
+background:
+linear-gradient(
+135deg,
+#f9fcfc,
+#f2f9f8
+);
+border:1px solid #dce9e8;
+border-radius:16px;
+}
+
+.course-preview-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+
+.course-preview-top strong{
+color:#123648;
+font-size:.8rem;
+}
+
+.course-preview-copy{
+margin-top:7px;
+color:#738995;
+font-size:.67rem;
+line-height:1.6;
+}
+
+.course-preview-tabs{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin-top:14px;
+}
+
+.course-preview-tab{
+padding:7px 10px;
+color:#56727f;
+background:#fff;
+border:1px solid #dbe7e9;
+border-radius:9px;
+font-size:.57rem;
+font-weight:850;
+}
+
+.course-preview-tab.active{
+color:#087f86;
+background:#e9f8f6;
+border-color:#ccebe7;
+}
+
+
+/* ============================================================
    PLAYER
    ============================================================ */
 
@@ -1509,6 +1826,18 @@ grid-template-columns:1fr;
 grid-template-columns:repeat(2,1fr);
 }
 
+.learning-command{
+grid-template-columns:1fr;
+}
+
+.learning-command-actions{
+justify-content:flex-start;
+}
+
+.learning-overview-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
 }
 
 @media(max-width:980px){
@@ -1555,11 +1884,33 @@ padding:52px 0 72px;
 .learning-grid,
 .simulation-grid,
 .metric-grid,
+.learning-overview-grid,
 .about-layout,
 .contact-layout,
 .account-grid,
 .session-details{
 grid-template-columns:1fr;
+}
+
+.learning-hub-nav{
+grid-template-columns:repeat(2,1fr);
+}
+
+.learning-tab-panel{
+padding:18px;
+}
+
+.learning-section-heading{
+flex-direction:column;
+}
+
+.learning-progress-row{
+grid-template-columns:1fr;
+}
+
+.learning-command-actions .hero-primary,
+.learning-command-actions .hero-secondary{
+width:100%;
 }
 
 .code-row{
@@ -1711,6 +2062,13 @@ href="#simulations"
 data-student-view="simulations"
 >
 Simulations
+</a>
+
+<a
+href="#learning"
+data-student-view="learning"
+>
+My Learning
 </a>
 
 <a
@@ -2068,10 +2426,18 @@ My Learning
 </div>
 
 <div class="panel-note">
-Your RizSim simulation activity
+Recent activity from your RizSim learning history
 </div>
 
 </div>
+
+<button
+class="small-action primary"
+type="button"
+data-student-view-button="learning"
+>
+Open My Learning
+</button>
 
 </div>
 
@@ -2129,6 +2495,232 @@ class="simulation-grid"
 id="simulationGrid"
 ></div>
 
+
+</div>
+
+</section>
+
+
+
+<!-- ============================================================
+     MY LEARNING
+     ============================================================ -->
+
+<section
+class="student-view"
+id="view-learning"
+data-view="learning"
+>
+
+<div class="content-shell">
+
+<div class="student-heading">
+
+<span class="student-kicker">
+MY LEARNING
+</span>
+
+<h1>
+Your learning, organized.
+</h1>
+
+<p>
+Keep your active sessions, Course learning, materials and progress
+in one place. RizSim only shows learning connected to your own
+account and authorized Faculty-led access.
+</p>
+
+</div>
+
+<div class="learning-command">
+
+<div>
+
+<div class="learning-command-label">
+YOUR RIZSIM LEARNING SPACE
+</div>
+
+<h2>
+Continue what you started. Find what comes next.
+</h2>
+
+<p>
+Use My Learning as your personal learning record. Join a new class
+through RizSimulation Player, return to active work and review your
+completed learning history.
+</p>
+
+</div>
+
+<div class="learning-command-actions">
+
+<button
+class="hero-primary"
+type="button"
+data-student-view-button="player"
+>
+Join a Class
+</button>
+
+<button
+class="hero-secondary"
+type="button"
+data-student-view-button="simulations"
+>
+Browse Simulations
+</button>
+
+</div>
+
+</div>
+
+<div class="learning-overview-grid">
+
+<div class="learning-overview-card">
+<div class="learning-overview-value" id="learningActiveCount">0</div>
+<div class="learning-overview-label">Active Learning</div>
+</div>
+
+<div class="learning-overview-card">
+<div class="learning-overview-value" id="learningCompletedCount">0</div>
+<div class="learning-overview-label">Completed</div>
+</div>
+
+<div class="learning-overview-card">
+<div class="learning-overview-value" id="learningCourseCount">0</div>
+<div class="learning-overview-label">My Courses</div>
+</div>
+
+<div class="learning-overview-card">
+<div class="learning-overview-value" id="learningMaterialCount">0</div>
+<div class="learning-overview-label">Learning Materials</div>
+</div>
+
+</div>
+
+<div class="learning-hub" data-swipe-block>
+
+<div class="learning-hub-nav" role="tablist" aria-label="My Learning sections">
+
+<button
+class="learning-tab-button is-active"
+type="button"
+data-learning-tab="active"
+role="tab"
+aria-selected="true"
+>
+Active Learning
+</button>
+
+<button
+class="learning-tab-button"
+type="button"
+data-learning-tab="courses"
+role="tab"
+aria-selected="false"
+>
+My Courses
+</button>
+
+<button
+class="learning-tab-button"
+type="button"
+data-learning-tab="materials"
+role="tab"
+aria-selected="false"
+>
+Materials
+</button>
+
+<button
+class="learning-tab-button"
+type="button"
+data-learning-tab="progress"
+role="tab"
+aria-selected="false"
+>
+Progress
+</button>
+
+</div>
+
+<div
+class="learning-tab-panel active"
+id="learningTabActive"
+data-learning-panel="active"
+role="tabpanel"
+>
+
+<div class="learning-section-heading">
+<div>
+<h3>Active Learning</h3>
+<p>Learning attempts that are still in progress appear here.</p>
+</div>
+<div class="learning-status-note">ACCOUNT-SCOPED</div>
+</div>
+
+<div id="learningActiveContent"></div>
+
+</div>
+
+<div
+class="learning-tab-panel"
+id="learningTabCourses"
+data-learning-panel="courses"
+role="tabpanel"
+>
+
+<div class="learning-section-heading">
+<div>
+<h3>My Courses</h3>
+<p>Courses will appear here after you join a Course-linked class created by a Course Lead.</p>
+</div>
+<div class="learning-status-note">COURSE ACCESS</div>
+</div>
+
+<div id="learningCoursesContent"></div>
+
+</div>
+
+<div
+class="learning-tab-panel"
+id="learningTabMaterials"
+data-learning-panel="materials"
+role="tabpanel"
+>
+
+<div class="learning-section-heading">
+<div>
+<h3>Learning Materials</h3>
+<p>Handouts, readings, slides, worksheets and other resources shared with your authorized Course will appear here.</p>
+</div>
+<div class="learning-status-note">READ ONLY</div>
+</div>
+
+<div id="learningMaterialsContent"></div>
+
+</div>
+
+<div
+class="learning-tab-panel"
+id="learningTabProgress"
+data-learning-panel="progress"
+role="tabpanel"
+>
+
+<div class="learning-section-heading">
+<div>
+<h3>Progress & History</h3>
+<p>Review progress across your current and completed RizSim learning attempts.</p>
+</div>
+<div class="learning-status-note">YOUR HISTORY</div>
+</div>
+
+<div id="learningProgressContent"></div>
+
+</div>
+
+</div>
 
 </div>
 
@@ -2727,9 +3319,13 @@ new Map();
 let activeView =
 "home";
 
+let activeLearningTab =
+"active";
+
 const viewOrder = [
 "home",
 "simulations",
+"learning",
 "player",
 "about",
 "contact",
@@ -3752,6 +4348,8 @@ renderStats();
 
 renderHomeLearning();
 
+renderMyLearning();
+
 renderSimulations();
 
 renderAccountStats();
@@ -4047,6 +4645,545 @@ Details
 </div>
 
 `;
+
+}
+
+function renderMyLearning(){
+
+const activeAttempts =
+attempts.filter(
+attempt =>
+attempt.status !==
+"submitted"
+);
+
+const completedAttempts =
+attempts.filter(
+attempt =>
+attempt.status ===
+"submitted"
+);
+
+document
+.getElementById(
+"learningActiveCount"
+)
+.textContent =
+activeAttempts.length;
+
+document
+.getElementById(
+"learningCompletedCount"
+)
+.textContent =
+completedAttempts.length;
+
+/*
+  Course and material counts stay at zero until the Course-linked
+  Student data source is connected. This keeps this interface pass
+  honest and prevents the browser from inventing authorization.
+*/
+document
+.getElementById(
+"learningCourseCount"
+)
+.textContent =
+"0";
+
+document
+.getElementById(
+"learningMaterialCount"
+)
+.textContent =
+"0";
+
+renderLearningActive(
+activeAttempts
+);
+
+renderLearningCourses();
+
+renderLearningMaterials();
+
+renderLearningProgress();
+
+setLearningTab(
+activeLearningTab,
+false
+);
+
+}
+
+function buildLearningAttemptCard(
+attempt
+){
+
+const product =
+getProduct(
+attempt.product_id
+);
+
+const progress =
+Math.max(
+0,
+Math.min(
+100,
+Number(
+attempt.progress_percent
+||
+0
+)
+)
+);
+
+const completed =
+attempt.status ===
+"submitted";
+
+return `
+
+<article class="learning-card">
+
+<span class="card-category">
+${escapeHTML(
+getCategoryName(
+product?.category_id
+)
+)}
+</span>
+
+<h3>
+${escapeHTML(
+product?.title
+||
+"RizSim Simulation"
+)}
+</h3>
+
+<p>
+${
+attempt.classroom_session_id
+?
+"Faculty-led classroom learning."
+:
+"RizSim learning attempt."
+}
+</p>
+
+<div class="progress-track">
+<div
+class="progress-fill"
+style="width:${progress}%"
+></div>
+</div>
+
+<div class="progress-meta">
+<span>${progress}% complete</span>
+<span>${escapeHTML(
+formatDateTime(
+attempt.last_activity_at
+||
+attempt.started_at
+)
+)}</span>
+</div>
+
+<div class="card-footer">
+
+<span class="status-badge ${
+completed
+?
+"completed"
+:
+"progress"
+}">
+${
+completed
+?
+"Completed"
+:
+"In Progress"
+}
+</span>
+
+${
+product
+?
+`
+<button
+class="small-action"
+type="button"
+data-product-details="${escapeHTML(product.id)}"
+>
+Details
+</button>
+`
+:
+""
+}
+
+</div>
+
+</article>
+
+`;
+
+}
+
+function renderLearningActive(
+activeAttempts
+){
+
+const container =
+document.getElementById(
+"learningActiveContent"
+);
+
+if(!activeAttempts.length){
+
+container.innerHTML = `
+
+<div class="empty-state">
+<div class="empty-state-icon">▶</div>
+<strong>No active learning right now</strong>
+<p>
+Join a Faculty class or start an available Practice session.
+Your in-progress learning will then appear here.
+</p>
+<button
+class="small-action primary learning-empty-action"
+type="button"
+data-student-view-button="player"
+>
+Join a Class
+</button>
+</div>
+
+`;
+
+return;
+
+}
+
+const latestByProduct =
+[];
+
+const seen =
+new Set();
+
+activeAttempts
+.slice()
+.sort(
+(a,b) =>
+new Date(
+b.last_activity_at
+||
+b.started_at
+)
+-
+new Date(
+a.last_activity_at
+||
+a.started_at
+)
+)
+.forEach(
+attempt => {
+
+if(
+seen.has(
+attempt.product_id
+)
+){
+return;
+}
+
+seen.add(
+attempt.product_id
+);
+
+latestByProduct.push(
+attempt
+);
+
+}
+);
+
+container.innerHTML = `
+<div class="learning-grid" style="margin-top:0;">
+${
+latestByProduct
+.map(
+buildLearningAttemptCard
+)
+.join("")
+}
+</div>
+`;
+
+}
+
+function renderLearningCourses(){
+
+const container =
+document.getElementById(
+"learningCoursesContent"
+);
+
+container.innerHTML = `
+
+<div class="course-preview-shell">
+
+<div class="course-preview-top">
+<strong>Student Course workspace</strong>
+<span class="status-badge required">Not connected yet</span>
+</div>
+
+<div class="course-preview-copy">
+When Course-linked Student access is connected, each authorized Course
+will open into a focused learner view rather than a Faculty management
+workspace.
+</div>
+
+<div class="course-preview-tabs" aria-label="Planned Student Course sections">
+<span class="course-preview-tab active">Overview</span>
+<span class="course-preview-tab">Simulations</span>
+<span class="course-preview-tab">Materials</span>
+<span class="course-preview-tab">Progress</span>
+</div>
+
+</div>
+
+<div class="empty-state">
+<div class="empty-state-icon">C</div>
+<strong>No Course-linked learning loaded yet</strong>
+<p>
+Your authorized Courses will appear here after the Student Course data
+connection is added in the next functional pass.
+</p>
+</div>
+
+`;
+
+}
+
+function renderLearningMaterials(){
+
+const container =
+document.getElementById(
+"learningMaterialsContent"
+);
+
+container.innerHTML = `
+
+<div class="course-preview-shell">
+
+<div class="course-preview-top">
+<strong>Course materials</strong>
+<span class="status-badge required">Read only</span>
+</div>
+
+<div class="course-preview-copy">
+Students will only see resources shared through a Course they are
+authorized to access. Faculty upload, edit and remove controls will not
+appear in Access IN.
+</div>
+
+<div class="material-type-strip">
+<span class="material-type-chip">Student Handout</span>
+<span class="material-type-chip">Reading</span>
+<span class="material-type-chip">Slides</span>
+<span class="material-type-chip">Worksheet</span>
+<span class="material-type-chip">Learning Resource</span>
+</div>
+
+</div>
+
+<div class="empty-state">
+<div class="empty-state-icon">M</div>
+<strong>No authorized materials loaded yet</strong>
+<p>
+When Student Course permissions are connected, secure files and approved
+external resources will appear here with an Open action.
+</p>
+</div>
+
+`;
+
+}
+
+function renderLearningProgress(){
+
+const container =
+document.getElementById(
+"learningProgressContent"
+);
+
+if(!attempts.length){
+
+container.innerHTML = `
+
+<div class="empty-state">
+<div class="empty-state-icon">%</div>
+<strong>No learning history yet</strong>
+<p>
+Progress and completed learning will appear here after you join your
+first RizSim session.
+</p>
+</div>
+
+`;
+
+return;
+
+}
+
+const ordered =
+attempts
+.slice()
+.sort(
+(a,b) =>
+new Date(
+b.last_activity_at
+||
+b.started_at
+)
+-
+new Date(
+a.last_activity_at
+||
+a.started_at
+)
+);
+
+container.innerHTML = `
+<div class="learning-progress-list">
+${
+ordered.map(
+attempt => {
+
+const product =
+getProduct(
+attempt.product_id
+);
+
+const progress =
+Math.max(
+0,
+Math.min(
+100,
+Number(
+attempt.progress_percent
+||
+0
+)
+)
+);
+
+const completed =
+attempt.status ===
+"submitted";
+
+return `
+<div class="learning-progress-row">
+
+<div class="learning-progress-title">
+<strong>${escapeHTML(product?.title || "RizSim Simulation")}</strong>
+<span>${escapeHTML(formatDateTime(attempt.last_activity_at || attempt.started_at))}</span>
+</div>
+
+<div class="learning-progress-meter">
+<div class="progress-track">
+<div class="progress-fill" style="width:${progress}%"></div>
+</div>
+<div class="progress-meta">
+<span>${progress}%</span>
+<span>${completed ? "Completed" : "In progress"}</span>
+</div>
+</div>
+
+<span class="status-badge ${completed ? "completed" : "progress"}">
+${completed ? "Completed" : "In Progress"}
+</span>
+
+</div>
+`;
+
+}
+)
+.join("")
+}
+</div>
+`;
+
+}
+
+function setLearningTab(
+tab,
+updateState = true
+){
+
+const validTabs =
+new Set([
+"active",
+"courses",
+"materials",
+"progress"
+]);
+
+const nextTab =
+validTabs.has(
+tab
+)
+?
+tab
+:
+"active";
+
+if(updateState){
+activeLearningTab =
+nextTab;
+}
+
+document
+.querySelectorAll(
+"[data-learning-tab]"
+)
+.forEach(
+button => {
+
+const active =
+button.dataset.learningTab ===
+nextTab;
+
+button.classList.toggle(
+"is-active",
+active
+);
+
+button.setAttribute(
+"aria-selected",
+String(active)
+);
+
+}
+);
+
+document
+.querySelectorAll(
+"[data-learning-panel]"
+)
+.forEach(
+panel => {
+
+panel.classList.toggle(
+"active",
+panel.dataset.learningPanel ===
+nextTab
+);
+
+}
+);
 
 }
 
@@ -6192,6 +7329,21 @@ code
 document.addEventListener(
 "click",
 event => {
+
+const learningTab =
+event.target.closest(
+"[data-learning-tab]"
+);
+
+if(learningTab){
+
+setLearningTab(
+learningTab.dataset.learningTab
+);
+
+return;
+
+}
 
 const viewButton =
 event.target.closest(
