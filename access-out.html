@@ -2390,6 +2390,367 @@ right: 18px;
 left: 18px;
 }
 
+/* ============================================================
+   INSTITUTION DASHBOARD
+   ============================================================ */
+
+.institution-command{
+margin-top:26px;
+padding:27px 29px;
+display:grid;
+grid-template-columns:1.2fr .8fr;
+gap:24px;
+align-items:center;
+overflow:hidden;
+color:#fff;
+background:
+radial-gradient(
+circle at 90% 5%,
+rgba(89,222,214,.18),
+transparent 31%
+),
+linear-gradient(
+135deg,
+#061827,
+#0a394b
+);
+border-radius:24px;
+box-shadow:
+0 22px 52px rgba(4,25,40,.12);
+}
+
+.institution-command-label{
+color:#72d8d2;
+font-size:.61rem;
+font-weight:900;
+letter-spacing:.09em;
+text-transform:uppercase;
+}
+
+.institution-command h2{
+margin:9px 0 7px;
+color:#fff;
+font-size:
+clamp(
+1.55rem,
+3vw,
+2.2rem
+);
+line-height:1.08;
+letter-spacing:-.035em;
+}
+
+.institution-command p{
+max-width:700px;
+margin:0;
+color:#b8ccd4;
+font-size:.75rem;
+line-height:1.7;
+}
+
+.institution-command-status{
+justify-self:end;
+padding:10px 13px;
+color:#d9fffb;
+background:rgba(24,184,176,.13);
+border:1px solid rgba(89,222,214,.23);
+border-radius:999px;
+font-size:.61rem;
+font-weight:900;
+white-space:nowrap;
+}
+
+.institution-overview-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:13px;
+margin-top:20px;
+}
+
+.institution-overview-metric{
+min-height:116px;
+padding:18px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+box-shadow:
+0 8px 24px rgba(4,25,40,.045);
+}
+
+.institution-overview-value{
+color:var(--navy);
+font-size:1.9rem;
+font-weight:950;
+letter-spacing:-.045em;
+}
+
+.institution-overview-label{
+margin-top:4px;
+color:#728792;
+font-size:.61rem;
+font-weight:850;
+}
+
+.institution-hub{
+margin-top:23px;
+overflow:hidden;
+background:#fff;
+border:1px solid var(--line);
+border-radius:22px;
+box-shadow:
+0 10px 30px rgba(4,25,40,.05);
+}
+
+.institution-tab-nav{
+padding:10px;
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:7px;
+background:#f6fafb;
+border-bottom:1px solid #e0eaed;
+}
+
+.institution-tab-button{
+min-height:44px;
+padding:0 11px;
+color:#66808d;
+background:transparent;
+border:1px solid transparent;
+border-radius:11px;
+font-size:.64rem;
+font-weight:900;
+transition:
+background .18s ease,
+color .18s ease,
+box-shadow .18s ease;
+}
+
+.institution-tab-button:hover{
+color:#0b5d63;
+background:#edf8f7;
+}
+
+.institution-tab-button.is-active{
+color:#fff;
+background:
+linear-gradient(
+135deg,
+#13aaa5,
+#20b7b0
+);
+box-shadow:
+0 7px 18px rgba(24,184,176,.18);
+}
+
+.institution-tab-panel{
+display:none;
+padding:22px;
+}
+
+.institution-tab-panel.active{
+display:block;
+}
+
+.institution-section-heading{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:18px;
+margin-bottom:18px;
+}
+
+.institution-section-heading h3{
+margin:0;
+color:#0d3042;
+font-size:1rem;
+}
+
+.institution-section-heading p{
+max-width:680px;
+margin:5px 0 0;
+color:#7c9099;
+font-size:.7rem;
+line-height:1.6;
+}
+
+.institution-scope-chip{
+padding:8px 10px;
+color:#0b6c69;
+background:#e9f8f6;
+border:1px solid #cfeae6;
+border-radius:999px;
+font-size:.56rem;
+font-weight:900;
+white-space:nowrap;
+}
+
+.institution-insight-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.institution-insight-card{
+padding:19px;
+background:
+linear-gradient(
+180deg,
+#fbfdfd,
+#f5faf9
+);
+border:1px solid #dce8eb;
+border-radius:16px;
+}
+
+.institution-insight-card span{
+color:#118d89;
+font-size:.57rem;
+font-weight:900;
+letter-spacing:.07em;
+text-transform:uppercase;
+}
+
+.institution-insight-card h4{
+margin:8px 0 6px;
+color:#14384a;
+font-size:.88rem;
+}
+
+.institution-insight-card p{
+margin:0;
+color:#718690;
+font-size:.68rem;
+line-height:1.65;
+}
+
+.institution-data-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:11px;
+}
+
+.institution-data-card{
+padding:17px;
+background:#f8fbfc;
+border:1px solid #dfe9ec;
+border-radius:14px;
+}
+
+.institution-data-card strong{
+display:block;
+color:#0c3042;
+font-size:1.55rem;
+letter-spacing:-.035em;
+}
+
+.institution-data-card span{
+display:block;
+margin-top:4px;
+color:#788d97;
+font-size:.59rem;
+font-weight:800;
+}
+
+.institution-list{
+display:grid;
+gap:10px;
+}
+
+.institution-list-item{
+padding:15px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+background:#f8fbfc;
+border:1px solid #dfe9ec;
+border-radius:14px;
+}
+
+.institution-list-copy{
+min-width:0;
+}
+
+.institution-list-copy strong{
+display:block;
+color:#15384a;
+font-size:.74rem;
+}
+
+.institution-list-copy span{
+display:block;
+margin-top:3px;
+color:#80939c;
+font-size:.59rem;
+line-height:1.5;
+}
+
+.institution-empty{
+padding:36px 20px;
+text-align:center;
+color:#788b95;
+}
+
+.institution-empty strong{
+display:block;
+color:#17394a;
+font-size:.84rem;
+}
+
+.institution-empty p{
+max-width:530px;
+margin:6px auto 0;
+font-size:.68rem;
+line-height:1.6;
+}
+
+@media (max-width:1080px){
+
+.institution-command{
+grid-template-columns:1fr;
+}
+
+.institution-command-status{
+justify-self:start;
+}
+
+.institution-overview-grid,
+.institution-data-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media (max-width:680px){
+
+.institution-overview-grid,
+.institution-data-grid,
+.institution-insight-grid{
+grid-template-columns:1fr;
+}
+
+.institution-tab-nav{
+grid-template-columns:repeat(2,1fr);
+}
+
+.institution-tab-panel{
+padding:16px;
+}
+
+.institution-section-heading{
+flex-direction:column;
+}
+
+.institution-list-item{
+align-items:flex-start;
+flex-direction:column;
+}
+
+}
+  
 @media (max-width: 1240px) {
 
 .authenticated-header
@@ -5516,10 +5877,8 @@ Institution
 </h1>
 
 <p>
-
-Manage the institution's authorized RizSim
-environment and Faculty association workflow.
-
+Review the institution's authorized RizSim learning environment,
+Faculty associations, simulation access and learning activity.
 </p>
 
 </div>
@@ -5539,7 +5898,7 @@ Institution Workspace
 </div>
 
 <div class="portal-panel-note">
-Authorized institution
+Select your authorized institution
 </div>
 
 </div>
@@ -5572,9 +5931,299 @@ Select institution
 </div>
 
 
+<div class="institution-command">
+
+<div>
+
+<div class="institution-command-label">
+INSTITUTION LEARNING ENVIRONMENT
+</div>
+
+<h2 id="institutionHeroName">
+Your Institution
+</h2>
+
+<p>
+See authorized Faculty, simulation access and institution-level
+learning activity while keeping content editing and Owner-level
+access decisions outside the Institution role.
+</p>
+
+</div>
+
+<div class="institution-command-status">
+INSTITUTION ACCESS
+</div>
+
+</div>
+
+
+<div class="institution-overview-grid">
+
+<div class="institution-overview-metric">
+
+<div
+class="institution-overview-value"
+id="institutionMetricFaculty"
+>
+0
+</div>
+
+<div class="institution-overview-label">
+Associated Faculty
+</div>
+
+</div>
+
+
+<div class="institution-overview-metric">
+
+<div
+class="institution-overview-value"
+id="institutionMetricLicences"
+>
+0
+</div>
+
+<div class="institution-overview-label">
+Licensed Simulations
+</div>
+
+</div>
+
+
+<div class="institution-overview-metric">
+
+<div
+class="institution-overview-value"
+id="institutionMetricLearners"
+>
+0
+</div>
+
+<div class="institution-overview-label">
+Visible Learners
+</div>
+
+</div>
+
+
+<div class="institution-overview-metric">
+
+<div
+class="institution-overview-value"
+id="institutionMetricSubmissions"
+>
+0
+</div>
+
+<div class="institution-overview-label">
+Visible Submissions
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="institution-hub"
+data-swipe-block
+>
+
+<div
+class="institution-tab-nav"
+id="institutionTabNav"
+role="tablist"
+aria-label="Institution workspace sections"
+>
+
+<button
+class="institution-tab-button is-active"
+type="button"
+data-institution-tab="overview"
+aria-selected="true"
+>
+Overview
+</button>
+
+<button
+class="institution-tab-button"
+type="button"
+data-institution-tab="faculty"
+aria-selected="false"
+>
+Faculty
+</button>
+
+<button
+class="institution-tab-button"
+type="button"
+data-institution-tab="classes"
+aria-selected="false"
+>
+Classes
+</button>
+
+<button
+class="institution-tab-button"
+type="button"
+data-institution-tab="simulations"
+aria-selected="false"
+>
+Simulations
+</button>
+
+<button
+class="institution-tab-button"
+type="button"
+data-institution-tab="analytics"
+aria-selected="false"
+>
+Analytics
+</button>
+
+</div>
+
+
+<!-- OVERVIEW -->
+
+<div
+class="institution-tab-panel active"
+data-institution-panel="overview"
+>
+
+<div class="institution-section-heading">
+
+<div>
+
+<h3>
+Institution Overview
+</h3>
+
+<p>
+A concise view of the institution's current RizSim learning scope.
+</p>
+
+</div>
+
+<div class="institution-scope-chip">
+AUTHORIZED SCOPE
+</div>
+
+</div>
+
+
+<div class="institution-insight-grid">
+
+<div class="institution-insight-card">
+
+<span>
+ACCESS
+</span>
+
+<h4>
+Institution-scoped learning
+</h4>
+
+<p>
+The Institution sees only Faculty, simulations and learning activity
+that fall within its authorized RizSim scope.
+</p>
+
+</div>
+
+
+<div class="institution-insight-card">
+
+<span>
+FACULTY
+</span>
+
+<h4>
+Owner-approved association
+</h4>
+
+<p>
+Faculty association requests continue through the existing
+Institution → Owner review → Faculty association workflow.
+</p>
+
+</div>
+
+
+<div class="institution-insight-card">
+
+<span>
+RESULTS
+</span>
+
+<h4>
+Learning visibility
+</h4>
+
+<p>
+Institution analytics summarize visible learning activity without
+giving the Institution content-authoring or Owner-level powers.
+</p>
+
+</div>
+
+
+<div class="institution-insight-card">
+
+<span>
+LICENSING
+</span>
+
+<h4>
+Authorized simulations
+</h4>
+
+<p>
+Institution simulation access remains controlled by active
+RizSim licences and their applicable expiry.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FACULTY -->
+
+<div
+class="institution-tab-panel"
+data-institution-panel="faculty"
+>
+
+<div class="institution-section-heading">
+
+<div>
+
+<h3>
+Faculty
+</h3>
+
+<p>
+View approved Faculty associations and submit a new association request.
+</p>
+
+</div>
+
+<div class="institution-scope-chip">
+OWNER APPROVAL REQUIRED
+</div>
+
+</div>
+
+
 <div
 class="portal-panel"
 id="institutionRequestPanel"
+style="margin-top:0;"
 >
 
 <div class="portal-panel-header">
@@ -5607,11 +6256,9 @@ Request a Faculty member
 </h3>
 
 <p>
-
 Provide the Faculty member's details.
 The request goes to the RizSim Owner
 for approval.
-
 </p>
 
 
@@ -5663,11 +6310,8 @@ placeholder="Provide information relevant to the Owner's decision."
 ></textarea>
 
 <span class="management-help">
-
-Approval links the Faculty to the
-institution. It does not change the
-Faculty member's main role.
-
+Approval links the Faculty to the institution.
+It does not change the Faculty member's main role.
 </span>
 
 </div>
@@ -5702,13 +6346,9 @@ What approval does
 </h3>
 
 <p>
-
-An approved Faculty association can inherit
-the institution's permitted RizSim access
-while remaining a Faculty account.
-
+An approved Faculty association can inherit the institution's
+permitted RizSim access while remaining a Faculty account.
 </p>
-
 
 <div
 style="
@@ -5747,8 +6387,7 @@ Faculty association approved
 ↓
 <br>
 
-Faculty receives the institution's
-authorized scope.
+Faculty receives the institution's authorized scope.
 
 </div>
 
@@ -5776,7 +6415,6 @@ Approved Faculty associations
 </div>
 
 </div>
-
 
 <div class="table-scroll">
 
@@ -5829,7 +6467,6 @@ Pending and reviewed requests
 
 </div>
 
-
 <div class="table-scroll">
 
 <table class="portal-table">
@@ -5865,6 +6502,110 @@ Owner Decision
 </div>
 
 </div>
+
+</div>
+
+
+<!-- CLASSES -->
+
+<div
+class="institution-tab-panel"
+data-institution-panel="classes"
+>
+
+<div class="institution-section-heading">
+
+<div>
+
+<h3>
+Classes & Sessions
+</h3>
+
+<p>
+Institution-visible classroom activity derived from the learning activity
+currently available within this scope.
+</p>
+
+</div>
+
+<div class="institution-scope-chip">
+READ ONLY
+</div>
+
+</div>
+
+<div id="institutionClassesContent"></div>
+
+</div>
+
+
+<!-- SIMULATIONS -->
+
+<div
+class="institution-tab-panel"
+data-institution-panel="simulations"
+>
+
+<div class="institution-section-heading">
+
+<div>
+
+<h3>
+Licensed Simulations
+</h3>
+
+<p>
+Active simulations available through the institution's RizSim licence scope.
+</p>
+
+</div>
+
+<div class="institution-scope-chip">
+LICENCE CONTROLLED
+</div>
+
+</div>
+
+<div id="institutionLicenceContent"></div>
+
+</div>
+
+
+<!-- ANALYTICS -->
+
+<div
+class="institution-tab-panel"
+data-institution-panel="analytics"
+>
+
+<div class="institution-section-heading">
+
+<div>
+
+<h3>
+Institution Analytics
+</h3>
+
+<p>
+Learning activity currently visible to this Institution account.
+Broader analytics can be added without changing this interface.
+</p>
+
+</div>
+
+<div class="institution-scope-chip">
+ANALYTICS ONLY
+</div>
+
+</div>
+
+<div id="institutionAnalyticsContent"></div>
+
+</div>
+
+
+</div>
+
 
 </div>
 
@@ -7406,6 +8147,9 @@ let institutionProfiles =
 
 let selectedInstitutionId =
 null;
+
+let activeInstitutionTab =
+"overview";
 
 let activeReviewRequestId =
 null;
@@ -19006,7 +19750,7 @@ View
 .join("");
 
 }
-  function renderInstitutionWorkspace() {
+ function renderInstitutionWorkspace() {
 
 if(
 currentMembership.role !==
@@ -19039,9 +19783,7 @@ institution.id
 ${
 selectedInstitutionId ===
 institution.id
-
 ? "selected"
-
 : ""
 }
 >
@@ -19068,8 +19810,579 @@ renderInstitutionFaculty();
 
 renderInstitutionRequests();
 
+renderInstitutionDashboard();
+
+setInstitutionTab(
+activeInstitutionTab,
+false
+);
+
 }
 
+
+function setInstitutionTab(
+tab,
+updateState = true
+) {
+
+const validTabs =
+new Set([
+"overview",
+"faculty",
+"classes",
+"simulations",
+"analytics"
+]);
+
+const nextTab =
+validTabs.has(
+tab
+)
+?
+tab
+:
+"overview";
+
+if(updateState) {
+
+activeInstitutionTab =
+nextTab;
+
+}
+
+document
+.querySelectorAll(
+"[data-institution-tab]"
+)
+.forEach(
+button => {
+
+const active =
+button.dataset.institutionTab ===
+nextTab;
+
+button.classList.toggle(
+"is-active",
+active
+);
+
+button.setAttribute(
+"aria-selected",
+String(active)
+);
+
+}
+);
+
+document
+.querySelectorAll(
+"[data-institution-panel]"
+)
+.forEach(
+panel => {
+
+panel.classList.toggle(
+"active",
+panel.dataset.institutionPanel ===
+nextTab
+);
+
+}
+);
+
+}
+
+
+function renderInstitutionDashboard() {
+
+const institution =
+institutionList.find(
+item =>
+String(
+item.id
+)
+===
+String(
+selectedInstitutionId
+)
+)
+||
+null;
+
+
+const faculty =
+institutionMembers.filter(
+member =>
+member.member_type ===
+"faculty"
+&&
+member.active ===
+true
+);
+
+
+const institutionLicences =
+myLicenseCatalogue.filter(
+license =>
+license.access_source ===
+"institution"
+&&
+license.license_status ===
+"licensed"
+);
+
+
+const uniqueLearners =
+new Set(
+
+submissions.map(
+item =>
+String(
+item.student_user_id
+||
+item.student_name
+||
+""
+)
+)
+
+.filter(Boolean)
+
+);
+
+
+const uniqueSessions =
+new Map();
+
+submissions.forEach(
+item => {
+
+if(
+!item.classroom_session_id
+) {
+
+return;
+
+}
+
+const key =
+String(
+item.classroom_session_id
+);
+
+if(
+!uniqueSessions.has(
+key
+)
+) {
+
+uniqueSessions.set(
+key,
+item
+);
+
+}
+
+}
+);
+
+
+document.getElementById(
+"institutionHeroName"
+).textContent =
+institution?.name
+||
+"Select an institution";
+
+
+document.getElementById(
+"institutionMetricFaculty"
+).textContent =
+faculty.length;
+
+
+document.getElementById(
+"institutionMetricLicences"
+).textContent =
+institutionLicences.length;
+
+
+document.getElementById(
+"institutionMetricLearners"
+).textContent =
+uniqueLearners.size;
+
+
+document.getElementById(
+"institutionMetricSubmissions"
+).textContent =
+submissions.length;
+
+
+renderInstitutionClasses(
+Array.from(
+uniqueSessions.values()
+)
+);
+
+
+renderInstitutionLicences(
+institutionLicences
+);
+
+
+renderInstitutionAnalytics(
+{
+facultyCount:
+faculty.length,
+
+licenceCount:
+institutionLicences.length,
+
+learnerCount:
+uniqueLearners.size,
+
+submissionCount:
+submissions.length,
+
+sessionCount:
+uniqueSessions.size
+}
+);
+
+}
+
+
+function renderInstitutionClasses(
+sessions
+) {
+
+const container =
+document.getElementById(
+"institutionClassesContent"
+);
+
+if(
+!sessions.length
+) {
+
+container.innerHTML = `
+
+<div class="institution-empty">
+
+<strong>
+No visible class activity yet
+</strong>
+
+<p>
+Classes and sessions will appear here when classroom
+activity becomes visible within this Institution scope.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div class="institution-list">
+
+${
+sessions.map(
+session => `
+
+<div class="institution-list-item">
+
+<div class="institution-list-copy">
+
+<strong>
+${escapeHTML(
+session.class_name
+||
+"RizSim Class"
+)}
+</strong>
+
+<span>
+
+${escapeHTML(
+session.simulation_title
+||
+"Simulation"
+)}
+
+${
+session.live_starts_at
+?
+" · "
++
+escapeHTML(
+formatDate(
+session.live_starts_at
+)
+)
+:
+""
+}
+
+</span>
+
+</div>
+
+<span
+class="status-badge ${
+session.session_active ===
+true
+?
+"approved"
+:
+"muted"
+}"
+>
+
+${
+session.session_active ===
+true
+?
+"Active"
+:
+"Historical"
+}
+
+</span>
+
+</div>
+
+`
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
+
+
+function renderInstitutionLicences(
+licences
+) {
+
+const container =
+document.getElementById(
+"institutionLicenceContent"
+);
+
+if(
+!licences.length
+) {
+
+container.innerHTML = `
+
+<div class="institution-empty">
+
+<strong>
+No active Institution licences
+</strong>
+
+<p>
+Active simulation licences assigned to this Institution
+will appear here.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div class="institution-list">
+
+${
+licences.map(
+license => {
+
+const product =
+products.find(
+item =>
+String(
+item.id
+)
+===
+String(
+license.product_id
+)
+);
+
+return `
+
+<div class="institution-list-item">
+
+<div class="institution-list-copy">
+
+<strong>
+${escapeHTML(
+product?.title
+||
+"RizSim Simulation"
+)}
+</strong>
+
+<span>
+
+${escapeHTML(
+licenseTermLabel(
+license.license_term
+)
+)}
+
+${
+license.expires_at
+?
+" · Expires "
++
+escapeHTML(
+formatDate(
+license.expires_at
+)
+)
+:
+""
+}
+
+</span>
+
+</div>
+
+<span class="status-badge approved">
+Licensed
+</span>
+
+</div>
+
+`;
+
+}
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
+
+
+function renderInstitutionAnalytics(
+metrics
+) {
+
+const container =
+document.getElementById(
+"institutionAnalyticsContent"
+);
+
+container.innerHTML = `
+
+<div class="institution-data-grid">
+
+<div class="institution-data-card">
+
+<strong>
+${escapeHTML(
+metrics.facultyCount
+)}
+</strong>
+
+<span>
+Associated Faculty
+</span>
+
+</div>
+
+
+<div class="institution-data-card">
+
+<strong>
+${escapeHTML(
+metrics.sessionCount
+)}
+</strong>
+
+<span>
+Visible Classes / Sessions
+</span>
+
+</div>
+
+
+<div class="institution-data-card">
+
+<strong>
+${escapeHTML(
+metrics.learnerCount
+)}
+</strong>
+
+<span>
+Visible Learners
+</span>
+
+</div>
+
+
+<div class="institution-data-card">
+
+<strong>
+${escapeHTML(
+metrics.submissionCount
+)}
+</strong>
+
+<span>
+Visible Submissions
+</span>
+
+</div>
+
+</div>
+
+
+<div class="institution-insight-card"
+style="margin-top:14px;"
+>
+
+<span>
+SCOPE NOTE
+</span>
+
+<h4>
+Institution analytics remain role-scoped
+</h4>
+
+<p>
+These indicators use learning activity already visible to the
+Institution account. Platform-wide user, purchase, licence and
+login analytics remain Owner-controlled.
+</p>
+
+</div>
+
+`;
+
+}
 
 function renderInstitutionFaculty() {
 
@@ -23968,7 +25281,32 @@ document
 submitInstitutionFacultyRequest
 );
 
+document
+.getElementById(
+"institutionTabNav"
+)
+.addEventListener(
+"click",
+event => {
 
+const button =
+event.target.closest(
+"[data-institution-tab]"
+);
+
+if(!button) {
+
+return;
+
+}
+
+setInstitutionTab(
+button.dataset.institutionTab
+);
+
+}
+);
+  
 document
 .getElementById(
 "institutionWorkspaceSelect"
