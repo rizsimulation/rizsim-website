@@ -13621,6 +13621,9 @@ return;
 
 }
 
+
+/* Reset Course Results filters when opening another Course */
+
 if(
 String(
 selectedCourseId
@@ -13644,7 +13647,8 @@ courseResultAccessFilter =
 "all";
 
 }
-  
+
+
 selectedCourseId =
 courseId;
 
@@ -13652,21 +13656,27 @@ courseId;
 showLoading();
 
 
+/* Load every part of the selected Course */
+
 await loadSelectedCourseSimulations(
 courseId
 );
+
 
 await loadSelectedCourseClassroomSessions(
 courseId
 );
 
+
 await loadSelectedCourseResults(
 courseId
 );
 
+
 await loadSelectedCourseMaterials(
 courseId
 );
+
 
 hideLoading();
 
