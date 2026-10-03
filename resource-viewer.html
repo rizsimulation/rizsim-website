@@ -52,7 +52,11 @@ color:#153747;
 body{
 user-select:none;
 -webkit-user-select:none;
-overscroll-behavior:none;
+
+/*
+Do not interfere with ordinary vertical scrolling.
+*/
+overscroll-behavior-x:none;
 }
 
 
@@ -134,13 +138,18 @@ cursor:pointer;
 transition:
 transform .15s ease,
 border-color .15s ease,
-box-shadow .15s ease;
+box-shadow .15s ease,
+background .15s ease;
 }
 
 .viewer-button:hover:not(:disabled){
 transform:translateY(-1px);
 border-color:#8fd7d5;
 box-shadow:0 5px 14px rgba(20,70,80,.08);
+}
+
+.viewer-button:active:not(:disabled){
+transform:translateY(0);
 }
 
 .viewer-button:disabled{
@@ -246,7 +255,7 @@ font-weight:850;
 
 
 /* ============================================================
-   DOCUMENT STAGE
+   DOCUMENT AREA
    ============================================================ */
 
 .viewer-stage{
@@ -265,15 +274,31 @@ display:block;
 background:#ddebed;
 border-radius:18px;
 border:1px solid #cedfe2;
-overflow:auto;
-overscroll-behavior:contain;
+
+/*
+Horizontal scrolling only appears naturally when
+the enlarged document becomes wider than the viewer.
+*/
+overflow-x:auto;
+overflow-y:visible;
+
+-webkit-overflow-scrolling:touch;
+
+overscroll-behavior-x:contain;
+overscroll-behavior-y:auto;
+
 box-shadow:
 inset 0 1px 7px rgba(28,62,72,.04);
 
 /*
-RizSim handles touch movement and pinch itself.
+IMPORTANT:
+Normal single-finger scrolling remains native.
+
+We disable browser pinch-zoom here but retain native
+horizontal + vertical panning. RizSim handles only
+two-finger document pinch itself.
 */
-touch-action:none;
+touch-action:pan-x pan-y;
 }
 
 
@@ -284,14 +309,19 @@ background:#fff;
 box-shadow:0 13px 35px rgba(22,45,55,.20);
 
 /*
-Critical:
-Do not force an enlarged document back to screen width.
+Never force an enlarged PDF back into the viewer width.
 */
 max-width:none;
 width:auto;
 height:auto;
 flex:none;
-touch-action:none;
+
+/*
+Single-finger pan remains available.
+*/
+touch-action:pan-x pan-y;
+
+will-change:width,height;
 }
 
 
@@ -485,10 +515,6 @@ display:none !important;
 <body>
 
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
-
 <header class="viewer-header">
 
 
@@ -527,10 +553,6 @@ Back
 
 
 
-<!-- ============================================================
-     RESOURCE INFORMATION
-     ============================================================ -->
-
 <section class="viewer-info">
 
 <div class="viewer-info-card">
@@ -559,10 +581,6 @@ Protected View
 </section>
 
 
-
-<!-- ============================================================
-     TOOLBAR
-     ============================================================ -->
 
 <div
 class="viewer-toolbar"
@@ -640,10 +658,6 @@ Fit
 
 
 
-<!-- ============================================================
-     DOCUMENT
-     ============================================================ -->
-
 <main class="viewer-stage">
 
 
@@ -695,10 +709,6 @@ Access may be withdrawn when the applicable RizSim entitlement ends.
 </div>
 
 
-
-<!-- ============================================================
-     LOADING
-     ============================================================ -->
 
 <div
 class="loading-overlay"
@@ -760,7 +770,7 @@ SUPABASE_PUBLISHABLE_KEY
 
 
 /* ============================================================
-   OFFICIAL RIZSIM LOGO
+   OFFICIAL LOGO
    ============================================================ */
 
 const RIZSIM_LOGO_SRC =
@@ -816,8 +826,27 @@ let currentPage =
 1;
 
 
+/*
+Requested/current visible zoom.
+*/
 let zoomMultiplier =
 1;
+
+
+/*
+Zoom level represented by the current high-quality
+canvas raster.
+*/
+let renderedZoom =
+1;
+
+
+let renderedCanvasWidth =
+0;
+
+
+let renderedCanvasHeight =
+0;
 
 
 const MIN_VIEWER_ZOOM =
@@ -832,6 +861,10 @@ let currentRenderTask =
 null;
 
 
+let renderGeneration =
+0;
+
+
 let zoomRenderTimer =
 null;
 
@@ -840,21 +873,14 @@ let revalidationTimer =
 null;
 
 
-/* Touch state */
-
-const activeTouchPointers =
-new Map();
-
-
-let pinchStartDistance =
+/*
+Touchscreen two-finger pinch state.
+*/
+let touchPinchStartDistance =
 null;
 
 
-let pinchStartZoom =
-null;
-
-
-let touchPanStart =
+let touchPinchStartZoom =
 null;
 
 
@@ -895,7 +921,7 @@ document.getElementById(
 
 
 /* ============================================================
-   BASIC HELPERS
+   HELPERS
    ============================================================ */
 
 function showLoading(
@@ -1035,9 +1061,6 @@ currentUser?.email
 }
 
 
-/* ============================================================
-   CANVAS TEXT FIT
-   ============================================================ */
 
 function fitCanvasText(
 context,
@@ -1159,7 +1182,7 @@ return true;
 
 
 /* ============================================================
-   AUTHORIZATION CONTEXT
+   RESOURCE CONTEXT
    ============================================================ */
 
 async function loadResourceContext() {
@@ -1247,7 +1270,7 @@ return true;
 
 
 /* ============================================================
-   SECURE RESOURCE STREAM
+   SECURE STREAM
    ============================================================ */
 
 async function loadProtectedFile() {
@@ -1359,7 +1382,7 @@ await response.arrayBuffer();
 
 
 /* ============================================================
-   PROTECTED PAGE BRANDING
+   PAGE BRANDING
    ============================================================ */
 
 function applyWatermark(
@@ -1382,7 +1405,7 @@ context.save();
 
 
 /* ============================================================
-   OFFICIAL RIZSIM LOGO — TOP RIGHT
+   OFFICIAL LOGO — TOP RIGHT
    ============================================================ */
 
 const logoPadding =
@@ -1426,11 +1449,6 @@ logoPadding;
 const logoAreaY =
 logoPadding;
 
-
-/*
-Subtle white backing keeps the official transparent
-logo visible even when the original PDF has content.
-*/
 
 context.fillStyle =
 "rgba(255,255,255,0.94)";
@@ -1543,7 +1561,7 @@ drawHeight
 
 
 /* ============================================================
-   CLEAN PROTECTED FOOTER
+   CLEAN FOOTER
    ============================================================ */
 
 const footerHeight =
@@ -1674,7 +1692,7 @@ context.restore();
 
 
 /* ============================================================
-   PDF
+   PDF LOAD
    ============================================================ */
 
 async function loadPdf() {
@@ -1728,10 +1746,12 @@ await renderPdfPage();
 
 
 /* ============================================================
-   RENDER PDF PAGE
+   HIGH QUALITY PDF RENDER
    ============================================================ */
 
-async function renderPdfPage() {
+async function renderPdfPage(
+options = {}
+) {
 
 if(!pdfDocument) {
 
@@ -1740,9 +1760,18 @@ return;
 }
 
 
+const showBusy =
+options.showBusy ===
+true;
+
+
+const generation =
+++renderGeneration;
+
+
 /*
-Cancel a previous render if a rapid zoom gesture
-has already requested another render.
+Cancel only the previous PDF render operation.
+The currently visible canvas remains untouched.
 */
 
 if(currentRenderTask) {
@@ -1758,12 +1787,16 @@ catch {
 }
 
 
+if(showBusy) {
+
 showLoading(
 "Rendering protected page…"
 );
 
+}
 
-let localRenderTask =
+
+let localTask =
 null;
 
 
@@ -1786,12 +1819,6 @@ scale:
 }
 );
 
-
-/*
-100% = fitted document.
-Anything above 100% now genuinely enlarges beyond
-the shell instead of being CSS-shrunk back to fit.
-*/
 
 const shellWidth =
 Math.max(
@@ -1827,19 +1854,112 @@ scale
 );
 
 
-canvas.width =
+/*
+Render into an OFFSCREEN canvas.
+
+The existing page therefore remains visible while the
+high-resolution version is being prepared.
+*/
+
+const offscreen =
+document.createElement(
+"canvas"
+);
+
+
+offscreen.width =
 Math.ceil(
 viewport.width
 );
 
 
-canvas.height =
+offscreen.height =
 Math.ceil(
 viewport.height
 );
 
 
-const context =
+const offscreenContext =
+offscreen.getContext(
+"2d",
+{
+
+alpha:
+false
+
+}
+);
+
+
+offscreenContext.fillStyle =
+"#ffffff";
+
+
+offscreenContext.fillRect(
+0,
+0,
+offscreen.width,
+offscreen.height
+);
+
+
+localTask =
+
+page.render(
+{
+
+canvasContext:
+offscreenContext,
+
+viewport
+
+}
+);
+
+
+currentRenderTask =
+localTask;
+
+
+await localTask.promise;
+
+
+/*
+Ignore an old render if a newer zoom/page request
+started while this one was running.
+*/
+
+if(
+generation !==
+renderGeneration
+) {
+
+return;
+
+}
+
+
+applyWatermark(
+offscreenContext,
+offscreen.width,
+offscreen.height
+);
+
+
+/*
+Only now replace the visible canvas.
+This removes the white flashing / jerky zoom effect.
+*/
+
+canvas.width =
+offscreen.width;
+
+
+canvas.height =
+offscreen.height;
+
+
+const visibleContext =
 canvas.getContext(
 "2d",
 {
@@ -1851,49 +1971,39 @@ false
 );
 
 
-context.fillStyle =
-"#ffffff";
-
-
-context.fillRect(
+visibleContext.drawImage(
+offscreen,
 0,
-0,
-canvas.width,
-canvas.height
+0
 );
-
-
-localRenderTask =
-
-page.render(
-{
-
-canvasContext:
-context,
-
-viewport
-
-}
-);
-
-
-currentRenderTask =
-localRenderTask;
-
-
-await localRenderTask.promise;
 
 
 /*
-The official RizSim branding and footer are drawn
-after the PDF so they form part of the displayed pixels.
+Display pixel size matches the newly rendered page.
 */
 
-applyWatermark(
-context,
-canvas.width,
-canvas.height
-);
+canvas.style.width =
+offscreen.width
++
+"px";
+
+
+canvas.style.height =
+offscreen.height
++
+"px";
+
+
+renderedZoom =
+zoomMultiplier;
+
+
+renderedCanvasWidth =
+offscreen.width;
+
+
+renderedCanvasHeight =
+offscreen.height;
 
 
 document.getElementById(
@@ -1964,7 +2074,7 @@ finally {
 
 if(
 currentRenderTask ===
-localRenderTask
+localTask
 ) {
 
 currentRenderTask =
@@ -1973,7 +2083,11 @@ null;
 }
 
 
+if(showBusy) {
+
 hideLoading();
+
+}
 
 }
 
@@ -1982,18 +2096,10 @@ hideLoading();
 
 
 /* ============================================================
-   PROTECTED IMAGE VIEWER
+   PROTECTED IMAGE
    ============================================================ */
 
 async function renderProtectedImage() {
-
-showLoading(
-"Rendering protected image…"
-);
-
-
-try {
-
 
 const blob =
 new Blob(
@@ -2013,6 +2119,9 @@ const url =
 URL.createObjectURL(
 blob
 );
+
+
+try {
 
 
 const image =
@@ -2044,20 +2153,12 @@ documentShell.clientWidth
 );
 
 
-const naturalWidth =
-image.naturalWidth;
-
-
-const naturalHeight =
-image.naturalHeight;
-
-
 const fitScale =
 Math.min(
 1,
 shellWidth
 /
-naturalWidth
+image.naturalWidth
 );
 
 
@@ -2067,24 +2168,36 @@ fitScale
 zoomMultiplier;
 
 
-canvas.width =
+const width =
 Math.round(
-naturalWidth
-*
+image.naturalWidth *
 scale
 );
 
 
-canvas.height =
+const height =
 Math.round(
-naturalHeight
-*
+image.naturalHeight *
 scale
 );
+
+
+const offscreen =
+document.createElement(
+"canvas"
+);
+
+
+offscreen.width =
+width;
+
+
+offscreen.height =
+height;
 
 
 const context =
-canvas.getContext(
+offscreen.getContext(
 "2d",
 {
 
@@ -2102,8 +2215,8 @@ context.fillStyle =
 context.fillRect(
 0,
 0,
-canvas.width,
-canvas.height
+width,
+height
 );
 
 
@@ -2111,21 +2224,63 @@ context.drawImage(
 image,
 0,
 0,
-canvas.width,
-canvas.height
+width,
+height
 );
 
 
 applyWatermark(
 context,
-canvas.width,
-canvas.height
+width,
+height
 );
 
 
-URL.revokeObjectURL(
-url
+canvas.width =
+width;
+
+
+canvas.height =
+height;
+
+
+canvas
+.getContext(
+"2d",
+{
+
+alpha:
+false
+
+}
+)
+.drawImage(
+offscreen,
+0,
+0
 );
+
+
+canvas.style.width =
+width +
+"px";
+
+
+canvas.style.height =
+height +
+"px";
+
+
+renderedZoom =
+zoomMultiplier;
+
+
+renderedCanvasWidth =
+width;
+
+
+renderedCanvasHeight =
+height;
 
 
 viewerStatus.hidden =
@@ -2171,23 +2326,11 @@ zoomMultiplier *
 
 
 }
-catch(error) {
-
-console.error(
-error
-);
-
-
-showStatus(
-"Unable to display resource",
-"RizSim could not render this protected image.",
-true
-);
-
-}
 finally {
 
-hideLoading();
+URL.revokeObjectURL(
+url
+);
 
 }
 
@@ -2196,7 +2339,7 @@ hideLoading();
 
 
 /* ============================================================
-   FILE TYPE ROUTING
+   FILE ROUTING
    ============================================================ */
 
 async function renderResource() {
@@ -2315,7 +2458,7 @@ revalidationTimer
 
 
 /* ============================================================
-   CENTRAL ZOOM SYSTEM
+   SMOOTH ZOOM SYSTEM
    ============================================================ */
 
 function clampViewerZoom(
@@ -2331,6 +2474,7 @@ value
 );
 
 }
+
 
 
 function updateZoomDisplay() {
@@ -2349,7 +2493,87 @@ zoomMultiplier *
 }
 
 
-async function renderCurrentResource() {
+
+/*
+Immediate visual zoom.
+
+The existing high-resolution canvas is resized by CSS
+instantly. This is extremely fast and gives smooth
+touchpad/touchscreen feedback.
+*/
+
+function applyZoomPreview() {
+
+if(
+canvas.hidden
+||
+!renderedCanvasWidth
+||
+!renderedCanvasHeight
+||
+!renderedZoom
+) {
+
+return;
+
+}
+
+
+const ratio =
+zoomMultiplier
+/
+renderedZoom;
+
+
+const previewWidth =
+Math.max(
+1,
+renderedCanvasWidth
+*
+ratio
+);
+
+
+const previewHeight =
+Math.max(
+1,
+renderedCanvasHeight
+*
+ratio
+);
+
+
+canvas.style.width =
+previewWidth
++
+"px";
+
+
+canvas.style.height =
+previewHeight
++
+"px";
+
+}
+
+
+
+/*
+Once the user stops zooming briefly, replace the preview
+with a crisp PDF.js render at the requested resolution.
+*/
+
+function scheduleHighQualityZoomRender() {
+
+clearTimeout(
+zoomRenderTimer
+);
+
+
+zoomRenderTimer =
+setTimeout(
+async () => {
+
 
 if(pdfDocument) {
 
@@ -2361,9 +2585,9 @@ return;
 
 
 if(
-protectedBytes
-&&
 resourceContext
+&&
+protectedBytes
 ) {
 
 const mime =
@@ -2389,36 +2613,17 @@ await renderProtectedImage();
 
 }
 
-}
-
-
-function scheduleViewerZoomRender() {
-
-updateZoomDisplay();
-
-
-clearTimeout(
-zoomRenderTimer
-);
-
-
-zoomRenderTimer =
-setTimeout(
-() => {
-
-renderCurrentResource();
 
 },
-90
+180
 );
 
 }
+
 
 
 function setViewerZoom(
-nextZoom,
-immediate =
-false
+nextZoom
 ) {
 
 const normalized =
@@ -2449,22 +2654,16 @@ normalized;
 updateZoomDisplay();
 
 
-if(immediate) {
-
-clearTimeout(
-zoomRenderTimer
-);
-
-
-renderCurrentResource();
+/*
+Instant visual response.
+*/
+applyZoomPreview();
 
 
-return;
-
-}
-
-
-scheduleViewerZoomRender();
+/*
+High-quality redraw only after the gesture pauses.
+*/
+scheduleHighQualityZoomRender();
 
 }
 
@@ -2527,11 +2726,6 @@ showLoading(
 await loadProtectedFile();
 
 
-/*
-Ensure the official logo is available before
-the first protected page is painted.
-*/
-
 try {
 
 await rizsimLogoImage.decode();
@@ -2580,7 +2774,7 @@ hideLoading();
 
 
 /* ============================================================
-   PAGE CONTROLS
+   PAGE NAVIGATION
    ============================================================ */
 
 document
@@ -2607,7 +2801,14 @@ currentPage -=
 1;
 
 
-await renderPdfPage();
+await renderPdfPage(
+{
+
+showBusy:
+true
+
+}
+);
 
 }
 );
@@ -2637,7 +2838,14 @@ currentPage +=
 1;
 
 
-await renderPdfPage();
+await renderPdfPage(
+{
+
+showBusy:
+true
+
+}
+);
 
 }
 );
@@ -2645,7 +2853,7 @@ await renderPdfPage();
 
 
 /* ============================================================
-   BUTTON ZOOM
+   ZOOM BUTTONS
    ============================================================ */
 
 document
@@ -2658,8 +2866,7 @@ document
 
 setViewerZoom(
 zoomMultiplier +
-0.15,
-true
+0.15
 );
 
 }
@@ -2676,8 +2883,7 @@ document
 
 setViewerZoom(
 zoomMultiplier -
-0.15,
-true
+0.15
 );
 
 }
@@ -2692,14 +2898,9 @@ document
 "click",
 () => {
 
-zoomMultiplier =
-1;
-
-
-updateZoomDisplay();
-
-
-renderCurrentResource();
+setViewerZoom(
+1
+);
 
 }
 );
@@ -2707,9 +2908,17 @@ renderCurrentResource();
 
 
 /* ============================================================
-   LAPTOP TOUCHPAD PINCH
-   Chrome / Edge report trackpad pinch as Ctrl+wheel.
+   LAPTOP TOUCHPAD
    ============================================================ */
+
+/*
+Normal two-finger scrolling:
+NOT intercepted.
+
+Touchpad pinch:
+Chrome/Edge normally report it as Ctrl+wheel.
+Only that particular gesture is intercepted.
+*/
 
 documentShell.addEventListener(
 "wheel",
@@ -2722,23 +2931,26 @@ if(
 !event.metaKey
 ) {
 
+/*
+Allow completely normal touchpad/mouse scrolling.
+*/
 return;
 
 }
 
 
-/*
-Prevent browser-page zoom.
-Only the protected document should zoom.
-*/
-
 event.preventDefault();
 
+
+/*
+Lower sensitivity gives a much smoother laptop
+touchpad pinch experience.
+*/
 
 const factor =
 Math.exp(
 -event.deltaY *
-0.0022
+0.0012
 );
 
 
@@ -2746,6 +2958,7 @@ setViewerZoom(
 zoomMultiplier *
 factor
 );
+
 
 },
 {
@@ -2759,19 +2972,17 @@ false
 
 
 /* ============================================================
-   TOUCHSCREEN PINCH + PAN
+   TOUCHSCREEN PINCH
    ============================================================ */
 
-function getTouchPointerDistance() {
-
-const points =
-Array.from(
-activeTouchPointers.values()
-);
-
+function getTouchDistance(
+touches
+) {
 
 if(
-points.length <
+!touches
+||
+touches.length <
 2
 ) {
 
@@ -2781,15 +2992,15 @@ return null;
 
 
 const dx =
-points[0].x
+touches[0].clientX
 -
-points[1].x;
+touches[1].clientX;
 
 
 const dy =
-points[0].y
+touches[0].clientY
 -
-points[1].y;
+touches[1].clientY;
 
 
 return Math.hypot(
@@ -2800,172 +3011,77 @@ dy
 }
 
 
-function setSinglePointerPanStart() {
 
-if(
-activeTouchPointers.size !==
-1
-) {
+/*
+One finger:
+browser handles scrolling normally.
 
-touchPanStart =
-null;
-
-return;
-
-}
-
-
-const point =
-Array.from(
-activeTouchPointers.values()
-)[0];
-
-
-touchPanStart = {
-
-x:
-point.x,
-
-y:
-point.y,
-
-shellScrollLeft:
-documentShell.scrollLeft,
-
-shellScrollTop:
-documentShell.scrollTop,
-
-windowScrollY:
-window.scrollY
-
-};
-
-}
-
+Two fingers:
+RizSim handles document pinch zoom.
+*/
 
 documentShell.addEventListener(
-"pointerdown",
+"touchstart",
 event => {
 
 
 if(
-event.pointerType !==
-"touch"
-) {
-
-return;
-
-}
-
-
-try {
-
-documentShell.setPointerCapture(
-event.pointerId
-);
-
-}
-catch {
-}
-
-
-activeTouchPointers.set(
-event.pointerId,
-{
-
-x:
-event.clientX,
-
-y:
-event.clientY
-
-}
-);
-
-
-if(
-activeTouchPointers.size ===
-1
-) {
-
-setSinglePointerPanStart();
-
-}
-
-
-if(
-activeTouchPointers.size ===
+event.touches.length ===
 2
 ) {
 
-pinchStartDistance =
-getTouchPointerDistance();
+touchPinchStartDistance =
+getTouchDistance(
+event.touches
+);
 
 
-pinchStartZoom =
+touchPinchStartZoom =
 zoomMultiplier;
 
-
-touchPanStart =
-null;
-
 }
+
+
+},
+{
+
+passive:
+true
 
 }
 );
 
 
+
 documentShell.addEventListener(
-"pointermove",
+"touchmove",
 event => {
 
 
 if(
-event.pointerType !==
-"touch"
+event.touches.length !==
+2
 ||
-!activeTouchPointers.has(
-event.pointerId
-)
+!touchPinchStartDistance
 ) {
 
+/*
+IMPORTANT:
+Single-finger movement is deliberately untouched.
+Native scrolling therefore remains available.
+*/
 return;
 
 }
 
-
-activeTouchPointers.set(
-event.pointerId,
-{
-
-x:
-event.clientX,
-
-y:
-event.clientY
-
-}
-);
-
-
-/* ------------------------------------------------------------
-   TWO-FINGER PINCH
-   ------------------------------------------------------------ */
-
-if(
-activeTouchPointers.size ===
-2
-&&
-pinchStartDistance
-&&
-pinchStartZoom
-) {
 
 event.preventDefault();
 
 
 const distance =
-getTouchPointerDistance();
+getTouchDistance(
+event.touches
+);
 
 
 if(!distance) {
@@ -2978,162 +3094,76 @@ return;
 const ratio =
 distance
 /
-pinchStartDistance;
+touchPinchStartDistance;
 
 
 setViewerZoom(
-pinchStartZoom
+touchPinchStartZoom
 *
 ratio
 );
 
 
-return;
-
-}
-
-
-/* ------------------------------------------------------------
-   ONE-FINGER PAN
-   ------------------------------------------------------------ */
-
-if(
-activeTouchPointers.size ===
-1
-&&
-touchPanStart
-) {
-
-event.preventDefault();
-
-
-const dx =
-event.clientX
--
-touchPanStart.x;
-
-
-const dy =
-event.clientY
--
-touchPanStart.y;
-
-
-/*
-Horizontal panning belongs to the document shell.
-*/
-
-if(
-documentShell.scrollWidth >
-documentShell.clientWidth
-) {
-
-documentShell.scrollLeft =
-
-touchPanStart.shellScrollLeft
--
-dx;
-
-}
-
-
-/*
-If the shell itself has vertical overflow, pan inside it.
-Otherwise scroll the viewer page.
-*/
-
-if(
-documentShell.scrollHeight >
-documentShell.clientHeight
-+
-2
-) {
-
-documentShell.scrollTop =
-
-touchPanStart.shellScrollTop
--
-dy;
-
-}
-else {
-
-window.scrollTo(
+},
 {
 
-top:
-Math.max(
-0,
-touchPanStart.windowScrollY
--
-dy
-),
-
-behavior:
-"auto"
-
-}
-);
-
-}
-
-}
+passive:
+false
 
 }
 );
 
 
-function releaseTouchPointer(
-event
-) {
 
-activeTouchPointers.delete(
-event.pointerId
-);
+documentShell.addEventListener(
+"touchend",
+event => {
 
 
 if(
-activeTouchPointers.size <
+event.touches.length <
 2
 ) {
 
-pinchStartDistance =
+touchPinchStartDistance =
 null;
 
 
-pinchStartZoom =
-null;
-
-}
-
-
-if(
-activeTouchPointers.size ===
-1
-) {
-
-setSinglePointerPanStart();
-
-}
-else {
-
-touchPanStart =
+touchPinchStartZoom =
 null;
 
 }
 
+
+},
+{
+
+passive:
+true
+
 }
-
-
-documentShell.addEventListener(
-"pointerup",
-releaseTouchPointer
 );
 
 
+
 documentShell.addEventListener(
-"pointercancel",
-releaseTouchPointer
+"touchcancel",
+() => {
+
+touchPinchStartDistance =
+null;
+
+
+touchPinchStartZoom =
+null;
+
+},
+{
+
+passive:
+true
+
+}
 );
 
 
@@ -3293,7 +3323,7 @@ renderPdfPage();
 
 
 /* ============================================================
-   WINDOW RESIZE
+   RESIZE
    ============================================================ */
 
 let resizeTimer =
@@ -3314,14 +3344,16 @@ resizeTimer =
 setTimeout(
 () => {
 
+
 if(pdfDocument) {
 
 renderPdfPage();
 
 }
 
+
 },
-250
+300
 );
 
 }
