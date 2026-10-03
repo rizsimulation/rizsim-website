@@ -84,52 +84,54 @@ blur(12px);
 .brand{
 display:flex;
 align-items:center;
-gap:13px;
+gap:14px;
 min-width:0;
 }
 
-.brand-mark{
-width:42px;
-height:42px;
-border-radius:13px;
+.brand-wordmark{
 display:flex;
-align-items:center;
+flex-direction:column;
 justify-content:center;
-background:
-linear-gradient(
-135deg,
-#18b8b0,
-#1d7d9d
-);
-color:#fff;
-font-weight:950;
-font-size:1.05rem;
-box-shadow:
-0 7px 18px rgba(21,149,158,.22);
-}
-
-.brand-copy{
 min-width:0;
+line-height:1;
 }
 
-.brand-copy strong{
-display:block;
-font-size:.95rem;
-letter-spacing:.01em;
-color:#17394a;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis;
+.brand-wordmark-line{
+display:flex;
+align-items:flex-end;
+gap:0;
+font-weight:950;
+font-size:1.9rem;
+letter-spacing:-0.03em;
+line-height:.9;
 }
 
-.brand-copy span{
-display:block;
-margin-top:3px;
-font-size:.66rem;
+.brand-riz{
+color:#18aeb1;
+}
+
+.brand-sim{
+color:#173c8f;
+}
+
+.brand-tagline{
+margin-top:4px;
+font-size:.68rem;
 font-weight:800;
 letter-spacing:.08em;
-color:#6d8791;
 text-transform:uppercase;
+color:#68808b;
+}
+
+.brand-viewer-copy{
+padding:8px 12px;
+border-radius:999px;
+background:#edf6f7;
+border:1px solid #d6e7ea;
+color:#315566;
+font-size:.70rem;
+font-weight:900;
+white-space:nowrap;
 }
 
 .header-actions{
@@ -465,8 +467,16 @@ transform:rotate(360deg);
 padding:9px 12px;
 }
 
-.brand-copy span{
+.brand-viewer-copy{
 display:none;
+}
+
+.brand-wordmark-line{
+font-size:1.45rem;
+}
+
+.brand-tagline{
+font-size:.58rem;
 }
 
 .header-actions .viewer-button span{
@@ -523,25 +533,23 @@ display:none !important;
 
 <div class="brand">
 
-<div class="brand-mark">
-R
+<div class="brand-wordmark">
+
+<div class="brand-wordmark-line">
+<span class="brand-riz">Riz</span><span class="brand-sim">Sim</span>
 </div>
 
-
-<div class="brand-copy">
-
-<strong>
-RizSim Protected Viewer
-</strong>
-
-<span>
+<span class="brand-tagline">
 From Knowing to Doing
 </span>
 
 </div>
 
+<div class="brand-viewer-copy">
+Protected Viewer
 </div>
 
+</div>
 
 <div class="header-actions">
 
@@ -1002,7 +1010,39 @@ size /
 
 }
 
+function fitCanvasText(
+context,
+text,
+maxWidth,
+startSize,
+minSize = 9
+) {
 
+let fontSize =
+startSize;
+
+while(fontSize >= minSize) {
+
+context.font =
+"600 " +
+fontSize +
+"px Arial";
+
+if(
+context.measureText(text).width <=
+maxWidth
+) {
+return fontSize;
+}
+
+fontSize -= 1;
+}
+
+return minSize;
+
+}
+
+   
 function getWatermarkIdentity() {
 
 return (
@@ -1306,120 +1346,257 @@ height
 const identity =
 getWatermarkIdentity();
 
+const viewedAt =
+new Date().toLocaleString();
 
-const stamp =
+const footerLeft =
+"Authorized to: " + identity;
 
-identity
+const footerCenter =
+"Viewed: " + viewedAt;
 
-+
-"  •  RizSim Protected  •  "
-
-+
-new Date()
-.toLocaleString();
+const footerRight =
+"RizSim • From Knowing to Doing";
 
 
 context.save();
 
 
-context.globalAlpha =
-0.10;
+/* ============================================================
+   TOP-RIGHT RIZSIM BRAND MARK
+   ============================================================ */
+
+const topBoxPadding =
+Math.max(
+10,
+Math.round(width * 0.012)
+);
+
+const topBoxWidth =
+Math.min(
+250,
+Math.max(
+170,
+Math.round(width * 0.24)
+)
+);
+
+const topBoxHeight =
+Math.max(
+34,
+Math.round(height * 0.045)
+);
+
+const topBoxX =
+width - topBoxWidth - topBoxPadding;
+
+const topBoxY =
+topBoxPadding;
 
 
 context.fillStyle =
-"#126d75";
+"rgba(233, 245, 247, 0.96)";
+
+context.fillRect(
+topBoxX,
+topBoxY,
+topBoxWidth,
+topBoxHeight
+);
 
 
-const fontSize =
-Math.max(
-14,
-Math.min(
-26,
-width /
-42
-)
+context.strokeStyle =
+"rgba(24, 139, 149, 0.25)";
+
+context.lineWidth =
+1;
+
+context.strokeRect(
+topBoxX,
+topBoxY,
+topBoxWidth,
+topBoxHeight
+);
+
+
+context.textBaseline =
+"top";
+
+context.textAlign =
+"left";
+
+
+context.font =
+"900 16px Arial";
+
+context.fillStyle =
+"rgba(24, 174, 177, 0.96)";
+
+context.fillText(
+"Riz",
+topBoxX + 10,
+topBoxY + 7
+);
+
+
+const rizWidth =
+context.measureText("Riz").width;
+
+context.fillStyle =
+"rgba(23, 60, 143, 0.96)";
+
+context.fillText(
+"Sim",
+topBoxX + 10 + rizWidth,
+topBoxY + 7
 );
 
 
 context.font =
-"700 "
-+
-fontSize
-+
-"px Arial";
+"700 9px Arial";
+
+context.fillStyle =
+"rgba(86, 110, 120, 0.86)";
+
+context.fillText(
+"From Knowing to Doing",
+topBoxX + 10,
+topBoxY + 23
+);
 
 
-context.textAlign =
-"center";
+/* ============================================================
+   BOTTOM PROTECTED FOOTER STRIP
+   ============================================================ */
 
+const footerHeight =
+Math.max(
+28,
+Math.min(
+38,
+Math.round(height * 0.05)
+)
+);
+
+const footerY =
+height - footerHeight;
+
+
+context.fillStyle =
+"rgba(234, 243, 246, 0.98)";
+
+context.fillRect(
+0,
+footerY,
+width,
+footerHeight
+);
+
+
+context.strokeStyle =
+"rgba(24, 139, 149, 0.28)";
+
+context.lineWidth =
+1;
+
+context.beginPath();
+context.moveTo(
+0,
+footerY
+);
+context.lineTo(
+width,
+footerY
+);
+context.stroke();
+
+
+const leftZoneWidth =
+width * 0.34;
+
+const centerZoneWidth =
+width * 0.32;
+
+const rightZoneWidth =
+width * 0.26;
+
+
+context.fillStyle =
+"rgba(66, 86, 97, 0.88)";
 
 context.textBaseline =
 "middle";
 
 
-context.translate(
-width /
-2,
-height /
-2
+let leftSize =
+fitCanvasText(
+context,
+footerLeft,
+leftZoneWidth - 20,
+11,
+8
 );
 
+context.font =
+"600 " + leftSize + "px Arial";
 
-context.rotate(
--Math.PI /
-6
-);
-
-
-const horizontalStep =
-Math.max(
-270,
-width /
-3
-);
-
-
-const verticalStep =
-Math.max(
-160,
-height /
-4
-);
-
-
-for(
-let y =
--height;
-y <=
-height;
-y +=
-verticalStep
-) {
-
-for(
-let x =
--width;
-x <=
-width;
-x +=
-horizontalStep
-) {
+context.textAlign =
+"left";
 
 context.fillText(
-stamp,
-x,
-y
+footerLeft,
+12,
+footerY + (footerHeight / 2)
 );
 
-}
 
-}
+let centerSize =
+fitCanvasText(
+context,
+footerCenter,
+centerZoneWidth - 20,
+10,
+8
+);
+
+context.font =
+"600 " + centerSize + "px Arial";
+
+context.textAlign =
+"center";
+
+context.fillText(
+footerCenter,
+width / 2,
+footerY + (footerHeight / 2)
+);
+
+
+let rightSize =
+fitCanvasText(
+context,
+footerRight,
+rightZoneWidth - 10,
+10,
+8
+);
+
+context.font =
+"700 " + rightSize + "px Arial";
+
+context.textAlign =
+"right";
+
+context.fillText(
+footerRight,
+width - 12,
+footerY + (footerHeight / 2)
+);
 
 
 context.restore();
 
 }
-
 
 
 /* ============================================================
