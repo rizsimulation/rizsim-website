@@ -8091,45 +8091,122 @@ class="admin-tab-panel"
 data-admin-panel="publishing"
 >
 
+
 <div class="admin-section-heading">
 
 <div>
 
+<span>
+PUBLISHING CONTROL
+</span>
+
 <h3>
-Publishing
+Publish & Unpublish
 </h3>
 
 <p>
-Review catalogue readiness and control whether completed learning
-products are visible on the public RizSim simulation catalogue.
+Review product readiness, preview content and control which RizSim products are visible to authorized users.
 </p>
 
 </div>
 
-<div class="admin-scope-chip">
-PUBLISH / UNPUBLISH
-</div>
+<span class="admin-scope-chip">
+Admin Content
+</span>
 
 </div>
 
 
 <div
-id="adminPublishingList"
+class="management-message"
+id="adminPublishingMessage"
+aria-live="polite"
 ></div>
 
-<div class="admin-boundary">
+
+<div class="admin-operation-grid">
+
+
+<div class="admin-operation-card">
+
+<span>
+REVIEW
+</span>
+
+<h4>
+Publication Queue
+</h4>
+
+<p>
+RizSim checks category status, simulation runner connections and protected resource files before publication.
+</p>
+
+
+<div
+class="admin-list"
+id="adminPublishingList"
+>
+
+<div class="admin-empty">
 
 <strong>
-Permanent deletion is not an Admin operation.
+Loading publication queue
 </strong>
 
-Admin publishing actions will change product visibility while preserving
-the underlying product record and history.
+<p>
+RizSim is checking product readiness.
+</p>
 
 </div>
 
 </div>
 
+
+</div>
+
+
+<div class="admin-operation-card">
+
+<span>
+HISTORY
+</span>
+
+<h4>
+Publication Activity
+</h4>
+
+<p>
+Recent Publish and Unpublish actions are retained for operational accountability.
+</p>
+
+
+<div
+class="admin-list"
+id="adminPublicationHistoryList"
+>
+
+<div class="admin-empty">
+
+<strong>
+No publication history yet
+</strong>
+
+<p>
+Publication actions will appear here.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
 
 </div>
 
@@ -9658,6 +9735,12 @@ let adminResources =
 
 let adminEditingResourceId =
 null;
+
+let adminPublicationQueue =
+[];
+
+let adminPublicationHistory =
+[];
   
 let activeView =
 "home";
@@ -11294,6 +11377,58 @@ if(
 
 adminResources =
 adminResourceData
+||
+[];
+
+}
+
+}
+
+if(
+[
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+const [
+publicationQueueResult,
+publicationHistoryResult
+] =
+
+await Promise.all([
+
+supabase.rpc(
+"admin_get_rizsim_publication_queue"
+),
+
+supabase.rpc(
+"admin_get_rizsim_publication_history"
+)
+
+]);
+
+
+if(
+!publicationQueueResult.error
+) {
+
+adminPublicationQueue =
+publicationQueueResult.data
+||
+[];
+
+}
+
+
+if(
+!publicationHistoryResult.error
+) {
+
+adminPublicationHistory =
+publicationHistoryResult.data
 ||
 [];
 
@@ -28189,27 +28324,398 @@ wasEditing
 
 }
 
+function adminPublishingTypeLabel(
+productType
+) {
+
+if(
+productType ===
+"simulation"
+) {
+
+return "Simulation";
+
+}
+
+
+if(
+productType ===
+"ebook"
+) {
+
+return "eBook";
+
+}
+
+
+if(
+productType ===
+"digital_product"
+) {
+
+return "Learning Material";
+
+}
+
+
+return (
+productType
+||
+"RizSim Product"
+);
+
+}
+
+
+function canPreviewAdminPublication(
+item
+) {
+
+if(
+item.product_type ===
+"simulation"
+) {
+
+return Boolean(
+String(
+item.launch_path
+||
+""
+)
+.trim()
+);
+
+}
+
+
+if(
+[
+"ebook",
+"digital_product"
+].includes(
+item.product_type
+)
+) {
+
+return (
+
+Boolean(
+item.file_name
+)
+
+&&
+
+[
+"application/pdf",
+"image/png",
+"image/jpeg"
+].includes(
+String(
+item.mime_type
+||
+""
+)
+.toLowerCase()
+)
+
+);
+
+}
+
+
+return false;
+
+}
+
+
 function renderAdminPublishing() {
 
-const container =
+const list =
 document.getElementById(
 "adminPublishingList"
 );
 
+
+const historyList =
+document.getElementById(
+"adminPublicationHistoryList"
+);
+
+
 if(
-!products.length
+!list
+||
+!historyList
 ) {
 
-container.innerHTML = `
+return;
+
+}
+
+
+/* ============================================================
+   PUBLICATION QUEUE
+   ============================================================ */
+
+if(
+!adminPublicationQueue.length
+) {
+
+list.innerHTML = `
 
 <div class="admin-empty">
 
 <strong>
-No products available
+No products in the publication queue
 </strong>
 
 <p>
-Publishing controls will appear when catalogue products exist.
+Create a RizSim product before using Publishing.
+</p>
+
+</div>
+
+`;
+
+}
+else {
+
+list.innerHTML =
+
+adminPublicationQueue.map(
+item => {
+
+
+const status =
+String(
+item.status
+||
+"draft"
+)
+.toLowerCase();
+
+
+const ready =
+item.ready ===
+true;
+
+
+const previewAvailable =
+canPreviewAdminPublication(
+item
+);
+
+
+const published =
+status ===
+"published";
+
+
+const archived =
+status ===
+"archived";
+
+
+return `
+
+<div class="admin-list-item">
+
+
+<div class="admin-list-copy">
+
+<strong>
+${escapeHTML(
+item.title
+)}
+</strong>
+
+
+<span>
+
+${escapeHTML(
+adminPublishingTypeLabel(
+item.product_type
+)
+)}
+
+·
+
+${escapeHTML(
+item.category_name
+||
+"Uncategorized"
+)}
+
+·
+
+${escapeHTML(
+item.slug
+)}
+
+</span>
+
+
+<span>
+
+${escapeHTML(
+item.readiness_message
+||
+(
+ready
+?
+"Ready to publish."
+:
+"Needs attention before publishing."
+)
+)}
+
+</span>
+
+</div>
+
+
+<div class="admin-item-actions">
+
+
+<span
+class="status-badge ${
+published
+?
+"approved"
+:
+"muted"
+}"
+>
+
+${escapeHTML(
+status.toUpperCase()
+)}
+
+</span>
+
+
+<span
+class="status-badge ${
+ready
+?
+"approved"
+:
+"muted"
+}"
+>
+
+${
+ready
+?
+"Ready"
+:
+"Needs Attention"
+}
+
+</span>
+
+
+${
+previewAvailable
+?
+`
+
+<button
+class="admin-mini-button"
+type="button"
+data-admin-preview-publication="${escapeHTML(
+item.id
+)}"
+>
+Preview
+</button>
+
+`
+:
+""
+}
+
+
+${
+!archived
+&&
+!published
+?
+`
+
+<button
+class="admin-mini-button"
+type="button"
+data-admin-publish-product="${escapeHTML(
+item.id
+)}"
+${ready ? "" : "disabled"}
+>
+Publish
+</button>
+
+`
+:
+""
+}
+
+
+${
+!archived
+&&
+published
+?
+`
+
+<button
+class="admin-mini-button"
+type="button"
+data-admin-unpublish-product="${escapeHTML(
+item.id
+)}"
+>
+Unpublish
+</button>
+
+`
+:
+""
+}
+
+
+</div>
+
+
+</div>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+
+
+/* ============================================================
+   PUBLICATION HISTORY
+   ============================================================ */
+
+if(
+!adminPublicationHistory.length
+) {
+
+historyList.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+No publication history yet
+</strong>
+
+<p>
+Successful Publish and Unpublish actions will appear here.
 </p>
 
 </div>
@@ -28221,59 +28727,76 @@ return;
 }
 
 
-container.innerHTML = `
+historyList.innerHTML =
 
-<div class="admin-list">
-
-${
-products.map(
-product => {
-
-const isPublished =
-product.status ===
-"published";
-
-return `
+adminPublicationHistory.map(
+event => `
 
 <div class="admin-list-item">
+
 
 <div class="admin-list-copy">
 
 <strong>
 ${escapeHTML(
-product.title
+event.product_title
 ||
 "RizSim Product"
 )}
 </strong>
 
+
 <span>
 
 ${escapeHTML(
-product.product_type
+String(
+event.action
 ||
-"product"
+""
+)
+.toUpperCase()
 )}
 
 ·
 
-${isPublished
-?
-"Visible in catalogue"
-:
-"Not publicly visible"
-}
+${escapeHTML(
+event.from_status
+)}
+
+→
+
+${escapeHTML(
+event.to_status
+)}
+
+</span>
+
+
+<span>
+
+${escapeHTML(
+event.actor_name
+||
+"RizSim Administrator"
+)}
+
+·
+
+${escapeHTML(
+formatDateTime(
+event.created_at
+)
+)}
 
 </span>
 
 </div>
 
 
-<div class="admin-item-actions">
-
 <span
 class="status-badge ${
-isPublished
+event.action ===
+"publish"
 ?
 "approved"
 :
@@ -28281,53 +28804,423 @@ isPublished
 }"
 >
 
-${isPublished
+${escapeHTML(
+event.action ===
+"publish"
 ?
 "Published"
 :
 "Unpublished"
-}
+)}
 
 </span>
 
-<button
-class="admin-mini-button ${
-isPublished
-?
-""
-:
-"primary"
-}"
-type="button"
-disabled
->
-
-${isPublished
-?
-"Unpublish"
-:
-"Publish"
-}
-
-</button>
 
 </div>
 
-</div>
-
-`;
-
-}
+`
 )
-.join("")
-}
-
-</div>
-
-`;
+.join("");
 
 }
 
+function previewAdminPublicationProduct(
+productId
+) {
+
+const item =
+adminPublicationQueue.find(
+product =>
+String(
+product.id
+)
+===
+String(
+productId
+)
+);
+
+
+if(!item) {
+
+setManagementMessage(
+"adminPublishingMessage",
+"RizSim could not find this product.",
+true
+);
+
+return;
+
+}
+
+
+/* ============================================================
+   SIMULATION PREVIEW
+   ============================================================ */
+
+if(
+item.product_type ===
+"simulation"
+) {
+
+const launchPath =
+String(
+item.launch_path
+||
+""
+)
+.trim();
+
+
+if(!launchPath) {
+
+setManagementMessage(
+"adminPublishingMessage",
+"Connect a RizSim runner before previewing this simulation.",
+true
+);
+
+return;
+
+}
+
+
+window.open(
+launchPath,
+"_blank",
+"noopener,noreferrer"
+);
+
+
+return;
+
+}
+
+
+/* ============================================================
+   RESOURCE PREVIEW
+   ============================================================ */
+
+if(
+[
+"ebook",
+"digital_product"
+].includes(
+item.product_type
+)
+) {
+
+if(
+!canPreviewAdminPublication(
+item
+)
+) {
+
+setManagementMessage(
+"adminPublishingMessage",
+"This resource is not yet compatible with the Protected RizSim Viewer.",
+true
+);
+
+return;
+
+}
+
+
+const viewerURL =
+
+"/resource-viewer.html?resource="
+
++
+
+encodeURIComponent(
+item.id
+);
+
+
+window.open(
+viewerURL,
+"_blank",
+"noopener,noreferrer"
+);
+
+
+return;
+
+}
+
+}
+
+
+async function reloadAdminPublishingData() {
+
+const [
+
+productResult,
+resourceResult,
+publicationQueueResult,
+publicationHistoryResult
+
+] =
+
+await Promise.all([
+
+supabase.rpc(
+"admin_get_rizsim_products"
+),
+
+supabase.rpc(
+"admin_get_rizsim_resources"
+),
+
+supabase.rpc(
+"admin_get_rizsim_publication_queue"
+),
+
+supabase.rpc(
+"admin_get_rizsim_publication_history"
+)
+
+]);
+
+
+if(
+productResult.error
+||
+resourceResult.error
+||
+publicationQueueResult.error
+||
+publicationHistoryResult.error
+) {
+
+const error =
+
+productResult.error
+||
+resourceResult.error
+||
+publicationQueueResult.error
+||
+publicationHistoryResult.error;
+
+
+setManagementMessage(
+"adminPublishingMessage",
+error.message,
+true
+);
+
+
+return false;
+
+}
+
+
+products =
+productResult.data
+||
+[];
+
+
+adminResources =
+resourceResult.data
+||
+[];
+
+
+adminPublicationQueue =
+publicationQueueResult.data
+||
+[];
+
+
+adminPublicationHistory =
+publicationHistoryResult.data
+||
+[];
+
+
+renderAdminContentWorkspace();
+
+
+return true;
+
+}
+
+
+async function setAdminProductPublication(
+productId,
+publish
+) {
+
+if(
+![
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+return;
+
+}
+
+
+const item =
+adminPublicationQueue.find(
+product =>
+String(
+product.id
+)
+===
+String(
+productId
+)
+);
+
+
+if(!item) {
+
+setManagementMessage(
+"adminPublishingMessage",
+"RizSim could not find this product.",
+true
+);
+
+return;
+
+}
+
+
+/* ============================================================
+   FRONTEND READINESS CHECK
+   Backend performs the authoritative check again.
+   ============================================================ */
+
+if(
+publish
+&&
+item.ready !==
+true
+) {
+
+setManagementMessage(
+"adminPublishingMessage",
+item.readiness_message
+||
+"This product is not ready to publish.",
+true
+);
+
+return;
+
+}
+
+
+const confirmed =
+window.confirm(
+
+publish
+
+?
+"Publish “"
++
+item.title
++
+"”?\n\nIt will become available according to its RizSim access and licensing rules."
+
+:
+"Unpublish “"
++
+item.title
++
+"”?\n\nIt will return to Draft and will no longer be available as a published product."
+
+);
+
+
+if(!confirmed) {
+
+return;
+
+}
+
+
+setManagementMessage(
+"adminPublishingMessage",
+""
+);
+
+
+showLoading();
+
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"admin_set_rizsim_product_publication",
+{
+
+p_product_id:
+productId,
+
+p_publish:
+publish
+
+}
+);
+
+
+if(error) {
+
+hideLoading();
+
+
+setManagementMessage(
+"adminPublishingMessage",
+error.message,
+true
+);
+
+
+return;
+
+}
+
+
+const loaded =
+await reloadAdminPublishingData();
+
+
+hideLoading();
+
+
+if(!loaded) {
+
+return;
+
+}
+
+
+setManagementMessage(
+"adminPublishingMessage",
+
+publish
+
+?
+"Product published successfully."
+:
+"Product unpublished successfully."
+
+);
+
+}
+  
 async function openResponses(
 attemptId
 ) {
@@ -30513,6 +31406,68 @@ if(openButton) {
 
 openAdminResource(
 openButton.dataset.adminOpenResource
+);
+
+}
+
+}
+);
+
+document
+.getElementById(
+"adminPublishingList"
+)
+.addEventListener(
+"click",
+event => {
+
+
+const previewButton =
+event.target.closest(
+"[data-admin-preview-publication]"
+);
+
+
+if(previewButton) {
+
+previewAdminPublicationProduct(
+previewButton.dataset.adminPreviewPublication
+);
+
+return;
+
+}
+
+
+const publishButton =
+event.target.closest(
+"[data-admin-publish-product]"
+);
+
+
+if(publishButton) {
+
+setAdminProductPublication(
+publishButton.dataset.adminPublishProduct,
+true
+);
+
+return;
+
+}
+
+
+const unpublishButton =
+event.target.closest(
+"[data-admin-unpublish-product]"
+);
+
+
+if(unpublishButton) {
+
+setAdminProductPublication(
+unpublishButton.dataset.adminUnpublishProduct,
+false
 );
 
 }
