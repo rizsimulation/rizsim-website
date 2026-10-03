@@ -287,25 +287,37 @@ width:min(
 );
 min-height:500px;
 padding:26px;
-display:flex;
-justify-content:center;
-align-items:flex-start;
+display:block;
 background:#ddebed;
 border-radius:18px;
-border:
-1px solid #cedfe2;
+border:1px solid #cedfe2;
 overflow:auto;
 box-shadow:
 inset 0 1px 7px rgba(28,62,72,.04);
+
+/*
+Allow normal one-finger panning on touchscreens,
+but RizSim handles two-finger pinch itself.
+*/
+touch-action:pan-x pan-y;
 }
 
 #pageCanvas{
 display:block;
+margin:0 auto;
 background:#fff;
 box-shadow:
 0 13px 35px rgba(22,45,55,.20);
-max-width:100%;
+
+/*
+IMPORTANT:
+Do not force an enlarged page back to screen width.
+The document shell will scroll when zoomed.
+*/
+max-width:none;
+width:auto;
 height:auto;
+flex:none;
 }
 
 
@@ -841,7 +853,29 @@ let currentPage =
 let zoomMultiplier =
 1;
 
+const MIN_VIEWER_ZOOM =
+0.65;
 
+
+const MAX_VIEWER_ZOOM =
+3;
+
+
+let zoomRenderTimer =
+null;
+
+
+const activeTouchPointers =
+new Map();
+
+
+let pinchStartDistance =
+null;
+
+
+let pinchStartZoom =
+null;
+   
 let currentRenderTask =
 null;
 
@@ -1373,16 +1407,12 @@ width * 0.018
 
 
 const logoAreaWidth =
-Math.min(
-280,
 Math.max(
 180,
 Math.round(
 width * 0.24
 )
-)
 );
-
 
 const logoAreaHeight =
 Math.max(
@@ -1515,9 +1545,8 @@ drawHeight
 const footerHeight =
 Math.max(
 28,
-Math.min(
-38,
-Math.round(height * 0.05)
+Math.round(
+height * 0.05
 )
 );
 
@@ -2348,7 +2377,153 @@ hideLoading();
 
 }
 
+function clampViewerZoom(
+value
+) {
 
+return Math.min(
+MAX_VIEWER_ZOOM,
+Math.max(
+MIN_VIEWER_ZOOM,
+value
+)
+);
+
+}
+
+
+function updateZoomDisplay() {
+
+document.getElementById(
+"zoomIndicator"
+).textContent =
+
+Math.round(
+zoomMultiplier *
+100
+)
++
+"%";
+
+}
+
+
+async function renderCurrentResource() {
+
+if(pdfDocument) {
+
+await renderPdfPage();
+
+return;
+
+}
+
+
+if(
+protectedBytes
+&&
+resourceContext
+) {
+
+const mime =
+String(
+resourceContext.mime_type
+||
+""
+)
+.toLowerCase();
+
+
+if(
+mime ===
+"image/png"
+||
+mime ===
+"image/jpeg"
+) {
+
+await renderProtectedImage();
+
+}
+
+}
+
+}
+
+
+function scheduleViewerZoomRender() {
+
+updateZoomDisplay();
+
+
+clearTimeout(
+zoomRenderTimer
+);
+
+
+zoomRenderTimer =
+setTimeout(
+() => {
+
+renderCurrentResource();
+
+},
+75
+);
+
+}
+
+
+function setViewerZoom(
+nextZoom,
+immediate =
+false
+) {
+
+const normalized =
+clampViewerZoom(
+nextZoom
+);
+
+
+if(
+Math.abs(
+normalized -
+zoomMultiplier
+)
+<
+0.001
+) {
+
+return;
+
+}
+
+
+zoomMultiplier =
+normalized;
+
+
+updateZoomDisplay();
+
+
+if(immediate) {
+
+clearTimeout(
+zoomRenderTimer
+);
+
+
+renderCurrentResource();
+
+}
+else {
+
+scheduleViewerZoomRender();
+
+}
+
+}
 
 /* ============================================================
    CONTROLS
@@ -2420,13 +2595,15 @@ document
 )
 .addEventListener(
 "click",
-async () => {
+() => {
 
-zoomMultiplier =
-Math.min(
-2.2,
+setViewerZoom(
 zoomMultiplier +
-0.15
+0.15,
+true
+);
+
+}
 );
 
 
@@ -2451,13 +2628,15 @@ document
 )
 .addEventListener(
 "click",
-async () => {
+() => {
 
-zoomMultiplier =
-Math.max(
-0.65,
+setViewerZoom(
 zoomMultiplier -
-0.15
+0.15,
+true
+);
+
+}
 );
 
 
@@ -2482,20 +2661,154 @@ document
 )
 .addEventListener(
 "click",
-async () => {
+() => {
 
 zoomMultiplier =
 1;
 
 
-if(pdfDocument) {
+updateZoomDisplay();
 
-await renderPdfPage();
+
+renderCurrentResource();
 
 }
-else {
+);
 
-await renderProtectedImage();
+/* ============================================================
+   TOUCHPAD PINCH ZOOM
+   Chrome / Edge expose trackpad pinch as Ctrl + wheel.
+   ============================================================ */
+
+documentShell.addEventListener(
+"wheel",
+event => {
+
+
+if(
+!event.ctrlKey
+&&
+!event.metaKey
+) {
+
+return;
+
+}
+
+
+/*
+Prevent the browser itself from zooming the whole website.
+Only the RizSim document changes size.
+*/
+
+event.preventDefault();
+
+
+const sensitivity =
+0.0025;
+
+
+const factor =
+Math.exp(
+-event.deltaY *
+sensitivity
+);
+
+
+setViewerZoom(
+zoomMultiplier *
+factor
+);
+
+},
+{
+
+passive:
+false
+
+}
+);
+
+/* ============================================================
+   TOUCHSCREEN PINCH ZOOM
+   ============================================================ */
+
+function getPointerDistance() {
+
+const points =
+Array.from(
+activeTouchPointers.values()
+);
+
+
+if(
+points.length <
+2
+) {
+
+return null;
+
+}
+
+
+const dx =
+points[0].x -
+points[1].x;
+
+
+const dy =
+points[0].y -
+points[1].y;
+
+
+return Math.hypot(
+dx,
+dy
+);
+
+}
+
+
+documentShell.addEventListener(
+"pointerdown",
+event => {
+
+
+if(
+event.pointerType !==
+"touch"
+) {
+
+return;
+
+}
+
+
+activeTouchPointers.set(
+event.pointerId,
+{
+
+x:
+event.clientX,
+
+y:
+event.clientY
+
+}
+);
+
+
+if(
+activeTouchPointers.size ===
+2
+) {
+
+pinchStartDistance =
+getPointerDistance();
+
+
+pinchStartZoom =
+zoomMultiplier;
 
 }
 
@@ -2503,6 +2816,136 @@ await renderProtectedImage();
 );
 
 
+documentShell.addEventListener(
+"pointermove",
+event => {
+
+
+if(
+event.pointerType !==
+"touch"
+||
+!activeTouchPointers.has(
+event.pointerId
+)
+) {
+
+return;
+
+}
+
+
+activeTouchPointers.set(
+event.pointerId,
+{
+
+x:
+event.clientX,
+
+y:
+event.clientY
+
+}
+);
+
+
+if(
+activeTouchPointers.size !==
+2
+||
+!pinchStartDistance
+||
+!pinchStartZoom
+) {
+
+return;
+
+}
+
+
+event.preventDefault();
+
+
+const currentDistance =
+getPointerDistance();
+
+
+if(!currentDistance) {
+
+return;
+
+}
+
+
+const ratio =
+currentDistance /
+pinchStartDistance;
+
+
+setViewerZoom(
+pinchStartZoom *
+ratio
+);
+
+}
+);
+
+
+function releaseTouchPointer(
+event
+) {
+
+activeTouchPointers.delete(
+event.pointerId
+);
+
+
+if(
+activeTouchPointers.size <
+2
+) {
+
+pinchStartDistance =
+null;
+
+pinchStartZoom =
+null;
+
+}
+
+}
+
+
+documentShell.addEventListener(
+"pointerup",
+releaseTouchPointer
+);
+
+
+documentShell.addEventListener(
+"pointercancel",
+releaseTouchPointer
+);
+
+
+documentShell.addEventListener(
+"pointerleave",
+event => {
+
+if(
+event.pointerType ===
+"touch"
+) {
+
+releaseTouchPointer(
+event
+);
+
+}
+
+}
+);
+   
 document
 .getElementById(
 "backButton"
