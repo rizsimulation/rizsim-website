@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="robots"
+content="noindex,nofollow,noarchive"
+>
+
+<meta
+http-equiv="Cache-Control"
+content="no-store, no-cache, must-revalidate"
+>
+
+<title>
+RizSim | Protected Resource
+</title>
+
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+html,
+body{
+margin:0;
+min-height:100%;
+font-family:
+Inter,
+Arial,
+Helvetica,
+sans-serif;
+background:#eef6f7;
+color:#153747;
+}
+
+body{
+user-select:none;
+-webkit-user-select:none;
+overscroll-behavior:none;
+}
+
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.viewer-header{
+position:sticky;
+top:0;
+z-index:50;
+min-height:72px;
+padding:10px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+background:
+rgba(
+255,
+255,
+255,
+.96
+);
+border-bottom:
+1px solid #d8e6e9;
+box-shadow:
+0 7px 22px rgba(20,56,70,.07);
+backdrop-filter:
+blur(12px);
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:13px;
+min-width:0;
+}
+
+.brand-mark{
+width:42px;
+height:42px;
+border-radius:13px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:
+linear-gradient(
+135deg,
+#18b8b0,
+#1d7d9d
+);
+color:#fff;
+font-weight:950;
+font-size:1.05rem;
+box-shadow:
+0 7px 18px rgba(21,149,158,.22);
+}
+
+.brand-copy{
+min-width:0;
+}
+
+.brand-copy strong{
+display:block;
+font-size:.95rem;
+letter-spacing:.01em;
+color:#17394a;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.brand-copy span{
+display:block;
+margin-top:3px;
+font-size:.66rem;
+font-weight:800;
+letter-spacing:.08em;
+color:#6d8791;
+text-transform:uppercase;
+}
+
+.header-actions{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.viewer-button{
+min-height:38px;
+padding:0 13px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+border:
+1px solid #d2e2e5;
+border-radius:10px;
+background:#fff;
+color:#315566;
+font-size:.68rem;
+font-weight:900;
+cursor:pointer;
+transition:
+transform .15s ease,
+border-color .15s ease,
+box-shadow .15s ease;
+}
+
+.viewer-button:hover:not(:disabled){
+transform:translateY(-1px);
+border-color:#8fd7d5;
+box-shadow:
+0 5px 14px rgba(20,70,80,.08);
+}
+
+.viewer-button:disabled{
+opacity:.42;
+cursor:not-allowed;
+}
+
+.viewer-button.primary{
+background:#18b8b0;
+color:#fff;
+border-color:#18b8b0;
+}
+
+
+/* ============================================================
+   INFORMATION STRIP
+   ============================================================ */
+
+.viewer-info{
+max-width:1320px;
+margin:18px auto 0;
+padding:0 18px;
+}
+
+.viewer-info-card{
+padding:14px 17px;
+display:flex;
+justify-content:space-between;
+gap:18px;
+align-items:center;
+background:#fff;
+border:
+1px solid #d8e6e9;
+border-radius:15px;
+box-shadow:
+0 8px 24px rgba(27,63,77,.05);
+}
+
+.viewer-resource-copy{
+min-width:0;
+}
+
+.viewer-resource-copy strong{
+display:block;
+font-size:.82rem;
+color:#153c4e;
+}
+
+.viewer-resource-copy span{
+display:block;
+margin-top:4px;
+font-size:.67rem;
+color:#748b95;
+}
+
+.protected-chip{
+flex:0 0 auto;
+padding:7px 10px;
+border-radius:999px;
+background:#e8f8f6;
+color:#087e7c;
+font-size:.61rem;
+font-weight:950;
+letter-spacing:.06em;
+text-transform:uppercase;
+}
+
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+
+.viewer-toolbar{
+position:sticky;
+top:72px;
+z-index:40;
+max-width:1320px;
+margin:14px auto 0;
+padding:0 18px;
+}
+
+.viewer-toolbar-inner{
+min-height:54px;
+padding:8px 11px;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-wrap:wrap;
+gap:7px;
+background:
+rgba(
+255,
+255,
+255,
+.97
+);
+border:
+1px solid #d8e6e9;
+border-radius:14px;
+box-shadow:
+0 8px 23px rgba(20,56,70,.05);
+}
+
+.page-indicator{
+min-width:94px;
+padding:0 10px;
+text-align:center;
+color:#506d79;
+font-size:.67rem;
+font-weight:850;
+}
+
+
+/* ============================================================
+   DOCUMENT STAGE
+   ============================================================ */
+
+.viewer-stage{
+width:100%;
+padding:
+22px 18px 60px;
+display:flex;
+justify-content:center;
+}
+
+.document-shell{
+width:min(
+100%,
+1280px
+);
+min-height:500px;
+padding:26px;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+background:#ddebed;
+border-radius:18px;
+border:
+1px solid #cedfe2;
+overflow:auto;
+box-shadow:
+inset 0 1px 7px rgba(28,62,72,.04);
+}
+
+#pageCanvas{
+display:block;
+background:#fff;
+box-shadow:
+0 13px 35px rgba(22,45,55,.20);
+max-width:100%;
+height:auto;
+}
+
+
+/* ============================================================
+   STATUS / ERRORS
+   ============================================================ */
+
+.viewer-status{
+width:min(
+650px,
+100%
+);
+margin:auto;
+padding:55px 26px;
+text-align:center;
+background:#fff;
+border:
+1px solid #d8e6e9;
+border-radius:18px;
+box-shadow:
+0 12px 35px rgba(24,55,69,.07);
+}
+
+.status-icon{
+width:54px;
+height:54px;
+margin:0 auto 16px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:17px;
+background:#e8f8f6;
+color:#108d89;
+font-size:1.25rem;
+font-weight:950;
+}
+
+.viewer-status h2{
+margin:0;
+font-size:1rem;
+color:#183e4f;
+}
+
+.viewer-status p{
+margin:10px auto 0;
+max-width:470px;
+font-size:.75rem;
+line-height:1.7;
+color:#70868f;
+}
+
+.viewer-status.error .status-icon{
+background:#fff1ef;
+color:#bd4b43;
+}
+
+
+/* ============================================================
+   SECURITY FOOTER
+   ============================================================ */
+
+.security-note{
+max-width:900px;
+margin:
+0 auto 30px;
+padding:0 20px;
+text-align:center;
+color:#81949c;
+font-size:.61rem;
+line-height:1.6;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.loading-overlay{
+position:fixed;
+inset:0;
+z-index:100;
+display:none;
+align-items:center;
+justify-content:center;
+background:
+rgba(
+238,
+246,
+247,
+.86
+);
+backdrop-filter:
+blur(4px);
+}
+
+.loading-overlay.show{
+display:flex;
+}
+
+.loading-card{
+padding:25px 28px;
+display:flex;
+align-items:center;
+gap:13px;
+background:#fff;
+border:
+1px solid #d8e6e9;
+border-radius:16px;
+box-shadow:
+0 18px 50px rgba(20,56,70,.12);
+color:#4d6874;
+font-size:.72rem;
+font-weight:850;
+}
+
+.spinner{
+width:22px;
+height:22px;
+border-radius:50%;
+border:
+3px solid #d5eceb;
+border-top-color:#18b8b0;
+animation:
+spin .7s linear infinite;
+}
+
+@keyframes spin{
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media(max-width:700px){
+
+.viewer-header{
+padding:9px 12px;
+}
+
+.brand-copy span{
+display:none;
+}
+
+.header-actions .viewer-button span{
+display:none;
+}
+
+.viewer-info{
+padding:0 10px;
+}
+
+.viewer-toolbar{
+padding:0 10px;
+}
+
+.viewer-stage{
+padding:
+14px 10px 45px;
+}
+
+.document-shell{
+padding:10px;
+border-radius:13px;
+}
+
+}
+
+
+/* ============================================================
+   PRINT DETERRENCE
+   ============================================================ */
+
+@media print{
+
+body{
+display:none !important;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+
+<header class="viewer-header">
+
+
+<div class="brand">
+
+<div class="brand-mark">
+R
+</div>
+
+
+<div class="brand-copy">
+
+<strong>
+RizSim Protected Viewer
+</strong>
+
+<span>
+From Knowing to Doing
+</span>
+
+</div>
+
+</div>
+
+
+<div class="header-actions">
+
+<button
+class="viewer-button"
+id="backButton"
+type="button"
+>
+←
+<span>
+Back
+</span>
+</button>
+
+</div>
+
+
+</header>
+
+
+
+<!-- ============================================================
+     RESOURCE INFORMATION
+     ============================================================ -->
+
+<section class="viewer-info">
+
+<div class="viewer-info-card">
+
+<div class="viewer-resource-copy">
+
+<strong id="resourceTitle">
+Protected RizSim Resource
+</strong>
+
+<span id="resourceMeta">
+Authorizing access…
+</span>
+
+</div>
+
+
+<span class="protected-chip">
+Protected View
+</span>
+
+</div>
+
+</section>
+
+
+
+<!-- ============================================================
+     TOOLBAR
+     ============================================================ -->
+
+<div
+class="viewer-toolbar"
+id="viewerToolbar"
+hidden
+>
+
+<div class="viewer-toolbar-inner">
+
+
+<button
+class="viewer-button"
+id="previousPage"
+type="button"
+>
+← Previous
+</button>
+
+
+<div
+class="page-indicator"
+id="pageIndicator"
+>
+Page —
+</div>
+
+
+<button
+class="viewer-button"
+id="nextPage"
+type="button"
+>
+Next →
+</button>
+
+
+<button
+class="viewer-button"
+id="zoomOut"
+type="button"
+>
+−
+</button>
+
+
+<div
+class="page-indicator"
+id="zoomIndicator"
+>
+100%
+</div>
+
+
+<button
+class="viewer-button"
+id="zoomIn"
+type="button"
+>
++
+</button>
+
+
+<button
+class="viewer-button"
+id="fitPage"
+type="button"
+>
+Fit
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- ============================================================
+     DOCUMENT
+     ============================================================ -->
+
+<main class="viewer-stage">
+
+
+<div
+class="document-shell"
+id="documentShell"
+>
+
+
+<div
+class="viewer-status"
+id="viewerStatus"
+>
+
+<div class="status-icon">
+R
+</div>
+
+<h2 id="statusTitle">
+Checking secure access
+</h2>
+
+<p id="statusText">
+RizSim is verifying your authorization before opening this resource.
+</p>
+
+</div>
+
+
+<canvas
+id="pageCanvas"
+hidden
+></canvas>
+
+
+</div>
+
+
+</main>
+
+
+
+<div class="security-note">
+
+This material is provided for authorized RizSim viewing only.
+Downloading, redistribution and unauthorized reproduction are not permitted.
+Access may be withdrawn when the applicable RizSim entitlement ends.
+
+</div>
+
+
+
+<!-- ============================================================
+     LOADING
+     ============================================================ -->
+
+<div
+class="loading-overlay"
+id="loadingOverlay"
+>
+
+<div class="loading-card">
+
+<div class="spinner"></div>
+
+<span id="loadingText">
+Opening protected resource…
+</span>
+
+</div>
+
+</div>
+
+
+
+<script type="module">
+
+
+import {
+createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+import * as pdfjsLib
+from
+"https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs";
+
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
+
+
+
+/* ============================================================
+   SUPABASE
+   ============================================================ */
+
+const SUPABASE_URL =
+"https://rvmumpvtvjvvuyimeybc.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
+
+
+const supabase =
+createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const productId =
+params.get(
+"resource"
+);
+
+
+let currentUser =
+null;
+
+
+let currentProfile =
+null;
+
+
+let resourceContext =
+null;
+
+
+let protectedBytes =
+null;
+
+
+let pdfDocument =
+null;
+
+
+let currentPage =
+1;
+
+
+let zoomMultiplier =
+1;
+
+
+let currentRenderTask =
+null;
+
+
+let revalidationTimer =
+null;
+
+
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+
+const canvas =
+document.getElementById(
+"pageCanvas"
+);
+
+
+const documentShell =
+document.getElementById(
+"documentShell"
+);
+
+
+const viewerStatus =
+document.getElementById(
+"viewerStatus"
+);
+
+
+const viewerToolbar =
+document.getElementById(
+"viewerToolbar"
+);
+
+
+const loadingOverlay =
+document.getElementById(
+"loadingOverlay"
+);
+
+
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function showLoading(
+text =
+"Opening protected resource…"
+) {
+
+document.getElementById(
+"loadingText"
+).textContent =
+text;
+
+
+loadingOverlay.classList.add(
+"show"
+);
+
+}
+
+
+function hideLoading() {
+
+loadingOverlay.classList.remove(
+"show"
+);
+
+}
+
+
+function showStatus(
+title,
+message,
+isError =
+false
+) {
+
+canvas.hidden =
+true;
+
+
+viewerToolbar.hidden =
+true;
+
+
+viewerStatus.hidden =
+false;
+
+
+viewerStatus.classList.toggle(
+"error",
+isError
+);
+
+
+document.getElementById(
+"statusTitle"
+).textContent =
+title;
+
+
+document.getElementById(
+"statusText"
+).textContent =
+message;
+
+}
+
+
+function formatFileSize(
+bytes
+) {
+
+const size =
+Number(
+bytes
+||
+0
+);
+
+
+if(!size) {
+
+return "";
+
+}
+
+
+if(
+size <
+1024 * 1024
+) {
+
+return (
+Math.round(
+size /
+1024
+)
++
+" KB"
+);
+
+}
+
+
+return (
+(
+size /
+1024 /
+1024
+)
+.toFixed(
+2
+)
++
+" MB"
+);
+
+}
+
+
+function getWatermarkIdentity() {
+
+return (
+
+currentProfile?.display_name
+
+||
+
+currentUser?.email
+
+||
+
+"Authorized RizSim User"
+
+);
+
+}
+
+
+
+/* ============================================================
+   AUTHENTICATION
+   ============================================================ */
+
+async function loadUser() {
+
+const {
+data:
+sessionData
+} =
+
+await supabase
+.auth
+.getSession();
+
+
+if(
+!sessionData?.session
+) {
+
+showStatus(
+"Sign-in required",
+"Please return to RizSim and sign in before opening this protected resource.",
+true
+);
+
+return false;
+
+}
+
+
+currentUser =
+sessionData.session.user;
+
+
+const {
+data:
+profile
+} =
+
+await supabase
+
+.from(
+"profiles"
+)
+
+.select(
+"display_name"
+)
+
+.eq(
+"id",
+currentUser.id
+)
+
+.maybeSingle();
+
+
+currentProfile =
+profile
+||
+null;
+
+
+return true;
+
+}
+
+
+
+/* ============================================================
+   AUTHORIZATION CONTEXT
+   ============================================================ */
+
+async function loadResourceContext() {
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_rizsim_resource_view_context",
+{
+
+p_product_id:
+productId
+
+}
+);
+
+
+if(
+error
+||
+!data?.length
+) {
+
+showStatus(
+"Access unavailable",
+error?.message
+||
+"RizSim could not authorize this resource.",
+true
+);
+
+return false;
+
+}
+
+
+resourceContext =
+data[0];
+
+
+document.getElementById(
+"resourceTitle"
+).textContent =
+resourceContext.title
+||
+"RizSim Resource";
+
+
+const metaParts = [
+
+resourceContext.product_type ===
+"ebook"
+?
+"eBook"
+:
+"Learning Material",
+
+resourceContext.file_name,
+
+formatFileSize(
+resourceContext.file_size
+)
+
+]
+.filter(
+Boolean
+);
+
+
+document.getElementById(
+"resourceMeta"
+).textContent =
+metaParts.join(
+" · "
+);
+
+
+return true;
+
+}
+
+
+
+/* ============================================================
+   SECURE STREAM
+   ============================================================ */
+
+async function loadProtectedFile() {
+
+const {
+data:
+sessionData
+} =
+
+await supabase
+.auth
+.getSession();
+
+
+const accessToken =
+sessionData?.session?.access_token;
+
+
+if(!accessToken) {
+
+throw new Error(
+"Your RizSim session has expired."
+);
+
+}
+
+
+const response =
+
+await fetch(
+
+SUPABASE_URL
++
+"/functions/v1/rizsim-resource-stream",
+
+{
+
+method:
+"POST",
+
+headers: {
+
+"Authorization":
+"Bearer "
++
+accessToken,
+
+"Content-Type":
+"application/json"
+
+},
+
+body:
+JSON.stringify(
+{
+
+product_id:
+productId
+
+}
+),
+
+cache:
+"no-store"
+
+}
+
+);
+
+
+if(!response.ok) {
+
+let message =
+"RizSim could not retrieve this protected resource.";
+
+
+try {
+
+const body =
+await response.json();
+
+
+if(
+body?.error
+) {
+
+message =
+body.error;
+
+}
+
+}
+catch {
+}
+
+
+throw new Error(
+message
+);
+
+}
+
+
+protectedBytes =
+await response.arrayBuffer();
+
+}
+
+
+
+/* ============================================================
+   WATERMARK
+   ============================================================ */
+
+function applyWatermark(
+context,
+width,
+height
+) {
+
+const identity =
+getWatermarkIdentity();
+
+
+const stamp =
+
+identity
+
++
+"  •  RizSim Protected  •  "
+
++
+new Date()
+.toLocaleString();
+
+
+context.save();
+
+
+context.globalAlpha =
+0.10;
+
+
+context.fillStyle =
+"#126d75";
+
+
+const fontSize =
+Math.max(
+14,
+Math.min(
+26,
+width /
+42
+)
+);
+
+
+context.font =
+"700 "
++
+fontSize
++
+"px Arial";
+
+
+context.textAlign =
+"center";
+
+
+context.textBaseline =
+"middle";
+
+
+context.translate(
+width /
+2,
+height /
+2
+);
+
+
+context.rotate(
+-Math.PI /
+6
+);
+
+
+const horizontalStep =
+Math.max(
+270,
+width /
+3
+);
+
+
+const verticalStep =
+Math.max(
+160,
+height /
+4
+);
+
+
+for(
+let y =
+-height;
+y <=
+height;
+y +=
+verticalStep
+) {
+
+for(
+let x =
+-width;
+x <=
+width;
+x +=
+horizontalStep
+) {
+
+context.fillText(
+stamp,
+x,
+y
+);
+
+}
+
+}
+
+
+context.restore();
+
+}
+
+
+
+/* ============================================================
+   PDF
+   ============================================================ */
+
+async function loadPdf() {
+
+const bytes =
+new Uint8Array(
+protectedBytes
+);
+
+
+pdfDocument =
+
+await pdfjsLib
+.getDocument(
+{
+
+data:
+bytes,
+
+disableFontFace:
+false,
+
+isEvalSupported:
+false
+
+}
+)
+.promise;
+
+
+currentPage =
+1;
+
+
+viewerToolbar.hidden =
+false;
+
+
+viewerStatus.hidden =
+true;
+
+
+canvas.hidden =
+false;
+
+
+await renderPdfPage();
+
+}
+
+
+async function renderPdfPage() {
+
+if(!pdfDocument) {
+
+return;
+
+}
+
+
+if(currentRenderTask) {
+
+try {
+
+currentRenderTask.cancel();
+
+}
+catch {
+}
+
+}
+
+
+showLoading(
+"Rendering protected page…"
+);
+
+
+try {
+
+
+const page =
+await pdfDocument.getPage(
+currentPage
+);
+
+
+const baseViewport =
+page.getViewport(
+{
+
+scale:
+1
+
+}
+);
+
+
+const shellWidth =
+Math.max(
+320,
+documentShell.clientWidth -
+60
+);
+
+
+const fitScale =
+Math.min(
+1.6,
+shellWidth /
+baseViewport.width
+);
+
+
+const scale =
+
+fitScale
+*
+zoomMultiplier;
+
+
+const viewport =
+page.getViewport(
+{
+
+scale
+
+}
+);
+
+
+canvas.width =
+Math.ceil(
+viewport.width
+);
+
+
+canvas.height =
+Math.ceil(
+viewport.height
+);
+
+
+const context =
+canvas.getContext(
+"2d",
+{
+
+alpha:
+false
+
+}
+);
+
+
+context.fillStyle =
+"#ffffff";
+
+
+context.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+currentRenderTask =
+
+page.render(
+{
+
+canvasContext:
+context,
+
+viewport
+
+}
+);
+
+
+await currentRenderTask.promise;
+
+
+applyWatermark(
+context,
+canvas.width,
+canvas.height
+);
+
+
+document.getElementById(
+"pageIndicator"
+).textContent =
+
+"Page "
++
+currentPage
++
+" of "
++
+pdfDocument.numPages;
+
+
+document.getElementById(
+"zoomIndicator"
+).textContent =
+
+Math.round(
+zoomMultiplier *
+100
+)
++
+"%";
+
+
+document.getElementById(
+"previousPage"
+).disabled =
+currentPage <=
+1;
+
+
+document.getElementById(
+"nextPage"
+).disabled =
+currentPage >=
+pdfDocument.numPages;
+
+
+documentShell.scrollTop =
+0;
+
+
+}
+catch(error) {
+
+
+if(
+error?.name !==
+"RenderingCancelledException"
+) {
+
+console.error(
+error
+);
+
+
+showStatus(
+"Unable to render page",
+"RizSim could not display this page.",
+true
+);
+
+}
+
+
+}
+finally {
+
+currentRenderTask =
+null;
+
+
+hideLoading();
+
+}
+
+}
+
+
+
+/* ============================================================
+   IMAGE VIEWER
+   ============================================================ */
+
+async function renderProtectedImage() {
+
+showLoading(
+"Rendering protected image…"
+);
+
+
+try {
+
+
+const blob =
+new Blob(
+[
+protectedBytes
+],
+{
+
+type:
+resourceContext.mime_type
+
+}
+);
+
+
+const url =
+URL.createObjectURL(
+blob
+);
+
+
+const image =
+new Image();
+
+
+await new Promise(
+(resolve,reject) => {
+
+image.onload =
+resolve;
+
+image.onerror =
+reject;
+
+image.src =
+url;
+
+}
+);
+
+
+const shellWidth =
+Math.max(
+320,
+documentShell.clientWidth -
+60
+);
+
+
+const naturalWidth =
+image.naturalWidth;
+
+
+const naturalHeight =
+image.naturalHeight;
+
+
+const fitScale =
+Math.min(
+1,
+shellWidth /
+naturalWidth
+);
+
+
+const scale =
+fitScale *
+zoomMultiplier;
+
+
+canvas.width =
+Math.round(
+naturalWidth *
+scale
+);
+
+
+canvas.height =
+Math.round(
+naturalHeight *
+scale
+);
+
+
+const context =
+canvas.getContext(
+"2d",
+{
+
+alpha:
+false
+
+}
+);
+
+
+context.fillStyle =
+"#ffffff";
+
+
+context.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+context.drawImage(
+image,
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+applyWatermark(
+context,
+canvas.width,
+canvas.height
+);
+
+
+URL.revokeObjectURL(
+url
+);
+
+
+viewerStatus.hidden =
+true;
+
+
+viewerToolbar.hidden =
+false;
+
+
+canvas.hidden =
+false;
+
+
+document.getElementById(
+"pageIndicator"
+).textContent =
+"Image";
+
+
+document.getElementById(
+"previousPage"
+).disabled =
+true;
+
+
+document.getElementById(
+"nextPage"
+).disabled =
+true;
+
+
+document.getElementById(
+"zoomIndicator"
+).textContent =
+
+Math.round(
+zoomMultiplier *
+100
+)
++
+"%";
+
+
+}
+catch(error) {
+
+console.error(
+error
+);
+
+
+showStatus(
+"Unable to display resource",
+"RizSim could not render this protected image.",
+true
+);
+
+}
+finally {
+
+hideLoading();
+
+}
+
+}
+
+
+
+/* ============================================================
+   FILE TYPE ROUTING
+   ============================================================ */
+
+async function renderResource() {
+
+const mime =
+String(
+resourceContext?.mime_type
+||
+""
+)
+.toLowerCase();
+
+
+if(
+mime ===
+"application/pdf"
+) {
+
+await loadPdf();
+
+return;
+
+}
+
+
+if(
+mime ===
+"image/png"
+||
+mime ===
+"image/jpeg"
+) {
+
+await renderProtectedImage();
+
+return;
+
+}
+
+
+showStatus(
+"Protected conversion required",
+
+"This file type cannot yet be shown securely in the RizSim Viewer. Convert it to protected PDF before learner publication.",
+
+true
+);
+
+}
+
+
+
+/* ============================================================
+   REVALIDATE ACCESS
+   ============================================================ */
+
+async function revalidateAccess() {
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"get_rizsim_resource_view_context",
+{
+
+p_product_id:
+productId
+
+}
+);
+
+
+if(
+error
+||
+!data?.length
+) {
+
+protectedBytes =
+null;
+
+
+pdfDocument =
+null;
+
+
+canvas.width =
+1;
+
+
+canvas.height =
+1;
+
+
+showStatus(
+"Access ended",
+"Your authorization for this RizSim resource is no longer active.",
+true
+);
+
+
+if(
+revalidationTimer
+) {
+
+clearInterval(
+revalidationTimer
+);
+
+}
+
+}
+
+}
+
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+async function initialize() {
+
+if(!productId) {
+
+showStatus(
+"Resource not specified",
+"No RizSim resource identifier was provided.",
+true
+);
+
+return;
+
+}
+
+
+showLoading(
+"Checking RizSim authorization…"
+);
+
+
+try {
+
+
+const authenticated =
+await loadUser();
+
+
+if(!authenticated) {
+
+return;
+
+}
+
+
+const authorized =
+await loadResourceContext();
+
+
+if(!authorized) {
+
+return;
+
+}
+
+
+showLoading(
+"Opening protected resource…"
+);
+
+
+await loadProtectedFile();
+
+
+await renderResource();
+
+
+revalidationTimer =
+
+setInterval(
+revalidateAccess,
+60000
+);
+
+
+}
+catch(error) {
+
+console.error(
+error
+);
+
+
+showStatus(
+"Resource unavailable",
+error?.message
+||
+"RizSim could not open this protected resource.",
+true
+);
+
+}
+finally {
+
+hideLoading();
+
+}
+
+}
+
+
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+
+document
+.getElementById(
+"previousPage"
+)
+.addEventListener(
+"click",
+async () => {
+
+if(
+!pdfDocument
+||
+currentPage <=
+1
+) {
+
+return;
+
+}
+
+
+currentPage -=
+1;
+
+
+await renderPdfPage();
+
+}
+);
+
+
+document
+.getElementById(
+"nextPage"
+)
+.addEventListener(
+"click",
+async () => {
+
+if(
+!pdfDocument
+||
+currentPage >=
+pdfDocument.numPages
+) {
+
+return;
+
+}
+
+
+currentPage +=
+1;
+
+
+await renderPdfPage();
+
+}
+);
+
+
+document
+.getElementById(
+"zoomIn"
+)
+.addEventListener(
+"click",
+async () => {
+
+zoomMultiplier =
+Math.min(
+2.2,
+zoomMultiplier +
+0.15
+);
+
+
+if(pdfDocument) {
+
+await renderPdfPage();
+
+}
+else {
+
+await renderProtectedImage();
+
+}
+
+}
+);
+
+
+document
+.getElementById(
+"zoomOut"
+)
+.addEventListener(
+"click",
+async () => {
+
+zoomMultiplier =
+Math.max(
+0.65,
+zoomMultiplier -
+0.15
+);
+
+
+if(pdfDocument) {
+
+await renderPdfPage();
+
+}
+else {
+
+await renderProtectedImage();
+
+}
+
+}
+);
+
+
+document
+.getElementById(
+"fitPage"
+)
+.addEventListener(
+"click",
+async () => {
+
+zoomMultiplier =
+1;
+
+
+if(pdfDocument) {
+
+await renderPdfPage();
+
+}
+else {
+
+await renderProtectedImage();
+
+}
+
+}
+);
+
+
+document
+.getElementById(
+"backButton"
+)
+.addEventListener(
+"click",
+() => {
+
+if(
+window.history.length >
+1
+) {
+
+window.history.back();
+
+}
+else {
+
+window.location.href =
+"/";
+
+}
+
+}
+);
+
+
+
+/* ============================================================
+   SECURITY DETERRENTS
+   ============================================================ */
+
+document.addEventListener(
+"contextmenu",
+event => {
+
+event.preventDefault();
+
+}
+);
+
+
+document.addEventListener(
+"copy",
+event => {
+
+event.preventDefault();
+
+}
+);
+
+
+document.addEventListener(
+"cut",
+event => {
+
+event.preventDefault();
+
+}
+);
+
+
+document.addEventListener(
+"dragstart",
+event => {
+
+event.preventDefault();
+
+}
+);
+
+
+document.addEventListener(
+"keydown",
+event => {
+
+
+const key =
+String(
+event.key
+)
+.toLowerCase();
+
+
+if(
+(
+event.ctrlKey
+||
+event.metaKey
+)
+&&
+[
+"s",
+"p",
+"c",
+"u"
+].includes(
+key
+)
+) {
+
+event.preventDefault();
+
+return;
+
+}
+
+
+if(
+key ===
+"arrowleft"
+&&
+pdfDocument
+&&
+currentPage >
+1
+) {
+
+currentPage -=
+1;
+
+renderPdfPage();
+
+}
+
+
+if(
+key ===
+"arrowright"
+&&
+pdfDocument
+&&
+currentPage <
+pdfDocument.numPages
+) {
+
+currentPage +=
+1;
+
+renderPdfPage();
+
+}
+
+}
+);
+
+
+
+/* ============================================================
+   WINDOW RESIZE
+   ============================================================ */
+
+let resizeTimer =
+null;
+
+
+window.addEventListener(
+"resize",
+() => {
+
+clearTimeout(
+resizeTimer
+);
+
+
+resizeTimer =
+
+setTimeout(
+() => {
+
+if(pdfDocument) {
+
+renderPdfPage();
+
+}
+
+},
+250
+);
+
+}
+);
+
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+initialize();
+
+
+</script>
+
+</body>
+
+</html>
