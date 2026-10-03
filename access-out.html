@@ -3090,6 +3090,68 @@ font-size:.68rem;
 line-height:1.6;
 }
 
+.admin-category-form{
+display:grid;
+gap:13px;
+margin-top:16px;
+}
+
+.admin-category-form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.admin-category-toggle{
+min-height:44px;
+padding:0 13px;
+display:flex;
+align-items:center;
+gap:9px;
+color:#536f7b;
+background:#f7fbfb;
+border:1px solid #dce8eb;
+border-radius:11px;
+font-size:.64rem;
+font-weight:850;
+}
+
+.admin-category-toggle input{
+width:16px;
+height:16px;
+accent-color:#18b8b0;
+}
+
+.admin-form-actions{
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+align-items:center;
+}
+
+.admin-cancel-button{
+min-height:38px;
+padding:0 13px;
+color:#385766;
+background:#fff;
+border:1px solid #d7e4e7;
+border-radius:10px;
+font-size:.62rem;
+font-weight:900;
+}
+
+.admin-cancel-button.hidden{
+display:none;
+}
+
+@media(max-width:680px){
+
+.admin-category-form-grid{
+grid-template-columns:1fr;
+}
+
+}
+  
 .admin-boundary{
 margin-top:16px;
 padding:15px 16px;
@@ -7215,25 +7277,126 @@ CONTENT STRUCTURE
 
 <div class="admin-operation-card">
 
-<span>
+<span id="adminCategoryFormKicker">
 CREATE
 </span>
 
-<h4>
+<h4 id="adminCategoryFormTitle">
 New Category
 </h4>
 
-<p>
-Create a new learning category and prepare it for published simulations.
+<p id="adminCategoryFormCopy">
+Create a new learning category and prepare it for RizSim products.
 </p>
+
+
+<div class="admin-category-form">
+
+<input
+type="hidden"
+id="adminCategoryId"
+value=""
+>
+
+
+<div class="management-field">
+
+<label for="adminCategoryName">
+Category Name
+</label>
+
+<input
+class="management-input"
+id="adminCategoryName"
+type="text"
+maxlength="160"
+placeholder="e.g. Responsible Marketing"
+>
+
+</div>
+
+
+<div class="admin-category-form-grid">
+
+<div class="management-field">
+
+<label for="adminCategorySlug">
+Slug
+</label>
+
+<input
+class="management-input"
+id="adminCategorySlug"
+type="text"
+maxlength="160"
+placeholder="Auto-generated if blank"
+>
+
+</div>
+
+
+<label class="admin-category-toggle">
+
+<input
+id="adminCategoryActive"
+type="checkbox"
+checked
+>
+
+<span>
+Active Category
+</span>
+
+</label>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminCategoryDescription">
+Description
+</label>
+
+<textarea
+class="management-textarea"
+id="adminCategoryDescription"
+maxlength="1000"
+placeholder="Short description of this learning category."
+></textarea>
+
+</div>
+
+
+<div class="admin-form-actions">
 
 <button
 class="admin-operation-action"
+id="saveAdminCategoryButton"
 type="button"
-disabled
 >
 Create Category
 </button>
+
+
+<button
+class="admin-cancel-button hidden"
+id="cancelAdminCategoryEdit"
+type="button"
+>
+Cancel Edit
+</button>
+
+</div>
+
+
+<div
+class="management-message"
+id="adminCategoryMessage"
+aria-live="polite"
+></div>
+
+</div>
 
 </div>
 
@@ -9016,6 +9179,9 @@ null;
 let activeAdministrationTab =
 "overview";
 
+let adminEditingCategoryId =
+null;
+  
 let activeView =
 "home";
 
@@ -10544,6 +10710,40 @@ categories =
 categoryResult.data
 ||
 [];
+
+if(
+[
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+const {
+data:
+adminCategoryData,
+error:
+adminCategoryError
+} =
+
+await supabase.rpc(
+"admin_get_rizsim_categories"
+);
+
+
+if(
+!adminCategoryError
+) {
+
+categories =
+adminCategoryData
+||
+[];
+
+}
+
+}
 
 const productResult =
 
@@ -24333,6 +24533,7 @@ document.getElementById(
 "adminCategoryList"
 );
 
+
 if(
 !categories.length
 ) {
@@ -24346,7 +24547,7 @@ No categories available
 </strong>
 
 <p>
-Categories will appear here when they exist in the RizSim catalogue.
+Create the first RizSim learning category using the form above.
 </p>
 
 </div>
@@ -24378,6 +24579,7 @@ category.id
 )
 ).length;
 
+
 return `
 
 <div class="admin-list-item">
@@ -24391,10 +24593,30 @@ category.name
 </strong>
 
 <span>
+
+${escapeHTML(
+category.slug
+)}
+
+·
+
 ${escapeHTML(
 count
 )}
-product${count === 1 ? "" : "s"} currently associated
+product${count === 1 ? "" : "s"}
+
+${
+category.description
+?
+" · "
++
+escapeHTML(
+category.description
+)
+:
+""
+}
+
 </span>
 
 </div>
@@ -24402,10 +24624,33 @@ product${count === 1 ? "" : "s"} currently associated
 
 <div class="admin-item-actions">
 
+<span
+class="status-badge ${
+category.active
+?
+"approved"
+:
+"muted"
+}"
+>
+
+${
+category.active
+?
+"Active"
+:
+"Inactive"
+}
+
+</span>
+
+
 <button
 class="admin-mini-button"
 type="button"
-disabled
+data-admin-edit-category="${escapeHTML(
+category.id
+)}"
 >
 Edit
 </button>
@@ -24428,6 +24673,471 @@ Edit
 }
 
 
+function resetAdminCategoryForm() {
+
+adminEditingCategoryId =
+null;
+
+
+document.getElementById(
+"adminCategoryId"
+).value =
+"";
+
+
+document.getElementById(
+"adminCategoryName"
+).value =
+"";
+
+
+document.getElementById(
+"adminCategorySlug"
+).value =
+"";
+
+
+document.getElementById(
+"adminCategoryDescription"
+).value =
+"";
+
+
+document.getElementById(
+"adminCategoryActive"
+).checked =
+true;
+
+
+document.getElementById(
+"adminCategoryFormKicker"
+).textContent =
+"CREATE";
+
+
+document.getElementById(
+"adminCategoryFormTitle"
+).textContent =
+"New Category";
+
+
+document.getElementById(
+"adminCategoryFormCopy"
+).textContent =
+"Create a new learning category and prepare it for RizSim products.";
+
+
+document.getElementById(
+"saveAdminCategoryButton"
+).textContent =
+"Create Category";
+
+
+document.getElementById(
+"cancelAdminCategoryEdit"
+).classList.add(
+"hidden"
+);
+
+
+setManagementMessage(
+"adminCategoryMessage",
+""
+);
+
+}
+
+
+function beginAdminCategoryEdit(
+categoryId
+) {
+
+const category =
+categories.find(
+item =>
+String(
+item.id
+)
+===
+String(
+categoryId
+)
+);
+
+
+if(!category) {
+
+return;
+
+}
+
+
+adminEditingCategoryId =
+category.id;
+
+
+document.getElementById(
+"adminCategoryId"
+).value =
+category.id;
+
+
+document.getElementById(
+"adminCategoryName"
+).value =
+category.name
+||
+"";
+
+
+document.getElementById(
+"adminCategorySlug"
+).value =
+category.slug
+||
+"";
+
+
+document.getElementById(
+"adminCategoryDescription"
+).value =
+category.description
+||
+"";
+
+
+document.getElementById(
+"adminCategoryActive"
+).checked =
+category.active ===
+true;
+
+
+document.getElementById(
+"adminCategoryFormKicker"
+).textContent =
+"EDIT";
+
+
+document.getElementById(
+"adminCategoryFormTitle"
+).textContent =
+"Edit Category";
+
+
+document.getElementById(
+"adminCategoryFormCopy"
+).textContent =
+"Update the category's name, description, slug or catalogue availability.";
+
+
+document.getElementById(
+"saveAdminCategoryButton"
+).textContent =
+"Save Changes";
+
+
+document.getElementById(
+"cancelAdminCategoryEdit"
+).classList.remove(
+"hidden"
+);
+
+
+setManagementMessage(
+"adminCategoryMessage",
+""
+);
+
+
+document.getElementById(
+"adminCategoryName"
+).focus();
+
+}
+
+
+async function reloadAdminCategories() {
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"admin_get_rizsim_categories"
+);
+
+
+if(error) {
+
+setManagementMessage(
+"adminCategoryMessage",
+error.message,
+true
+);
+
+return false;
+
+}
+
+
+categories =
+data
+||
+[];
+
+
+renderAdminContentWorkspace();
+
+
+return true;
+
+}
+
+
+async function saveAdminCategory() {
+
+if(
+![
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+return;
+
+}
+
+
+const name =
+document
+.getElementById(
+"adminCategoryName"
+)
+.value
+.trim();
+
+
+const slug =
+document
+.getElementById(
+"adminCategorySlug"
+)
+.value
+.trim();
+
+
+const description =
+document
+.getElementById(
+"adminCategoryDescription"
+)
+.value
+.trim();
+
+
+const active =
+document
+.getElementById(
+"adminCategoryActive"
+)
+.checked;
+
+
+const button =
+document.getElementById(
+"saveAdminCategoryButton"
+);
+
+
+setManagementMessage(
+"adminCategoryMessage",
+""
+);
+
+
+if(!name) {
+
+setManagementMessage(
+"adminCategoryMessage",
+"Enter a category name.",
+true
+);
+
+return;
+
+}
+
+
+button.disabled =
+true;
+
+
+button.textContent =
+adminEditingCategoryId
+?
+"Saving…"
+:
+"Creating…";
+
+
+showLoading();
+
+
+let error;
+
+
+if(
+adminEditingCategoryId
+) {
+
+const result =
+
+await supabase.rpc(
+"admin_update_rizsim_category",
+{
+
+p_category_id:
+adminEditingCategoryId,
+
+p_name:
+name,
+
+p_slug:
+slug
+||
+name,
+
+p_description:
+description
+||
+null,
+
+p_active:
+active
+
+}
+);
+
+
+error =
+result.error;
+
+}
+
+else {
+
+const result =
+
+await supabase.rpc(
+"admin_create_rizsim_category",
+{
+
+p_name:
+name,
+
+p_slug:
+slug
+||
+null,
+
+p_description:
+description
+||
+null,
+
+p_active:
+active
+
+}
+);
+
+
+error =
+result.error;
+
+}
+
+
+if(error) {
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+button.textContent =
+adminEditingCategoryId
+?
+"Save Changes"
+:
+"Create Category";
+
+
+setManagementMessage(
+"adminCategoryMessage",
+error.message,
+true
+);
+
+
+return;
+
+}
+
+
+const wasEditing =
+Boolean(
+adminEditingCategoryId
+);
+
+
+const loaded =
+await reloadAdminCategories();
+
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+if(!loaded) {
+
+button.textContent =
+wasEditing
+?
+"Save Changes"
+:
+"Create Category";
+
+return;
+
+}
+
+
+resetAdminCategoryForm();
+
+
+setManagementMessage(
+"adminCategoryMessage",
+
+wasEditing
+?
+"Category updated successfully."
+:
+"Category created successfully."
+
+);
+
+}
+  
 function renderAdminSimulations() {
 
 const container =
@@ -26635,6 +27345,54 @@ renderResults();
 }
 );
 
+document
+.getElementById(
+"saveAdminCategoryButton"
+)
+.addEventListener(
+"click",
+saveAdminCategory
+);
+
+
+document
+.getElementById(
+"cancelAdminCategoryEdit"
+)
+.addEventListener(
+"click",
+resetAdminCategoryForm
+);
+
+
+document
+.getElementById(
+"adminCategoryList"
+)
+.addEventListener(
+"click",
+event => {
+
+const editButton =
+event.target.closest(
+"[data-admin-edit-category]"
+);
+
+
+if(!editButton) {
+
+return;
+
+}
+
+
+beginAdminCategoryEdit(
+editButton.dataset.adminEditCategory
+);
+
+}
+);
+  
 document
 .getElementById(
 "adminTabNav"
