@@ -3395,6 +3395,223 @@ animation: none !important;
 
 }
 
+/* ============================================================
+   PREMIUM PUBLISH / UNPUBLISH PROGRESS
+   ============================================================ */
+
+.rizsim-publish-overlay{
+position:fixed;
+inset:0;
+z-index:99999;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:24px;
+background:rgba(234,245,246,.72);
+backdrop-filter:blur(9px);
+-webkit-backdrop-filter:blur(9px);
+opacity:0;
+visibility:hidden;
+pointer-events:none;
+transition:
+opacity .22s ease,
+visibility .22s ease;
+}
+
+
+.rizsim-publish-overlay.show{
+opacity:1;
+visibility:visible;
+pointer-events:auto;
+}
+
+
+.rizsim-publish-card{
+width:min(440px,calc(100vw - 32px));
+padding:34px 34px 30px;
+background:rgba(255,255,255,.97);
+border:1px solid rgba(199,223,226,.88);
+border-radius:26px;
+box-shadow:
+0 30px 80px rgba(18,54,68,.18),
+0 5px 20px rgba(18,54,68,.07);
+text-align:center;
+}
+
+
+.rizsim-publish-logo-wrap{
+position:relative;
+width:112px;
+height:112px;
+margin:0 auto 18px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+
+.rizsim-publish-logo{
+position:relative;
+z-index:2;
+width:84px;
+height:auto;
+object-fit:contain;
+}
+
+
+.rizsim-publish-orbit{
+position:absolute;
+inset:0;
+border-radius:50%;
+border:3px solid rgba(20,183,177,.12);
+border-top-color:#16b8b0;
+border-right-color:#315b92;
+animation:rizsimPublishSpin 1.1s linear infinite;
+}
+
+
+.rizsim-publish-orbit::after{
+content:"";
+position:absolute;
+inset:9px;
+border-radius:50%;
+border:1px solid rgba(28,75,102,.09);
+}
+
+
+@keyframes rizsimPublishSpin{
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+
+.rizsim-publish-eyebrow{
+margin-bottom:8px;
+font-size:.62rem;
+font-weight:950;
+letter-spacing:.13em;
+color:#15968f;
+}
+
+
+.rizsim-publish-card h3{
+margin:0;
+font-size:1.18rem;
+font-weight:900;
+color:#173c4d;
+}
+
+
+.rizsim-publish-card p{
+margin:9px 0 22px;
+min-height:20px;
+font-size:.74rem;
+color:#718791;
+}
+
+
+.rizsim-progress-row{
+display:flex;
+align-items:center;
+gap:13px;
+}
+
+
+.rizsim-progress-track{
+position:relative;
+height:8px;
+flex:1;
+overflow:hidden;
+border-radius:999px;
+background:#e8f0f2;
+}
+
+
+.rizsim-progress-fill{
+position:absolute;
+inset:0 auto 0 0;
+width:0%;
+border-radius:999px;
+background:
+linear-gradient(
+90deg,
+#15afa8 0%,
+#37c9c1 48%,
+#315b92 100%
+);
+box-shadow:
+0 0 16px rgba(21,175,168,.30);
+transition:width .38s cubic-bezier(.2,.8,.2,1);
+}
+
+
+.rizsim-progress-fill::after{
+content:"";
+position:absolute;
+inset:0;
+background:
+linear-gradient(
+110deg,
+transparent 25%,
+rgba(255,255,255,.55) 45%,
+transparent 65%
+);
+transform:translateX(-100%);
+animation:rizsimProgressShimmer 1.2s linear infinite;
+}
+
+
+@keyframes rizsimProgressShimmer{
+
+to{
+transform:translateX(100%);
+}
+
+}
+
+
+#rizsimPublishPercent{
+min-width:40px;
+font-size:.73rem;
+color:#315566;
+text-align:right;
+}
+
+
+.rizsim-publish-steps{
+margin-top:18px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:6px;
+}
+
+
+.rizsim-publish-steps span{
+padding-top:8px;
+border-top:2px solid #e2ecee;
+font-size:.56rem;
+font-weight:850;
+color:#9aabb2;
+transition:
+color .25s ease,
+border-color .25s ease;
+}
+
+
+.rizsim-publish-steps span.active{
+color:#168f89;
+border-color:#18b8b0;
+}
+
+
+.rizsim-publish-steps span.done{
+color:#315b92;
+border-color:#315b92;
+}
+
 </style>
 </head>
 
@@ -29048,7 +29265,267 @@ return true;
 
 }
 
+/* ============================================================
+   PREMIUM PUBLISHING PROGRESS
+   ============================================================ */
 
+function openAdminPublishProgress(
+publish = true
+) {
+
+const overlay =
+document.getElementById(
+"rizsimPublishOverlay"
+);
+
+
+document.getElementById(
+"rizsimPublishTitle"
+).textContent =
+
+publish
+?
+"Publishing to RizSim"
+:
+"Unpublishing from RizSim";
+
+
+document.getElementById(
+"rizsimPublishStatus"
+).textContent =
+
+publish
+?
+"Checking publication readiness…"
+:
+"Preparing to return this product to Draft…";
+
+
+document.getElementById(
+"rizsimPublishProgressFill"
+).style.width =
+"8%";
+
+
+document.getElementById(
+"rizsimPublishPercent"
+).textContent =
+"8%";
+
+
+[
+"publishStepCheck",
+"publishStepCommit",
+"publishStepRefresh",
+"publishStepComplete"
+]
+.forEach(
+id => {
+
+const el =
+document.getElementById(
+id
+);
+
+el.classList.remove(
+"active",
+"done"
+);
+
+}
+);
+
+
+document
+.getElementById(
+"publishStepCheck"
+)
+.classList.add(
+"active"
+);
+
+
+overlay.classList.add(
+"show"
+);
+
+
+overlay.setAttribute(
+"aria-hidden",
+"false"
+);
+
+}
+
+
+
+function setAdminPublishProgress(
+percentage,
+message,
+activeStep
+) {
+
+const safePercent =
+Math.max(
+0,
+Math.min(
+100,
+percentage
+)
+);
+
+
+document.getElementById(
+"rizsimPublishProgressFill"
+).style.width =
+
+safePercent +
+"%";
+
+
+document.getElementById(
+"rizsimPublishPercent"
+).textContent =
+
+Math.round(
+safePercent
+)
++
+"%";
+
+
+if(message) {
+
+document.getElementById(
+"rizsimPublishStatus"
+).textContent =
+message;
+
+}
+
+
+const steps = [
+
+"publishStepCheck",
+"publishStepCommit",
+"publishStepRefresh",
+"publishStepComplete"
+
+];
+
+
+const activeIndex =
+steps.indexOf(
+activeStep
+);
+
+
+steps.forEach(
+(stepId,index) => {
+
+const el =
+document.getElementById(
+stepId
+);
+
+
+el.classList.remove(
+"active",
+"done"
+);
+
+
+if(
+index <
+activeIndex
+) {
+
+el.classList.add(
+"done"
+);
+
+}
+
+
+if(
+index ===
+activeIndex
+) {
+
+el.classList.add(
+"active"
+);
+
+}
+
+}
+);
+
+}
+
+
+
+function closeAdminPublishProgress() {
+
+const overlay =
+document.getElementById(
+"rizsimPublishOverlay"
+);
+
+
+overlay.classList.remove(
+"show"
+);
+
+
+overlay.setAttribute(
+"aria-hidden",
+"true"
+);
+
+}
+
+
+
+/* ============================================================
+   PREVENT ENDLESS NETWORK WAIT
+   ============================================================ */
+
+function withTimeout(
+promise,
+milliseconds = 15000
+) {
+
+return Promise.race([
+
+promise,
+
+new Promise(
+(
+_,
+reject
+) => {
+
+setTimeout(
+() => {
+
+reject(
+new Error(
+"RizSim did not receive a response in time. Please try again."
+)
+);
+
+},
+milliseconds
+);
+
+}
+)
+
+]);
+
+}
+  
 async function setAdminProductPublication(
 productId,
 publish
@@ -29094,11 +29571,6 @@ return;
 }
 
 
-/* ============================================================
-   FRONTEND READINESS CHECK
-   Backend performs the authoritative check again.
-   ============================================================ */
-
 if(
 publish
 &&
@@ -29136,7 +29608,7 @@ item.title
 +
 item.title
 +
-"”?\n\nIt will return to Draft and will no longer be available as a published product."
+"”?\n\nIt will return to Draft and no longer be available as a published product."
 
 );
 
@@ -29154,15 +29626,46 @@ setManagementMessage(
 );
 
 
-showLoading();
+openAdminPublishProgress(
+publish
+);
 
 
-const {
-data,
-error
-} =
+try {
 
-await supabase.rpc(
+
+/* ============================================================
+   STAGE 1 — CHECK
+   ============================================================ */
+
+setAdminPublishProgress(
+18,
+"Confirming RizSim publication rules…",
+"publishStepCheck"
+);
+
+
+
+/* ============================================================
+   STAGE 2 — DATABASE COMMIT
+   ============================================================ */
+
+setAdminPublishProgress(
+38,
+
+publish
+?
+"Publishing product…"
+:
+"Returning product to Draft…",
+
+"publishStepCommit"
+);
+
+
+const publicationRequest =
+
+supabase.rpc(
 "admin_set_rizsim_product_publication",
 {
 
@@ -29176,38 +29679,88 @@ publish
 );
 
 
-if(error) {
+const {
+data,
+error
+} =
 
-hideLoading();
-
-
-setManagementMessage(
-"adminPublishingMessage",
-error.message,
-true
+await withTimeout(
+publicationRequest,
+15000
 );
 
 
-return;
+if(error) {
+
+throw error;
 
 }
 
 
+setAdminPublishProgress(
+72,
+
+publish
+?
+"Publication confirmed. Refreshing RizSim catalogue…"
+:
+"Draft status confirmed. Refreshing RizSim catalogue…",
+
+"publishStepRefresh"
+);
+
+
+
+/* ============================================================
+   STAGE 3 — REFRESH ADMIN DATA
+   ============================================================ */
+
 const loaded =
-await reloadAdminPublishingData();
 
-
-hideLoading();
+await withTimeout(
+reloadAdminPublishingData(),
+15000
+);
 
 
 if(!loaded) {
 
-return;
+throw new Error(
+"The publication was saved, but RizSim could not refresh the Publishing workspace."
+);
 
 }
 
 
+
+/* ============================================================
+   COMPLETE
+   ============================================================ */
+
+setAdminPublishProgress(
+100,
+
+publish
+?
+"Published successfully."
+:
+"Unpublished successfully.",
+
+"publishStepComplete"
+);
+
+
+await new Promise(
+resolve =>
+setTimeout(
+resolve,
+650
+)
+);
+
+
 setManagementMessage(
+
 "adminPublishingMessage",
 
 publish
@@ -29218,6 +29771,40 @@ publish
 "Product unpublished successfully."
 
 );
+
+
+}
+catch(error) {
+
+
+console.error(
+"RizSim publishing error:",
+error
+);
+
+
+setManagementMessage(
+"adminPublishingMessage",
+error?.message
+||
+"RizSim could not complete the publication action.",
+true
+);
+
+
+}
+finally {
+
+
+/*
+CRITICAL:
+The Publishing interface can never remain permanently
+covered by the progress screen.
+*/
+
+closeAdminPublishProgress();
+
+}
 
 }
   
@@ -31777,6 +32364,92 @@ verifyAccess();
 
 </script>
 
+<!-- =========================================================
+     RIZSIM PREMIUM PUBLISHING PROGRESS
+     ========================================================= -->
+
+<div
+class="rizsim-publish-overlay"
+id="rizsimPublishOverlay"
+aria-hidden="true"
+>
+
+<div class="rizsim-publish-card">
+
+<div class="rizsim-publish-logo-wrap">
+
+<img
+src="/RizSim%20finalized%20logo.png"
+alt="RizSim"
+class="rizsim-publish-logo"
+>
+
+<div class="rizsim-publish-orbit"></div>
+
+</div>
+
+
+<div class="rizsim-publish-eyebrow">
+RIZSIM CONTENT OPERATIONS
+</div>
+
+
+<h3 id="rizsimPublishTitle">
+Publishing
+</h3>
+
+
+<p id="rizsimPublishStatus">
+Preparing publication…
+</p>
+
+
+<div class="rizsim-progress-row">
+
+<div class="rizsim-progress-track">
+
+<div
+class="rizsim-progress-fill"
+id="rizsimPublishProgressFill"
+></div>
+
+</div>
+
+
+<strong id="rizsimPublishPercent">
+0%
+</strong>
+
+</div>
+
+
+<div class="rizsim-publish-steps">
+
+<span
+class="active"
+id="publishStepCheck"
+>
+Check
+</span>
+
+<span id="publishStepCommit">
+Publish
+</span>
+
+<span id="publishStepRefresh">
+Refresh
+</span>
+
+<span id="publishStepComplete">
+Complete
+</span>
+
+</div>
+
+</div>
+
+</div>
+  
 </body>
 
 </html>
