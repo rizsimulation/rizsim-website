@@ -7735,97 +7735,351 @@ class="admin-tab-panel"
 data-admin-panel="materials"
 >
 
+
 <div class="admin-section-heading">
 
 <div>
+
+<span>
+PLATFORM CONTENT
+</span>
 
 <h3>
 Materials & eBooks
 </h3>
 
 <p>
-Manage platform-level learning resources that belong to the RizSim
-catalogue rather than an individual Course Lead's Course.
+Create centrally managed RizSim resources. These are platform products, not Course Lead session materials.
 </p>
 
 </div>
 
-<div class="admin-scope-chip">
-PLATFORM CONTENT
-</div>
+<span class="admin-scope-chip">
+Admin Content
+</span>
 
 </div>
 
 
 <div class="admin-operation-grid">
 
-<div class="admin-operation-card">
-
-<span>
-RESOURCE
-</span>
-
-<h4>
-Learning Materials
-</h4>
-
-<p>
-Prepare platform handouts, readings, teaching resources and supporting
-documents for simulation products.
-</p>
-
-<button
-class="admin-operation-action"
-type="button"
-disabled
->
-Add Material
-</button>
-
-</div>
-
 
 <div class="admin-operation-card">
 
-<span>
-EBOOK
+<span id="adminResourceFormKicker">
+CREATE
 </span>
 
-<h4>
-eBooks & Guides
+<h4 id="adminResourceFormTitle">
+New Resource
 </h4>
 
-<p>
-Create or attach structured RizSim reading resources while preserving
-the platform's access-control rules.
+<p id="adminResourceFormCopy">
+Create an eBook or Learning Material. New resources begin as Draft and remain unpublished until approved in Publishing.
 </p>
+
+
+<div class="admin-category-form">
+
+
+<input
+type="hidden"
+id="adminResourceId"
+value=""
+>
+
+
+<div class="admin-category-form-grid">
+
+
+<div class="management-field">
+
+<label for="adminResourceType">
+Resource Type
+</label>
+
+<select
+class="management-select"
+id="adminResourceType"
+>
+
+<option value="ebook">
+eBook
+</option>
+
+<option value="digital_product">
+Learning Material
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminResourceCategory">
+Category
+</label>
+
+<select
+class="management-select"
+id="adminResourceCategory"
+>
+
+<option value="">
+Select category
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<div class="admin-category-form-grid">
+
+
+<div class="management-field">
+
+<label for="adminResourceTitle">
+Title
+</label>
+
+<input
+class="management-input"
+id="adminResourceTitle"
+type="text"
+maxlength="200"
+placeholder="Resource title"
+>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminResourceSlug">
+Slug
+</label>
+
+<input
+class="management-input"
+id="adminResourceSlug"
+type="text"
+maxlength="200"
+placeholder="Auto-generated if blank"
+>
+
+</div>
+
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminResourceShortDescription">
+Short Description
+</label>
+
+<textarea
+class="management-textarea"
+id="adminResourceShortDescription"
+maxlength="500"
+placeholder="Short catalogue description."
+></textarea>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminResourceFullDescription">
+Full Description
+</label>
+
+<textarea
+class="management-textarea"
+id="adminResourceFullDescription"
+maxlength="2500"
+placeholder="Detailed description of the resource."
+></textarea>
+
+</div>
+
+
+<div class="admin-category-form-grid">
+
+
+<div class="management-field">
+
+<label for="adminResourceAccessType">
+Access Type
+</label>
+
+<select
+class="management-select"
+id="adminResourceAccessType"
+>
+
+<option value="paid">
+Paid
+</option>
+
+<option value="free">
+Free
+</option>
+
+<option value="restricted">
+Restricted
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminResourcePrice">
+Base Price
+</label>
+
+<input
+class="management-input"
+id="adminResourcePrice"
+type="number"
+min="0"
+step="1"
+value="0"
+>
+
+<span class="management-help">
+PKR
+</span>
+
+</div>
+
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminResourceFile">
+Primary File
+</label>
+
+<input
+class="management-input"
+id="adminResourceFile"
+type="file"
+accept=".pdf,.epub,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg"
+>
+
+<span class="management-help">
+Maximum 50 MB. A file can also be added or replaced later while the resource remains Draft.
+</span>
+
+</div>
+
+
+<div
+class="admin-boundary"
+id="adminResourceCurrentFile"
+>
+No file currently attached.
+</div>
+
+
+<div class="admin-form-actions">
+
 
 <button
 class="admin-operation-action"
+id="saveAdminResourceButton"
 type="button"
-disabled
 >
-Add eBook
+Create Draft
 </button>
 
-</div>
+
+<button
+class="admin-cancel-button hidden"
+id="cancelAdminResourceEdit"
+type="button"
+>
+Cancel Edit
+</button>
+
+
+<button
+class="admin-cancel-button hidden"
+id="openAdminResourceFile"
+type="button"
+>
+Open Current File
+</button>
+
 
 </div>
 
+
+<div
+class="management-message"
+id="adminResourceMessage"
+aria-live="polite"
+></div>
+
+
+</div>
+
+</div>
+
+
+<div class="admin-operation-card">
+
+<span>
+MANAGE
+</span>
+
+<h4>
+Platform Resources
+</h4>
+
+<p>
+Review eBooks and Learning Materials, edit metadata, attach or replace files, and prepare resources for publishing.
+</p>
+
+
+<div
+class="admin-list"
+id="adminResourceList"
+>
 
 <div class="admin-empty">
 
 <strong>
-Content commands will be connected next
+Loading resources
 </strong>
 
 <p>
-This interface establishes the Admin resource workspace first.
-Storage, editing and publication commands will be attached after
-the interface is approved.
+RizSim is preparing the platform content list.
 </p>
 
 </div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
 
 </div>
 
@@ -9397,6 +9651,12 @@ let adminEditingCategoryId =
 null;
 
 let adminEditingSimulationId =
+null;
+
+let adminResources =
+[];
+
+let adminEditingResourceId =
 null;
   
 let activeView =
@@ -11007,7 +11267,40 @@ await supabase.rpc(
 "admin_get_rizsim_products"
 );
 
+if(
+[
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
 
+const {
+data:
+adminResourceData,
+error:
+adminResourceError
+} =
+
+await supabase.rpc(
+"admin_get_rizsim_resources"
+);
+
+
+if(
+!adminResourceError
+) {
+
+adminResources =
+adminResourceData
+||
+[];
+
+}
+
+}
+  
 if(
 !adminProductError
 ) {
@@ -24776,6 +25069,8 @@ renderAdminCategories();
 
 renderAdminSimulations();
 
+renderAdminResources();
+
 renderAdminPublishing();
 
 }
@@ -26432,6 +26727,1520 @@ Test
 
 }
 
+
+function populateAdminResourceCategoryOptions(
+selectedId =
+null
+) {
+
+const select =
+document.getElementById(
+"adminResourceCategory"
+);
+
+
+if(!select) {
+
+return;
+
+}
+
+
+const currentValue =
+selectedId
+||
+select.value;
+
+
+select.innerHTML = `
+
+<option value="">
+Select category
+</option>
+
+${
+categories.map(
+category => `
+
+<option
+value="${escapeHTML(
+category.id
+)}"
+>
+
+${escapeHTML(
+category.name
+)}
+
+${
+category.active
+?
+""
+:
+" (Inactive)"
+}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+
+if(
+currentValue
+&&
+categories.some(
+category =>
+String(
+category.id
+)
+===
+String(
+currentValue
+)
+)
+) {
+
+select.value =
+currentValue;
+
+}
+
+}
+
+
+function resourceTypeLabel(
+type
+) {
+
+return (
+type ===
+"ebook"
+?
+"eBook"
+:
+"Learning Material"
+);
+
+}
+
+
+function renderAdminResources() {
+
+populateAdminResourceCategoryOptions();
+
+
+const container =
+document.getElementById(
+"adminResourceList"
+);
+
+
+if(!container) {
+
+return;
+
+}
+
+
+if(
+!adminResources.length
+) {
+
+container.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+No platform resources yet
+</strong>
+
+<p>
+Create the first eBook or Learning Material using the form.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+
+adminResources.map(
+resource => `
+
+<div class="admin-list-item">
+
+
+<div class="admin-list-copy">
+
+<strong>
+${escapeHTML(
+resource.title
+)}
+</strong>
+
+
+<span>
+
+${escapeHTML(
+resourceTypeLabel(
+resource.product_type
+)
+)}
+
+·
+
+${escapeHTML(
+resource.category_name
+||
+"Uncategorized"
+)}
+
+·
+
+${escapeHTML(
+resource.slug
+)}
+
+·
+
+${
+resource.file_name
+?
+"File attached"
+:
+"No file"
+}
+
+</span>
+
+</div>
+
+
+<div class="admin-item-actions">
+
+
+<span
+class="status-badge ${
+resource.status ===
+"published"
+?
+"approved"
+:
+"muted"
+}"
+>
+
+${escapeHTML(
+String(
+resource.status
+||
+"draft"
+)
+.toUpperCase()
+)}
+
+</span>
+
+
+<button
+class="admin-mini-button"
+type="button"
+data-admin-edit-resource="${escapeHTML(
+resource.id
+)}"
+>
+Edit
+</button>
+
+
+${
+resource.storage_path
+?
+`
+
+<button
+class="admin-mini-button"
+type="button"
+data-admin-open-resource="${escapeHTML(
+resource.id
+)}"
+>
+Open
+</button>
+
+`
+:
+""
+}
+
+
+</div>
+
+
+</div>
+
+`
+)
+.join("");
+
+}
+
+
+function resetAdminResourceForm() {
+
+adminEditingResourceId =
+null;
+
+
+document.getElementById(
+"adminResourceId"
+).value =
+"";
+
+
+document.getElementById(
+"adminResourceType"
+).value =
+"ebook";
+
+
+document.getElementById(
+"adminResourceTitle"
+).value =
+"";
+
+
+document.getElementById(
+"adminResourceSlug"
+).value =
+"";
+
+
+document.getElementById(
+"adminResourceShortDescription"
+).value =
+"";
+
+
+document.getElementById(
+"adminResourceFullDescription"
+).value =
+"";
+
+
+document.getElementById(
+"adminResourceAccessType"
+).value =
+"paid";
+
+
+document.getElementById(
+"adminResourcePrice"
+).value =
+"0";
+
+
+document.getElementById(
+"adminResourceFile"
+).value =
+"";
+
+
+populateAdminResourceCategoryOptions();
+
+
+document.getElementById(
+"adminResourceFormKicker"
+).textContent =
+"CREATE";
+
+
+document.getElementById(
+"adminResourceFormTitle"
+).textContent =
+"New Resource";
+
+
+document.getElementById(
+"adminResourceFormCopy"
+).textContent =
+"Create an eBook or Learning Material. New resources begin as Draft and remain unpublished until approved in Publishing.";
+
+
+document.getElementById(
+"saveAdminResourceButton"
+).textContent =
+"Create Draft";
+
+
+document.getElementById(
+"cancelAdminResourceEdit"
+).classList.add(
+"hidden"
+);
+
+
+document.getElementById(
+"openAdminResourceFile"
+).classList.add(
+"hidden"
+);
+
+
+document.getElementById(
+"adminResourceCurrentFile"
+).textContent =
+"No file currently attached.";
+
+
+setManagementMessage(
+"adminResourceMessage",
+""
+);
+
+
+updateAdminResourcePriceState();
+
+}
+
+
+function beginAdminResourceEdit(
+resourceId
+) {
+
+const resource =
+adminResources.find(
+item =>
+String(
+item.id
+)
+===
+String(
+resourceId
+)
+);
+
+
+if(!resource) {
+
+return;
+
+}
+
+
+adminEditingResourceId =
+resource.id;
+
+
+document.getElementById(
+"adminResourceId"
+).value =
+resource.id;
+
+
+document.getElementById(
+"adminResourceType"
+).value =
+resource.product_type
+||
+"ebook";
+
+
+populateAdminResourceCategoryOptions(
+resource.category_id
+);
+
+
+document.getElementById(
+"adminResourceTitle"
+).value =
+resource.title
+||
+"";
+
+
+document.getElementById(
+"adminResourceSlug"
+).value =
+resource.slug
+||
+"";
+
+
+document.getElementById(
+"adminResourceShortDescription"
+).value =
+resource.short_description
+||
+"";
+
+
+document.getElementById(
+"adminResourceFullDescription"
+).value =
+resource.full_description
+||
+"";
+
+
+document.getElementById(
+"adminResourceAccessType"
+).value =
+resource.access_type
+||
+"paid";
+
+
+document.getElementById(
+"adminResourcePrice"
+).value =
+Number(
+resource.price
+||
+0
+);
+
+
+document.getElementById(
+"adminResourceFile"
+).value =
+"";
+
+
+document.getElementById(
+"adminResourceFormKicker"
+).textContent =
+"EDIT";
+
+
+document.getElementById(
+"adminResourceFormTitle"
+).textContent =
+"Edit Resource";
+
+
+document.getElementById(
+"adminResourceFormCopy"
+).textContent =
+"Update catalogue information or replace the current platform file.";
+
+
+document.getElementById(
+"saveAdminResourceButton"
+).textContent =
+"Save Changes";
+
+
+document.getElementById(
+"cancelAdminResourceEdit"
+).classList.remove(
+"hidden"
+);
+
+
+document
+.getElementById(
+"openAdminResourceFile"
+)
+.classList.toggle(
+"hidden",
+!resource.storage_path
+);
+
+
+document.getElementById(
+"adminResourceCurrentFile"
+).textContent =
+
+resource.file_name
+
+?
+"Current file: "
++
+resource.file_name
+
++
+(
+resource.file_size
+?
+" · "
++
+(
+Number(
+resource.file_size
+)
+/
+1024
+/
+1024
+).toFixed(
+2
+)
++
+" MB"
+:
+""
+)
+
+:
+"No file currently attached.";
+
+
+updateAdminResourcePriceState();
+
+
+setManagementMessage(
+"adminResourceMessage",
+""
+);
+
+
+document.getElementById(
+"adminResourceTitle"
+).focus();
+
+}
+
+
+function updateAdminResourcePriceState() {
+
+const accessType =
+document.getElementById(
+"adminResourceAccessType"
+)?.value;
+
+
+const priceInput =
+document.getElementById(
+"adminResourcePrice"
+);
+
+
+if(!priceInput) {
+
+return;
+
+}
+
+
+if(
+accessType ===
+"free"
+) {
+
+priceInput.value =
+"0";
+
+priceInput.disabled =
+true;
+
+}
+
+else {
+
+priceInput.disabled =
+false;
+
+}
+
+}
+
+
+function getAdminResourceMimeType(
+file
+) {
+
+if(
+file.type
+) {
+
+return file.type;
+
+}
+
+
+const extension =
+file.name
+.split(".")
+.pop()
+.toLowerCase();
+
+
+const map = {
+
+pdf:
+"application/pdf",
+
+epub:
+"application/epub+zip",
+
+doc:
+"application/msword",
+
+docx:
+"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+ppt:
+"application/vnd.ms-powerpoint",
+
+pptx:
+"application/vnd.openxmlformats-officedocument.presentationml.presentation",
+
+xls:
+"application/vnd.ms-excel",
+
+xlsx:
+"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+png:
+"image/png",
+
+jpg:
+"image/jpeg",
+
+jpeg:
+"image/jpeg"
+
+};
+
+
+return (
+map[
+extension
+]
+||
+""
+);
+
+}
+
+
+async function reloadAdminResources() {
+
+const [
+productResult,
+resourceResult
+] =
+
+await Promise.all([
+
+supabase.rpc(
+"admin_get_rizsim_products"
+),
+
+supabase.rpc(
+"admin_get_rizsim_resources"
+)
+
+]);
+
+
+if(
+productResult.error
+) {
+
+setManagementMessage(
+"adminResourceMessage",
+productResult.error.message,
+true
+);
+
+return false;
+
+}
+
+
+if(
+resourceResult.error
+) {
+
+setManagementMessage(
+"adminResourceMessage",
+resourceResult.error.message,
+true
+);
+
+return false;
+
+}
+
+
+products =
+productResult.data
+||
+[];
+
+
+adminResources =
+resourceResult.data
+||
+[];
+
+
+renderAdminContentWorkspace();
+
+
+return true;
+
+}
+
+
+async function uploadAdminResourceFile(
+productId,
+file
+) {
+
+if(!file) {
+
+return {
+ok:
+true
+};
+
+}
+
+
+if(
+file.size >
+50 * 1024 * 1024
+) {
+
+return {
+
+ok:
+false,
+
+message:
+"Files must be 50 MB or smaller."
+
+};
+
+}
+
+
+const mimeType =
+getAdminResourceMimeType(
+file
+);
+
+
+if(!mimeType) {
+
+return {
+
+ok:
+false,
+
+message:
+"This file type is not supported by RizSim platform content."
+
+};
+
+}
+
+
+const safeName =
+file.name
+
+.replace(
+/[^a-zA-Z0-9._-]+/g,
+"-"
+)
+
+.replace(
+/^-+|-+$/g,
+""
+)
+
+||
+"resource";
+
+
+const objectId =
+
+globalThis.crypto?.randomUUID
+
+?
+globalThis.crypto.randomUUID()
+
+:
+Date.now()
++
+"-"
++
+Math.random()
+.toString(
+36
+)
+.slice(
+2
+);
+
+
+const storagePath =
+
+productId
++
+"/"
++
+objectId
++
+"-"
++
+safeName;
+
+
+const {
+error:
+uploadError
+} =
+
+await supabase
+.storage
+.from(
+"platform-content"
+)
+.upload(
+storagePath,
+file,
+{
+
+upsert:
+false,
+
+contentType:
+mimeType,
+
+cacheControl:
+"3600"
+
+}
+);
+
+
+if(uploadError) {
+
+return {
+
+ok:
+false,
+
+message:
+uploadError.message
+
+};
+
+}
+
+
+const {
+error:
+attachError
+} =
+
+await supabase.rpc(
+"admin_attach_rizsim_product_file",
+{
+
+p_product_id:
+productId,
+
+p_storage_path:
+storagePath,
+
+p_file_name:
+file.name,
+
+p_mime_type:
+mimeType,
+
+p_file_size:
+file.size
+
+}
+);
+
+
+if(attachError) {
+
+/*
+Rollback the newly uploaded object because
+its metadata could not be attached.
+*/
+
+await supabase
+.storage
+.from(
+"platform-content"
+)
+.remove([
+storagePath
+]);
+
+
+return {
+
+ok:
+false,
+
+message:
+attachError.message
+
+};
+
+}
+
+
+return {
+
+ok:
+true
+
+};
+
+}
+
+
+async function openAdminResource(
+resourceId
+) {
+
+const resource =
+adminResources.find(
+item =>
+String(
+item.id
+)
+===
+String(
+resourceId
+)
+);
+
+
+if(
+!resource
+||
+!resource.storage_path
+) {
+
+setManagementMessage(
+"adminResourceMessage",
+"No file is attached to this resource.",
+true
+);
+
+return;
+
+}
+
+
+/*
+Open immediately so the browser does not block
+the tab while RizSim requests the signed URL.
+*/
+
+const resourceWindow =
+window.open(
+"",
+"_blank"
+);
+
+
+if(resourceWindow) {
+
+resourceWindow.opener =
+null;
+
+
+resourceWindow.document.write(
+"<p style='font-family:Arial,sans-serif;padding:24px;'>Opening RizSim resource…</p>"
+);
+
+}
+
+
+const {
+data,
+error
+} =
+
+await supabase
+.storage
+.from(
+"platform-content"
+)
+.createSignedUrl(
+resource.storage_path,
+60
+);
+
+
+if(
+error
+||
+!data?.signedUrl
+) {
+
+if(resourceWindow) {
+
+resourceWindow.close();
+
+}
+
+
+setManagementMessage(
+"adminResourceMessage",
+error?.message
+||
+"RizSim could not open this resource.",
+true
+);
+
+return;
+
+}
+
+
+if(resourceWindow) {
+
+resourceWindow.location.href =
+data.signedUrl;
+
+}
+
+else {
+
+window.location.href =
+data.signedUrl;
+
+}
+
+}
+
+
+async function saveAdminResource() {
+
+if(
+![
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+return;
+
+}
+
+
+const productType =
+document.getElementById(
+"adminResourceType"
+).value;
+
+
+const categoryId =
+document.getElementById(
+"adminResourceCategory"
+).value;
+
+
+const title =
+document
+.getElementById(
+"adminResourceTitle"
+)
+.value
+.trim();
+
+
+const slug =
+document
+.getElementById(
+"adminResourceSlug"
+)
+.value
+.trim();
+
+
+const shortDescription =
+document
+.getElementById(
+"adminResourceShortDescription"
+)
+.value
+.trim();
+
+
+const fullDescription =
+document
+.getElementById(
+"adminResourceFullDescription"
+)
+.value
+.trim();
+
+
+const accessType =
+document.getElementById(
+"adminResourceAccessType"
+).value;
+
+
+const price =
+Number(
+document.getElementById(
+"adminResourcePrice"
+).value
+||
+0
+);
+
+
+const file =
+document.getElementById(
+"adminResourceFile"
+).files[0]
+||
+null;
+
+
+const button =
+document.getElementById(
+"saveAdminResourceButton"
+);
+
+
+setManagementMessage(
+"adminResourceMessage",
+""
+);
+
+
+if(!title) {
+
+setManagementMessage(
+"adminResourceMessage",
+"Enter a resource title.",
+true
+);
+
+return;
+
+}
+
+
+if(!categoryId) {
+
+setManagementMessage(
+"adminResourceMessage",
+"Select a category.",
+true
+);
+
+return;
+
+}
+
+
+if(
+!Number.isFinite(
+price
+)
+||
+price < 0
+) {
+
+setManagementMessage(
+"adminResourceMessage",
+"Enter a valid non-negative price.",
+true
+);
+
+return;
+
+}
+
+
+button.disabled =
+true;
+
+
+button.textContent =
+adminEditingResourceId
+?
+"Saving…"
+:
+"Creating…";
+
+
+showLoading();
+
+
+let productId =
+adminEditingResourceId;
+
+
+let metadataError =
+null;
+
+
+if(
+adminEditingResourceId
+) {
+
+const result =
+
+await supabase.rpc(
+"admin_update_rizsim_resource",
+{
+
+p_product_id:
+adminEditingResourceId,
+
+p_category_id:
+categoryId,
+
+p_product_type:
+productType,
+
+p_title:
+title,
+
+p_slug:
+slug
+||
+title,
+
+p_short_description:
+shortDescription
+||
+null,
+
+p_full_description:
+fullDescription
+||
+null,
+
+p_price:
+accessType ===
+"free"
+?
+0
+:
+price,
+
+p_access_type:
+accessType
+
+}
+);
+
+
+metadataError =
+result.error;
+
+}
+
+else {
+
+const result =
+
+await supabase.rpc(
+"admin_create_rizsim_resource",
+{
+
+p_category_id:
+categoryId,
+
+p_product_type:
+productType,
+
+p_title:
+title,
+
+p_slug:
+slug
+||
+null,
+
+p_short_description:
+shortDescription
+||
+null,
+
+p_full_description:
+fullDescription
+||
+null,
+
+p_price:
+accessType ===
+"free"
+?
+0
+:
+price,
+
+p_access_type:
+accessType
+
+}
+);
+
+
+metadataError =
+result.error;
+
+
+productId =
+result.data;
+
+}
+
+
+if(metadataError) {
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+button.textContent =
+adminEditingResourceId
+?
+"Save Changes"
+:
+"Create Draft";
+
+
+setManagementMessage(
+"adminResourceMessage",
+metadataError.message,
+true
+);
+
+
+return;
+
+}
+
+
+/*
+If a new file was selected, upload and attach it.
+For an edit with no selected file, the current file
+remains unchanged.
+*/
+
+if(file) {
+
+const uploadResult =
+await uploadAdminResourceFile(
+productId,
+file
+);
+
+
+if(
+!uploadResult.ok
+) {
+
+await reloadAdminResources();
+
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+setManagementMessage(
+"adminResourceMessage",
+
+adminEditingResourceId
+
+?
+"Metadata saved, but the replacement file failed: "
++
+uploadResult.message
+
+:
+"Draft created, but the file upload failed: "
++
+uploadResult.message,
+
+true
+);
+
+
+return;
+
+}
+
+}
+
+
+const wasEditing =
+Boolean(
+adminEditingResourceId
+);
+
+
+const loaded =
+await reloadAdminResources();
+
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+if(!loaded) {
+
+button.textContent =
+wasEditing
+?
+"Save Changes"
+:
+"Create Draft";
+
+return;
+
+}
+
+
+resetAdminResourceForm();
+
+
+setManagementMessage(
+"adminResourceMessage",
+
+wasEditing
+?
+"Resource updated successfully."
+:
+"Resource created successfully as Draft."
+
+);
+
+}
 
 function renderAdminPublishing() {
 
@@ -28663,6 +30472,101 @@ product.launch_path
 );
 
 }
+
+}
+
+}
+);
+
+document
+.getElementById(
+"saveAdminResourceButton"
+)
+.addEventListener(
+"click",
+saveAdminResource
+);
+
+
+document
+.getElementById(
+"cancelAdminResourceEdit"
+)
+.addEventListener(
+"click",
+resetAdminResourceForm
+);
+
+
+document
+.getElementById(
+"adminResourceAccessType"
+)
+.addEventListener(
+"change",
+updateAdminResourcePriceState
+);
+
+
+document
+.getElementById(
+"openAdminResourceFile"
+)
+.addEventListener(
+"click",
+() => {
+
+if(
+adminEditingResourceId
+) {
+
+openAdminResource(
+adminEditingResourceId
+);
+
+}
+
+}
+);
+
+
+document
+.getElementById(
+"adminResourceList"
+)
+.addEventListener(
+"click",
+event => {
+
+
+const editButton =
+event.target.closest(
+"[data-admin-edit-resource]"
+);
+
+
+if(editButton) {
+
+beginAdminResourceEdit(
+editButton.dataset.adminEditResource
+);
+
+return;
+
+}
+
+
+const openButton =
+event.target.closest(
+"[data-admin-open-resource]"
+);
+
+
+if(openButton) {
+
+openAdminResource(
+openButton.dataset.adminOpenResource
+);
 
 }
 
