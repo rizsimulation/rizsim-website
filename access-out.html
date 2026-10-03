@@ -8021,7 +8021,7 @@ class="admin-cancel-button hidden"
 id="openAdminResourceFile"
 type="button"
 >
-Open Current File
+Open Protected File
 </button>
 
 
@@ -27711,7 +27711,7 @@ true
 }
 
 
-async function openAdminResource(
+function openAdminResource(
 resourceId
 ) {
 
@@ -27728,9 +27728,20 @@ resourceId
 );
 
 
+if(!resource) {
+
+setManagementMessage(
+"adminResourceMessage",
+"RizSim could not find this resource.",
+true
+);
+
+return;
+
+}
+
+
 if(
-!resource
-||
 !resource.storage_path
 ) {
 
@@ -27745,86 +27756,22 @@ return;
 }
 
 
-/*
-Open immediately so the browser does not block
-the tab while RizSim requests the signed URL.
-*/
+const viewerURL =
 
-const resourceWindow =
+"/resource-viewer.html?resource="
+
++
+
+encodeURIComponent(
+resource.id
+);
+
+
 window.open(
-"",
-"_blank"
+viewerURL,
+"_blank",
+"noopener,noreferrer"
 );
-
-
-if(resourceWindow) {
-
-resourceWindow.opener =
-null;
-
-
-resourceWindow.document.write(
-"<p style='font-family:Arial,sans-serif;padding:24px;'>Opening RizSim resource…</p>"
-);
-
-}
-
-
-const {
-data,
-error
-} =
-
-await supabase
-.storage
-.from(
-"platform-content"
-)
-.createSignedUrl(
-resource.storage_path,
-60
-);
-
-
-if(
-error
-||
-!data?.signedUrl
-) {
-
-if(resourceWindow) {
-
-resourceWindow.close();
-
-}
-
-
-setManagementMessage(
-"adminResourceMessage",
-error?.message
-||
-"RizSim could not open this resource.",
-true
-);
-
-return;
-
-}
-
-
-if(resourceWindow) {
-
-resourceWindow.location.href =
-data.signedUrl;
-
-}
-
-else {
-
-window.location.href =
-data.signedUrl;
-
-}
 
 }
 
