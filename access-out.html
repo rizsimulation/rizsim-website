@@ -7462,26 +7462,240 @@ LEARNING PRODUCTS
 
 <div class="admin-operation-card">
 
-<span>
+<span id="adminSimulationFormKicker">
 CREATE
 </span>
 
-<h4>
+<h4 id="adminSimulationFormTitle">
 New Simulation
 </h4>
 
-<p>
-Create the catalogue record before connecting the Student runner,
-Faculty dashboard and supporting materials.
+<p id="adminSimulationFormCopy">
+Create the catalogue record and connect the simulation to its RizSim runner. New simulations begin as Draft.
 </p>
+
+
+<div class="admin-category-form">
+
+<input
+type="hidden"
+id="adminSimulationId"
+value=""
+>
+
+
+<div class="admin-category-form-grid">
+
+
+<div class="management-field">
+
+<label for="adminSimulationTitle">
+Simulation Title
+</label>
+
+<input
+class="management-input"
+id="adminSimulationTitle"
+type="text"
+maxlength="200"
+placeholder="e.g. Seven Sins of Greenwashing"
+>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminSimulationCategory">
+Category
+</label>
+
+<select
+class="management-select"
+id="adminSimulationCategory"
+>
+<option value="">
+Select category
+</option>
+</select>
+
+</div>
+
+
+</div>
+
+
+<div class="admin-category-form-grid">
+
+
+<div class="management-field">
+
+<label for="adminSimulationSlug">
+Slug
+</label>
+
+<input
+class="management-input"
+id="adminSimulationSlug"
+type="text"
+maxlength="200"
+placeholder="Auto-generated if blank"
+>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminSimulationLaunchPath">
+RizSim Runner Path
+</label>
+
+<input
+class="management-input"
+id="adminSimulationLaunchPath"
+type="text"
+maxlength="500"
+placeholder="/my-simulation.html"
+>
+
+<span class="management-help">
+Internal RizSim path only. Example: /simulation-test.html
+</span>
+
+</div>
+
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminSimulationShortDescription">
+Short Description
+</label>
+
+<textarea
+class="management-textarea"
+id="adminSimulationShortDescription"
+maxlength="500"
+placeholder="Short catalogue description."
+></textarea>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminSimulationFullDescription">
+Full Description
+</label>
+
+<textarea
+class="management-textarea"
+id="adminSimulationFullDescription"
+maxlength="2500"
+placeholder="Detailed simulation description and learning purpose."
+></textarea>
+
+</div>
+
+
+<div class="admin-category-form-grid">
+
+
+<div class="management-field">
+
+<label for="adminSimulationAccessType">
+Access Type
+</label>
+
+<select
+class="management-select"
+id="adminSimulationAccessType"
+>
+
+<option value="paid">
+Paid
+</option>
+
+<option value="free">
+Free
+</option>
+
+<option value="restricted">
+Restricted
+</option>
+
+</select>
+
+</div>
+
+
+<div class="management-field">
+
+<label for="adminSimulationPrice">
+Base Price
+</label>
+
+<input
+class="management-input"
+id="adminSimulationPrice"
+type="number"
+min="0"
+step="1"
+value="0"
+>
+
+<span class="management-help">
+PKR. Licence-term pricing will remain separately managed.
+</span>
+
+</div>
+
+
+</div>
+
+
+<div class="admin-form-actions">
 
 <button
 class="admin-operation-action"
+id="saveAdminSimulationButton"
 type="button"
-disabled
 >
-Create Simulation
+Create Draft
 </button>
+
+
+<button
+class="admin-cancel-button hidden"
+id="cancelAdminSimulationEdit"
+type="button"
+>
+Cancel Edit
+</button>
+
+
+<button
+class="admin-cancel-button hidden"
+id="testAdminSimulationRunner"
+type="button"
+>
+Test Runner
+</button>
+
+</div>
+
+
+<div
+class="management-message"
+id="adminSimulationMessage"
+aria-live="polite"
+></div>
+
+
+</div>
 
 </div>
 
@@ -9181,6 +9395,9 @@ let activeAdministrationTab =
 
 let adminEditingCategoryId =
 null;
+
+let adminEditingSimulationId =
+null;
   
 let activeView =
 "home";
@@ -10769,6 +10986,40 @@ products =
 productResult.data
 ||
 [];
+
+if(
+[
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+const {
+data:
+adminProductData,
+error:
+adminProductError
+} =
+
+await supabase.rpc(
+"admin_get_rizsim_products"
+);
+
+
+if(
+!adminProductError
+) {
+
+products =
+adminProductData
+||
+[];
+
+}
+
+}
 
 const licenseOptionResult =
 
@@ -16471,6 +16722,8 @@ product.title
 ${escapeHTML(
 product.short_description
 ||
+product.full_description
+||
 product.description
 ||
 "RizSim interactive learning simulation."
@@ -16707,9 +16960,11 @@ product.title
 <div class="product-detail-description">
 
 ${escapeHTML(
-product.description
-||
 product.short_description
+||
+product.full_description
+||
+product.description
 ||
 "RizSim interactive learning simulation."
 )}
@@ -25137,18 +25392,871 @@ wasEditing
 );
 
 }
-  
+
+function populateAdminSimulationCategoryOptions(
+selectedId =
+null
+) {
+
+const select =
+document.getElementById(
+"adminSimulationCategory"
+);
+
+
+if(!select) {
+
+return;
+
+}
+
+
+const currentValue =
+selectedId
+||
+select.value;
+
+
+select.innerHTML = `
+
+<option value="">
+Select category
+</option>
+
+${
+categories.map(
+category => `
+
+<option
+value="${escapeHTML(
+category.id
+)}"
+>
+
+${escapeHTML(
+category.name
+)}
+
+${
+category.active
+?
+""
+:
+" (Inactive)"
+}
+
+</option>
+
+`
+)
+.join("")
+}
+
+`;
+
+
+if(
+currentValue
+&&
+categories.some(
+category =>
+String(
+category.id
+)
+===
+String(
+currentValue
+)
+)
+) {
+
+select.value =
+currentValue;
+
+}
+
+}
+
+
+function resetAdminSimulationForm() {
+
+adminEditingSimulationId =
+null;
+
+
+document.getElementById(
+"adminSimulationId"
+).value =
+"";
+
+
+document.getElementById(
+"adminSimulationTitle"
+).value =
+"";
+
+
+document.getElementById(
+"adminSimulationSlug"
+).value =
+"";
+
+
+document.getElementById(
+"adminSimulationShortDescription"
+).value =
+"";
+
+
+document.getElementById(
+"adminSimulationFullDescription"
+).value =
+"";
+
+
+document.getElementById(
+"adminSimulationLaunchPath"
+).value =
+"";
+
+
+document.getElementById(
+"adminSimulationAccessType"
+).value =
+"paid";
+
+
+document.getElementById(
+"adminSimulationPrice"
+).value =
+"0";
+
+
+populateAdminSimulationCategoryOptions();
+
+
+document.getElementById(
+"adminSimulationFormKicker"
+).textContent =
+"CREATE";
+
+
+document.getElementById(
+"adminSimulationFormTitle"
+).textContent =
+"New Simulation";
+
+
+document.getElementById(
+"adminSimulationFormCopy"
+).textContent =
+"Create the catalogue record and connect the simulation to its RizSim runner. New simulations begin as Draft.";
+
+
+document.getElementById(
+"saveAdminSimulationButton"
+).textContent =
+"Create Draft";
+
+
+document.getElementById(
+"cancelAdminSimulationEdit"
+).classList.add(
+"hidden"
+);
+
+
+document.getElementById(
+"testAdminSimulationRunner"
+).classList.add(
+"hidden"
+);
+
+
+setManagementMessage(
+"adminSimulationMessage",
+""
+);
+
+}
+
+
+function beginAdminSimulationEdit(
+productId
+) {
+
+const product =
+products.find(
+item =>
+String(
+item.id
+)
+===
+String(
+productId
+)
+);
+
+
+if(
+!product
+||
+product.product_type !==
+"simulation"
+) {
+
+return;
+
+}
+
+
+adminEditingSimulationId =
+product.id;
+
+
+document.getElementById(
+"adminSimulationId"
+).value =
+product.id;
+
+
+document.getElementById(
+"adminSimulationTitle"
+).value =
+product.title
+||
+"";
+
+
+document.getElementById(
+"adminSimulationSlug"
+).value =
+product.slug
+||
+"";
+
+
+populateAdminSimulationCategoryOptions(
+product.category_id
+);
+
+
+document.getElementById(
+"adminSimulationShortDescription"
+).value =
+product.short_description
+||
+"";
+
+
+document.getElementById(
+"adminSimulationFullDescription"
+).value =
+product.full_description
+||
+product.description
+||
+"";
+
+
+document.getElementById(
+"adminSimulationAccessType"
+).value =
+product.access_type
+||
+"paid";
+
+
+document.getElementById(
+"adminSimulationPrice"
+).value =
+Number(
+product.price
+||
+0
+);
+
+
+document.getElementById(
+"adminSimulationLaunchPath"
+).value =
+product.launch_path
+||
+"";
+
+
+document.getElementById(
+"adminSimulationFormKicker"
+).textContent =
+"EDIT";
+
+
+document.getElementById(
+"adminSimulationFormTitle"
+).textContent =
+"Edit Simulation";
+
+
+document.getElementById(
+"adminSimulationFormCopy"
+).textContent =
+"Update catalogue information and the RizSim runner connection. Publication status is controlled separately.";
+
+
+document.getElementById(
+"saveAdminSimulationButton"
+).textContent =
+"Save Changes";
+
+
+document.getElementById(
+"cancelAdminSimulationEdit"
+).classList.remove(
+"hidden"
+);
+
+
+document
+.getElementById(
+"testAdminSimulationRunner"
+)
+.classList.toggle(
+"hidden",
+!product.launch_path
+);
+
+
+setManagementMessage(
+"adminSimulationMessage",
+""
+);
+
+
+document.getElementById(
+"adminSimulationTitle"
+).focus();
+
+}
+
+
+async function reloadAdminProducts() {
+
+const {
+data,
+error
+} =
+
+await supabase.rpc(
+"admin_get_rizsim_products"
+);
+
+
+if(error) {
+
+setManagementMessage(
+"adminSimulationMessage",
+error.message,
+true
+);
+
+return false;
+
+}
+
+
+products =
+data
+||
+[];
+
+
+renderAdminContentWorkspace();
+
+
+return true;
+
+}
+
+
+function updateAdminSimulationPriceState() {
+
+const accessType =
+document.getElementById(
+"adminSimulationAccessType"
+).value;
+
+
+const priceInput =
+document.getElementById(
+"adminSimulationPrice"
+);
+
+
+if(
+accessType ===
+"free"
+) {
+
+priceInput.value =
+"0";
+
+priceInput.disabled =
+true;
+
+}
+
+else {
+
+priceInput.disabled =
+false;
+
+}
+
+}
+
+
+function testAdminSimulationRunnerPath(
+path
+) {
+
+const runnerPath =
+String(
+path
+||
+""
+)
+.trim();
+
+
+if(!runnerPath) {
+
+setManagementMessage(
+"adminSimulationMessage",
+"Add a RizSim runner path first.",
+true
+);
+
+return;
+
+}
+
+
+if(
+!runnerPath.startsWith("/")
+) {
+
+setManagementMessage(
+"adminSimulationMessage",
+"Runner path must begin with /.",
+true
+);
+
+return;
+
+}
+
+
+window.open(
+runnerPath,
+"_blank",
+"noopener,noreferrer"
+);
+
+}
+
+
+async function saveAdminSimulation() {
+
+if(
+![
+"admin",
+"owner"
+].includes(
+currentMembership.role
+)
+) {
+
+return;
+
+}
+
+
+const title =
+document
+.getElementById(
+"adminSimulationTitle"
+)
+.value
+.trim();
+
+
+const categoryId =
+document
+.getElementById(
+"adminSimulationCategory"
+)
+.value;
+
+
+const slug =
+document
+.getElementById(
+"adminSimulationSlug"
+)
+.value
+.trim();
+
+
+const shortDescription =
+document
+.getElementById(
+"adminSimulationShortDescription"
+)
+.value
+.trim();
+
+
+const fullDescription =
+document
+.getElementById(
+"adminSimulationFullDescription"
+)
+.value
+.trim();
+
+
+const accessType =
+document
+.getElementById(
+"adminSimulationAccessType"
+)
+.value;
+
+
+const price =
+Number(
+document
+.getElementById(
+"adminSimulationPrice"
+)
+.value
+||
+0
+);
+
+
+const launchPath =
+document
+.getElementById(
+"adminSimulationLaunchPath"
+)
+.value
+.trim();
+
+
+const button =
+document.getElementById(
+"saveAdminSimulationButton"
+);
+
+
+setManagementMessage(
+"adminSimulationMessage",
+""
+);
+
+
+if(!title) {
+
+setManagementMessage(
+"adminSimulationMessage",
+"Enter a simulation title.",
+true
+);
+
+return;
+
+}
+
+
+if(!categoryId) {
+
+setManagementMessage(
+"adminSimulationMessage",
+"Select a category.",
+true
+);
+
+return;
+
+}
+
+
+if(
+!Number.isFinite(
+price
+)
+||
+price < 0
+) {
+
+setManagementMessage(
+"adminSimulationMessage",
+"Enter a valid non-negative price.",
+true
+);
+
+return;
+
+}
+
+
+if(
+launchPath
+&&
+!launchPath.startsWith("/")
+) {
+
+setManagementMessage(
+"adminSimulationMessage",
+"RizSim runner path must begin with /.",
+true
+);
+
+return;
+
+}
+
+
+button.disabled =
+true;
+
+
+button.textContent =
+adminEditingSimulationId
+?
+"Saving…"
+:
+"Creating…";
+
+
+showLoading();
+
+
+let error;
+
+
+if(
+adminEditingSimulationId
+) {
+
+const result =
+
+await supabase.rpc(
+"admin_update_rizsim_simulation",
+{
+
+p_product_id:
+adminEditingSimulationId,
+
+p_category_id:
+categoryId,
+
+p_title:
+title,
+
+p_slug:
+slug
+||
+title,
+
+p_short_description:
+shortDescription
+||
+null,
+
+p_full_description:
+fullDescription
+||
+null,
+
+p_price:
+accessType ===
+"free"
+?
+0
+:
+price,
+
+p_currency:
+"PKR",
+
+p_access_type:
+accessType,
+
+p_launch_path:
+launchPath
+||
+null
+
+}
+);
+
+
+error =
+result.error;
+
+}
+
+else {
+
+const result =
+
+await supabase.rpc(
+"admin_create_rizsim_simulation",
+{
+
+p_category_id:
+categoryId,
+
+p_title:
+title,
+
+p_slug:
+slug
+||
+null,
+
+p_short_description:
+shortDescription
+||
+null,
+
+p_full_description:
+fullDescription
+||
+null,
+
+p_price:
+accessType ===
+"free"
+?
+0
+:
+price,
+
+p_currency:
+"PKR",
+
+p_access_type:
+accessType,
+
+p_launch_path:
+launchPath
+||
+null
+
+}
+);
+
+
+error =
+result.error;
+
+}
+
+
+if(error) {
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+button.textContent =
+adminEditingSimulationId
+?
+"Save Changes"
+:
+"Create Draft";
+
+
+setManagementMessage(
+"adminSimulationMessage",
+error.message,
+true
+);
+
+
+return;
+
+}
+
+
+const wasEditing =
+Boolean(
+adminEditingSimulationId
+);
+
+
+const loaded =
+await reloadAdminProducts();
+
+
+hideLoading();
+
+
+button.disabled =
+false;
+
+
+if(!loaded) {
+
+button.textContent =
+wasEditing
+?
+"Save Changes"
+:
+"Create Draft";
+
+return;
+
+}
+
+
+resetAdminSimulationForm();
+
+
+setManagementMessage(
+"adminSimulationMessage",
+
+wasEditing
+?
+"Simulation updated successfully."
+:
+"Simulation created successfully as Draft."
+
+);
+
+}
+
 function renderAdminSimulations() {
+
+populateAdminSimulationCategoryOptions();
+
 
 const container =
 document.getElementById(
 "adminSimulationList"
 );
 
+
 const simulations =
 products.filter(
-item =>
-item.product_type ===
+product =>
+product.product_type ===
 "simulation"
 );
 
@@ -25166,7 +26274,7 @@ No simulations available
 </strong>
 
 <p>
-Simulation records will appear here after they are created.
+Create the first RizSim simulation using the form above.
 </p>
 
 </div>
@@ -25186,6 +26294,7 @@ ${
 simulations.map(
 product => {
 
+
 const category =
 categories.find(
 item =>
@@ -25198,6 +26307,13 @@ product.category_id
 )
 );
 
+
+const status =
+product.status
+||
+"draft";
+
+
 return `
 
 <div class="admin-list-item">
@@ -25207,15 +26323,16 @@ return `
 <strong>
 ${escapeHTML(
 product.title
-||
-"RizSim Simulation"
 )}
 </strong>
+
 
 <span>
 
 ${escapeHTML(
 category?.name
+||
+product.category_name
 ||
 "Uncategorized"
 )}
@@ -25223,10 +26340,24 @@ category?.name
 ·
 
 ${escapeHTML(
-product.status
-||
-"draft"
+product.slug
 )}
+
+·
+
+${escapeHTML(
+product.access_type
+||
+"paid"
+)}
+
+${
+product.launch_path
+?
+" · Runner connected"
+:
+" · No runner"
+}
 
 </span>
 
@@ -25235,21 +26366,54 @@ product.status
 
 <div class="admin-item-actions">
 
-<button
-class="admin-mini-button"
-type="button"
-disabled
+<span
+class="status-badge ${
+status ===
+"published"
+?
+"approved"
+:
+"muted"
+}"
 >
-Edit
-</button>
+
+${escapeHTML(
+status.toUpperCase()
+)}
+
+</span>
+
 
 <button
 class="admin-mini-button"
 type="button"
-disabled
+data-admin-edit-simulation="${escapeHTML(
+product.id
+)}"
 >
-Assets
+Edit
 </button>
+
+
+${
+product.launch_path
+?
+`
+
+<button
+class="admin-mini-button"
+type="button"
+data-admin-test-simulation="${escapeHTML(
+product.id
+)}"
+>
+Test
+</button>
+
+`
+:
+""
+}
 
 </div>
 
@@ -27389,6 +28553,118 @@ return;
 beginAdminCategoryEdit(
 editButton.dataset.adminEditCategory
 );
+
+}
+);
+  
+document
+.getElementById(
+"saveAdminSimulationButton"
+)
+.addEventListener(
+"click",
+saveAdminSimulation
+);
+
+
+document
+.getElementById(
+"cancelAdminSimulationEdit"
+)
+.addEventListener(
+"click",
+resetAdminSimulationForm
+);
+
+
+document
+.getElementById(
+"adminSimulationAccessType"
+)
+.addEventListener(
+"change",
+updateAdminSimulationPriceState
+);
+
+
+document
+.getElementById(
+"testAdminSimulationRunner"
+)
+.addEventListener(
+"click",
+() => {
+
+testAdminSimulationRunnerPath(
+
+document
+.getElementById(
+"adminSimulationLaunchPath"
+)
+.value
+
+);
+
+}
+);
+
+
+document
+.getElementById(
+"adminSimulationList"
+)
+.addEventListener(
+"click",
+event => {
+
+
+const editButton =
+event.target.closest(
+"[data-admin-edit-simulation]"
+);
+
+
+if(editButton) {
+
+beginAdminSimulationEdit(
+editButton.dataset.adminEditSimulation
+);
+
+return;
+
+}
+
+
+const testButton =
+event.target.closest(
+"[data-admin-test-simulation]"
+);
+
+
+if(testButton) {
+
+const product =
+products.find(
+item =>
+String(
+item.id
+)
+===
+String(
+testButton.dataset.adminTestSimulation
+)
+);
+
+
+if(product) {
+
+testAdminSimulationRunnerPath(
+product.launch_path
+);
+
+}
+
+}
 
 }
 );
