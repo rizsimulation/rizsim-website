@@ -9958,6 +9958,12 @@ let adminPublicationQueue =
 
 let adminPublicationHistory =
 [];
+
+let adminPublishingLoaded =
+false;
+
+let adminPublishingLoading =
+false;
   
 let activeView =
 "home";
@@ -9966,15 +9972,60 @@ let allowedViewOrder =
 [];
 
 
+let portalLoadingFailsafeTimer =
+null;
+
 function showLoading() {
 
-document
-.getElementById(
+const loader =
+document.getElementById(
 "portalLoading"
-)
-.classList
-.add(
+);
+
+if(
+!loader
+) {
+
+return;
+
+}
+
+loader.classList.add(
 "show"
+);
+
+if(
+portalLoadingFailsafeTimer
+) {
+
+clearTimeout(
+portalLoadingFailsafeTimer
+);
+
+}
+
+/*
+Last-resort protection only. Normal actions should finish or handle
+their own timeout long before this. It prevents a permanent blur if
+an unexpected exception occurs after showLoading().
+*/
+portalLoadingFailsafeTimer =
+setTimeout(
+() => {
+
+loader.classList.remove(
+"show"
+);
+
+portalLoadingFailsafeTimer =
+null;
+
+console.warn(
+"RizSim released a stale loading overlay after 90 seconds."
+);
+
+},
+90000
 );
 
 }
@@ -9982,14 +10033,33 @@ document
 
 function hideLoading() {
 
-document
-.getElementById(
+if(
+portalLoadingFailsafeTimer
+) {
+
+clearTimeout(
+portalLoadingFailsafeTimer
+);
+
+portalLoadingFailsafeTimer =
+null;
+
+}
+
+const loader =
+document.getElementById(
 "portalLoading"
-)
-.classList
-.remove(
+);
+
+if(
+loader
+) {
+
+loader.classList.remove(
 "show"
 );
+
+}
 
 }
 
@@ -10779,14 +10849,19 @@ async function verifyAccess() {
 
 showLoading();
 
+try {
+
 const {
 data: userData,
 error: userError
 } =
 
-await supabase
+await withTimeout(
+supabase
 .auth
-.getUser();
+.getUser(),
+12000
+);
 
 currentUser =
 userData?.user
@@ -10798,8 +10873,6 @@ userError
 ||
 !currentUser
 ) {
-
-hideLoading();
 
 showUnauthenticatedHeader();
 
@@ -10813,13 +10886,16 @@ return;
 }
 
 currentProfile =
-await getOrCreateProfile();
+await withTimeout(
+getOrCreateProfile(),
+12000
+);
 
 if(
 !currentProfile
 ) {
 
-hideLoading();
+showUnauthenticatedHeader();
 
 document.getElementById(
 "gateStatus"
@@ -10831,43 +10907,38 @@ return;
 }
 
 currentMembership =
-await getMembership();
+await withTimeout(
+getMembership(),
+12000
+);
 
 if(
 !currentMembership
 ) {
 
-try {
-
-await ensureStandardFacultyAccess();
+await withTimeout(
+ensureStandardFacultyAccess(),
+12000
+);
 
 currentMembership =
-await getMembership();
+await withTimeout(
+getMembership(),
+12000
+);
 
 }
 
-catch(error) {
+if(
+!currentMembership
+) {
 
-hideLoading();
+showUnauthenticatedHeader();
 
 document.getElementById(
 "gateStatus"
 ).textContent =
-error.message
-||
-"Faculty Access could not be created.";
-
-return;
-
-}
-
-}
-
-if(
-!currentMembership
-) {
-
-hideLoading();
+"RizSim could not confirm your portal access.";
 
 return;
 
@@ -10879,8 +10950,6 @@ true
 ) {
 
 showDisabledGate();
-
-hideLoading();
 
 return;
 
@@ -10896,8 +10965,6 @@ showLegacyGate(
 currentMembership.role
 );
 
-hideLoading();
-
 return;
 
 }
@@ -10910,22 +10977,124 @@ currentMembership.role
 
 showDisabledGate();
 
-hideLoading();
-
 return;
 
 }
 
-await claimApprovedInstitutionAccess();
+await withTimeout(
+claimApprovedInstitutionAccess(),
+10000
+);
 
 showAuthenticatedApp();
 
-await loadPortalData();
+try {
+
+await withTimeout(
+loadPortalData(),
+20000
+);
+
+}
+catch(portalError) {
+
+console.error(
+"RizSim portal data load warning:",
+portalError
+);
+
+/*
+Do not trap the user behind a permanent loading screen if one
+non-critical portal request is slow. Render whatever data has
+already arrived; the background request may still complete later.
+*/
+
+try {
+
+renderPortal();
+
+startClassroomLiveRefresh();
+
+}
+catch(renderError) {
+
+console.error(
+"RizSim recovery render warning:",
+renderError
+);
+
+}
+
+}
+
+}
+catch(error) {
+
+console.error(
+"RizSim access verification error:",
+error
+);
+
+const hasUsableAccess =
+Boolean(
+currentUser
+&&
+currentProfile
+&&
+currentMembership
+&&
+currentMembership.active ===
+true
+&&
+ACTIVE_PORTAL_ROLES.has(
+currentMembership.role
+)
+);
+
+if(
+hasUsableAccess
+) {
+
+showAuthenticatedApp();
+
+try {
+
+renderPortal();
+
+startClassroomLiveRefresh();
+
+}
+catch(renderError) {
+
+console.error(
+"RizSim fallback render warning:",
+renderError
+);
+
+}
+
+}
+else {
+
+showUnauthenticatedHeader();
+
+document.getElementById(
+"gateStatus"
+).textContent =
+error?.message
+||
+"RizSim could not complete access verification. Please try again.";
+
+}
+
+}
+finally {
 
 hideLoading();
 
 }
 
+}
 
 function hideAllPrimaryScreens() {
 
@@ -11461,20 +11630,32 @@ currentProfile
 
 async function loadPortalData() {
 
-showLoading();
+const role =
+currentMembership.role;
 
-const categoryResult =
+const isAdminOrOwner =
+[
+"admin",
+"owner"
+].includes(
+role
+);
 
-await supabase
+/* ============================================================
+   CORE CATALOGUE + LICENCE DATA
+   Independent requests run together to keep Access OUT fast.
+   Publishing queue/history are intentionally NOT loaded here.
+   ============================================================ */
 
+const publicCategoryRequest =
+
+supabase
 .from(
 "categories"
 )
-
 .select(
 "*"
 )
-
 .order(
 "name",
 {
@@ -11483,57 +11664,15 @@ true
 }
 );
 
-categories =
-categoryResult.data
-||
-[];
+const publicProductRequest =
 
-if(
-[
-"admin",
-"owner"
-].includes(
-currentMembership.role
-)
-) {
-
-const {
-data:
-adminCategoryData,
-error:
-adminCategoryError
-} =
-
-await supabase.rpc(
-"admin_get_rizsim_categories"
-);
-
-
-if(
-!adminCategoryError
-) {
-
-categories =
-adminCategoryData
-||
-[];
-
-}
-
-}
-
-const productResult =
-
-await supabase
-
+supabase
 .from(
 "products"
 )
-
 .select(
 "*"
 )
-
 .order(
 "created_at",
 {
@@ -11542,138 +11681,57 @@ false
 }
 );
 
-products =
-productResult.data
-||
-[];
+const adminCategoryRequest =
 
-if(
-[
-"admin",
-"owner"
-].includes(
-currentMembership.role
+isAdminOrOwner
+
+? supabase.rpc(
+"admin_get_rizsim_categories"
 )
-) {
 
-const {
+: Promise.resolve({
 data:
-adminProductData,
+null,
 error:
-adminProductError
-} =
+null
+});
 
-await supabase.rpc(
+const adminProductRequest =
+
+isAdminOrOwner
+
+? supabase.rpc(
 "admin_get_rizsim_products"
-);
-
-if(
-[
-"admin",
-"owner"
-].includes(
-currentMembership.role
 )
-) {
 
-const {
+: Promise.resolve({
 data:
-adminResourceData,
+null,
 error:
-adminResourceError
-} =
+null
+});
 
-await supabase.rpc(
+const adminResourceRequest =
+
+isAdminOrOwner
+
+? supabase.rpc(
 "admin_get_rizsim_resources"
-);
-
-
-if(
-!adminResourceError
-) {
-
-adminResources =
-adminResourceData
-||
-[];
-
-}
-
-}
-
-if(
-[
-"admin",
-"owner"
-].includes(
-currentMembership.role
-)
-) {
-
-const [
-publicationQueueResult,
-publicationHistoryResult
-] =
-
-await Promise.all([
-
-supabase.rpc(
-"admin_get_rizsim_publication_queue"
-),
-
-supabase.rpc(
-"admin_get_rizsim_publication_history"
 )
 
-]);
+: Promise.resolve({
+data:
+[],
+error:
+null
+});
 
+const licenseOptionRequest =
 
-if(
-!publicationQueueResult.error
-) {
-
-adminPublicationQueue =
-publicationQueueResult.data
-||
-[];
-
-}
-
-
-if(
-!publicationHistoryResult.error
-) {
-
-adminPublicationHistory =
-publicationHistoryResult.data
-||
-[];
-
-}
-
-}
-  
-if(
-!adminProductError
-) {
-
-products =
-adminProductData
-||
-[];
-
-}
-
-}
-
-const licenseOptionResult =
-
-await supabase
-
+supabase
 .from(
 "simulation_license_options"
 )
-
 .select(`
 id,
 product_id,
@@ -11685,12 +11743,10 @@ is_default,
 enabled,
 sort_order
 `)
-
 .eq(
 "enabled",
 true
 )
-
 .order(
 "sort_order",
 {
@@ -11699,16 +11755,95 @@ true
 }
 );
 
+const myLicenseRequest =
+
+supabase.rpc(
+"get_my_simulation_license_catalogue"
+);
+
+const [
+publicCategoryResult,
+publicProductResult,
+adminCategoryResult,
+adminProductResult,
+adminResourceResult,
+licenseOptionResult,
+myLicenseResult
+] =
+
+await Promise.all([
+publicCategoryRequest,
+publicProductRequest,
+adminCategoryRequest,
+adminProductRequest,
+adminResourceRequest,
+licenseOptionRequest,
+myLicenseRequest
+]);
+
+categories =
+publicCategoryResult.data
+||
+[];
+
+products =
+publicProductResult.data
+||
+[];
+
+if(
+isAdminOrOwner
+) {
+
+if(
+!adminCategoryResult.error
+) {
+
+categories =
+adminCategoryResult.data
+||
+[];
+
+}
+
+if(
+!adminProductResult.error
+) {
+
+products =
+adminProductResult.data
+||
+[];
+
+}
+
+if(
+!adminResourceResult.error
+) {
+
+adminResources =
+adminResourceResult.data
+||
+[];
+
+}
+
+/*
+Publishing is lazy-loaded only when the Publishing tab is opened.
+This keeps publication history/readiness checks off the login path.
+*/
+adminPublishingLoaded =
+false;
+
+adminPublishingLoading =
+false;
+
+}
+
 licenseOptions =
 licenseOptionResult.data
 ||
 [];
-
-const myLicenseResult =
-
-await supabase.rpc(
-"get_my_simulation_license_catalogue"
-);
 
 myLicenseCatalogue =
 myLicenseResult.error
@@ -11721,26 +11856,78 @@ myLicenseResult.data
 []
 );
 
-courses =
-[];
+/* ============================================================
+   COURSES + CLASSROOM + RESULTS
+   These independent requests also run together.
+   ============================================================ */
 
-selectedCourseSimulations =
-[];
+const courseRequest =
 
-if(
 [
 "course_lead",
 "owner"
 ].includes(
-currentMembership.role
+role
 )
-) {
 
-const courseResult =
-
-await supabase.rpc(
+? supabase.rpc(
 "get_my_rizsim_courses"
+)
+
+: Promise.resolve({
+data:
+[],
+error:
+null
+});
+
+const classroomRequest =
+
+[
+"faculty",
+"course_lead",
+"institution",
+"owner"
+].includes(
+role
+)
+
+? supabase.rpc(
+"get_my_rizsim_classroom_sessions"
+)
+
+: Promise.resolve({
+data:
+[],
+error:
+null
+});
+
+const submissionRequest =
+
+supabase.rpc(
+"get_visible_simulation_submissions"
 );
+
+const submissionContextRequest =
+
+supabase.rpc(
+"get_visible_simulation_submission_context"
+);
+
+const [
+courseResult,
+classroomResult,
+submissionResult,
+submissionContextResult
+] =
+
+await Promise.all([
+courseRequest,
+classroomRequest,
+submissionRequest,
+submissionContextRequest
+]);
 
 courses =
 courseResult.error
@@ -11753,6 +11940,8 @@ courseResult.data
 []
 );
 
+selectedCourseSimulations =
+[];
 
 if(
 selectedCourseId
@@ -11774,28 +11963,6 @@ null;
 
 }
 
-}
-
-classroomSessions =
-[];
-
-if(
-[
-"faculty",
-"course_lead",
-"institution",
-"owner"
-].includes(
-currentMembership.role
-)
-) {
-
-const classroomResult =
-
-await supabase.rpc(
-"get_my_rizsim_classroom_sessions"
-);
-
 classroomSessions =
 classroomResult.error
 
@@ -11807,6 +11974,17 @@ classroomResult.data
 []
 );
 
+if(
+[
+"faculty",
+"course_lead",
+"institution",
+"owner"
+].includes(
+role
+)
+) {
+
 ensureClassroomRosterSessionSelection();
 
 await loadClassroomStudents(
@@ -11815,12 +11993,12 @@ true
 );
 
 }
+else {
 
-const submissionResult =
+classroomStudents =
+[];
 
-await supabase.rpc(
-"get_visible_simulation_submissions"
-);
+}
 
 submissions =
 submissionResult.error
@@ -11831,12 +12009,6 @@ submissionResult.error
 submissionResult.data
 ||
 []
-);
-
-const submissionContextResult =
-
-await supabase.rpc(
-"get_visible_simulation_submission_context"
 );
 
 const submissionContext =
@@ -11945,7 +12117,7 @@ null
 );
 
 if(
-currentMembership.role ===
+role ===
 "owner"
 ) {
 
@@ -11954,7 +12126,7 @@ await loadOwnerData();
 }
 
 if(
-currentMembership.role ===
+role ===
 "institution"
 ) {
 
@@ -11966,10 +12138,7 @@ renderPortal();
 
 startClassroomLiveRefresh();
 
-hideLoading();
-
 }
-
 
 async function loadOwnerData() {
 
@@ -25324,6 +25493,22 @@ nextTab
 }
 );
 
+if(
+nextTab ===
+"publishing"
+&&
+[
+"admin",
+"owner"
+].includes(
+currentMembership?.role
+)
+) {
+
+void loadAdminPublishingData();
+
+}
+
 }
 
 
@@ -25788,6 +25973,9 @@ categories =
 data
 ||
 [];
+
+adminPublishingLoaded =
+false;
 
 
 renderAdminContentWorkspace();
@@ -26415,6 +26603,9 @@ products =
 data
 ||
 [];
+
+adminPublishingLoaded =
+false;
 
 
 renderAdminContentWorkspace();
@@ -27838,6 +28029,9 @@ resourceResult.data
 ||
 [];
 
+adminPublishingLoaded =
+false;
+
 
 renderAdminContentWorkspace();
 
@@ -28645,6 +28839,145 @@ return false;
 }
 
 
+async function loadAdminPublishingData(
+force = false
+) {
+
+if(
+![
+"admin",
+"owner"
+].includes(
+currentMembership?.role
+)
+) {
+
+return false;
+
+}
+
+if(
+adminPublishingLoaded
+&&
+!force
+) {
+
+renderAdminPublishing();
+
+return true;
+
+}
+
+if(
+adminPublishingLoading
+) {
+
+return false;
+
+}
+
+adminPublishingLoading =
+true;
+
+setManagementMessage(
+"adminPublishingMessage",
+"Checking publication readiness…"
+);
+
+renderAdminPublishing();
+
+try {
+
+const [
+publicationQueueResult,
+publicationHistoryResult
+] =
+
+await withTimeout(
+Promise.all([
+
+supabase.rpc(
+"admin_get_rizsim_publication_queue"
+),
+
+supabase.rpc(
+"admin_get_rizsim_publication_history"
+)
+
+]),
+12000
+);
+
+if(
+publicationQueueResult.error
+) {
+
+throw publicationQueueResult.error;
+
+}
+
+if(
+publicationHistoryResult.error
+) {
+
+throw publicationHistoryResult.error;
+
+}
+
+adminPublicationQueue =
+publicationQueueResult.data
+||
+[];
+
+adminPublicationHistory =
+publicationHistoryResult.data
+||
+[];
+
+adminPublishingLoaded =
+true;
+
+setManagementMessage(
+"adminPublishingMessage",
+""
+);
+
+return true;
+
+}
+catch(error) {
+
+console.error(
+"RizSim publishing workspace load error:",
+error
+);
+
+adminPublishingLoaded =
+false;
+
+setManagementMessage(
+"adminPublishingMessage",
+error?.message
+||
+"RizSim could not load the Publishing workspace. Please try again.",
+true
+);
+
+return false;
+
+}
+finally {
+
+adminPublishingLoading =
+false;
+
+renderAdminPublishing();
+
+}
+
+}
+
+
 function renderAdminPublishing() {
 
 const list =
@@ -28664,6 +28997,60 @@ if(
 ||
 !historyList
 ) {
+
+return;
+
+}
+
+if(
+!adminPublishingLoaded
+) {
+
+const queueTitle =
+adminPublishingLoading
+?
+"Checking publication readiness"
+:
+"Publishing data loads on demand";
+
+const queueCopy =
+adminPublishingLoading
+?
+"RizSim is checking categories, runners and protected resource files."
+:
+"Open this Publishing tab whenever you need a fresh readiness check.";
+
+list.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+${escapeHTML(queueTitle)}
+</strong>
+
+<p>
+${escapeHTML(queueCopy)}
+</p>
+
+</div>
+
+`;
+
+historyList.innerHTML = `
+
+<div class="admin-empty">
+
+<strong>
+${adminPublishingLoading ? "Loading publication history" : "Publication history loads with Publishing"}
+</strong>
+
+<p>
+${adminPublishingLoading ? "Retrieving recent Publish and Unpublish activity." : "History is kept off the Access OUT login path to keep sign-in responsive."}
+</p>
+
+</div>
+
+`;
 
 return;
 
@@ -29257,6 +29644,12 @@ publicationHistoryResult.data
 ||
 [];
 
+adminPublishingLoaded =
+true;
+
+adminPublishingLoading =
+false;
+
 
 renderAdminContentWorkspace();
 
@@ -29496,16 +29889,17 @@ promise,
 milliseconds = 15000
 ) {
 
-return Promise.race([
+let timeoutId =
+null;
 
-promise,
-
+const timeoutPromise =
 new Promise(
 (
 _,
 reject
 ) => {
 
+timeoutId =
 setTimeout(
 () => {
 
@@ -29520,9 +29914,30 @@ milliseconds
 );
 
 }
-)
+);
 
-]);
+return Promise.race([
+Promise.resolve(
+promise
+),
+timeoutPromise
+])
+.finally(
+() => {
+
+if(
+timeoutId !==
+null
+) {
+
+clearTimeout(
+timeoutId
+);
+
+}
+
+}
+);
 
 }
   
@@ -32453,4 +32868,3 @@ Complete
 </body>
 
 </html>
-
