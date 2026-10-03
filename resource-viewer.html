@@ -88,39 +88,23 @@ gap:14px;
 min-width:0;
 }
 
-.brand-wordmark{
-display:flex;
-flex-direction:column;
-justify-content:center;
-min-width:0;
-line-height:1;
+.brand-logo{
+display:block;
+height:64px;
+width:auto;
+max-width:220px;
+object-fit:contain;
 }
 
-.brand-wordmark-line{
-display:flex;
-align-items:flex-end;
-gap:0;
-font-weight:950;
-font-size:1.9rem;
-letter-spacing:-0.03em;
-line-height:.9;
-}
-
-.brand-riz{
-color:#18aeb1;
-}
-
-.brand-sim{
-color:#173c8f;
-}
-
-.brand-tagline{
-margin-top:4px;
-font-size:.68rem;
-font-weight:800;
-letter-spacing:.08em;
-text-transform:uppercase;
-color:#68808b;
+.brand-viewer-copy{
+padding:8px 12px;
+border-radius:999px;
+background:#edf6f7;
+border:1px solid #d6e7ea;
+color:#315566;
+font-size:.70rem;
+font-weight:900;
+white-space:nowrap;
 }
 
 .brand-viewer-copy{
@@ -463,6 +447,15 @@ transform:rotate(360deg);
 
 @media(max-width:700px){
 
+.brand-logo{
+height:46px;
+max-width:170px;
+}
+
+.brand-viewer-copy{
+display:none;
+}
+   
 .viewer-header{
 padding:9px 12px;
 }
@@ -533,17 +526,11 @@ display:none !important;
 
 <div class="brand">
 
-<div class="brand-wordmark">
-
-<div class="brand-wordmark-line">
-<span class="brand-riz">Riz</span><span class="brand-sim">Sim</span>
-</div>
-
-<span class="brand-tagline">
-From Knowing to Doing
-</span>
-
-</div>
+<img
+src="/RizSim%20finalized%20logo.png"
+alt="RizSim"
+class="brand-logo"
+>
 
 <div class="brand-viewer-copy">
 Protected Viewer
@@ -799,6 +786,16 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
+const RIZSIM_LOGO_SRC =
+"/RizSim%20finalized%20logo.png";
+
+
+const rizsimLogoImage =
+new Image();
+
+
+rizsimLogoImage.src =
+RIZSIM_LOGO_SRC;
 
 
 /* ============================================================
@@ -1363,107 +1360,153 @@ context.save();
 
 
 /* ============================================================
-   TOP-RIGHT RIZSIM BRAND MARK
+   TOP-RIGHT OFFICIAL RIZSIM LOGO
    ============================================================ */
 
-const topBoxPadding =
+const logoPadding =
 Math.max(
-10,
-Math.round(width * 0.012)
-);
-
-const topBoxWidth =
-Math.min(
-250,
-Math.max(
-170,
-Math.round(width * 0.24)
+12,
+Math.round(
+width * 0.018
 )
 );
 
-const topBoxHeight =
+
+const logoAreaWidth =
+Math.min(
+280,
 Math.max(
-34,
-Math.round(height * 0.045)
+180,
+Math.round(
+width * 0.24
+)
+)
 );
 
-const topBoxX =
-width - topBoxWidth - topBoxPadding;
 
-const topBoxY =
-topBoxPadding;
+const logoAreaHeight =
+Math.max(
+55,
+Math.round(
+height * 0.065
+)
+);
 
+
+const logoAreaX =
+width -
+logoAreaWidth -
+logoPadding;
+
+
+const logoAreaY =
+logoPadding;
+
+
+/*
+Subtle white background so the official transparent
+logo remains clear on every PDF page.
+*/
 
 context.fillStyle =
-"rgba(233, 245, 247, 0.96)";
+"rgba(255,255,255,0.94)";
+
 
 context.fillRect(
-topBoxX,
-topBoxY,
-topBoxWidth,
-topBoxHeight
+logoAreaX,
+logoAreaY,
+logoAreaWidth,
+logoAreaHeight
 );
 
 
-context.strokeStyle =
-"rgba(24, 139, 149, 0.25)";
+if(
+rizsimLogoImage.complete
+&&
+rizsimLogoImage.naturalWidth > 0
+) {
 
-context.lineWidth =
-1;
 
-context.strokeRect(
-topBoxX,
-topBoxY,
-topBoxWidth,
-topBoxHeight
+const innerPadding =
+8;
+
+
+const maxWidth =
+logoAreaWidth -
+(innerPadding * 2);
+
+
+const maxHeight =
+logoAreaHeight -
+(innerPadding * 2);
+
+
+const ratio =
+rizsimLogoImage.naturalWidth
+/
+rizsimLogoImage.naturalHeight;
+
+
+let drawWidth =
+maxWidth;
+
+
+let drawHeight =
+drawWidth /
+ratio;
+
+
+if(
+drawHeight >
+maxHeight
+) {
+
+drawHeight =
+maxHeight;
+
+
+drawWidth =
+drawHeight *
+ratio;
+
+}
+
+
+const drawX =
+logoAreaX
++
+(
+(
+logoAreaWidth -
+drawWidth
+)
+/
+2
 );
 
 
-context.textBaseline =
-"top";
-
-context.textAlign =
-"left";
-
-
-context.font =
-"900 16px Arial";
-
-context.fillStyle =
-"rgba(24, 174, 177, 0.96)";
-
-context.fillText(
-"Riz",
-topBoxX + 10,
-topBoxY + 7
+const drawY =
+logoAreaY
++
+(
+(
+logoAreaHeight -
+drawHeight
+)
+/
+2
 );
 
 
-const rizWidth =
-context.measureText("Riz").width;
-
-context.fillStyle =
-"rgba(23, 60, 143, 0.96)";
-
-context.fillText(
-"Sim",
-topBoxX + 10 + rizWidth,
-topBoxY + 7
+context.drawImage(
+rizsimLogoImage,
+drawX,
+drawY,
+drawWidth,
+drawHeight
 );
 
-
-context.font =
-"700 9px Arial";
-
-context.fillStyle =
-"rgba(86, 110, 120, 0.86)";
-
-context.fillText(
-"From Knowing to Doing",
-topBoxX + 10,
-topBoxY + 23
-);
-
+}
 
 /* ============================================================
    BOTTOM PROTECTED FOOTER STRIP
@@ -2258,6 +2301,15 @@ showLoading(
 
 
 await loadProtectedFile();
+
+
+try {
+
+await rizsimLogoImage.decode();
+
+}
+catch {
+}
 
 
 await renderResource();
