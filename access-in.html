@@ -2692,7 +2692,7 @@ role="tabpanel"
 <div class="learning-section-heading">
 <div>
 <h3>Learning Materials</h3>
-<p>Handouts, readings, slides, worksheets and other resources shared with your authorized Course will appear here.</p>
+<p>eBooks, learning materials and authorized Course resources available to your account will appear here.</p>
 </div>
 <div class="learning-status-note">READ ONLY</div>
 </div>
@@ -3311,6 +3311,9 @@ let products =
 [];
 
 let attempts =
+[];
+
+let learningResources =
 [];
 
 let exceptionalAccess =
@@ -4045,7 +4048,8 @@ async function loadPlatformData(){
 const [
 categoryResult,
 productResult,
-attemptResult
+attemptResult,
+resourceResult
 ] =
 
 await Promise.all([
@@ -4121,6 +4125,10 @@ joined_at
 {
 ascending:false
 }
+),
+
+supabase.rpc(
+"get_my_rizsim_resource_catalogue"
 )
 
 ]);
@@ -4139,6 +4147,34 @@ attempts =
 attemptResult.data
 ||
 [];
+
+learningResources =
+
+resourceResult.error
+
+?
+
+[]
+
+:
+
+(
+resourceResult.data
+||
+[]
+);
+
+
+if(
+resourceResult.error
+){
+
+console.error(
+"RizSim Student resource catalogue:",
+resourceResult.error
+);
+
+}
 
 await loadExceptionalAccess();
 
@@ -4695,7 +4731,7 @@ document
 "learningMaterialCount"
 )
 .textContent =
-"0";
+learningResources.length;
 
 renderLearningActive(
 activeAttempts
@@ -4974,38 +5010,175 @@ document.getElementById(
 "learningMaterialsContent"
 );
 
+
+if(
+!learningResources.length
+){
+
 container.innerHTML = `
 
-<div class="course-preview-shell">
+<div class="empty-state">
 
-<div class="course-preview-top">
-<strong>Course materials</strong>
-<span class="status-badge required">Read only</span>
+<div class="empty-state-icon">
+M
 </div>
 
-<div class="course-preview-copy">
-Students will only see resources shared through a Course they are
-authorized to access. Faculty upload, edit and remove controls will not
-appear in Access IN.
+<strong>
+No learning materials available yet
+</strong>
+
+<p>
+
+Published RizSim resources that are available to your
+account will appear here.
+
+</p>
+
 </div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div
+class="learning-grid"
+style="margin-top:0;"
+>
+
+${
+
+learningResources
+.map(
+resource => {
+
+const resourceType =
+
+resource.product_type ===
+"ebook"
+
+?
+
+"eBook"
+
+:
+
+"Learning Material";
+
+
+const description =
+
+resource.short_description
+||
+"Protected RizSim learning resource.";
+
+
+return `
+
+<article
+class="learning-card"
+data-swipe-block
+>
+
+<span class="card-category">
+
+${escapeHTML(
+getCategoryName(
+resource.category_id
+)
+)}
+
+</span>
+
+
+<h3>
+
+${escapeHTML(
+resource.title
+)}
+
+</h3>
+
+
+<p>
+
+${escapeHTML(
+description
+)}
+
+</p>
+
 
 <div class="material-type-strip">
-<span class="material-type-chip">Student Handout</span>
-<span class="material-type-chip">Reading</span>
-<span class="material-type-chip">Slides</span>
-<span class="material-type-chip">Worksheet</span>
-<span class="material-type-chip">Learning Resource</span>
-</div>
+
+<span class="material-type-chip">
+
+${escapeHTML(
+resourceType
+)}
+
+</span>
+
+
+${
+resource.file_name
+?
+`
+
+<span class="material-type-chip">
+
+${escapeHTML(
+resource.file_name
+)}
+
+</span>
+
+`
+:
+""
+}
 
 </div>
 
-<div class="empty-state">
-<div class="empty-state-icon">M</div>
-<strong>No authorized materials loaded yet</strong>
-<p>
-When Student Course permissions are connected, secure files and approved
-external resources will appear here with an Open action.
-</p>
+
+<div class="card-footer">
+
+<span class="status-badge available">
+
+Available
+
+</span>
+
+
+<button
+class="small-action primary"
+type="button"
+data-open-resource="${escapeHTML(
+resource.product_id
+)}"
+>
+
+Open
+
+</button>
+
+</div>
+
+
+</article>
+
+`;
+
+}
+)
+.join("")
+
+}
+
 </div>
 
 `;
@@ -7361,6 +7534,40 @@ return;
 
 }
 
+const resourceButton =
+event.target.closest(
+"[data-open-resource]"
+);
+
+
+if(
+resourceButton
+){
+
+const resourceId =
+resourceButton.dataset
+.openResource;
+
+
+if(
+resourceId
+){
+
+window.location.href =
+
+"/resource-viewer.html?resource="
++
+encodeURIComponent(
+resourceId
+);
+
+}
+
+
+return;
+
+}
+   
 const productButton =
 event.target.closest(
 "[data-product-details]"
