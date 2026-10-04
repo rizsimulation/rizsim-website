@@ -11642,6 +11642,165 @@ role
 );
 
 /* ============================================================
+   FAST ADMIN STARTUP
+
+   Admin is a content-operations role.
+   Do not delay Admin login with Faculty, Course, Classroom,
+   Results, Institution or licence-catalogue requests.
+   ============================================================ */
+
+if(
+role ===
+"admin"
+) {
+
+const [
+adminCategoryResult,
+adminProductResult,
+adminResourceResult
+] =
+
+await withTimeout(
+
+Promise.all([
+
+supabase.rpc(
+"admin_get_rizsim_categories"
+),
+
+supabase.rpc(
+"admin_get_rizsim_products"
+),
+
+supabase.rpc(
+"admin_get_rizsim_resources"
+)
+
+]),
+
+12000
+
+);
+
+
+/* ------------------------------------------------------------
+   Fail clearly if core Admin catalogue data could not load.
+   ------------------------------------------------------------ */
+
+if(
+adminCategoryResult.error
+) {
+
+throw adminCategoryResult.error;
+
+}
+
+
+if(
+adminProductResult.error
+) {
+
+throw adminProductResult.error;
+
+}
+
+
+if(
+adminResourceResult.error
+) {
+
+throw adminResourceResult.error;
+
+}
+
+
+/* ------------------------------------------------------------
+   ADMIN CONTENT DATA
+   ------------------------------------------------------------ */
+
+categories =
+adminCategoryResult.data
+||
+[];
+
+
+products =
+adminProductResult.data
+||
+[];
+
+
+adminResources =
+adminResourceResult.data
+||
+[];
+
+
+/* ------------------------------------------------------------
+   DATA ADMIN DOES NOT NEED AT LOGIN
+   ------------------------------------------------------------ */
+
+licenseOptions =
+[];
+
+
+myLicenseCatalogue =
+[];
+
+
+courses =
+[];
+
+
+selectedCourseSimulations =
+[];
+
+
+classroomSessions =
+[];
+
+
+classroomStudents =
+[];
+
+
+submissions =
+[];
+
+
+/* ------------------------------------------------------------
+   Publishing remains lazy-loaded.
+   ------------------------------------------------------------ */
+
+adminPublicationQueue =
+[];
+
+
+adminPublicationHistory =
+[];
+
+
+adminPublishingLoaded =
+false;
+
+
+adminPublishingLoading =
+false;
+
+
+/* ------------------------------------------------------------
+   Render Admin immediately.
+   No Classroom live-refresh timer is needed for Admin.
+   ------------------------------------------------------------ */
+
+renderPortal();
+
+
+return;
+
+}
+  
+/* ============================================================
    CORE CATALOGUE + LICENCE DATA
    Independent requests run together to keep Access OUT fast.
    Publishing queue/history are intentionally NOT loaded here.
