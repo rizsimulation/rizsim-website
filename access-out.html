@@ -7865,7 +7865,7 @@ value="0"
 >
 
 <span class="management-help">
-PKR. Licence-term pricing will remain separately managed.
+PKR. Commercial access and base pricing are Owner-controlled; Admin manages content only.
 </span>
 
 </div>
@@ -8175,7 +8175,7 @@ value="0"
 >
 
 <span class="management-help">
-PKR
+PKR. Owner-controlled commercial setting; Admin manages content only.
 </span>
 
 </div>
@@ -25708,6 +25708,8 @@ renderAdminSimulations();
 renderAdminResources();
 
 renderAdminPublishing();
+updateAdminSimulationPriceState();
+updateAdminResourcePriceState();
 
 }
 
@@ -26512,6 +26514,8 @@ setManagementMessage(
 ""
 );
 
+
+updateAdminSimulationPriceState();
 }
 
 
@@ -26544,6 +26548,10 @@ return;
 }
 
 
+if(product.status==='published'){
+  setManagementMessage('adminSimulationMessage','Unpublish this simulation in Publishing before editing it.',true);
+  return;
+}
 adminEditingSimulationId =
 product.id;
 
@@ -26670,6 +26678,8 @@ document.getElementById(
 "adminSimulationTitle"
 ).focus();
 
+
+updateAdminSimulationPriceState();
 }
 
 
@@ -26715,92 +26725,34 @@ return true;
 }
 
 
-function updateAdminSimulationPriceState() {
-
-const accessType =
-document.getElementById(
-"adminSimulationAccessType"
-).value;
-
-
-const priceInput =
-document.getElementById(
-"adminSimulationPrice"
-);
-
-
-if(
-accessType ===
-"free"
-) {
-
-priceInput.value =
-"0";
-
-priceInput.disabled =
-true;
-
+function updateAdminSimulationPriceState(){
+  const access=document.getElementById('adminSimulationAccessType');
+  const price=document.getElementById('adminSimulationPrice');
+  if(!access||!price)return;
+  const owner=currentMembership?.role==='owner';
+  access.disabled=!owner;
+  price.disabled=!owner||access.value==='free';
+  if(owner&&access.value==='free')price.value='0';
+  access.title=owner?'':'Only RizSim Owner can change commercial access';
+  price.title=owner?'':'Only RizSim Owner can change base price';
 }
 
-else {
-
-priceInput.disabled =
-false;
-
+function isSafeRizsimRunnerPath(path){
+  const p=String(path||'').trim();
+  return p.length>=6&&p.length<=240&&
+    /^\/(?:[A-Za-z0-9][A-Za-z0-9_.-]*\/)*[A-Za-z0-9][A-Za-z0-9_.-]*\.html?$/.test(p)&&
+    !p.includes('..');
 }
 
+function testAdminSimulationRunnerPath(path){
+  const runnerPath=String(path||'').trim();
+  if(!isSafeRizsimRunnerPath(runnerPath)){
+    setManagementMessage('adminSimulationMessage',
+      'Use a safe internal RizSim .html runner path, such as /simulation-test.html.',true);
+    return;
+  }
+  window.open(runnerPath,'_blank','noopener,noreferrer');
 }
-
-
-function testAdminSimulationRunnerPath(
-path
-) {
-
-const runnerPath =
-String(
-path
-||
-""
-)
-.trim();
-
-
-if(!runnerPath) {
-
-setManagementMessage(
-"adminSimulationMessage",
-"Add a RizSim runner path first.",
-true
-);
-
-return;
-
-}
-
-
-if(
-!runnerPath.startsWith("/")
-) {
-
-setManagementMessage(
-"adminSimulationMessage",
-"Runner path must begin with /.",
-true
-);
-
-return;
-
-}
-
-
-window.open(
-runnerPath,
-"_blank",
-"noopener,noreferrer"
-);
-
-}
-
 
 async function saveAdminSimulation() {
 
@@ -26818,6 +26770,11 @@ return;
 }
 
 
+if(adminEditingSimulationId && products.some(p=>
+    String(p.id)===String(adminEditingSimulationId)&&p.status==='published')){
+  setManagementMessage('adminSimulationMessage','Unpublish before editing. Refresh your catalogue if the status changed.',true);
+  return;
+}
 const title =
 document
 .getElementById(
@@ -26948,15 +26905,11 @@ return;
 }
 
 
-if(
-launchPath
-&&
-!launchPath.startsWith("/")
-) {
+if(launchPath&&!isSafeRizsimRunnerPath(launchPath)) {
 
 setManagementMessage(
 "adminSimulationMessage",
-"RizSim runner path must begin with /.",
+"Use a RizSim internal .html runner path (for example, /simulation-test.html), without query strings or traversal.",
 true
 );
 
@@ -27321,7 +27274,9 @@ status.toUpperCase()
 </span>
 
 
-<button
+${status==='published'?
+  '<span class="status-badge muted" title="Unpublish in Publishing before editing">Unpublish to edit</span>':
+  `<button
 class="admin-mini-button"
 type="button"
 data-admin-edit-simulation="${escapeHTML(
@@ -27329,7 +27284,7 @@ product.id
 )}"
 >
 Edit
-</button>
+</button>`}
 
 
 ${
@@ -27594,7 +27549,9 @@ resource.status
 </span>
 
 
-<button
+${resource.status==='published'?
+  '<span class="status-badge muted" title="Unpublish in Publishing before editing">Unpublish to edit</span>':
+  `<button
 class="admin-mini-button"
 type="button"
 data-admin-edit-resource="${escapeHTML(
@@ -27602,7 +27559,7 @@ resource.id
 )}"
 >
 Edit
-</button>
+</button>`}
 
 
 ${
@@ -27752,7 +27709,6 @@ setManagementMessage(
 
 
 updateAdminResourcePriceState();
-
 }
 
 
@@ -27780,6 +27736,10 @@ return;
 }
 
 
+if(resource.status==='published'){
+  setManagementMessage('adminResourceMessage','Unpublish this resource in Publishing before editing or replacing its file.',true);
+  return;
+}
 adminEditingResourceId =
 resource.id;
 
@@ -27954,49 +27914,17 @@ document.getElementById(
 }
 
 
-function updateAdminResourcePriceState() {
-
-const accessType =
-document.getElementById(
-"adminResourceAccessType"
-)?.value;
-
-
-const priceInput =
-document.getElementById(
-"adminResourcePrice"
-);
-
-
-if(!priceInput) {
-
-return;
-
+function updateAdminResourcePriceState(){
+  const access=document.getElementById('adminResourceAccessType');
+  const price=document.getElementById('adminResourcePrice');
+  if(!access||!price)return;
+  const owner=currentMembership?.role==='owner';
+  access.disabled=!owner;
+  price.disabled=!owner||access.value==='free';
+  if(owner&&access.value==='free')price.value='0';
+  access.title=owner?'':'Only RizSim Owner can change commercial access';
+  price.title=owner?'':'Only RizSim Owner can change base price';
 }
-
-
-if(
-accessType ===
-"free"
-) {
-
-priceInput.value =
-"0";
-
-priceInput.disabled =
-true;
-
-}
-
-else {
-
-priceInput.disabled =
-false;
-
-}
-
-}
-
 
 function getAdminResourceMimeType(
 file
@@ -28245,114 +28173,30 @@ objectId
 safeName;
 
 
-const {
-error:
-uploadError
-} =
-
-await supabase
-.storage
-.from(
-"platform-content"
-)
-.upload(
-storagePath,
-file,
-{
-
-upsert:
-false,
-
-contentType:
-mimeType,
-
-cacheControl:
-"3600"
-
+let uploaded=false;
+try{
+  const {error:uploadError}=await supabase.storage.from('platform-content')
+    .upload(storagePath,file,{upsert:false,contentType:mimeType,cacheControl:'3600'});
+  if(uploadError)throw uploadError;
+  uploaded=true;
+  const {error:attachError}=await supabase.rpc('admin_attach_rizsim_product_file',{
+    p_product_id:productId,p_storage_path:storagePath,p_file_name:file.name,
+    p_mime_type:mimeType,p_file_size:file.size
+  });
+  if(attachError){
+    // The server rejected the metadata: remove only this newly uploaded object.
+    const {error:cleanupError}=await supabase.storage.from('platform-content').remove([storagePath]);
+    if(cleanupError)console.warn('Orphaned upload needs review:',cleanupError.message);
+    return {ok:false,message:attachError.message+
+      (cleanupError?' The temporary file could not be cleaned up automatically.':'')};
+  }
+  return {ok:true};
+}catch(error){
+  // Network errors after upload are ambiguous: never delete a possibly-attached file.
+  console.error('RizSim resource upload interrupted:',error);
+  return {ok:false,message:(error?.message||'Upload interrupted.')+
+    (uploaded?' Check the attached-file status before retrying.':' Please retry the file upload.')};
 }
-);
-
-
-if(uploadError) {
-
-return {
-
-ok:
-false,
-
-message:
-uploadError.message
-
-};
-
-}
-
-
-const {
-error:
-attachError
-} =
-
-await supabase.rpc(
-"admin_attach_rizsim_product_file",
-{
-
-p_product_id:
-productId,
-
-p_storage_path:
-storagePath,
-
-p_file_name:
-file.name,
-
-p_mime_type:
-mimeType,
-
-p_file_size:
-file.size
-
-}
-);
-
-
-if(attachError) {
-
-/*
-Rollback the newly uploaded object because
-its metadata could not be attached.
-*/
-
-await supabase
-.storage
-.from(
-"platform-content"
-)
-.remove([
-storagePath
-]);
-
-
-return {
-
-ok:
-false,
-
-message:
-attachError.message
-
-};
-
-}
-
-
-return {
-
-ok:
-true
-
-};
-
 }
 
 
@@ -28437,6 +28281,11 @@ return;
 }
 
 
+if(adminEditingResourceId && adminResources.some(p=>
+  String(p.id)===String(adminEditingResourceId)&&p.status==='published')){
+  setManagementMessage('adminResourceMessage','Unpublish before editing or replacing a resource file.',true);
+  return;
+}
 const productType =
 document.getElementById(
 "adminResourceType"
@@ -30177,6 +30026,21 @@ publish
 );
 
 
+if(publish&&item.product_type==='simulation'){
+  const runner=String(item.launch_path||'').trim();
+  if(!isSafeRizsimRunnerPath(runner)){
+    throw new Error('Connect a safe RizSim .html runner before publishing.');
+  }
+  let response;
+  try{
+    response=await fetch(runner,{method:'HEAD',cache:'no-store',credentials:'same-origin'});
+  }catch{
+    throw new Error('Could not reach the simulation runner. Test the runner before publishing.');
+  }
+  if(!response.ok||!/^text\/html\b/i.test(response.headers.get('content-type')||'')){
+    throw new Error('The simulation runner is not a reachable HTML page on this RizSim site.');
+  }
+}
 const publicationRequest =
 
 supabase.rpc(
