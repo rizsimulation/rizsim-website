@@ -3316,6 +3316,12 @@ let attempts =
 let learningResources =
 [];
 
+/* Phase 8: Course history and time-scoped shared materials */
+let studentCourses=[];
+let studentCourseMaterials=[];
+let studentCourseDataError=null;
+let selectedStudentCourseFilter='all';
+
 let exceptionalAccess =
 new Map();
 
@@ -4176,8 +4182,23 @@ resourceResult.error
 
 }
 
+await loadStudentCourseWorkspace();
+
 await loadExceptionalAccess();
 
+}
+
+async function loadStudentCourseWorkspace(){
+  const [coursesResult,materialsResult]=await Promise.all([
+    supabase.rpc('get_my_rizsim_student_courses'),
+    supabase.rpc('get_my_rizsim_student_course_materials')
+  ]);
+  studentCourses=coursesResult.error?[]:(coursesResult.data||[]);
+  studentCourseMaterials=materialsResult.error?[]:(materialsResult.data||[]);
+  studentCourseDataError=coursesResult.error?.message||materialsResult.error?.message||null;
+  if(studentCourseDataError)console.error('RizSim Course workspace:',studentCourseDataError);
+  if(selectedStudentCourseFilter!=='all'&&!studentCourses.some(c=>
+       String(c.course_id)===String(selectedStudentCourseFilter)))selectedStudentCourseFilter='all';
 }
 
 async function loadExceptionalAccess(){
@@ -4281,6 +4302,8 @@ data
 ||
 []
 );
+
+await loadStudentCourseWorkspace();
 
 }
 
@@ -4714,24 +4737,10 @@ document
 .textContent =
 completedAttempts.length;
 
-/*
-  Course and material counts stay at zero until the Course-linked
-  Student data source is connected. This keeps this interface pass
-  honest and prevents the browser from inventing authorization.
-*/
-document
-.getElementById(
-"learningCourseCount"
-)
-.textContent =
-"0";
-
-document
-.getElementById(
-"learningMaterialCount"
-)
-.textContent =
-learningResources.length;
+/* Counts include authorized Course and existing platform materials. */
+document.getElementById('learningCourseCount').textContent=studentCourses.length;
+document.getElementById('learningMaterialCount').textContent=
+  learningResources.length+studentCourseMaterials.length;
 
 renderLearningActive(
 activeAttempts
@@ -4959,48 +4968,35 @@ buildLearningAttemptCard
 
 }
 
+function formatStudentMaterialType(kind){
+  return ({student_handout:'Student Handout',reading:'Reading',slides:'Slides',worksheet:'Worksheet',
+    external_link:'External Link',teaching_material:'Faculty Material'}[kind] || 'Learning Resource');
+}
+
 function renderLearningCourses(){
-
-const container =
-document.getElementById(
-"learningCoursesContent"
-);
-
-container.innerHTML = `
-
-<div class="course-preview-shell">
-
-<div class="course-preview-top">
-<strong>Student Course workspace</strong>
-<span class="status-badge required">Not connected yet</span>
-</div>
-
-<div class="course-preview-copy">
-When Course-linked Student access is connected, each authorized Course
-will open into a focused learner view rather than a Faculty management
-workspace.
-</div>
-
-<div class="course-preview-tabs" aria-label="Planned Student Course sections">
-<span class="course-preview-tab active">Overview</span>
-<span class="course-preview-tab">Simulations</span>
-<span class="course-preview-tab">Materials</span>
-<span class="course-preview-tab">Progress</span>
-</div>
-
-</div>
-
-<div class="empty-state">
-<div class="empty-state-icon">C</div>
-<strong>No Course-linked learning loaded yet</strong>
-<p>
-Your authorized Courses will appear here after the Student Course data
-connection is added in the next functional pass.
-</p>
-</div>
-
-`;
-
+  const container=document.getElementById('learningCoursesContent');
+  if(studentCourseDataError){
+    container.innerHTML=`<div class="empty-state"><strong>Course access could not load</strong><p>RizSim could not retrieve the authorized Course workspace. ${escapeHTML(studentCourseDataError)}</p></div>`;
+    return;
+  }
+  if(!studentCourses.length){
+    container.innerHTML=`<div class="empty-state"><div class="empty-state-icon">C</div><strong>No Course-linked learning yet</strong><p>Join a Course-linked Faculty session with its class code. Your Course and progress will then appear here.</p></div>`;
+    return;
+  }
+  container.innerHTML=`<div class="learning-grid" style="margin-top:0">
+    ${studentCourses.map(course=>{
+      const active=course.course_active===true;
+      const accessible=course.materials_available_now===true;
+      const materialCount=studentCourseMaterials.filter(m=>m.course_id===course.course_id).length;
+      return `<article class="learning-card">
+        <span class="card-category">Course-linked learning</span>
+        <h3>${escapeHTML(course.course_title)}</h3>
+        <p>${escapeHTML(course.course_description||'RizSim Course created by your Faculty member.')}</p>
+        <p>${escapeHTML(Number(course.joined_sessions||0))} joined session(s) • ${escapeHTML(Number(course.attempt_count||0))} learning attempt(s)</p>
+        <div class="card-footer"><span class="status-badge ${accessible?'available':(active?'required':'closed')}">${accessible?'Materials available':(active?'Access window closed':'Course ended')}</span>
+        ${accessible?`<button type="button" class="small-action primary" data-learning-material-course="${escapeHTML(course.course_id)}">View ${materialCount} Material(s)</button>`:
+          `<span class="table-secondary">History retained</span>`}</div></article>`;
+    }).join('')}</div>`;
 }
 
 function renderLearningMaterials(){
@@ -5010,12 +5006,36 @@ document.getElementById(
 "learningMaterialsContent"
 );
 
+const courseItems=studentCourseMaterials.filter(m=>selectedStudentCourseFilter==='all'||
+    String(m.course_id)===String(selectedStudentCourseFilter));
+  const platformItems=learningResources;
+  const courseOptions=studentCourses.filter(c=>studentCourseMaterials.some(m=>m.course_id===c.course_id));
+  const filters=courseOptions.length>1 ? `<div class="course-preview-shell" style="margin-bottom:14px">
+    <label for="studentMaterialCourseSelect" style="display:block;margin-bottom:8px;font-weight:850;font-size:.7rem">Course</label>
+    <select class="management-select" id="studentMaterialCourseSelect" style="max-width:380px">
+      <option value="all">All available Courses</option>
+      ${courseOptions.map(c=>`<option value="${escapeHTML(c.course_id)}" ${selectedStudentCourseFilter===c.course_id?'selected':''}>${escapeHTML(c.course_title)}</option>`).join('')}
+    </select></div>`:'';
+  
+const courseCards=`${courseItems.map(m=>{
+    const file=m.source_type==='file';
+    const previewable=['application/pdf','image/png','image/jpeg'].includes(String(m.mime_type||'').toLowerCase());
+    const openButton=file
+      ? (previewable?`<button type="button" class="small-action primary" data-open-course-file="${escapeHTML(m.material_id)}">Open Securely</button>`:
+        `<span class="table-secondary">Request a PDF version</span>`)
+      : (String(m.external_url||'').match(/^https?:\/\//i)?`<button type="button" class="small-action" data-open-course-link="${escapeHTML(m.material_id)}" title="Opens an external website">External Website ↗</button>`:
+        `<span class="table-secondary">Invalid external link</span>`);
+    return `<article class="learning-card"><span class="card-category">${escapeHTML(formatStudentMaterialType(m.material_type))}</span>
+      <h3>${escapeHTML(m.title)}</h3><p>${escapeHTML(m.description||m.file_name||'Course material')}</p>
+      <p>${escapeHTML(m.course_title||'Course')}</p><div class="card-footer"><span class="status-badge available">Read only</span>${openButton}</div></article>`;
+  }).join('')}`;
+
 
 if(
-!learningResources.length
+!learningResources.length && !courseItems.length
 ){
 
-container.innerHTML = `
+container.innerHTML = `${filters}
 
 <div class="empty-state">
 
@@ -5024,13 +5044,12 @@ M
 </div>
 
 <strong>
-No learning materials available yet
+No learning materials available now
 </strong>
 
 <p>
 
-Published RizSim resources that are available to your
-account will appear here.
+Authorized Course materials and RizSim resources appear here while access is available.
 
 </p>
 
@@ -5043,12 +5062,14 @@ return;
 }
 
 
-container.innerHTML = `
+container.innerHTML = `${filters}
 
 <div
 class="learning-grid"
 style="margin-top:0;"
 >
+
+${courseCards}
 
 ${
 
@@ -7499,6 +7520,13 @@ code
 }
 );
 
+document.addEventListener('change',event=>{
+  if(event.target?.id==='studentMaterialCourseSelect'){
+    selectedStudentCourseFilter=event.target.value;
+    renderLearningMaterials();
+  }
+});
+
 document.addEventListener(
 "click",
 event => {
@@ -7518,6 +7546,29 @@ return;
 
 }
 
+const courseMaterialNav = event.target.closest('[data-learning-material-course]');
+if(courseMaterialNav){
+  selectedStudentCourseFilter=courseMaterialNav.dataset.learningMaterialCourse;
+  renderLearningMaterials();
+  setLearningTab('materials');
+  return;
+}
+const courseFile = event.target.closest('[data-open-course-file]');
+if(courseFile){
+  window.open('/course-material-viewer.html?material='+encodeURIComponent(courseFile.dataset.openCourseFile),
+    '_blank','noopener,noreferrer');
+  return;
+}
+const courseExternal = event.target.closest('[data-open-course-link]');
+if(courseExternal){
+  const item=studentCourseMaterials.find(m=>m.material_id===courseExternal.dataset.openCourseLink);
+  if(item){
+    try{const u=new URL(item.external_url);if(['http:','https:'].includes(u.protocol))
+      window.open(u.href,'_blank','noopener,noreferrer');}
+    catch(error){console.error('Invalid Course external link',error);}
+  }
+  return;
+}
 const viewButton =
 event.target.closest(
 "[data-student-view-button]"
