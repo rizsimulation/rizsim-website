@@ -14904,8 +14904,9 @@ type="button"
 data-open-course-material="${escapeHTML(
 material.id
 )}"
+title="${material.source_type==='link'?'Opens an external website':'Opens protected RizSim viewer'}"
 >
-Open
+${material.source_type==='link'?'External ↗':'Open Securely'}
 </button>
 
 
@@ -15566,155 +15567,21 @@ renderCourseMaterialsPanel();
 
 } 
 
-async function openCourseMaterial(
-materialId
-) {
-
-const material =
-courseMaterials.find(
-item =>
-String(
-item.id
-)
-===
-String(
-materialId
-)
-);
-
-
-if(!material) {
-
-return;
-
+async function openCourseMaterial(materialId) {
+  const material=courseMaterials.find(item=>String(item.id)===String(materialId));
+  if(!material)return;
+  if(material.source_type==='link'){
+    try{
+      const target=new URL(String(material.external_url||''));
+      if(!['http:','https:'].includes(target.protocol))throw new Error('Invalid link');
+      window.open(target.href,'_blank','noopener,noreferrer');
+    }catch{window.alert('This resource contains an invalid external link.');}
+    return;
+  }
+  if(material.source_type!=='file')return;
+  window.open('/course-material-viewer.html?material='+encodeURIComponent(material.id),
+    '_blank','noopener,noreferrer');
 }
-
-
-/* =========================================================
-   EXTERNAL LINK
-========================================================= */
-
-if(
-material.source_type ===
-"link"
-) {
-
-if(!material.external_url) {
-
-window.alert(
-"This resource does not contain a valid link."
-);
-
-return;
-
-}
-
-
-window.open(
-material.external_url,
-"_blank",
-"noopener,noreferrer"
-);
-
-return;
-
-}
-
-
-/* =========================================================
-   PRIVATE FILE
-========================================================= */
-
-if(
-material.source_type !==
-"file"
-||
-!material.storage_path
-) {
-
-return;
-
-}
-
-
-/*
-  Open a blank tab immediately so the browser does not
-  block it while RizSim requests the secure signed URL.
-*/
-const materialWindow =
-window.open(
-"",
-"_blank"
-);
-
-
-if(materialWindow) {
-
-materialWindow.opener =
-null;
-
-materialWindow.document.write(
-"<p style='font-family:Arial,sans-serif;padding:24px;'>Opening RizSim material…</p>"
-);
-
-}
-
-
-const {
-data,
-error
-} =
-
-await supabase
-.storage
-.from(
-"course-materials"
-)
-.createSignedUrl(
-material.storage_path,
-60
-);
-
-
-if(
-error
-||
-!data?.signedUrl
-) {
-
-if(materialWindow) {
-
-materialWindow.close();
-
-}
-
-window.alert(
-error?.message
-||
-"RizSim could not open this material."
-);
-
-return;
-
-}
-
-
-if(materialWindow) {
-
-materialWindow.location.href =
-data.signedUrl;
-
-}
-
-else {
-
-window.location.href =
-data.signedUrl;
-
-}
-
-}
-
 
 async function removeCourseMaterial(
 materialId
