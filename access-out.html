@@ -9837,7 +9837,10 @@ let courses =
 [];
 
 let selectedCourseId =
-null;
+sessionStorage.getItem(
+"rizsimSelectedCourseId"
+)
+|| null;
 
 let selectedCourseSimulations =
 [];
@@ -12102,6 +12105,16 @@ courseResult.data
 selectedCourseSimulations =
 [];
 
+courseClassroomSessions =
+[];
+
+courseResults =
+[];
+
+courseMaterials =
+[];
+
+
 if(
 selectedCourseId
 &&
@@ -12120,7 +12133,46 @@ selectedCourseId
 selectedCourseId =
 null;
 
+sessionStorage.removeItem(
+"rizsimSelectedCourseId"
+);
+
 }
+
+
+/* ============================================================
+   RESTORE SELECTED COURSE WORKSPACE AFTER PAGE REFRESH
+
+   If the Course Lead had a Course open before refresh,
+   reload its complete persisted workspace before rendering.
+   ============================================================ */
+
+if(
+selectedCourseId
+) {
+
+await Promise.all([
+
+loadSelectedCourseSimulations(
+selectedCourseId
+),
+
+loadSelectedCourseClassroomSessions(
+selectedCourseId
+),
+
+loadSelectedCourseResults(
+selectedCourseId
+),
+
+loadSelectedCourseMaterials(
+selectedCourseId
+)
+
+]);
+
+}
+
 
 classroomSessions =
 classroomResult.error
@@ -16601,6 +16653,13 @@ created?.course_id
 selectedCourseId =
 created.course_id;
 
+sessionStorage.setItem(
+"rizsimSelectedCourseId",
+String(
+created.course_id
+)
+);
+
 }
 
 
@@ -16683,6 +16742,14 @@ selectedCourseId =
 courseId;
 
 
+sessionStorage.setItem(
+"rizsimSelectedCourseId",
+String(
+courseId
+)
+);
+
+
 showLoading();
 
 
@@ -16721,9 +16788,15 @@ function closeCourseManager() {
 selectedCourseId =
 null;
 
+
+sessionStorage.removeItem(
+"rizsimSelectedCourseId"
+);
+
+
 selectedCourseSimulations =
 [];
-
+  
 courseClassroomSessions =
 [];
 
