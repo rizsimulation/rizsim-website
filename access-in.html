@@ -5010,7 +5010,7 @@ const courseItems=studentCourseMaterials.filter(m=>selectedStudentCourseFilter==
     String(m.course_id)===String(selectedStudentCourseFilter));
   const platformItems=learningResources;
   const courseOptions=studentCourses.filter(c=>studentCourseMaterials.some(m=>m.course_id===c.course_id));
-  const filters=courseOptions.length>1 ? `<div class="course-preview-shell" style="margin-bottom:14px">
+  const filters=(courseOptions.length>1 || selectedStudentCourseFilter!=='all') ? `<div class="course-preview-shell" style="margin-bottom:14px">
     <label for="studentMaterialCourseSelect" style="display:block;margin-bottom:8px;font-weight:850;font-size:.7rem">Course</label>
     <select class="management-select" id="studentMaterialCourseSelect" style="max-width:380px">
       <option value="all">All available Courses</option>
