@@ -52,3 +52,12 @@ supabase db push --dry-run
 ```
 
 These commands **only mark the two previously deployed Phase 9D migrations as applied** in migration history; they do not replay their SQL. Do not run them against an unverified project or before reviewing the SQL and a backup. Recheck advisors and critical role boundaries after registry repair.
+
+## Follow-up audit: SECURITY DEFINER review (2026-10-10)
+
+- Inventory: 69 signed-in-executable `public` SECURITY DEFINER routines. No `anon`-executable `public` SECURITY DEFINER function was found.
+- `authenticated` cannot create objects in the `public` schema; this reduces the risk of schema-object hijacking in routines using `search_path=public`. Temporary objects and unqualified references still require testing before broader permission changes.
+- Automated review of SQL `FROM` / `JOIN` / DML targets found no confirmed unintended unqualified permanent table references. Apparent exceptions were PL/pgSQL expressions or SQL CTE names, not confirmed security defects. This is a preliminary static check, not a comprehensive penetration test.
+- Live role-boundary rollback tests verified Owner/Admin content access and Faculty/Course Lead denial. Do not blanket-revoke callable application RPCs.
+- Supabase advisors still report 69 callable definer functions and leaked password prevention disabled (Pro-only). Password-hardening controls were manually reported saved, not independently confirmed from Auth configuration.
+- Remaining non-destructive action: mark migration versions `20261010110000` and `20261010110100` applied with documented Supabase CLI `migration repair`, and confirm `migration list` / `db push --dry-run` on the correct production-linked project. Existing source and live function bodies were verified before suggesting this repair.
