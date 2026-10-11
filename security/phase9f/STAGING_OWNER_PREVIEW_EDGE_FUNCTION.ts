@@ -24,10 +24,10 @@ Deno.serve((request: Request) => {
   }
   let body: string;
   let contentType: string;
-  if (pathname === BASE || pathname === BASE + "/") {
+  if (pathname === BASE || pathname === BASE + "/" || pathname === "/rizsim-owner-mfa-staging-preview" || pathname === "/rizsim-owner-mfa-staging-preview/") {
     body = HTML;
     contentType = "text/html; charset=utf-8";
-  } else if (pathname === BASE + "/app.js") {
+  } else if (pathname === BASE + "/app.js" || pathname === "/rizsim-owner-mfa-staging-preview/app.js") {
     body = JAVASCRIPT;
     contentType = "text/javascript; charset=utf-8";
   } else {
