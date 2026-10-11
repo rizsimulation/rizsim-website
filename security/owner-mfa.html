@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src https://rvmumpvtvjvvuyimeybc.supabase.co; base-uri 'none'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src https://sqjosrywtevdnkdxflns.supabase.co; base-uri 'none'; object-src 'none'; form-action 'none'">
   <title>Owner Security Setup — RizSim (Review Preview)</title>
   <link rel="icon" href="/rizsim-r.png">
   <style>
@@ -44,22 +44,29 @@
 <body>
   <div class="shell">
     <header>
-      <a class="brand" href="/access-out.html"><img src="/RizSim%20finalized%20logo.png" alt="RizSim"><span>Account Security</span></a>
-      <span class="eyebrow">Phase 9F · Review only</span>
+      <a class="brand" href="#"><img src="/RizSim%20finalized%20logo.png" alt="RizSim"><span>Account Security</span></a>
+      <span class="eyebrow">Phase 9F · Staging only</span>
     </header>
     <main class="panel">
       <div class="eyebrow">RizSim Owner Access</div>
-      <h1>Authenticator app setup</h1>
-      <p>This self-service security screen will be used to connect a time-based authenticator app to the currently signed-in RizSim Owner account.</p>
+      <h1>Staging Owner authenticator setup</h1>
+      <p>This test screen enrolls an authenticator for the disposable <strong>rizsim-staging</strong> Owner account only. Live production access is not affected.</p>
       <div class="notice warning"><strong>Not deployed / not yet enforcement-ready.</strong> Until Owner sign-in step-up and database-side assurance checks have been tested and deployed, enrolling a factor alone does not secure every Owner action.</div>
       <div id="status" class="status" role="status" aria-live="polite">Checking your signed-in account…</div>
       <section id="signInPanel" hidden>
-        <p>Sign in using the existing RizSim Google account first, then return to this setup screen.</p>
-        <a class="button" href="/access-out.html">Open RizSim sign-in</a>
+        <h2>Sign in to isolated staging</h2>
+        <p>Use only your disposable <strong>rizsim-staging</strong> account. Never enter the live Owner password here.</p>
+        <form id="stagingSignInForm" autocomplete="on">
+          <label for="stagingEmail">Staging test email</label>
+          <input id="stagingEmail" type="email" autocomplete="username" required>
+          <label for="stagingPassword">Staging test password</label>
+          <input id="stagingPassword" type="password" autocomplete="current-password" required>
+          <div class="actions"><button type="submit" class="button">Sign in to staging</button></div>
+        </form>
       </section>
       <section id="deniedPanel" hidden>
         <p>This account is not an active RizSim Owner account. No authenticator factor has been created.</p>
-        <a href="/access-out.html">Return to RizSim</a>
+        <button type="button" class="button secondary" id="stagingDeniedSignOut">Sign out of staging</button>
       </section>
       <section id="enrollPanel" hidden>
         <h2>Set up a new authenticator</h2>
@@ -84,9 +91,9 @@
       <section id="verifiedPanel" hidden>
         <h2>Authenticator factor is enrolled</h2>
         <p id="assuranceText">Checking your session assurance level…</p>
-        <div class="actions"><button class="button" id="stepUpButton" type="button" hidden>Verify this sign-in</button><a href="/access-out.html">Return to Owner portal</a></div>
+        <div class="actions"><button class="button" id="stepUpButton" type="button" hidden>Verify this sign-in</button><button type="button" class="button secondary" id="stagingSignOut">Sign out of staging</button></div>
       </section>
-      <footer class="footer">Use only through the verified RizSim domain after a reviewed release. This preview is intentionally separate from the public navigation and does not change approved public-site styling.</footer>
+      <footer class="footer">STAGING ONLY: isolated MFA trial. Do not merge, deploy, or use any real Owner account. No public-site styling is changed.</footer>
     </main>
   </div>
 </body>
