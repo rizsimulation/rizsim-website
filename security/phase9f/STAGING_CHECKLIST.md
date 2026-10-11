@@ -36,3 +36,16 @@ This document records non-production tests required before activating Owner MFA 
 - The two private streaming Edge Functions retain `verify_jwt=true`.
 - Smoke test: page and /app.js were both successfully retrieved. Early route 404 corrected and re-verified.
 - **Pending:** actual Owner sign-in, TOTP code, AAL1/AAL2 self-test, failed-code flow, backup factor and recovery checks, authorized/denied PDF test.
+
+## Phase 9F checkpoint — 11 October 2026 (continued)
+
+- [x] Independently verified staging-only services: resource stream v1 JWT-on, course material stream v1 JWT-on, isolated static Owner preview v2 (public login-page delivery only).
+- [x] Read-only baseline: staging 1 Auth user, 1 active Owner, 0 Auth sessions, 0 verified MFA factors, 0 products, 0 Storage objects.
+- [x] Read-only production comparison: 4 Auth users, 6 products, 6 Storage objects, 0 MFA factors; Owner helper remains unchanged in production.
+- [x] **RPC security regression:** `public.admin_get_rizsim_products()` under simulated authenticated claims: Owner aal1 DENIED (42501), Owner aal2 ALLOWED (empty staging dataset), missing aal DENIED (42501), Admin aal1 ALLOWED, Faculty aal1 DENIED (42501). Role substitutions and tests were transaction-scoped with rollback; no persistent membership edits.
+- [x] Definer-access audit: 0 public SECURITY DEFINER routines executable by `anon`; 69 callable by `authenticated` and require continued per-routine least-privilege review. No public views found. No additional RLS policies with raw Owner checks detected by current scan.
+- [ ] Interactive browser and TOTP sign-in test. Dedicated `RizSim Staging Owner MFA Phase 9F` browser profile still has no saved staging credentials; no Auth sessions or factors exist. Previous live-browser inspection was inconclusive; independent container Chromium navigation blocked by environment policy, not by confirmed website error.
+- [ ] Real authenticated file preview and denied-user access tests using staging-only test fixtures.
+- [ ] Second authenticator, lost-device recovery, and isolated database/Storage restore rehearsal.
+
+**Do not merge/deploy to production. Release remains HOLD.**
