@@ -21,7 +21,7 @@ CREATE OR REPLACE FUNCTION private.is_rizsim_owner()
 RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path TO ''
 AS $phase9f$
  SELECT auth.uid() IS NOT NULL
-    AND (auth.jwt() ->> 'aal') = 'aal2'
+    AND coalesce((auth.jwt() ->> 'aal') = 'aal2', false)
     AND EXISTS (SELECT 1 FROM public.access_out_members m
                 WHERE m.user_id = auth.uid() AND m.active = true AND m.role = 'owner');
 $phase9f$;
