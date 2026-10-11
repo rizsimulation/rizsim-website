@@ -3,10 +3,11 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 const supabase = createClient(
-  "https://rvmumpvtvjvvuyimeybc.supabase.co",
-  "sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf"
+  "https://sqjosrywtevdnkdxflns.supabase.co",
+  "sb_publishable_ClR9KlRd5l7gtp2lQHrciA_9AD6HHAQ"
 );
 const $ = id => document.getElementById(id);
+// STAGING ONLY: this test harness never signs users into production.
 let factorId = null;
 let secret = null;
 let challengeId = null;
@@ -126,12 +127,48 @@ async function stepUp() {
   $("otp").value = "";
   status("Enter a fresh six-digit code to upgrade this session.");
 }
+async function stagingSignIn(event) {
+  event.preventDefault();
+  if (working) return;
+  const email = $("stagingEmail").value.trim();
+  const password = $("stagingPassword").value;
+  if (!email || !password) {
+    status("Use the disposable staging test account.", "error");
+    return;
+  }
+  busy(true);
+  try {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    $("stagingPassword").value = "";
+    await init();
+  } catch (error) {
+    $("stagingPassword").value = "";
+    status("Staging sign-in unsuccessful. Check your test credentials.", "error");
+  } finally { busy(false); }
+}
+async function stagingSignOut() {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    $("stagingPassword").value = "";
+    $("qrCode").removeAttribute("src");
+    secret = null;
+    factorId = null;
+    challengeId = null;
+    panel("signInPanel");
+    status("Signed out of staging.");
+  } catch (error) {
+    status("Could not sign out of staging. Try again.", "error");
+  }
+}
+
 async function init() {
   try {
     const { data, error } = await supabase.auth.getUser();
     if (error || !data?.user) {
       panel("signInPanel");
-      status("Sign in with your RizSim Owner Google account first.");
+      status("Sign in using your disposable staging test account only.");
       return;
     }
     if (!await ownerIsActive(data.user)) {
@@ -145,6 +182,9 @@ async function init() {
     safeError(e);
   }
 }
+$("stagingSignInForm").addEventListener("submit", stagingSignIn);
+$("stagingSignOut").addEventListener("click", stagingSignOut);
+$("stagingDeniedSignOut").addEventListener("click", stagingSignOut);
 $("beginEnroll").addEventListener("click", beginEnroll);
 $("verifyForm").addEventListener("submit", verifyCode);
 $("stepUpButton").addEventListener("click", stepUp);
