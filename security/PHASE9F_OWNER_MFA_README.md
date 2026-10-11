@@ -23,3 +23,18 @@ This is an **isolated, review-only** proof of concept at `security/owner-mfa.htm
 **Current production baseline (2026-10-11):** 4 Auth users, 0 enrolled MFA factors; this prototype has not changed either count. No production MFA changes or deployment were performed.
 
 Reference: https://supabase.com/docs/guides/auth/auth-mfa
+
+
+## Staging Owner sign-in challenge module
+
+The review branch contains `security/owner-mfa-gate.js`, a **non-deployed** JavaScript module exporting `requireOwnerAal2(supabase, expectedUserId)`. It checks Supabase's AAL, checks for a verified factor and challenges the current session; it must be wired into `access-out.html` in a subsequent isolated test commit, **not on the public live website**.
+
+Integration requirements before use:
+1. Add a hidden `ownerMfaGate` section with `ownerMfaGateStatus`, `ownerMfaEnrollActions`, `ownerMfaChallengeForm`, `ownerMfaCode`, and `ownerMfaVerifyButton`. The enrollment action must direct the Owner to the verified setup route only after review and must not expose private QR data to logs.
+2. Import `requireOwnerAal2` in the existing module script. In `verifyAccess()`, **after verified active Owner membership, and before `claimApprovedInstitutionAccess()`, `showAuthenticatedApp()` or `loadPortalData()`**, invoke `await requireOwnerAal2(supabase, currentUser.id)`. If it returns false, exit immediately without loading Owner data.
+3. Review and modify `verifyAccess()`'s exception/fallback path so that an Owner can **never** fall back to `showAuthenticatedApp()` without a fresh AAL2 check. A frontend gate by itself is not security; it is merely UX.
+4. Audit Owner-only `private.is_rizsim_owner()`, `public.is_rizsim_owner()`, and related `can_manage_rizsim_content()` role checks, their direct RLS policies, privileged write RPCs, plus historical session/response read paths. Implement **database-side AAL2 enforcement** without accidentally denying existing Admin/Faculty/Course Lead access or turning Account recovery into a lockout.
+5. Exercise a deliberately enrolled **staging Owner** with correct and incorrect codes, token refresh, Google OAuth, multiple browsers, sign-out, no factor, and revoked role. An isolated Supabase project is currently **not present**; therefore this module has not been authenticated end-to-end.
+6. Ensure the proposed hidden gate is not inserted into the production website until staging tests and the recovery plan pass. Do not mark the review PR ready or merge solely because the JavaScript file compiles.
+
+No production database access controls or MFA enrollments have been altered.
