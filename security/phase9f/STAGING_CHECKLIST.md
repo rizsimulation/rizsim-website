@@ -49,3 +49,14 @@ This document records non-production tests required before activating Owner MFA 
 - [ ] Second authenticator, lost-device recovery, and isolated database/Storage restore rehearsal.
 
 **Do not merge/deploy to production. Release remains HOLD.**
+
+## 2026-10-11 browser report correction
+
+- [x] User Chrome screenshot proved the staging Edge Function displayed raw HTML text, not a rendered sign-in screen.
+- [x] Identified exact Supabase documented limitation: Edge Functions rewrite `GET` responses labeled `text/html` to `text/plain` (Supabase Edge Functions Development Tips).
+- [x] Retired broken public preview endpoint with HTTP 410 text-only safety notice (staging function v3). Previous preview URLs must not be used for sign-in.
+- [x] Built a standalone, staging-only local HTML prototype with in-memory sessions, official styling, pinned Supabase JS UMD client, strict inline-script SHA-256 CSP, and no production API reference. Static validation passed; browser/authenticator runtime verification **not yet performed**.
+- [ ] User opens standalone test HTML file directly in Chrome and confirms the interface renders, then uses disposable staging account only.
+- [ ] Real TOTP enrollment, AAL2 challenge and live authenticated entitlement checks remain pending.
+
+Release remains HOLD; production unchanged.
