@@ -33,6 +33,7 @@
     .qr-wrap img { width:210px; height:210px; max-width:100%; display:block }
     label { display:block; margin-bottom:9px; font-weight:650; font-size:14px }
     input { width:100%; max-width:290px; padding:12px 15px; border:1px solid #b8ccc9; border-radius:10px; font-size:18px; letter-spacing:.12em; background:white; color:var(--ink) }
+    select { border:1px solid #b8ccc9; border-radius:10px; padding:10px; color:var(--ink); background:#fff; }
     input:focus { outline:3px solid #9edcd1; border-color:var(--teal) }
     .secret { overflow-wrap:anywhere; display:inline-block; margin-top:14px; background:#f4f8f7; padding:9px; border-radius:8px; font-family:monospace }
     .hidden,[hidden] { display:none!important }
@@ -91,7 +92,15 @@
       <section id="verifiedPanel" hidden>
         <h2>Authenticator factor is enrolled</h2>
         <p id="assuranceText">Checking your session assurance level…</p>
-        <div class="actions"><button class="button" id="stepUpButton" type="button" hidden>Verify this sign-in</button><button type="button" class="button secondary" id="stagingSignOut">Sign out of staging</button></div>
+        <p>Verified authenticators: <strong id="verifiedCount">0</strong>. Keep a backup authenticator on a different trusted device before depending on MFA.</p>
+        <div id="factorPickerWrap" hidden><label for="factorPicker">Choose authenticator</label><select id="factorPicker" aria-label="Choose an enrolled authenticator"></select></div>
+        <div class="actions"><button class="button" id="stepUpButton" type="button" hidden>Verify this sign-in</button><button class="button secondary" id="backupEnrollButton" type="button" hidden>Add backup authenticator</button><button type="button" class="button secondary" id="stagingSignOut">Sign out of staging</button></div>
+      </section>
+      <section id="qaPanel" hidden>
+        <h2>Staging security self-test</h2>
+        <p>Tests the current signed-in staging session against database permission checks and authenticated protected-service error responses. It does not download private files or record authentication secrets.</p>
+        <div class="actions"><button class="button secondary" id="runStagingChecks" type="button">Run security checks</button></div>
+        <pre id="qaResults" style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.7" aria-live="polite"></pre>
       </section>
       <footer class="footer">STAGING ONLY: isolated MFA trial. Do not merge, deploy, or use any real Owner account. No public-site styling is changed.</footer>
     </main>
