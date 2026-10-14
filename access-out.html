@@ -3624,6 +3624,7 @@ border-color:#315b92;
 <link rel="stylesheet" href="rizsim-experiences.css">
 <link rel="stylesheet" href="rizsim-roles-library.css">
 <script src="rizsim-session-continuity.js" defer></script>
+<link rel="stylesheet" href="rizsim-faculty-workspaces.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -3684,8 +3685,11 @@ Home
 </a>
 
 <a
+class="rz-internal-hidden-tab"
 href="#simulations"
 data-auth-view="simulations"
+tabindex="-1"
+aria-hidden="true"
 >
 Simulations
 </a>
@@ -3704,13 +3708,18 @@ href="#classroom"
 data-auth-view="classroom"
 data-role-view="classroom"
 >
-Classroom
+RizSimulation Player
 </a>
 
 <a
+href="#materials" data-auth-view="materials" data-role-view="materials">Classroom</a>
+<a href="#records" data-auth-view="records" data-role-view="records">Records</a>
+<a class="rz-internal-hidden-tab"
 href="#results"
 data-auth-view="results"
 data-role-view="results"
+tabindex="-1"
+aria-hidden="true"
 >
 Results
 </a>
@@ -3746,8 +3755,11 @@ Contact
 </a>
 
 <a
+class="rz-internal-hidden-tab"
 href="#account"
 data-auth-view="account"
+tabindex="-1"
+aria-hidden="true"
 >
 Account
 </a>
@@ -5874,11 +5886,11 @@ data-view="classroom"
 <div class="auth-section-heading">
 
 <span class="auth-kicker">
-CLASSROOM
+RIZSIMULATION PLAYER
 </span>
 
 <h1>
-Run your learning experience.
+Launch a learning experience.
 </h1>
 
 <p>
@@ -5912,6 +5924,7 @@ let RizSim generate the class code and shareable link.
 
 </div>
 
+<section class="rz-player-selection" aria-labelledby="rzLicensedHeading"><div class="rz-workspace-kicker">YOUR LICENSED SIMULATIONS</div><div class="rz-workspace-section-heading"><div><h2 id="rzLicensedHeading">Choose a simulation to run</h2><p>Hover or focus on your simulation and select Run Simulation.</p></div><span id="rzLicensedCount" class="rz-count-pill">0 licensed</span></div><div id="rzLicensedSimGrid" class="rz-licensed-grid"><div class="rz-workspace-empty">Your licensed simulations will appear here.</div></div></section><div id="rzPlayerSelectedLabel" class="rz-player-selected" hidden aria-live="polite"></div>
 <div class="classroom-grid">
 
 <div class="portal-panel">
@@ -11275,6 +11288,8 @@ function configureRoleNavigation() {
 
 const role =
 currentMembership.role;
+const resultsLink=document.querySelector('#mainNav [data-auth-view="results"]');
+if(resultsLink)resultsLink.classList.toggle("rz-internal-hidden-tab",role!=="institution");
 
 const allowed =
 new Set([
@@ -11291,13 +11306,7 @@ role ===
 "faculty"
 ) {
 
-allowed.add(
-"classroom"
-);
-
-allowed.add(
-"results"
-);
+["classroom","results","materials","records"].forEach(view=>allowed.add(view));
 
 }
 
@@ -11309,7 +11318,9 @@ role ===
 [
 "courses",
 "classroom",
-"results"
+"results",
+"materials",
+"records"
 ]
 .forEach(
 view =>
@@ -11358,6 +11369,8 @@ role ===
 "courses",
 "classroom",
 "results",
+"materials",
+"records",
 "institution",
 "administration"
 ]
@@ -31342,9 +31355,9 @@ false;
 function navigateAdjacentInternalView(
 direction
 ) {
-
+const visibleOrder=allowedViewOrder.filter(v=>{const l=document.querySelector('#mainNav [data-auth-view="'+v+'"]');return l&&!l.classList.contains("rz-internal-hidden-tab");});
 const currentIndex =
-allowedViewOrder.indexOf(
+visibleOrder.indexOf(
 activeView
 );
 
@@ -31368,7 +31381,7 @@ destinationIndex <
 0
 ||
 destinationIndex >=
-allowedViewOrder.length
+visibleOrder.length
 ) {
 
 return;
@@ -31383,7 +31396,7 @@ window.setTimeout(
 () => {
 
 navigateInternal(
-allowedViewOrder[
+visibleOrder[
 destinationIndex
 ]
 );
@@ -32854,6 +32867,7 @@ Complete
 
 </div>
   
+<script src="rizsim-faculty-workspaces.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
