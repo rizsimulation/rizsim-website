@@ -39,6 +39,21 @@
       if (url.origin !== window.location.origin) return;
 
       const page = url.pathname.split("/").pop();
+      // Category selection belongs to the environment, never to the account.
+      // A same-origin portal reload retains the Supabase session while allowing
+      // its native category filter to pick up the selected category from URL.
+      if (page === "simulations.html" && url.searchParams.has("category")) {
+        const selectedCategory = url.searchParams.get("category");
+        if (["learning", "skills", "children"].includes(selectedCategory)) {
+          event.preventDefault();
+          window.location.assign(
+            (mode === "student" ? "access-in.html" : "access-out.html") +
+            "?category=" + encodeURIComponent(selectedCategory) +
+            "#simulations"
+          );
+          return;
+        }
+      }
       const common = {
         "simulations.html": "simulations",
         "about.html": "about",
