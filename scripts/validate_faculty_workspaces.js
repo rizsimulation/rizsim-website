@@ -3,7 +3,7 @@ const html=fs.readFileSync("access-out.html","utf8"),js=fs.readFileSync("rizsim-
 const css=fs.readFileSync("rizsim-faculty-workspaces.css","utf8");
 const nav=html.slice(html.indexOf('id="mainNav"'),html.indexOf("</nav>",html.indexOf('id="mainNav"')));
 for(const item of ["RizSimulation Player","Classroom","Records","Courses","Home"])assert(nav.includes(item),"Missing "+item);
-for(const view of ["account","simulations","results","resources"])assert(new RegExp('class="rz-internal-hidden-tab"[\\\\s\\\\S]{0,190}data-auth-view="'+view+'"').test(nav),"Old tab must be hidden "+view);
+for(const view of ["account","simulations","results","resources"]){const links=[...nav.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].map(m=>m[0]);assert(links.some(link=>link.includes('data-auth-view="'+view+'"')&&link.includes('rz-internal-hidden-tab')),"Old tab must be hidden "+view);}
 for(const id of ["view-classroom","view-materials","view-records","rzStudentGrid","rzStudentModal","rzActivityTimeline","rzClassroomMaterialMount","courseMaterialsPanel","createClassroomSessionButton","resultRows","responseModal","courseMaterialFile"])assert(html.includes('id="'+id+'"'),"Missing: "+id);
 for(const name of ["RizSimFacultyBridge","getSnapshot","viewResponses","selectCourse","getActiveLicensedSimulations","renderResults","renderClassroom"])assert(html.includes(name),name+" missing");
 for(const role of ["faculty","course_lead","owner"])assert(html.includes('"'+role+'"'),"Lost role "+role);
