@@ -1,0 +1,31 @@
+name: RizSim category release validation
+on:
+  push:
+    branches:
+      - "feat/summit-category-environments-account-switch-20261014"
+  pull_request:
+    paths:
+      - "index.html"
+      - "simulations.html"
+      - "about.html"
+      - "contact.html"
+      - "access-in.html"
+      - "access-out.html"
+      - "rizsim-experiences.js"
+      - "rizsim-roles-library.js"
+      - "rizsim-shared-home.js"
+      - "scripts/validate_category_release.py"
+  workflow_dispatch:
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify JavaScript syntax
+        run: |
+          node --check rizsim-experiences.js
+          node --check rizsim-roles-library.js
+          node --check rizsim-shared-home.js
+      - name: Verify UI and access invariants
+        run: python3 scripts/validate_category_release.py
