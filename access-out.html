@@ -6371,6 +6371,9 @@ Status
 </div>
 
 </section>
+<section class="auth-view" id="view-materials" data-view="materials"><div class="content-shell rz-workspace-shell"><div class="rz-workspace-hero"><span class="rz-workspace-kicker">CLASSROOM · LEARNING MATERIALS</span><h1>Classroom</h1><p>Manage course materials with the established secure publishing controls.</p></div><div class="rz-classroom-materials-head"><div><h2>Learning materials</h2><p id="rzClassroomPermission">Choose a Course to access its material management tools.</p></div><label>Course <select class="management-select" id="rzClassroomCourseSelect"><option value="">Select a Course</option></select></label></div><div class="rz-dropzone" id="rzClassroomDropZone" hidden><strong>Drag &amp; drop class materials</strong><p>Or browse files for a selected Course.</p><button id="rzChooseMaterialFile" class="rz-action" type="button">Browse files</button></div><div id="rzClassroomMaterialMount"></div><div class="rz-workspace-empty" id="rzClassroomMaterialEmpty">Select a Course to see available classroom material controls.</div></div></section>
+<section class="auth-view" id="view-records" data-view="records"><div class="content-shell rz-workspace-shell"><div class="rz-workspace-hero rz-records-hero"><span class="rz-workspace-kicker">YOUR LEARNING RECORDS</span><h1>Records</h1><p>Review student submissions and classroom activity.</p></div><div class="rz-records-tabs" role="tablist" aria-label="Records sections"><button type="button" id="rzSubmissionsTab" role="tab" aria-selected="true" aria-controls="rzSubmissionsPanel" class="rz-records-tab is-active" data-rz-subtab="submissions">Submissions</button><button type="button" id="rzActivityTab" role="tab" aria-selected="false" aria-controls="rzActivityPanel" class="rz-records-tab" data-rz-subtab="activity">Activity log</button></div><div id="rzSubmissionsPanel" role="tabpanel" aria-labelledby="rzSubmissionsTab"><div class="rz-records-toolbar"><div><h2>Student submissions</h2><p>Open a student to inspect their submission history by date.</p></div><div class="rz-records-actions"><input id="rzSearchStudents" class="management-input" type="search" placeholder="Search students" aria-label="Search students"><button class="rz-action-secondary" id="rzClearRecords" type="button">Clear list</button></div></div><div id="rzRecordMetrics" class="rz-records-metrics"></div><div id="rzStudentGrid" class="rz-student-grid"><div class="rz-workspace-empty">Student submissions will appear here.</div></div></div><div id="rzActivityPanel" role="tabpanel" aria-labelledby="rzActivityTab" hidden><div class="rz-records-toolbar"><div><h2>Activity log</h2><p>Visible class activity and submissions in chronological order.</p></div></div><div id="rzActivityTimeline" class="rz-activity-timeline"></div></div></div></section>
+<div id="rzStudentModal" class="rz-student-modal" role="dialog" aria-modal="true" aria-labelledby="rzStudentModalHeading" hidden><div class="rz-modal-scrim" data-rz-close></div><div class="rz-modal-card" tabindex="-1"><div class="rz-modal-header"><div><span class="rz-workspace-kicker">STUDENT RECORD</span><h2 id="rzStudentModalHeading">Submission history</h2><p id="rzStudentModalCaption">Most recent first</p></div><button class="rz-modal-x" type="button" data-rz-close aria-label="Close student record">×</button></div><div id="rzStudentModalBody" class="rz-modal-body"></div><div class="rz-modal-footer"><button class="rz-action-secondary" id="rzRemoveFromClass" type="button" disabled title="Class enrollment deletion requires separate authorized support">Delete student (unavailable)</button><button class="rz-action" type="button" data-rz-close>Done</button></div></div></div>
 <section
 class="auth-view"
 id="view-results"
@@ -32779,6 +32782,13 @@ initialiseSafeSwipe();
 
 verifyAccess();
 
+
+window.RizSimFacultyBridge={
+ getSnapshot:()=>({role:currentMembership?.role||null,products:products.slice(),licences:myLicenseCatalogue.slice(),submissions:submissions.slice(),sessions:classroomSessions.slice(),courses:courses.slice(),selectedCourseId,courseMaterials:courseMaterials.slice(),licensed:getActiveLicensedSimulations()}),
+ viewResponses:id=>openResponses(id),
+ selectCourse:async id=>{await openCourseManager(id);return getSelectedCourse()},
+ refresh:()=>{renderClassroom();renderResults();window.RizSimFacultyWorkspace?.render()}
+};
 </script>
 
 <!-- =========================================================
