@@ -1,0 +1,16 @@
+const fs=require("node:fs"),assert=require("node:assert/strict");
+const html=fs.readFileSync("access-out.html","utf8"),js=fs.readFileSync("rizsim-faculty-workspaces.js","utf8");
+const css=fs.readFileSync("rizsim-faculty-workspaces.css","utf8");
+const nav=html.slice(html.indexOf('id="mainNav"'),html.indexOf("</nav>",html.indexOf('id="mainNav"')));
+for(const item of ["RizSimulation Player","Classroom","Records","Courses","Home"])assert(nav.includes(item),"Missing "+item);
+for(const view of ["account","simulations","results","resources"])assert(new RegExp('class="rz-internal-hidden-tab"[\\\\s\\\\S]{0,190}data-auth-view="'+view+'"').test(nav),"Old tab must be hidden "+view);
+for(const id of ["view-classroom","view-materials","view-records","rzStudentGrid","rzStudentModal","rzActivityTimeline","rzClassroomMaterialMount","courseMaterialsPanel","createClassroomSessionButton","resultRows","responseModal","courseMaterialFile"])assert(html.includes('id="'+id+'"'),"Missing: "+id);
+for(const name of ["RizSimFacultyBridge","getSnapshot","viewResponses","selectCourse","getActiveLicensedSimulations","renderResults","renderClassroom"])assert(html.includes(name),name+" missing");
+for(const role of ["faculty","course_lead","owner"])assert(html.includes('"'+role+'"'),"Lost role "+role);
+for(const name of ["RizSimFacultyWorkspace","rzSubmissionsTab","rzActivityTab","rzClassroomCourseSelect","rzStudentModal","viewResponses","licensed","courseMaterials"])assert(js.includes(name),name+" integration missing");
+assert(css.includes("rz-modal-card"));assert(css.includes(".rz-licensed-grid"));
+assert(!js.includes("supabase.from("));assert(!js.includes("supabase.rpc("));assert(!js.includes(".delete("));
+assert(html.includes('rizsim-session-continuity.js'));
+assert(html.includes('rizsim-experiences.js'));
+assert(html.includes('rizsim-shared-home.js'));
+console.log("PASS faculty workspace layout and legacy integration invariants");
