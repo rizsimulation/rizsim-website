@@ -3305,6 +3305,9 @@ SUPABASE_PUBLISHABLE_KEY,
 {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
 );
 
+// Share the existing authenticated client; do not initialize a duplicate GoTrue session.
+window.rizsimSharedAuth = supabase;
+
 
 /* ============================================================
    LAUNCH ROUTES
