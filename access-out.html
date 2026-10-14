@@ -3623,6 +3623,7 @@ border-color:#315b92;
 </style>
 <link rel="stylesheet" href="rizsim-experiences.css">
 <link rel="stylesheet" href="rizsim-roles-library.css">
+<script src="rizsim-session-continuity.js" defer></script>
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -10884,10 +10885,8 @@ error: userError
 } =
 
 await withTimeout(
-supabase
-.auth
-.getUser(),
-12000
+window.RizSimSession.verifyUser(supabase),
+15000
 );
 
 currentUser =
@@ -11267,6 +11266,7 @@ document
 configureRoleNavigation();
 
 setAuthenticatedIdentity();
+window.RizSimSession.remember("faculty",currentUser.id);
 
 }
 
@@ -31454,6 +31454,7 @@ async function signOut() {
 await supabase
 .auth
 .signOut();
+window.RizSimSession.forget();
 
 window.location.replace(
 "/access-out.html"

@@ -1,0 +1,24 @@
+name: RizSim Session Continuity Validation
+on:
+  push:
+    branches:
+      - "fix/session-resume-browser-reopen-20261014"
+  pull_request:
+    paths:
+      - "rizsim-session-continuity.js"
+      - "rizsim-roles-library.js"
+      - "access-in.html"
+      - "access-out.html"
+      - "scripts/validate_session_continuity.js"
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check script syntax
+        run: |
+          node --check rizsim-session-continuity.js
+          node --check rizsim-roles-library.js
+      - name: Test session restore and integration
+        run: node scripts/validate_session_continuity.js
