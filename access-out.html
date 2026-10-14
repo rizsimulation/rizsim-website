@@ -3621,6 +3621,8 @@ border-color:#315b92;
 #rizsimSharedHome.is-ready{display:block}
 #rizsimLegacyHome[hidden]{display:none!important}
 </style>
+<link rel="stylesheet" href="rizsim-experiences.css">
+<link rel="stylesheet" href="rizsim-roles-library.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -3686,6 +3688,8 @@ data-auth-view="simulations"
 >
 Simulations
 </a>
+
+<a class="rz-internal-hidden-tab" id="rzHiddenLibraryNav" href="#resources" data-auth-view="resources" tabindex="-1" aria-hidden="true">Library</a>
 
 <a
 href="#courses"
@@ -4243,6 +4247,8 @@ id="homeRecentActivity"
 </div><!-- /rizsimLegacyHome -->
 
 </section>
+
+<section class="auth-view" id="view-resources" data-view="resources"><div class="content-shell"><div class="rz-library-hero"><span class="rz-library-kicker">RIZSIM DIGITAL LIBRARY</span><h1>eBooks <em>&amp;</em> Resources</h1><p>Independent reading environment for published learning materials. Your account permissions remain in effect.</p></div><div class="rz-library-grid" id="rzLibraryGrid"><div class="rz-catalog-empty">Loading your library…</div></div></div></section>
 
 <section
 class="auth-view"
@@ -9780,8 +9786,12 @@ const SUPABASE_PUBLISHABLE_KEY =
 const supabase =
 createClient(
 SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
+SUPABASE_PUBLISHABLE_KEY,
+{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
 );
+
+// Share the existing authenticated client; do not initialize a duplicate GoTrue session.
+window.rizsimSharedAuth = supabase;
 
 const ACTIVE_PORTAL_ROLES =
 new Set([
@@ -11270,6 +11280,7 @@ const allowed =
 new Set([
 "home",
 "simulations",
+"resources",
 "about",
 "contact",
 "account"
@@ -32843,6 +32854,8 @@ Complete
 </div>
   
 <script src="rizsim-shared-home.js" defer></script>
+<script src="rizsim-experiences.js" defer></script>
+<script type="module" src="rizsim-roles-library.js"></script>
 </body>
 
 </html>

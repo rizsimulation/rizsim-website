@@ -1944,6 +1944,8 @@ animation:none!important;
 #rizsimSharedHome.is-ready{display:block}
 #rizsimLegacyHome[hidden]{display:none!important}
 </style>
+<link rel="stylesheet" href="rizsim-experiences.css">
+<link rel="stylesheet" href="rizsim-roles-library.css">
 </head>
 
 
@@ -2035,6 +2037,8 @@ id="studentHeader"
 <div class="nav-shell">
 
 
+<button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Open sidebar" aria-expanded="false" aria-controls="siteSidebar" data-swipe-block><span class="sidebar-toggle-icon"><span></span><span></span><span></span></span></button>
+
 <a
 class="nav-logo-link"
 href="#home"
@@ -2071,6 +2075,8 @@ data-student-view="simulations"
 >
 Simulations
 </a>
+
+<a class="rz-internal-hidden-tab" id="rzHiddenLibraryNav" href="#resources" data-student-view="resources" tabindex="-1" aria-hidden="true">Library</a>
 
 <a
 href="#learning"
@@ -2259,7 +2265,8 @@ aria-expanded="false"
 
 </header>
 
-
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<aside class="site-sidebar" id="siteSidebar" aria-hidden="true" data-swipe-block><div class="sidebar-inner"></div></aside>
 
 <main
 id="studentContent"
@@ -2468,6 +2475,8 @@ id="homeLearningContent"
 </section>
 
 
+
+<section class="student-view" id="view-resources" data-view="resources"><div class="content-shell"><div class="rz-library-hero"><span class="rz-library-kicker">RIZSIM DIGITAL LIBRARY</span><h1>eBooks <em>&amp;</em> Resources</h1><p>Independent reading environment for published learning materials. Your account permissions remain in effect.</p></div><div class="rz-library-grid" id="rzLibraryGrid"><div class="rz-catalog-empty">Loading your library…</div></div></div></section>
 
 <!-- ============================================================
      SIMULATIONS
@@ -3292,8 +3301,12 @@ const SUPABASE_PUBLISHABLE_KEY =
 const supabase =
 createClient(
 SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
+SUPABASE_PUBLISHABLE_KEY,
+{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
 );
+
+// Share the existing authenticated client; do not initialize a duplicate GoTrue session.
+window.rizsimSharedAuth = supabase;
 
 
 /* ============================================================
@@ -3348,6 +3361,7 @@ let activeLearningTab =
 const viewOrder = [
 "home",
 "simulations",
+"resources",
 "learning",
 "player",
 "about",
@@ -5022,7 +5036,7 @@ document.getElementById(
 
 const courseItems=studentCourseMaterials.filter(m=>selectedStudentCourseFilter==='all'||
     String(m.course_id)===String(selectedStudentCourseFilter));
-  const platformItems=learningResources;
+  const platformItems=[]; // Platform eBooks live exclusively in the sidebar library.
   const courseOptions=studentCourses.filter(c=>studentCourseMaterials.some(m=>m.course_id===c.course_id));
   const filters=(courseOptions.length>1 || selectedStudentCourseFilter!=='all') ? `<div class="course-preview-shell" style="margin-bottom:14px">
     <label for="studentMaterialCourseSelect" style="display:block;margin-bottom:8px;font-weight:850;font-size:.7rem">Course</label>
@@ -5045,9 +5059,7 @@ const courseCards=`${courseItems.map(m=>{
   }).join('')}`;
 
 
-if(
-!learningResources.length && !courseItems.length
-){
+if(!courseItems.length){
 
 container.innerHTML = `${filters}
 
@@ -5063,7 +5075,7 @@ No learning materials available now
 
 <p>
 
-Authorized Course materials and RizSim resources appear here while access is available.
+Faculty-assigned course materials appear here. Find platform eBooks and resources in the sidebar library.
 
 </p>
 
@@ -5087,7 +5099,7 @@ ${courseCards}
 
 ${
 
-learningResources
+platformItems
 .map(
 resource => {
 
@@ -7801,6 +7813,8 @@ initialize();
 </script>
 
 <script src="rizsim-shared-home.js" defer></script>
+<script src="rizsim-experiences.js" defer></script>
+<script type="module" src="rizsim-roles-library.js"></script>
 </body>
 
 </html>

@@ -443,6 +443,8 @@
 }
 @media(prefers-reduced-motion:reduce){.bp-home .rizsim-announcement-link{transition:none}}
 </style>
+<link rel="stylesheet" href="rizsim-experiences.css">
+<link rel="stylesheet" href="rizsim-roles-library.css">
 </head>
 
 
@@ -848,6 +850,21 @@
       </div>
     </aside>
 
+    <!-- Public general Home remains the category selection hub. -->
+    <section class="bp-categories" aria-labelledby="bpCategoryTitle">
+      <div class="content-shell">
+        <div class="bp-categories-head">
+          <div><span class="bp-eyebrow">EXPLORE BY ENVIRONMENT</span><h2 id="bpCategoryTitle">Choose what you want to explore.</h2></div>
+          <p>Each environment shows its own simulations. Your sign-in and access never change when browsing.</p>
+        </div>
+        <div class="bp-category-grid">
+          <a class="bp-category-tile" href="simulations.html?category=learning"><span class="bp-category-icon">◈</span><span><strong>Learning</strong><small>Concepts, research and understanding through experience</small></span><span class="bp-category-arrow" aria-hidden="true">↗</span></a>
+          <a class="bp-category-tile" href="simulations.html?category=skills"><span class="bp-category-icon">✦</span><span><strong>Skills</strong><small>Judgment, decisions and applied capabilities</small></span><span class="bp-category-arrow" aria-hidden="true">↗</span></a>
+          <a class="bp-category-tile" href="simulations.html?category=children"><span class="bp-category-icon">✿</span><span><strong>Children</strong><small>Discovery and exploration for younger learners</small></span><span class="bp-category-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
     <!-- Hero: a fresh visual treatment inside the existing approved shell -->
     <section class="bp-hero" aria-labelledby="bpHeroTitle">
       <div class="content-shell bp-hero-layout">
@@ -1128,6 +1145,8 @@
   <script src="site.js"></script>
 
 
+<script src="rizsim-experiences.js" defer></script>
+<script type="module" src="rizsim-roles-library.js"></script>
 </body>
 
 </html>
