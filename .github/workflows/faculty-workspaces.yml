@@ -1,0 +1,23 @@
+name: Faculty Workspace Navigation QA
+on:
+  push:
+    branches:
+      - "feat/faculty-tabs-records-player-classroom-20261014"
+  pull_request:
+    paths:
+      - "access-out.html"
+      - "rizsim-faculty-workspaces.js"
+      - "rizsim-faculty-workspaces.css"
+      - "scripts/validate_faculty_workspaces.js"
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax and interaction smoke checks
+        run: |
+          node --check rizsim-faculty-workspaces.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_session_continuity.js
+          python3 scripts/validate_category_release.py
