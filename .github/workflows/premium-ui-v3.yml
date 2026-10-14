@@ -1,0 +1,30 @@
+name: RizSim Premium UI V3 Validation
+on:
+  push:
+    branches:
+      - "feat/premium-ui-v3-four-polish-20261014"
+  pull_request:
+    paths:
+      - "rizsim-experiences.js"
+      - "rizsim-experiences.css"
+      - "rizsim-roles-library.js"
+      - "rizsim-shared-home.js"
+      - "index.html"
+      - "scripts/validate_premium_ui_v3.js"
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          node --check rizsim-experiences.js
+          node --check rizsim-roles-library.js
+          node --check rizsim-shared-home.js
+      - name: Verify V3 interface
+        run: node scripts/validate_premium_ui_v3.js
+      - name: Verify existing category and session behavior
+        run: |
+          python3 scripts/validate_category_release.py
+          node scripts/validate_session_continuity.js
