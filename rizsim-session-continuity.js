@@ -50,6 +50,8 @@
   function isNonRetryable(error) {
     const status = Number(error?.status || 0);
     const code = String(error?.code || "").toLowerCase();
+    const name = String(error?.name || "").toLowerCase();
+    if (name === "authsessionmissingerror") return true;
     return status === 401 || status === 403 ||
       code === "session_not_found" || code === "invalid_refresh_token" ||
       code === "refresh_token_not_found";
