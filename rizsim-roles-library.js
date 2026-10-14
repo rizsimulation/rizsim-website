@@ -46,6 +46,25 @@ async function verifyRoles(){
  const membership=await client.from("access_out_members").select("role,active").eq("user_id",user.id).maybeSingle();
  const role=membership.error||!membership.data?.active?null:membership.data;
  if(portal){identityMenu(document.getElementById("accountMenu"),user,role);}
+ // A role link changes workspace navigation, not the membership or login.
+ if(faculty && role && ["#courses","#administration","#institution"].includes(location.hash)){
+   const target=location.hash.slice(1);
+   const allowedByRole={
+     courses:["owner","course_lead"],
+     administration:["owner","admin"],
+     institution:["owner","institution"]
+   };
+   if(allowedByRole[target]?.includes(role.role)){
+     let checks=0;
+     const navigateWhenReady=function(){
+       if(document.querySelector(".authenticated-app.show")){
+         const tab=document.querySelector('#mainNav [data-auth-view="'+target+'"]');
+         if(tab && tab.style.display!=="none") tab.click();
+       }else if(++checks<50){setTimeout(navigateWhenReady,220);}
+     };
+     navigateWhenReady();
+   }
+ }
  else{
    const button=document.getElementById("loginButton");
    const menu=document.getElementById("loginMenu");
