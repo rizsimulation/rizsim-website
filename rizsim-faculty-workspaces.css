@@ -1,0 +1,86 @@
+/* RizSim Premium Faculty Workspace: layer scoped to new Player, Records & Classroom views. */
+#mainNav .rz-internal-hidden-tab{display:none!important}
+#view-classroom .rz-player-selection,#view-materials .rz-workspace-hero,#view-records .rz-workspace-hero{position:relative}
+.rz-workspace-shell{padding-block:40px 86px}
+.rz-workspace-kicker{font-size:.69rem;letter-spacing:.155em;font-weight:900;color:#178d91}
+.rz-workspace-hero{background:radial-gradient(circle at 90% 0%,rgba(113,223,204,.15),transparent 42%),linear-gradient(135deg,#061b2d,#0c5461);padding:44px clamp(24px,5vw,58px);border-radius:28px;margin-bottom:25px;border:1px solid rgba(225,189,113,.48);box-shadow:0 24px 54px rgba(8,49,64,.2);overflow:hidden}
+.rz-workspace-hero h1{font-size:clamp(2.2rem,4vw,3.9rem);line-height:1.1;letter-spacing:-.065em;color:white;margin:12px 0}
+.rz-workspace-hero p{max-width:650px;color:#cbe9e6;font-size:.98rem;line-height:1.7}
+.rz-workspace-hero .rz-workspace-kicker{color:#e9c56b}
+.rz-player-selection{margin:22px 0 27px;padding:29px;border:1px solid #b8d9da;border-radius:27px;background:linear-gradient(145deg,#f6fbfa,#e9f4f5);box-shadow:0 16px 42px rgba(6,65,82,.09)}
+.rz-workspace-section-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:9px 0 25px}
+.rz-workspace-section-heading h2{margin:0 0 7px;color:#0c3d4d;font-size:clamp(1.25rem,2vw,1.8rem);letter-spacing:-.045em}
+.rz-workspace-section-heading p{margin:0;color:#64818c;font-size:.86rem}
+.rz-count-pill{border-radius:50px;padding:9px 14px;background:#e2f6ed;border:1px solid #9ed0c1;color:#0c7d7d;white-space:nowrap;font-size:.74rem;font-weight:850}
+.rz-licensed-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:16px}
+.rz-licensed-card{padding:17px;border:1px solid #b7d8d8;border-radius:19px;background:#fff;box-shadow:0 10px 23px rgba(5,52,70,.07);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.rz-licensed-card:nth-child(3n+2){border-color:#e3ce9f;background:#fffcf5}
+.rz-licensed-card:nth-child(3n+3){border-color:#b7cee5;background:#f8fbff}
+.rz-licensed-card:hover,.rz-licensed-card:focus-within{transform:translateY(-4px);box-shadow:0 23px 37px rgba(6,57,73,.15);border-color:#0f9f99}
+.rz-licensed-card-art{height:86px;position:relative;border-radius:13px;margin-bottom:17px;background:radial-gradient(circle at 75% 20%,rgba(120,228,214,.32),transparent 38%),linear-gradient(135deg,#08283c,#106d79)}
+.rz-licensed-card:nth-child(3n+2) .rz-licensed-card-art{background:linear-gradient(140deg,#5d475f,#b99a57)}
+.rz-licensed-card:nth-child(3n+3) .rz-licensed-card-art{background:linear-gradient(140deg,#254763,#6e92b9)}
+.rz-licensed-number{position:absolute;top:16px;left:18px;color:#fff;font-size:1.55rem;font-weight:850;letter-spacing:-.06em}
+.rz-licensed-label{font-size:.64rem;color:#19868a;font-weight:900;letter-spacing:.1em}
+.rz-licensed-card h3{color:#103c49;font-size:1.17rem;line-height:1.3;letter-spacing:-.024em;margin:8px 0}
+.rz-licensed-card p{color:#5b7b84;font-size:.84rem;line-height:1.65;min-height:40px}
+.rz-licensed-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:11px;margin-top:17px}
+.rz-licensed-footer small{font-size:.74rem;color:#68828d}
+.rz-run-button,.rz-action{border:1px solid #087f84;border-radius:11px;background:linear-gradient(110deg,#0b9d99,#0c6c80);box-shadow:0 8px 17px rgba(3,104,109,.19);color:#fff;padding:10px 16px;font-size:.81rem;font-weight:870;cursor:pointer;transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+.rz-run-button:hover,.rz-action:hover{background:linear-gradient(110deg,#087f83,#064e69);box-shadow:0 13px 26px rgba(3,92,103,.24);transform:translateY(-2px)}
+.rz-run-button:focus-visible,.rz-action:focus-visible,.rz-records-tab:focus-visible,.rz-student-card:focus-visible{outline:3px solid #d4b56a;outline-offset:3px}
+.rz-player-selected{padding:16px 22px;margin:18px 0;border:1px solid #7ccbbc;border-left:4px solid #168f8d;background:#e6f6f1;color:#0a6672;border-radius:13px;font-weight:850}
+.rz-classroom-materials-head,.rz-records-toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 22px}
+.rz-classroom-materials-head{border-radius:19px;padding:23px;background:linear-gradient(140deg,#f7fcfa,#e8f5f2);border:1px solid #c0deda}
+.rz-classroom-materials-head h2,.rz-records-toolbar h2{font-size:1.39rem;color:#133e4e;letter-spacing:-.03em;margin:0 0 6px}
+.rz-classroom-materials-head p,.rz-records-toolbar p{color:#5d7a87;margin:0;font-size:.86rem;line-height:1.6}
+.rz-classroom-materials-head label{display:grid;min-width:215px;gap:7px;font-size:.7rem;font-weight:850;color:#27626e}
+.rz-dropzone{padding:34px;text-align:center;border:2px dashed #70bfb9;border-radius:19px;background:repeating-linear-gradient(135deg,rgba(14,151,145,.025) 0 2px,transparent 2px 24px),#f2fbf8;margin:20px 0}
+.rz-dropzone.is-over{border-color:#b9984f;background:#fff7e7}
+.rz-dropzone strong{display:block;color:#145967;font-size:1.15rem}
+.rz-dropzone p{color:#66828d;font-size:.85rem}
+.rz-workspace-empty{padding:40px;text-align:center;border:1px dashed #b8d8d5;border-radius:18px;background:#f9fcfb;color:#64818a;font-size:.91rem}
+.rz-records-tabs{display:flex;gap:12px;margin-bottom:27px;padding:7px;border:1px solid #c8dcdf;background:#edf5f5;border-radius:17px;width:max-content;max-width:100%}
+.rz-records-tab{border:1px solid transparent;background:transparent;border-radius:11px;padding:13px 26px;color:#3e6b76;font-size:.87rem;font-weight:850;cursor:pointer}
+.rz-records-tab:hover{background:#fff}
+.rz-records-tab.is-active{background:linear-gradient(125deg,#0b6980,#118f90);box-shadow:0 8px 20px rgba(4,78,93,.18);color:#fff}
+.rz-records-actions{display:flex;align-items:center;gap:10px}
+.rz-records-actions .management-input{min-width:185px}
+.rz-action-secondary{border:1px solid #a3cbc8;background:linear-gradient(125deg,#fff,#ecf7f3);color:#0d6974;padding:10px 14px;border-radius:10px;font-size:.8rem;font-weight:850;cursor:pointer}
+.rz-action-secondary:hover{background:#dff3ee;border-color:#55aaa7}
+.rz-records-metrics{margin-bottom:17px;color:#1d7182;font-size:.85rem;font-weight:850}
+.rz-student-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,236px),1fr));gap:16px}
+.rz-student-card{border:1px solid #bedcdb;background:linear-gradient(140deg,#fff,#eff7f5);border-radius:18px;padding:18px;display:flex;align-items:center;gap:13px;text-align:left;cursor:pointer;box-shadow:0 11px 26px rgba(8,55,73,.075);transition:transform .2s ease,box-shadow .2s ease}
+.rz-student-card:hover{transform:translateY(-3px);box-shadow:0 20px 37px rgba(7,64,82,.13);border-color:#62bdb2}
+.rz-student-avatar{display:grid;place-items:center;flex:0 0 48px;height:48px;border-radius:14px;background:linear-gradient(145deg,#0b7380,#083c59);color:#fff;font-size:.85rem;font-weight:850}
+.rz-student-card:nth-child(3n+2) .rz-student-avatar{background:linear-gradient(135deg,#967438,#be9d55)}
+.rz-student-card:nth-child(3n+3) .rz-student-avatar{background:linear-gradient(135deg,#507da9,#293f76)}
+.rz-student-info{display:grid;gap:5px;min-width:0;flex:1}
+.rz-student-info strong{font-size:.94rem;color:#154555;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rz-student-info small{color:#66838d;font-size:.75rem}
+.rz-student-card-arrow{color:#178e90}
+.rz-activity-timeline{display:grid;gap:14px}
+.rz-activity-event{display:grid;grid-template-columns:15px 1fr auto;gap:15px;align-items:start;padding:20px;border:1px solid #cde0df;border-radius:16px;background:#fff}
+.rz-activity-dot{width:11px;height:11px;background:#11a29e;border-radius:50%;box-shadow:0 0 0 5px #e4f7f1;margin-top:7px}
+.rz-activity-event strong{color:#184d5b}
+.rz-activity-event p{margin:5px 0 0;font-size:.83rem;color:#69828e}
+.rz-activity-event time{font-size:.74rem;color:#66818a;white-space:nowrap}
+.rz-student-modal[hidden],#rzSubmissionsPanel[hidden],#rzActivityPanel[hidden]{display:none!important}
+.rz-student-modal{position:fixed;inset:0;z-index:1500;display:flex;align-items:center;justify-content:center;padding:22px}
+.rz-modal-scrim{position:absolute;inset:0;background:rgba(2,21,36,.74);backdrop-filter:blur(7px)}
+.rz-modal-card{position:relative;display:flex;flex-direction:column;width:min(860px,100%);max-height:min(760px,calc(100dvh - 40px));background:linear-gradient(140deg,#fff,#f3f9f8);border:1px solid #d5e8e5;border-radius:25px;box-shadow:0 35px 90px rgba(2,27,43,.35);overflow:hidden}
+.rz-modal-header,.rz-modal-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 28px;background:rgba(255,255,255,.8)}
+.rz-modal-header{border-bottom:1px solid #dce9e9}
+.rz-modal-header h2{color:#0d4451;font-size:1.65rem;margin:8px 0}
+.rz-modal-header p{color:#66818d;margin:0;font-size:.84rem}
+.rz-modal-x{border:1px solid #d7e7e3;background:white;border-radius:12px;font-size:1.6rem;color:#456c79;width:42px;height:42px;cursor:pointer}
+.rz-modal-body{overflow:auto;min-height:130px;padding:25px 28px;display:grid;gap:13px}
+.rz-modal-footer{border-top:1px solid #dce9e9}
+.rz-student-submission{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px;border:1px solid #c8dedb;border-radius:15px;background:white}
+.rz-student-submission div{display:grid;gap:7px}
+.rz-student-submission strong{color:#0d4755}
+.rz-student-submission span{font-size:.77rem;color:#66828d}
+.rz-record-modal-open{overflow:hidden}
+@media(max-width:800px){.rz-classroom-materials-head,.rz-records-toolbar{flex-direction:column;align-items:stretch}.rz-records-actions{flex-wrap:wrap}.rz-workspace-shell{padding-block:26px 65px}}
+@media(max-width:560px){.rz-workspace-hero{padding:31px 24px}.rz-player-selection{padding:20px}.rz-records-tab{padding:11px 15px}.rz-modal-header,.rz-modal-footer{padding:16px}.rz-modal-body{padding:18px}.rz-student-submission{flex-direction:column;align-items:stretch}.rz-student-modal{padding:9px}.rz-activity-event{grid-template-columns:14px 1fr}.rz-activity-event time{grid-column:2}}
+@media(prefers-reduced-motion:reduce){.rz-licensed-card,.rz-student-card,.rz-run-button{transition:none}}
