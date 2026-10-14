@@ -415,6 +415,34 @@
 }
 @media(prefers-reduced-motion:reduce){.bp-home .bp-step{transition:none}}
 </style>
+<style id="rizsim-home-announcement-style">
+/* One optional announcement component shared by the public Home and role dashboards. */
+.bp-home .rizsim-announcement-region{padding:19px 0 0;background:linear-gradient(180deg,#f7fafb,#f4f9f9)}
+.bp-home .rizsim-announcement-region[data-visible="false"]{display:none}
+.bp-home .rizsim-announcement-card{position:relative;isolation:isolate;display:flex;align-items:center;gap:20px;min-height:105px;padding:20px 28px;overflow:hidden;border:1px solid rgba(216,173,91,.65);border-radius:19px;background:radial-gradient(ellipse at 84% 2%,rgba(253,217,158,.31),transparent 37%),linear-gradient(104deg,#f9f2ff 0%,#eee2ff 49%,#e3d8fb 100%);box-shadow:0 8px 28px rgba(109,78,156,.13),0 0 22px rgba(233,193,99,.25),inset 0 1px rgba(255,255,255,.92)}
+.bp-home .rizsim-announcement-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(120deg,rgba(110,78,150,.022) 0 1px,transparent 1px 20px)}
+.bp-home .rizsim-announcement-card:after{content:"";position:absolute;right:-40px;top:-105px;width:280px;height:280px;border:1px solid rgba(224,179,87,.38);border-radius:50%;box-shadow:0 0 0 25px rgba(239,201,120,.07),0 0 0 53px rgba(180,144,226,.055);pointer-events:none}
+.bp-home .rizsim-announcement-spark{z-index:1;display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;color:#956326;font-size:1.55rem;background:linear-gradient(135deg,#fff9dc,#f3d792);border:1px solid #e9c982;box-shadow:0 6px 17px rgba(199,152,58,.19)}
+.bp-home .rizsim-announcement-copy{z-index:1;display:flex;flex:1 1 auto;flex-direction:column;gap:4px;min-width:0}
+.bp-home .rizsim-announcement-label{color:#815c9a;font-size:.66rem;font-weight:900;letter-spacing:.15em}
+.bp-home .rizsim-announcement-copy strong{font-size:clamp(1.03rem,2vw,1.35rem);line-height:1.25;letter-spacing:-.025em;color:#442b66}
+.bp-home .rizsim-announcement-copy strong span{color:#8050b0}
+.bp-home .rizsim-announcement-detail{font-size:.81rem;line-height:1.55;color:#695b78}
+.bp-home .rizsim-announcement-link{z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:11px;flex:0 0 auto;min-height:40px;padding:10px 16px;background:rgba(255,255,255,.78);border:1px solid #d3b9e5;border-radius:11px;box-shadow:0 6px 13px rgba(79,45,123,.08);color:#60378b;font-size:.8rem;font-weight:850;white-space:nowrap;transition:background .2s ease,transform .2s ease}
+.bp-home .rizsim-announcement-link:hover{background:#fff;transform:translateY(-2px)}
+.bp-home .rizsim-announcement-link:focus-visible{outline:3px solid #8763b4;outline-offset:3px}
+@media(max-width:730px){
+ .bp-home .rizsim-announcement-card{flex-wrap:wrap;gap:11px;padding:17px}
+ .bp-home .rizsim-announcement-spark{width:41px;height:41px;flex-basis:41px}
+ .bp-home .rizsim-announcement-copy{flex-basis:calc(100% - 56px)}
+ .bp-home .rizsim-announcement-link{margin-left:52px}
+}
+@media(max-width:460px){
+ .bp-home .rizsim-announcement-card{border-radius:16px}
+ .bp-home .rizsim-announcement-link{margin-left:0;width:100%}
+}
+@media(prefers-reduced-motion:reduce){.bp-home .rizsim-announcement-link{transition:none}}
+</style>
 </head>
 
 
@@ -805,6 +833,21 @@
 
   
   <main class="page-content bp-home" id="pageContent">
+    <!-- Optional universal announcement above the Brand Promise; toggle via data-visible. -->
+    <aside class="rizsim-announcement-region" data-rizsim-announcement data-visible="true" aria-label="RizSim launch announcement">
+      <div class="content-shell">
+        <div class="rizsim-announcement-card">
+          <span class="rizsim-announcement-spark" aria-hidden="true">✦</span>
+          <div class="rizsim-announcement-copy">
+            <span class="rizsim-announcement-label">LIMITED TIME OFFER · RIZSIM LAUNCH</span>
+            <strong>Explore with <span>complimentary access</span></strong>
+            <span class="rizsim-announcement-detail">Discover all published simulations and learning resources during our launch promotion. Sign in to explore.</span>
+          </div>
+          <a class="rizsim-announcement-link" href="simulations.html" data-page-link>Explore RizSim <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </aside>
+
     <!-- Hero: a fresh visual treatment inside the existing approved shell -->
     <section class="bp-hero" aria-labelledby="bpHeroTitle">
       <div class="content-shell bp-hero-layout">
