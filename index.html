@@ -92,6 +92,112 @@
     href="site.css"
   >
 
+
+<style id="rizsim-brand-promise-home">
+/* Scoped Home-page design. Existing splash, nav, palette, transitions and footer remain intact. */
+.bp-home{--bp-ink:#061827;--bp-teal:#18b8b0;--bp-muted:#617680;overflow:hidden;color:var(--bp-ink)}
+.bp-home section{position:relative}
+.bp-eyebrow{display:inline-flex;align-items:center;gap:11px;color:#087f86;font-size:.75rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase}
+.bp-eyebrow:before{content:"";display:block;width:29px;height:2px;background:linear-gradient(90deg,#18b8b0,#efc15b);border-radius:3px}
+.bp-heading{max-width:770px;margin-bottom:34px}
+.bp-heading h2{font-size:clamp(2.2rem,4.3vw,3.6rem);line-height:1.1;letter-spacing:-.052em;margin:16px 0 10px}
+.bp-heading h2 em{font-style:normal;color:#0b9d9a}
+.bp-heading p{max-width:640px;color:var(--bp-muted);line-height:1.75;font-size:1rem;margin:0}
+.bp-heading-center{text-align:center;margin-inline:auto}
+.bp-heading-center .bp-eyebrow{justify-content:center}
+.bp-heading-center p{margin-inline:auto}
+.bp-heading-split{max-width:none;display:flex;align-items:end;justify-content:space-between;gap:30px}
+.bp-heading-split>div{max-width:730px}
+.bp-heading-split>p{max-width:350px;margin-bottom:7px}
+.bp-hero{padding:93px 0 88px;background:radial-gradient(circle at 84% 15%,rgba(24,184,176,.13),transparent 32%),radial-gradient(circle at 4% 80%,rgba(239,193,91,.11),transparent 27%),#fff;border-bottom:1px solid #e3eded}
+.bp-hero-layout{display:grid;grid-template-columns:1fr 1.06fr;gap:clamp(30px,5vw,82px);align-items:center}
+.bp-hero-copy h1{font-size:clamp(3.8rem,6.3vw,6.3rem);font-weight:860;letter-spacing:-.075em;line-height:.98;margin:25px 0 21px}
+.bp-hero-copy h1 span{display:block;color:#18b8b0}
+.bp-hero-copy>p{font-size:1.15rem;color:#516d78;line-height:1.8;max-width:530px;margin:0 0 29px}
+.bp-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bp-proof{display:flex;flex-wrap:wrap;gap:9px;margin-top:28px}
+.bp-proof span{display:inline-flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid #d9ecea;border-radius:50px;background:#f7fcfb;color:#486873;font-size:.75rem;font-weight:780}
+.bp-proof span:before{content:"";width:6px;height:6px;background:#18b8b0;border-radius:50%}
+.bp-visual{height:475px;min-width:0;position:relative;isolation:isolate;background:linear-gradient(145deg,#041723,#0a3b48 72%,#08646c);border-radius:31px;overflow:hidden;box-shadow:0 27px 65px rgba(3,38,52,.22)}
+.bp-visual:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 47%,rgba(44,231,205,.17),transparent 42%);z-index:-1}
+.bp-visual-kicker{position:absolute;left:29px;top:29px;color:#ace7df;letter-spacing:.16em;font-size:.69rem;font-weight:860}
+.bp-visual-rings{position:absolute;left:50%;top:46%;width:460px;height:460px;transform:translate(-50%,-50%);border:1px solid rgba(101,228,207,.19);border-radius:50%;box-shadow:0 0 0 56px rgba(86,215,202,.038),inset 0 0 0 58px rgba(25,194,174,.045)}
+.bp-visual-rings:after{content:"";position:absolute;inset:73px;border:1px dashed rgba(128,237,222,.33);border-radius:50%}
+.bp-visual-core{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;justify-content:center;align-items:center;width:179px;height:179px;border-radius:50%;background:radial-gradient(circle,#166d70,#052936 72%);border:1px solid rgba(108,239,217,.37);box-shadow:0 0 0 13px rgba(47,190,173,.07),0 0 38px rgba(54,226,204,.13)}
+.bp-visual-core img{height:80px;width:80px;object-fit:contain}
+.bp-visual-core small{color:#dcf9f4;letter-spacing:.13em;font-size:.64rem;font-weight:900}
+.bp-visual-node{position:absolute;padding:15px 16px;width:146px;border-radius:17px;background:rgba(7,49,60,.88);color:white;border:1px solid rgba(130,235,214,.28);box-shadow:0 16px 36px rgba(0,0,0,.16);display:flex;flex-direction:column;gap:4px}
+.bp-visual-node span{font-size:.64rem;letter-spacing:.13em;font-weight:850;color:#86eddf}
+.bp-visual-node strong{font-size:1.02rem;letter-spacing:-.025em}
+.bp-node-a{top:116px;left:5%;transform:rotate(-4deg)}
+.bp-node-b{top:116px;right:5%;transform:rotate(4deg)}
+.bp-node-c{bottom:73px;left:50%;transform:translateX(-50%) rotate(-2deg);border-color:rgba(239,193,91,.5)}
+.bp-visual-caption{position:absolute;left:20px;right:20px;bottom:25px;text-align:center;color:#c9eae7;font-size:.8rem}
+.bp-questions{padding:91px 0 85px;background:#f8fbfb}
+.bp-question-flow{display:grid;grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);gap:15px;align-items:stretch}
+.bp-question-card{min-height:204px;border:1px solid #dfebec;border-radius:24px;background:#fff;padding:31px 34px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 15px 34px rgba(6,29,38,.05)}
+.bp-question-card>span{font-size:.72rem;letter-spacing:.14em;font-weight:800;color:#138d8b}
+.bp-question-card h3{margin:27px 0 0;font-size:clamp(1.4rem,2.7vw,2.15rem);line-height:1.3;letter-spacing:-.045em}
+.bp-question-dark{background:linear-gradient(140deg,#041c29,#0c4d58);border-color:transparent;color:#fff}
+.bp-question-dark>span{color:#7ae9db}
+.bp-question-arrow{display:grid;place-items:center;font-size:2rem;font-weight:900;color:#078d8e}
+.bp-question-arrow:before{content:"";width:58px;height:58px;border-radius:50%;background:#e2f7f2;border:1px solid #b2e9df;position:absolute;z-index:0;box-shadow:0 10px 25px rgba(13,136,135,.08)}
+.bp-question-arrow{isolation:isolate}.bp-question-arrow:before{z-index:-1}
+.bp-journey{padding:97px 0 105px;background:#fff}
+.bp-steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
+.bp-step{position:relative;min-height:225px;border-radius:20px;padding:23px 16px;background:linear-gradient(180deg,#fff,#f7fcfb);border:1px solid #dbece9;box-shadow:0 9px 25px rgba(5,38,48,.045);transition:transform .2s ease,box-shadow .2s ease}
+.bp-step:hover{transform:translateY(-5px);box-shadow:0 15px 30px rgba(5,38,48,.095)}
+.bp-step:not(:last-child):after{content:"→";position:absolute;right:-19px;top:39%;color:#0fa49c;font-size:1.4rem;font-weight:900;z-index:2}
+.bp-step-num{display:grid;place-items:center;width:45px;height:45px;border-radius:14px;background:#e5f7f3;color:#078987;font-size:1.01rem;font-weight:900;margin-bottom:23px}
+.bp-step h3{font-size:1.03rem;letter-spacing:-.025em;margin:0 0 7px}
+.bp-step p{color:#657d86;font-size:.82rem;line-height:1.65;margin:0}
+.bp-step:last-child{background:linear-gradient(145deg,#08646c,#052e43);border-color:transparent;color:#fff}
+.bp-step:last-child .bp-step-num{background:rgba(255,255,255,.18);color:#fff}
+.bp-step:last-child p{color:#d4efeb}
+.bp-difference{padding:94px 0 96px;background:radial-gradient(circle at 9% 10%,rgba(24,184,176,.075),transparent 28%),#f4f9fa;border-top:1px solid #e5edee;border-bottom:1px solid #e5edee}
+.bp-compare{display:grid;grid-template-columns:.88fr 1.12fr;gap:23px}
+.bp-compare-card{border:1px solid #dfe9ec;border-radius:25px;background:#fff;padding:31px;box-shadow:0 14px 28px rgba(5,39,45,.045)}
+.bp-compare-card h3{display:flex;align-items:center;gap:11px;font-size:1.05rem;margin:0 0 24px}
+.bp-dot{display:block;width:10px;height:10px;border-radius:50%;background:#b8c5ca}
+.bp-flow{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.bp-flow span{font-size:.78rem;white-space:nowrap;padding:10px 12px;border:1px solid #e5eced;background:#f7f9fa;border-radius:10px;color:#50636c;font-weight:820}
+.bp-flow b{color:#92a6ae}
+.bp-compare-card p{margin:22px 0 0;font-size:.88rem;color:#657b86}
+.bp-compare-rizsim{background:linear-gradient(135deg,#061d2a,#0c5961);border-color:transparent;color:#fff;box-shadow:0 24px 44px rgba(4,44,52,.17)}
+.bp-compare-rizsim .bp-dot{background:#6debd8}
+.bp-compare-rizsim .bp-flow span{background:rgba(255,255,255,.12);border-color:rgba(138,234,222,.3);color:#fff}
+.bp-compare-rizsim .bp-flow b{color:#86e9dc}
+.bp-compare-rizsim p{color:#c9e9e5}
+.bp-scenarios{padding:99px 0 80px;background:#fff}
+.bp-scenario-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.bp-scenario{min-height:213px;position:relative;overflow:hidden;background:#fff;border:1px solid #e1e9ed;border-radius:20px;padding:26px 22px;box-shadow:0 11px 23px rgba(6,34,45,.045)}
+.bp-scenario:after{content:"";position:absolute;right:-45px;top:-40px;width:120px;height:120px;border-radius:50%;border:1px solid rgba(24,184,176,.16);box-shadow:0 0 0 28px rgba(24,184,176,.03)}
+.bp-scenario:nth-child(even){background:#f7fcfb}
+.bp-scenario-index{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#e3f6f2;color:#087e85;font-weight:900;font-size:.79rem;margin-bottom:31px}
+.bp-scenario h3{margin:0 0 8px;font-size:1.03rem}
+.bp-scenario p{font-size:.87rem;line-height:1.66;color:#637b83;margin:0}
+.bp-audience{padding:0 0 89px;background:#fff}
+.bp-audience-shell{padding:37px 41px;background:linear-gradient(140deg,#f4fbfa,#fff);border:1px solid #e3efee;border-radius:27px}
+.bp-audience-shell .bp-heading{margin-bottom:26px}
+.bp-audience-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.bp-audience-chip{display:flex;align-items:center;gap:11px;padding:15px 12px;background:#fff;border:1px solid #e1edec;border-radius:14px;font-size:.85rem;font-weight:790;color:#2c4b54}
+.bp-audience-chip span{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:11px;background:#e7f7f3;color:#0a8387;font-size:.77rem;font-weight:900}
+.bp-last{padding:0 0 102px;background:#fff}
+.bp-last-shell{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:30px;background:linear-gradient(122deg,#061827,#073847 68%,#075e68);border-radius:31px;padding:51px clamp(28px,5vw,64px);box-shadow:0 24px 50px rgba(4,31,43,.16);color:#fff}
+.bp-last-shell:after{content:"";position:absolute;right:-110px;top:-165px;width:390px;height:390px;border:1px solid rgba(120,238,221,.28);border-radius:50%;box-shadow:0 0 0 60px rgba(107,235,215,.05)}
+.bp-last-shell>div{z-index:1}
+.bp-last .bp-eyebrow{color:#85eadb}
+.bp-last h2{font-size:clamp(2.2rem,4.8vw,4rem);letter-spacing:-.054em;margin:15px 0 8px;line-height:1.12}
+.bp-last p{margin:0;color:#cee6e7}
+.bp-last-actions{display:flex;flex-direction:column;gap:10px;min-width:190px}
+.bp-last-actions .button{justify-content:center;white-space:nowrap;text-align:center}
+.bp-last-actions .button-secondary{color:#fff;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.31)}
+.bp-last-actions .button-secondary:hover{background:rgba(255,255,255,.19);color:#fff}
+@media(max-width:1120px){.bp-steps{grid-template-columns:repeat(3,1fr);gap:21px}.bp-step:nth-child(3):after{display:none}.bp-scenario-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:870px){.bp-hero-layout{grid-template-columns:1fr}.bp-hero{padding:64px 0}.bp-hero-copy h1{font-size:clamp(3.4rem,10vw,5.7rem)}.bp-visual{height:390px}.bp-heading-split{display:block}.bp-heading-split>p{max-width:650px}.bp-questions,.bp-journey,.bp-difference,.bp-scenarios{padding:72px 0}.bp-compare{grid-template-columns:1fr}.bp-audience-grid{grid-template-columns:repeat(2,1fr)}.bp-last-shell{display:block}.bp-last-actions{flex-direction:row;flex-wrap:wrap;margin-top:25px}}
+@media(max-width:570px){.bp-hero-copy h1{font-size:clamp(3.05rem,12vw,4.5rem)}.bp-hero-copy>p{font-size:1rem}.bp-actions .button{width:100%;justify-content:center}.bp-visual{height:355px;border-radius:23px}.bp-visual-kicker{top:21px;left:20px}.bp-visual-core{width:141px;height:141px}.bp-visual-core img{width:62px;height:62px}.bp-visual-node{width:112px;padding:11px;border-radius:13px}.bp-visual-node strong{font-size:.9rem}.bp-node-a{top:88px;left:2%}.bp-node-b{top:88px;right:2%}.bp-node-c{bottom:50px}.bp-visual-caption{bottom:15px;font-size:.72rem}.bp-heading h2{font-size:clamp(2rem,9vw,2.9rem)}.bp-question-flow{grid-template-columns:1fr;gap:0}.bp-question-card{min-height:165px;padding:26px}.bp-question-card h3{margin-top:15px}.bp-question-arrow{height:55px}.bp-question-arrow:before{width:48px;height:48px}.bp-question-arrow{transform:rotate(90deg)}.bp-steps{grid-template-columns:1fr;gap:28px}.bp-step{min-height:auto;padding:24px}.bp-step:not(:last-child):after,.bp-step:nth-child(3):after{display:block;content:"↓";right:auto;left:50%;top:auto;bottom:-29px;transform:translateX(-50%)}.bp-scenario-grid{grid-template-columns:1fr;gap:13px}.bp-scenario{min-height:162px}.bp-scenario-index{margin-bottom:17px}.bp-audience-shell{padding:27px 22px}.bp-audience-grid{grid-template-columns:1fr}.bp-last{padding-bottom:68px}.bp-last-shell{padding:34px 25px}.bp-last-actions{flex-direction:column}.bp-last-actions .button{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.bp-step{transition:none}}
+</style>
 </head>
 
 
@@ -480,779 +586,134 @@
        PAGE
   ========================================================= -->
 
-  <main
-    class="page-content"
-    id="pageContent"
-  >
-
-
-    <!-- HERO -->
-
-    <section class="home-hero">
-
-      <div
-        class="hero-accent hero-accent-one"
-      ></div>
-
-      <div
-        class="hero-accent hero-accent-two"
-      ></div>
-
-
-      <div class="content-shell hero-grid">
-
-
-        <div class="hero-copy">
-
-
-          <div class="hero-kicker">
-
-            <span class="hero-kicker-dot"></span>
-
-            SIMULATION-BASED LEARNING
-
+  
+  <main class="page-content bp-home" id="pageContent">
+    <!-- Hero: a fresh visual treatment inside the existing approved shell -->
+    <section class="bp-hero" aria-labelledby="bpHeroTitle">
+      <div class="content-shell bp-hero-layout">
+        <div class="bp-hero-copy">
+          <span class="bp-eyebrow">SIMULATION-BASED LEARNING</span>
+          <h1 id="bpHeroTitle">From knowing <span>to doing.</span></h1>
+          <p>Enter the situation. Make the decision. Discover what follows — then use your learning when the context changes.</p>
+          <div class="bp-actions">
+            <a class="button button-primary" data-page-link href="simulations.html">Explore Simulations <span aria-hidden="true">→</span></a>
+            <a class="button button-secondary" data-page-link href="about.html">The RizSim Idea</a>
           </div>
-
-
-          <h1>
-
-            Learning
-            <br>
-
-            should move
-
-            <span>
-
-              beyond
-              <br>
-
-              knowing.
-
-            </span>
-
-          </h1>
-
-
-          <p class="hero-lead">
-
-            RizSim transforms concepts into decisions,
-            practice and reflection—helping learners move
-            from understanding an idea to applying it.
-
-          </p>
-
-
-
-          <div class="hero-buttons">
-
-            <a
-              class="button button-primary"
-              href="simulations.html"
-              data-page-link
-            >
-
-              Explore Simulations
-              <span>→</span>
-
-            </a>
-
-
-            <a
-              class="button button-secondary"
-              href="about.html"
-              data-page-link
-            >
-
-              Discover RizSim
-
-            </a>
-
-          </div>
-
-
-
-          <div class="hero-proof">
-
-
-            <div class="proof-item">
-
-              <strong>
-                Explore
-              </strong>
-
-              <span>
-                Understand the situation
-              </span>
-
-            </div>
-
-
-            <div class="proof-divider"></div>
-
-
-            <div class="proof-item">
-
-              <strong>
-                Decide
-              </strong>
-
-              <span>
-                Commit to judgment
-              </span>
-
-            </div>
-
-
-            <div class="proof-divider"></div>
-
-
-            <div class="proof-item">
-
-              <strong>
-                Grow
-              </strong>
-
-              <span>
-                Reflect and transfer
-              </span>
-
-            </div>
-
-
-          </div>
-
+          <div class="bp-proof" aria-label="RizSim learning principles"><span>Think</span><span>Decide</span><span>Discover</span><span>Apply</span></div>
         </div>
-
-
-
-        <!-- EXPERIENCE PANEL -->
-
-        <div
-          class="hero-visual"
-          data-swipe-block
-        >
-
-          <div class="hero-visual-glow"></div>
-
-
-          <div class="experience-panel">
-
-
-            <div class="experience-top">
-
-
-              <div>
-
-                <span class="micro-label">
-                  RIZSIM EXPERIENCE
-                </span>
-
-                <h2>
-                  Learning in motion
-                </h2>
-
-              </div>
-
-
-              <div class="experience-status">
-
-                <span></span>
-
-                ACTIVE
-
-              </div>
-
-
-            </div>
-
-
-
-            <div class="experience-flow">
-
-
-              <div class="experience-step active">
-
-                <div class="step-number">
-                  01
-                </div>
-
-                <div>
-
-                  <strong>
-                    Explore
-                  </strong>
-
-                  <span>
-                    Interpret the situation
-                  </span>
-
-                </div>
-
-                <div class="step-check">
-                  ✓
-                </div>
-
-              </div>
-
-
-              <div class="experience-line"></div>
-
-
-              <div class="experience-step active">
-
-                <div class="step-number">
-                  02
-                </div>
-
-                <div>
-
-                  <strong>
-                    Decide
-                  </strong>
-
-                  <span>
-                    Make a judgment
-                  </span>
-
-                </div>
-
-                <div class="step-check">
-                  ✓
-                </div>
-
-              </div>
-
-
-              <div class="experience-line"></div>
-
-
-              <div class="experience-step current">
-
-                <div class="step-number">
-                  03
-                </div>
-
-                <div>
-
-                  <strong>
-                    Reflect
-                  </strong>
-
-                  <span>
-                    Reconsider with feedback
-                  </span>
-
-                </div>
-
-                <div class="step-pulse"></div>
-
-              </div>
-
-
-              <div class="experience-line"></div>
-
-
-              <div class="experience-step">
-
-                <div class="step-number">
-                  04
-                </div>
-
-                <div>
-
-                  <strong>
-                    Apply
-                  </strong>
-
-                  <span>
-                    Transfer to a new context
-                  </span>
-
-                </div>
-
-              </div>
-
-
-            </div>
-
-
-
-            <div class="experience-footer">
-
-
-              <div>
-
-                <span class="micro-label">
-                  LEARNING JOURNEY
-                </span>
-
-                <strong>
-                  From Knowing to Doing
-                </strong>
-
-              </div>
-
-
-              <div class="progress-ring">
-
-                <span>
-                  68%
-                </span>
-
-              </div>
-
-
-            </div>
-
-          </div>
-
-
-
-          <div class="floating-card floating-one">
-
-            <span class="floating-label">
-              Learning Gain
-            </span>
-
-            <strong>
-              +31%
-            </strong>
-
-            <span class="floating-note">
-              illustrative
-            </span>
-
-          </div>
-
-
-
-          <div class="floating-card floating-two">
-
-            <div class="mini-dot"></div>
-
-            <span>
-              Applied learning
-            </span>
-
-          </div>
-
-
+        <div class="bp-visual" aria-label="Visual pathway: Understand, Decide, Transfer" data-swipe-block>
+          <div class="bp-visual-kicker">THE EXPERIENCE BEHIND THE PROMISE</div>
+          <div class="bp-visual-rings"></div>
+          <div class="bp-visual-core"><img src="rizsim-r.png" alt=""><small>EXPERIENCE</small></div>
+          <div class="bp-visual-node bp-node-a"><span>01 / KNOW</span><strong>Understand</strong></div>
+          <div class="bp-visual-node bp-node-b"><span>02 / DECIDE</span><strong>Act in context</strong></div>
+          <div class="bp-visual-node bp-node-c"><span>03 / TRANSFER</span><strong>Apply again</strong></div>
+          <div class="bp-visual-caption">Learning that travels beyond the lesson.</div>
         </div>
-
       </div>
-
     </section>
 
-
-
-    <!-- ======================================================
-         VALUE STRIP
-    ======================================================= -->
-
-    <section class="home-value-strip">
-
-      <div class="content-shell value-grid">
-
-
-        <article>
-
-          <span class="value-number">
-            01
-          </span>
-
-          <h3>
-            Active learning
-          </h3>
-
-          <p>
-            Learners make choices rather than simply consume information.
-          </p>
-
-        </article>
-
-
-        <article>
-
-          <span class="value-number">
-            02
-          </span>
-
-          <h3>
-            Visible thinking
-          </h3>
-
-          <p>
-            Structured decisions make reasoning and learning change observable.
-          </p>
-
-        </article>
-
-
-        <article>
-
-          <span class="value-number">
-            03
-          </span>
-
-          <h3>
-            Transfer
-          </h3>
-
-          <p>
-            Concepts move into new situations rather than remaining abstract knowledge.
-          </p>
-
-        </article>
-
-
-        <article>
-
-          <span class="value-number">
-            04
-          </span>
-
-          <h3>
-            Flexible access
-          </h3>
-
-          <p>
-            Faculty manage learning access while students join through secure class experiences.
-          </p>
-
-        </article>
-
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ======================================================
-         EXPLORE RIZSIM
-    ======================================================= -->
-
-    <section class="home-section">
-
+    <!-- Knowing -> Doing: brand promise as two contrasting visual cards -->
+    <section class="bp-questions" aria-labelledby="bpGapTitle">
       <div class="content-shell">
-
-
-        <div class="section-heading">
-
-
-          <div>
-
-            <span class="section-kicker">
-              EXPLORE RIZSIM
-            </span>
-
-            <h2>
-              A clearer path from learning to application.
-            </h2>
-
-          </div>
-
-
-          <p>
-
-            Browse interactive simulations publicly,
-            then enter RizSim through the experience
-            designed for you—as a learner, educator
-            or institution.
-
-          </p>
-
-
+        <div class="bp-heading bp-heading-split">
+          <div><span class="bp-eyebrow">THE GAP RIZSIM CLOSES</span><h2 id="bpGapTitle">Knowing matters. <em>Using it matters more.</em></h2></div>
+          <p>A concept remembered is valuable. A concept applied in an unfamiliar situation becomes usable knowledge.</p>
         </div>
-
-
-
-        <div class="home-card-grid">
-
-
-          <!-- SIMULATIONS -->
-
-          <a
-            class="home-card"
-            href="simulations.html"
-            data-page-link
-            data-swipe-block
-          >
-
-            <div class="home-card-icon">
-              S
-            </div>
-
-            <span class="home-card-label">
-              SIMULATIONS
-            </span>
-
-            <h3>
-              Learn through decisions.
-            </h3>
-
-            <p>
-              Explore interactive learning simulations across different subjects, contexts and audiences.
-            </p>
-
-            <span class="card-link">
-              View simulations →
-            </span>
-
-          </a>
-
-
-
-          <!-- STUDENT ACCESS -->
-
-          <a
-            class="home-card"
-            href="access-in.html"
-            data-swipe-block
-          >
-
-            <div class="home-card-icon">
-              L
-            </div>
-
-            <span class="home-card-label">
-              LEARNER ACCESS
-            </span>
-
-            <h3>
-              Join your learning experience.
-            </h3>
-
-            <p>
-              Students enter faculty-managed simulations through a class code or secure access link.
-            </p>
-
-            <span class="card-link">
-              Student access →
-            </span>
-
-          </a>
-
-
-
-          <!-- FACULTY ACCESS -->
-
-          <a
-            class="home-card"
-            href="access-out.html"
-            data-swipe-block
-          >
-
-            <div class="home-card-icon">
-              F
-            </div>
-
-            <span class="home-card-label">
-              FACULTY & INSTITUTIONS
-            </span>
-
-            <h3>
-              Bring simulations to your learners.
-            </h3>
-
-            <p>
-              Faculty and institutions license simulations, organize learning access and manage the classroom experience.
-            </p>
-
-            <span class="card-link">
-              Faculty access →
-            </span>
-
-          </a>
-
-
+        <div class="bp-question-flow">
+          <article class="bp-question-card"><span>THE FAMILIAR QUESTION</span><h3>“Do you know this?”</h3></article>
+          <div class="bp-question-arrow" aria-hidden="true">→</div>
+          <article class="bp-question-card bp-question-dark"><span>THE RIZSIM QUESTION</span><h3>“Can you use what you know?”</h3></article>
         </div>
-
       </div>
-
     </section>
 
-
-
-    <!-- ======================================================
-         AUDIENCE
-    ======================================================= -->
-
-    <section class="audience-section">
-
-      <div class="content-shell audience-layout">
-
-
-        <div class="audience-copy">
-
-          <span class="section-kicker">
-            BUILT FOR LEARNING
-          </span>
-
-          <h2>
-            One platform. Different learning contexts.
-          </h2>
-
-          <p>
-
-            RizSim supports structured learning experiences
-            across education, executive development,
-            workshops and institutional learning.
-
-          </p>
-
-
-          <a
-            class="text-link"
-            href="about.html"
-            data-page-link
-          >
-            About RizSim →
-          </a>
-
-        </div>
-
-
-
-        <div class="audience-list">
-
-
-          <div class="audience-row">
-
-            <span class="audience-index">
-              01
-            </span>
-
-            <strong>
-              Students
-            </strong>
-
-            <span>
-              Join classes and practice through faculty-provided codes or links.
-            </span>
-
-          </div>
-
-
-          <div class="audience-row">
-
-            <span class="audience-index">
-              02
-            </span>
-
-            <strong>
-              Faculty
-            </strong>
-
-            <span>
-              License simulations, run learning sessions and facilitate meaningful debrief.
-            </span>
-
-          </div>
-
-
-          <div class="audience-row">
-
-            <span class="audience-index">
-              03
-            </span>
-
-            <strong>
-              Institutions
-            </strong>
-
-            <span>
-              Support faculty, courses, cohorts and structured learning programs.
-            </span>
-
-          </div>
-
-
-          <div class="audience-row">
-
-            <span class="audience-index">
-              04
-            </span>
-
-            <strong>
-              Professionals
-            </strong>
-
-            <span>
-              Develop judgment through realistic interactive practice.
-            </span>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ======================================================
-         CTA
-    ======================================================= -->
-
-    <section class="home-cta">
-
+    <!-- Six-stage learning flowchart -->
+    <section class="bp-journey" aria-labelledby="bpJourneyTitle">
       <div class="content-shell">
-
-        <div class="cta-panel">
-
-
-          <div>
-
-            <span class="section-kicker">
-              START EXPLORING
-            </span>
-
-            <h2>
-              From knowing to doing.
-            </h2>
-
-            <p>
-
-              Browse RizSim publicly. Faculty and institutions
-              bring simulations into the learning environment;
-              students join through their class code or link.
-
-            </p>
-
-          </div>
-
-
-          <div class="hero-buttons">
-
-            <a
-              class="button button-light"
-              href="simulations.html"
-              data-page-link
-            >
-              Browse Simulations
-            </a>
-
-
-            <a
-              class="button button-primary"
-              href="access-in.html"
-            >
-              Student Access
-            </a>
-
-          </div>
-
-
+        <div class="bp-heading bp-heading-center">
+          <span class="bp-eyebrow">THE RIZSIM LEARNING JOURNEY</span>
+          <h2 id="bpJourneyTitle">Six stages. <em>One transformation.</em></h2>
+          <p>Make a judgment before the answer is revealed. Discover what follows. Reflect, transfer and act.</p>
         </div>
-
+        <div class="bp-steps" role="list" aria-label="Explore, Decide, Discover, Reflect, Transfer, Do"><article class="bp-step" role="listitem"><div class="bp-step-num">01</div><h3>Explore</h3><p>Enter a realistic situation.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">02</div><h3>Decide</h3><p>Commit to a judgment.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">03</div><h3>Discover</h3><p>Meet feedback and consequences.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">04</div><h3>Reflect</h3><p>Examine assumptions and evidence.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">05</div><h3>Transfer</h3><p>Apply learning to a new context.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">06</div><h3>Do</h3><p>Carry better judgment forward.</p></article></div>
       </div>
-
     </section>
 
+    <!-- Teaching-method comparison, rendered as two structured pathways -->
+    <section class="bp-difference" aria-labelledby="bpDifferenceTitle">
+      <div class="content-shell">
+        <div class="bp-heading">
+          <span class="bp-eyebrow">THE RIZSIM DIFFERENCE</span>
+          <h2 id="bpDifferenceTitle">Not just knowledge transfer. <em>Learning transfer.</em></h2>
+          <p>Two paths. One checks what learners remember; the other helps reveal how they use what they know.</p>
+        </div>
+        <div class="bp-compare">
+          <article class="bp-compare-card">
+            <h3><span class="bp-dot"></span>Traditional learning</h3>
+            <div class="bp-flow" aria-label="Content to explanation to question to correct answer"><span>Content</span><b>→</b><span>Explanation</span><b>→</b><span>Question</span><b>→</b><span>Correct answer</span></div>
+            <p>From information to recall.</p>
+          </article>
+          <article class="bp-compare-card bp-compare-rizsim">
+            <h3><span class="bp-dot"></span>RizSim learning</h3>
+            <div class="bp-flow" aria-label="Situation to decision to consequence to reflection to new context to application"><span>Situation</span><b>→</b><span>Decision</span><b>→</b><span>Consequence</span><b>→</b><span>Reflection</span><b>→</b><span>New context</span><b>→</b><span>Application</span></div>
+            <p>From active experience to applied judgment.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
+    <!-- Concrete examples of judgment under uncertainty -->
+    <section class="bp-scenarios" aria-labelledby="bpScenarioTitle">
+      <div class="content-shell">
+        <div class="bp-heading">
+          <span class="bp-eyebrow">REAL SITUATIONS · REAL JUDGMENT</span>
+          <h2 id="bpScenarioTitle">Where knowledge meets <em>the moment.</em></h2>
+          <p>Understanding the theory is only a beginning. What happens when the decision is yours?</p>
+        </div>
+        <div class="bp-scenario-grid"><article class="bp-scenario"><span class="bp-scenario-index">01</span><h3>Cognitive bias</h3><p>You know anchoring. Can you resist the first number?</p></article>
+<article class="bp-scenario"><span class="bp-scenario-index">02</span><h3>Ethical leadership</h3><p>What happens to your values under pressure?</p></article>
+<article class="bp-scenario"><span class="bp-scenario-index">03</span><h3>Research methods</h3><p>Can you apply a method to an unfamiliar problem?</p></article>
+<article class="bp-scenario"><span class="bp-scenario-index">04</span><h3>Executive judgment</h3><p>Can you recognise bias in your own decisions?</p></article></div>
+      </div>
+    </section>
+
+    <!-- Short application & audience grid, not a wall of text -->
+    <section class="bp-audience" aria-labelledby="bpAudienceTitle">
+      <div class="content-shell">
+        <div class="bp-audience-shell">
+          <div class="bp-heading bp-heading-split"><div><span class="bp-eyebrow">ONE PLATFORM · MANY CONTEXTS</span><h2 id="bpAudienceTitle">Built for people <em>who decide.</em></h2></div>
+            <p>Educational simulations · classroom experiments · decision labs · interactive workshops · executive learning.</p></div>
+          <div class="bp-audience-grid"><div class="bp-audience-chip"><span>01</span>Universities & students</div>
+<div class="bp-audience-chip"><span>02</span>Faculty & trainers</div>
+<div class="bp-audience-chip"><span>03</span>Managers & executives</div>
+<div class="bp-audience-chip"><span>04</span>Organisations & teams</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Existing paths retained: browse, Faculty and Student -->
+    <section class="bp-last" aria-labelledby="bpLastTitle">
+      <div class="content-shell">
+        <div class="bp-last-shell">
+          <div>
+            <span class="bp-eyebrow">THE EXPERIENCE BEHIND THE PROMISE</span>
+            <h2 id="bpLastTitle">Explore. Decide. Grow.</h2>
+            <p>Move beyond recognition. Put your thinking to work.</p>
+          </div>
+          <div class="bp-last-actions">
+            <a class="button button-primary" data-page-link href="simulations.html">Explore Simulations →</a>
+            <a class="button button-secondary" href="access-out.html">Faculty Access</a>
+            <a class="button button-secondary" href="access-in.html">Student Access</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
 
