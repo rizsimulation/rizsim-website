@@ -10,6 +10,7 @@ let currentStudent=null;
 let lastFocus=null;
 let materialMounted=false;
 let initialized=false;
+let resultsMounted=false;
 const str=v=>String(v??"");
 const date=v=>v?new Date(v).toLocaleString(undefined,{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}):"Date not available";
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=str(text);return el;}
@@ -18,8 +19,22 @@ function snapshot(){try{return bridge()?.getSnapshot()||null;}catch(e){return nu
 function empty(el,message){el.replaceChildren(node("div","rz-workspace-empty",message));}
 function selectedAllowed(){return $("view-records")?.classList.contains("active");}
 function gotoClassroom(){document.querySelector('#mainNav [data-auth-view="classroom"]')?.click();}
+function mountPlayerResults(){
+ const snap=snapshot();if(!snap||!["faculty","course_lead"].includes(snap.role)||resultsMounted)return;
+ const from=$("view-results")?.querySelector(".content-shell");
+ const player=$("view-classroom")?.querySelector(".content-shell");
+ if(!from||!player)return;
+ const wrap=node("section","rz-player-results");
+ wrap.append(node("div","rz-workspace-kicker","RESULTS & PARTICIPANT PROGRESS"));
+ // Moving the existing result controls preserves the original listeners, RPC
+ // permission checks, and authenticated response viewer.
+ wrap.append(from);
+ player.append(wrap);
+ resultsMounted=true;
+}
 function player(){
  const snap=snapshot();if(!snap)return;
+ mountPlayerResults();
  const grid=$("rzLicensedSimGrid"),count=$("rzLicensedCount");
  if(!grid||!count)return;
  grid.replaceChildren();count.textContent=snap.licensed.length+" licensed";
