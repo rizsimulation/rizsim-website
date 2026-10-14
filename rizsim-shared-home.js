@@ -120,6 +120,9 @@
       const stylesheet = document.createElement("link");
       stylesheet.rel = "stylesheet";
       stylesheet.href = "site.css";
+      const experienceStylesheet = document.createElement("link");
+      experienceStylesheet.rel = "stylesheet";
+      experienceStylesheet.href = "rizsim-experiences.css";
 
       const page = document.createElement("div");
       page.className = "page-content bp-home";
@@ -128,6 +131,7 @@
 
       shadow.appendChild(fundamentals);
       shadow.appendChild(stylesheet);
+      shadow.appendChild(experienceStylesheet);
       homeStyles.forEach(function (style) {
         shadow.appendChild(addStyle(style.textContent));
       });
@@ -135,12 +139,16 @@
       bindPortalNavigation(shadow);
 
       // If styles do not load, retain the original working dashboard Home.
+      function awaitStylesheet(sheet) {
+        return new Promise(function (resolve) {
+          sheet.addEventListener("load", function () { resolve(true); }, { once: true });
+          sheet.addEventListener("error", function () { resolve(false); }, { once: true });
+        });
+      }
       const loaded = await Promise.race([
-        new Promise(function (resolve) {
-          stylesheet.addEventListener("load", function () { resolve(true); }, { once: true });
-          stylesheet.addEventListener("error", function () { resolve(false); }, { once: true });
-        }),
-        new Promise(function (resolve) { window.setTimeout(function () { resolve(false); }, 3000); })
+        Promise.all([awaitStylesheet(stylesheet), awaitStylesheet(experienceStylesheet)])
+          .then(function (results) { return results.every(Boolean); }),
+        new Promise(function (resolve) { window.setTimeout(function () { resolve(false); }, 3500); })
       ]);
       if (!loaded) throw new Error("Home stylesheet could not be confirmed.");
 
