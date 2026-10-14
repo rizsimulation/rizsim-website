@@ -1936,10 +1936,18 @@ animation:none!important;
 
 </style>
 
+
+<style id="rizsim-unified-home-shell">
+/* Role navigation/auth stay untouched; render the public Home edge-to-edge inside the Home tab only. */
+#view-home.rizsim-unified-home{padding:0;overflow:hidden}
+#rizsimSharedHome{display:none}
+#rizsimSharedHome.is-ready{display:block}
+#rizsimLegacyHome[hidden]{display:none!important}
+</style>
 </head>
 
 
-<body>
+<body data-rizsim-home-portal="student">
 
 
 <!-- ============================================================
@@ -2268,6 +2276,10 @@ class="student-view active"
 id="view-home"
 data-view="home"
 >
+<!-- The exact public RizSim Home, mirrored from index.html for every signed-in role. -->
+<div id="rizsimSharedHome" class="rizsim-shared-home" aria-label="RizSim shared Home"></div>
+<div id="rizsimLegacyHome" class="rizsim-legacy-home">
+
 
 <div class="content-shell">
 
@@ -2450,6 +2462,8 @@ id="homeLearningContent"
 
 
 </div>
+
+</div><!-- /rizsimLegacyHome -->
 
 </section>
 
@@ -7786,6 +7800,7 @@ initialize();
 
 </script>
 
+<script src="rizsim-shared-home.js" defer></script>
 </body>
 
 </html>
