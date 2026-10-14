@@ -9,6 +9,94 @@
   const categories = {learning:"Learning",skills:"Skills",children:"Children"};
   const params = new URLSearchParams(location.search);
   let selected = Object.prototype.hasOwnProperty.call(categories,params.get("category")) ? params.get("category") : "";
+  // Consistent, purpose-specific line icons (Lucide-style SVG paths), never emoji glyphs.
+  const iconPaths = {
+    library: '<path d="M4 19.5V5.4A2.4 2.4 0 0 1 6.4 3H20v16H6.4a2.4 2.4 0 0 0 0 4H20"/><path d="M4 19.5A2.4 2.4 0 0 1 6.4 17H20"/>',
+    settings: '<path d="M3 7h10M17 7h4M3 17h4M11 17h10"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+    user: '<circle cx="12" cy="8" r="3.3"/><path d="M5.2 20a6.8 6.8 0 0 1 13.6 0"/><circle cx="12" cy="12" r="10"/>',
+    arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
+    chevron: '<path d="m9 18 6-6-6-6"/>',
+    logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>',
+    learning: '<path d="M12 18V5.2M12 7.5a4.7 4.7 0 1 0-7.2 4 4.2 4.2 0 0 0 .4 6.6A4.2 4.2 0 0 0 9.4 21c1.4 0 2.6-.7 2.6-2.3M12 7.5a4.7 4.7 0 1 1 7.2 4 4.2 4.2 0 0 1-.4 6.6 4.2 4.2 0 0 1-4.2 2.9c-1.4 0-2.6-.7-2.6-2.3"/><path d="M6 10.5c1.6 0 2.8.7 3.5 2M18 10.5c-1.6 0-2.8.7-3.5 2"/>',
+    skills: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/><path d="m16 8 5-5"/>',
+    children: '<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/>',
+    graduation: '<path d="m2 10 10-5 10 5-10 5-10-5Z"/><path d="M6 12.5V17c3.6 2.5 8.4 2.5 12 0v-4.5M22 10v6"/>',
+    faculty: '<rect x="4" y="3" width="16" height="13" rx="2"/><path d="M8 21h8M12 16v5M8 8h8M8 12h5"/>',
+    shield: '<path d="m12 22 1.7-.7C19.3 19 21 15.7 21 11V5l-9-3-9 3v6c0 4.7 1.7 8 7.3 10.3L12 22Z"/><path d="m9 12 2 2 4-4"/>',
+    sparkles: '<path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2ZM19 17l.7 2.3L22 20l-2.3.7L19 23l-.7-2.3L16 20l2.3-.7L19 17Z"/>',
+    check: '<path d="m5 12 4 4L19 6"/>'
+  };
+  function svg(name) {
+    const path=iconPaths[name]||iconPaths.user;
+    return '<svg class="rz-v3-svg" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+path+'</svg>';
+  }
+  function decorateHome(root) {
+    if(!root || !root.querySelectorAll)return;
+    const categoryIcons=["learning","skills","children"];
+    root.querySelectorAll(".bp-category-tile .bp-category-icon").forEach(function(node,index){
+      if(node.dataset.rzV3Icon)return;
+      node.innerHTML=svg(categoryIcons[index]||"learning");
+      node.dataset.rzV3Icon="true";
+    });
+    root.querySelectorAll(".rizsim-announcement-spark").forEach(function(node){
+      if(node.dataset.rzV3Icon)return;
+      node.innerHTML=svg("sparkles");
+      node.dataset.rzV3Icon="true";
+    });
+  }
+  function decorateMenu() {
+    document.querySelectorAll("#accountMenu .account-menu-icon").forEach(function(el){
+      if(el.dataset.rzV3Icon)return;
+      const node=el.closest(".account-menu-button");
+      const kind=node?.classList.contains("danger")?"logout":node?.id==="ownerPublicSiteButton"?"arrow":"user";
+      el.innerHTML=svg(kind);el.dataset.rzV3Icon="true";
+    });
+    document.querySelectorAll("#loginMenu .login-role-icon").forEach(function(el,i){
+      if(el.dataset.rzV3Icon)return;
+      el.innerHTML=svg(i===0?"graduation":"faculty");
+      el.dataset.rzV3Icon="true";
+    });
+    document.querySelectorAll(".rz-role-switch > a,.rz-role-switch > .rz-role-current").forEach(function(el){
+      if(el.dataset.rzV3Icon)return;
+      let text=el.textContent.toLowerCase();
+      const kind=text.includes("student")?"graduation":text.includes("faculty")?"faculty":text.includes("owner")||text.includes("lead")||text.includes("admin")?"shield":"user";
+      const initial=document.createElement("span");
+      initial.className="rz-role-icon";initial.innerHTML=svg(kind);
+      el.prepend(initial);el.dataset.rzV3Icon="true";
+    });
+  }
+  function updateProfile(user, membership) {
+    window.RizSimExperience.verifiedIdentity={user,membership};
+    const card=sidebar.querySelector(".rz-profile-button");
+    if(!card || !user)return;
+    const name=sidebar.querySelector("[data-rz-profile-name]");
+    const role=sidebar.querySelector("[data-rz-profile-role]");
+    const email=sidebar.querySelector("[data-rz-profile-email]");
+    const avatar=sidebar.querySelector("[data-rz-profile-avatar]");
+    const menuName=document.getElementById("accountMenuName")?.textContent?.trim();
+    const validName=menuName && !/^RizSim (User|Learner)$/i.test(menuName) ? menuName : "";
+    const display=validName||user.user_metadata?.full_name||user.user_metadata?.name||user.email?.split("@")[0]||"RizSim Member";
+    const verifiedRole=membership?.active?membership.role:null;
+    const roles={faculty:"Faculty",course_lead:"Course Lead",owner:"Owner",admin:"Administration",institution:"Institution"};
+    name.textContent=display;
+    role.textContent=student?"Student workspace":faculty?(roles[verifiedRole]||"Faculty workspace"):"Signed-in account";
+    email.textContent=user.email||"";
+    card.title="Open account • "+display;
+    if(avatar){
+      let source=document.querySelector("#accountMenuAvatar img")?.getAttribute("src")||user.user_metadata?.avatar_url||user.user_metadata?.picture||"";
+      try {
+        const url=new URL(source,location.href);
+        if(url.protocol!=="https:")source="";
+      }catch(_){source="";}
+      if(source){
+        const img=document.createElement("img");img.src=source;img.alt="";
+        img.referrerPolicy="no-referrer";avatar.replaceChildren(img);
+      } else {
+        avatar.textContent=display.split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+      }
+    }
+  }
+  window.RizSimExperience={svg,decorateHome,decorateMenu,updateProfile,verifiedIdentity:null};
   const sidebar = document.querySelector("#siteSidebar .sidebar-inner");
   if(!sidebar)return;
   const drawerToggle=document.getElementById("sidebarToggle");
@@ -42,19 +130,45 @@
   function catHref(slug) {
     return (portal?base:"simulations.html")+"?category="+encodeURIComponent(slug)+(portal?"#simulations":"");
   }
-  const sideLinks = Object.entries(categories).map(function(item) {
-    const label = item[1],slug=item[0],ico=slug==="learning"?"◈":slug==="skills"?"✦":"✿";
-    const descr=slug==="learning"?"Concepts & understanding":slug==="skills"?"Decisions & applied skills":"Younger learners";
-    return '<a href="'+catHref(slug)+'" class="rz-side-link" data-category="'+slug+'"><span class="rz-side-icon">'+ico+'</span><span><strong>'+label+'</strong><small>'+descr+'</small></span></a>';
-  }).join("");
-  sidebar.innerHTML='<div class="rz-side"><div class="rz-side-top"><span class="rz-side-mark">R</span><span><strong>Explore RizSim</strong><small>From Knowing to Doing</small></span></div>'+
-    '<div><span class="rz-side-label">Simulation environments</span><div class="rz-side-nav">'+sideLinks+
-    '<a href="'+(portal?base+"#simulations":"simulations.html")+'" class="rz-side-link" data-category="all"><span class="rz-side-icon">▦</span><span><strong>All simulations</strong><small>The complete catalogue</small></span></a></div></div>'+
-    '<div class="rz-side-resources"><span class="rz-side-label">Digital reading</span><a class="rz-side-link" data-rz-library href="'+(portal?"#resources":"access-in.html?library=1")+'"><span class="rz-side-icon">▤</span><span><strong>eBooks &amp; Resources</strong><small>Dedicated library environment</small></span></a></div>'+
-    '<div class="rz-side-foot">'+(portal?
-       '<button class="rz-side-link" type="button" data-rz-account><span class="rz-side-icon">◉</span>Account</button><button class="rz-side-link" type="button" data-rz-settings><span class="rz-side-icon">⚙</span>Settings</button>':
-       '<a class="rz-side-link" href="access-in.html"><span class="rz-side-icon">◉</span>Account / Sign in</a>')+
-    '<small class="rz-side-caption">Changing your environment never changes your account privileges.</small></div></div>';
+  // Categories remain selectable exclusively on the shared Home page.
+  // Sidebar is deliberately compact: digital library, Settings, verified Account.
+  sidebar.innerHTML='<div class="rz-side rz-side-v3">'+
+    '<div class="rz-side-main"><span class="rz-side-label">YOUR LIBRARY</span>'+
+    '<a class="rz-library-entry" data-rz-library href="'+(portal?'#resources':'access-in.html?library=1')+'">'+
+      '<span class="rz-library-entry-icon">'+svg("library")+'</span>'+
+      '<span class="rz-library-entry-text"><strong>eBooks &amp; Resources</strong><small>Explore your digital collection</small></span>'+
+      '<span class="rz-library-entry-arrow">'+svg("arrow")+'</span></a></div>'+
+    '<div class="rz-side-bottom">'+
+      '<button class="rz-settings-link" data-rz-settings type="button" aria-expanded="false" aria-controls="rzSettingsPanel">'+
+        '<span class="rz-settings-link-icon">'+svg("settings")+'</span><span>Settings</span><span class="rz-settings-chevron">'+svg("chevron")+'</span></button>'+
+      '<div id="rzSettingsPanel" class="rz-settings-panel" hidden>'+
+        '<label class="rz-settings-toggle"><span>Reduce motion<small>Minimise interface transitions</small></span><input type="checkbox" data-rz-reduce-motion></label>'+
+        '<button type="button" class="rz-settings-manage" data-rz-account>Manage profile &amp; access '+svg("arrow")+'</button></div>'+
+      '<button class="rz-profile-button" type="button" data-rz-account aria-label="Open your account">'+
+        '<span class="rz-profile-avatar" data-rz-profile-avatar>'+svg("user")+'</span>'+
+        '<span class="rz-profile-copy"><strong data-rz-profile-name>'+(portal?'My account':'Guest visitor')+'</strong>'+
+          '<small data-rz-profile-role>'+(student?'Student workspace':faculty?'Faculty workspace':'Sign in to RizSim')+'</small>'+
+          '<span class="rz-profile-email" data-rz-profile-email></span></span>'+
+        '<span class="rz-profile-chevron">'+svg("chevron")+'</span></button></div></div>';
+  try{
+    const stored=localStorage.getItem("rizsim-ui-reduced-motion")==="true";
+    document.documentElement.classList.toggle("rz-reduced-motion",stored);
+    const box=sidebar.querySelector("[data-rz-reduce-motion]");if(box)box.checked=stored;
+  }catch(_){}
+  sidebar.addEventListener("change",function(event){
+    if(!event.target.matches("[data-rz-reduce-motion]"))return;
+    const checked=!!event.target.checked;
+    document.documentElement.classList.toggle("rz-reduced-motion",checked);
+    try{localStorage.setItem("rizsim-ui-reduced-motion",String(checked));}catch(_){}
+  });
+  const nameElement=document.getElementById("accountMenuName");
+  if(nameElement) {
+    const watch=new MutationObserver(function(){
+      const profile=window.RizSimExperience?.verifiedIdentity;
+      if(profile) updateProfile(profile.user,profile.membership);
+    });
+    watch.observe(nameElement,{childList:true,characterData:true,subtree:true});
+  }
 
   function filterCards() {
     const grid=document.getElementById(faculty?"portalSimulationGrid":"simulationGrid");
@@ -92,8 +206,7 @@
       }
     }
     sidebar.querySelectorAll("[data-category]").forEach(function(el){el.classList.toggle("is-current",el.dataset.category===(selected||"all"));});
-    const crumb=document.getElementById("rzCurrentEnvironment");
-    if(crumb){crumb.textContent=selected?"› "+categories[selected]:"";crumb.hidden=!selected;}
+    if(window.RizSimEnvironment)window.RizSimEnvironment.updateEnvironment();
   }
 
   const grid=document.getElementById(faculty?"portalSimulationGrid":"simulationGrid");
@@ -115,8 +228,18 @@
   }
   sidebar.addEventListener("click",function(event){
     const target=event.target.closest("a,button");if(!target)return;
-    if(target.hasAttribute("data-rz-account")||target.hasAttribute("data-rz-settings")){
-      event.preventDefault();closeDrawer();goto("account");return;
+    if(target.hasAttribute("data-rz-settings")){
+      event.preventDefault();
+      const panel=sidebar.querySelector("#rzSettingsPanel");
+      const expanded=panel?.hidden===true;
+      if(panel)panel.hidden=!expanded;
+      target.setAttribute("aria-expanded",String(expanded));
+      return;
+    }
+    if(target.hasAttribute("data-rz-account")){
+      event.preventDefault();closeDrawer();
+      if(portal)goto("account");else location.assign("access-in.html");
+      return;
     }
     if(!portal)return;
     if(target.hasAttribute("data-rz-library")) {
@@ -133,16 +256,45 @@
     const link=event.target.closest?.("[data-rz-all]");if(!link||!portal)return;
     event.preventDefault();selected="";history.replaceState(null,"",base+"#simulations");filterCards();goto("simulations");
   });
-  if(portal){
-    const header=document.querySelector(".nav-logo-link");
-    if(header&&!document.getElementById("rzBrandHome")){
-      const link=document.createElement("a");link.id="rzBrandHome";link.textContent="RizSim";
-      link.href="#home";link.className="rz-brand-home";
-      link.style.cssText="color:#126771;font-weight:850;font-size:.77rem;white-space:nowrap;margin-left:5px";
-      header.after(link);
-      const crumb=document.createElement("span");crumb.id="rzCurrentEnvironment";crumb.className="rz-scope-cat";crumb.style.cssText="font-size:.72rem;white-space:nowrap;color:#0c7c84;font-weight:750";
-      crumb.textContent=selected?"› "+categories[selected]:"";crumb.hidden=!selected;link.after(crumb);
-      link.addEventListener("click",function(event){event.preventDefault();selected="";history.replaceState(null,"",base+"#home");filterCards();goto("home");});
+  const brand=document.querySelector(".nav-logo-link");
+  if(brand){
+    // Remove the old duplicate RizSim text link; keep the official logo.
+    document.getElementById("rzBrandHome")?.remove();
+    let title=document.getElementById("rzCurrentEnvironment");
+    if(!title){
+      title=document.createElement("span");
+      title.id="rzCurrentEnvironment";title.className="rz-v3-environment";
+      title.setAttribute("aria-label","Selected environment");
+      brand.insertAdjacentElement("afterend",title);
+    }
+    function updateEnvironment(){
+      title.replaceChildren();
+      title.hidden=!selected;
+      if(!selected)return;
+      const slash=document.createElement("span");slash.className="rz-v3-environment-separator";
+      slash.textContent="/";slash.setAttribute("aria-hidden","true");
+      const name=document.createElement("span");name.className="rz-v3-environment-name";
+      name.textContent=categories[selected];
+      title.append(slash,name);
+    }
+    updateEnvironment();
+    window.RizSimEnvironment=Object.freeze({updateEnvironment});
+    if(portal){
+      brand.href="#home";
+      brand.setAttribute("aria-label","RizSim general Home");
+      brand.addEventListener("click",function(event){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        selected="";
+        history.replaceState(null,"",base+"#home");
+        filterCards();
+        updateEnvironment();
+        closeDrawer();
+        goto("home");
+      },true);
     }
   }
+  decorateHome(document);
+  decorateMenu();
+
 })();

@@ -66,6 +66,7 @@ async function verifyRoles(){
  }
  const membership=await client.from("access_out_members").select("role,active").eq("user_id",user.id).maybeSingle();
  const role=membership.error||!membership.data?.active?null:membership.data;
+ if(window.RizSimExperience){window.RizSimExperience.updateProfile(user,role);window.RizSimExperience.decorateMenu();}
  if(portal){identityMenu(document.getElementById("accountMenu"),user,role);}
  // A role link changes workspace navigation, not the membership or login.
  if(faculty && role && ["#courses","#administration","#institution"].includes(location.hash)){
@@ -153,5 +154,5 @@ if(portal){
     document.head.append(st);
  }
 }
-verifyRoles();
+verifyRoles().then(function(){window.RizSimExperience?.decorateMenu();}).catch(function(err){console.warn("Identity presentation unavailable",err);});
 loadLibrary();

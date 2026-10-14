@@ -82,3 +82,73 @@
  .rz-side{padding:20px 15px}.rz-catalog-scope{display:block;padding:14px}.rz-catalog-scope a{display:inline-block;margin-top:10px}
  .bp-categories{padding:45px 0}.bp-category-tile{padding:21px}}
 @media(prefers-reduced-motion:reduce){.rz-side-link,.bp-category-tile{transition:none}}
+
+/* Summit V3: restrained design-system refinements; base brand colors remain locked. */
+.site-sidebar .sidebar-inner{overflow-y:auto;overscroll-behavior:contain}
+.rz-side-v3{min-height:100%;height:100%;gap:0;padding:clamp(16px,2.5vh,25px) 17px 19px}
+.rz-side-v3 .rz-side-main{display:grid;gap:8px}
+.rz-side-v3 .rz-side-label{padding:3px 7px 8px;color:#66858e;letter-spacing:.16em;font-size:.61rem}
+.rz-library-entry{display:flex;align-items:center;gap:12px;min-height:80px;padding:13px;border-radius:17px;border:1px solid #9dcfc8;background:linear-gradient(136deg,#ffffff,#e5f5f1);color:#123e4b;text-decoration:none;box-shadow:0 12px 23px rgba(9,63,75,.085)}
+.rz-library-entry:hover{background:linear-gradient(136deg,#fff,#d5f0e8);border-color:#4aafa7;transform:translateY(-1px)}
+.rz-library-entry-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#0a4255,#0b858b);color:#fff}
+.rz-library-entry-text{flex:1;min-width:0;display:grid;gap:4px}
+.rz-library-entry-text strong{font-size:.87rem;font-weight:850}
+.rz-library-entry-text small{font-size:.69rem;color:#63818a;line-height:1.35}
+.rz-library-entry-arrow{color:#167c86;display:grid;place-items:center}
+.rz-library-entry-arrow svg{width:16px;height:16px}
+.rz-side-v3 .rz-side-bottom{margin-top:auto;display:grid;gap:9px;padding-top:20px;border-top:1px solid #cddfdf}
+.rz-settings-link{width:100%;min-height:44px;padding:9px 12px;display:flex;align-items:center;gap:12px;border:1px solid transparent;border-radius:13px;color:#285662;background:transparent;font-weight:820;font-size:.83rem;text-align:left;cursor:pointer}
+.rz-settings-link:hover,.rz-settings-link[aria-expanded="true"]{background:#e2f3f0;border-color:#b4d8d4}
+.rz-settings-link-icon{display:grid;place-items:center;color:#127d84}
+.rz-settings-chevron{margin-left:auto;display:grid;place-items:center}
+.rz-settings-chevron svg{width:16px;height:16px;transition:transform .18s ease}
+.rz-settings-link[aria-expanded="true"] .rz-settings-chevron svg{transform:rotate(90deg)}
+.rz-settings-panel{display:grid;gap:12px;padding:14px;border:1px solid #c6e0dd;border-radius:14px;background:rgba(255,255,255,.8);box-shadow:0 8px 19px rgba(5,53,70,.06)}
+.rz-settings-panel[hidden]{display:none!important}
+.rz-settings-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.78rem;font-weight:800;color:#194c58}
+.rz-settings-toggle small{display:block;margin-top:3px;color:#66818b;font-size:.65rem;font-weight:550}
+.rz-settings-toggle input{accent-color:#138c88;width:17px;height:17px}
+.rz-settings-manage{display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;border-top:1px solid #e1ece9;background:transparent;padding:10px 0 0;color:#0e7a82;text-align:left;font-weight:800;font-size:.73rem;cursor:pointer}
+.rz-settings-manage svg{width:16px;height:16px}
+.rz-profile-button{display:flex;width:100%;align-items:center;gap:11px;padding:13px 11px;text-align:left;border:1px solid #a7cecb;border-radius:18px;background:linear-gradient(128deg,rgba(255,255,255,.96),rgba(223,242,239,.95));box-shadow:0 12px 24px rgba(6,54,74,.095);cursor:pointer}
+.rz-profile-button:hover{border-color:#56b9b0;box-shadow:0 16px 30px rgba(6,54,74,.14)}
+.rz-profile-avatar{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:14px;overflow:hidden;background:linear-gradient(140deg,#0c5265,#12a5a0);color:#fff;font-weight:900;font-size:.8rem;border:1px solid rgba(255,255,255,.5)}
+.rz-profile-avatar img{width:100%;height:100%;object-fit:cover}
+.rz-profile-copy{min-width:0;flex:1;display:grid;gap:3px}
+.rz-profile-copy strong{font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#133e4b}
+.rz-profile-copy small{font-size:.65rem;color:#0e8583;font-weight:850}
+.rz-profile-email{font-size:.59rem;color:#66818a;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.rz-profile-chevron{color:#447c86}.rz-profile-chevron svg{width:15px;height:15px}
+.rz-v3-svg{display:block;flex-shrink:0}
+.rz-v3-environment{display:inline-flex;align-items:center;gap:10px;flex:0 0 auto;white-space:nowrap;font-size:clamp(.96rem,1.35vw,1.27rem);letter-spacing:-.044em;font-weight:850;color:#0b6c7c;margin-left:-2px;margin-right:8px}
+.rz-v3-environment-separator{font-weight:450;color:#5d9ba2;font-size:1.3em}
+.rz-v3-environment-name{color:#0c6676}
+.rz-v3-environment[hidden]{display:none!important}
+.rz-reduced-motion *,.rz-reduced-motion *::before,.rz-reduced-motion *::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+/* Profile dropdown is now one clearly delineated frosted floating surface. */
+.account-wrap{isolation:isolate}
+.account-menu{width:clamp(255px,22vw,285px)!important;max-width:calc(100vw - 22px)!important;padding:13px!important;gap:8px!important;align-items:stretch!important;border:1px solid rgba(129,191,187,.67)!important;border-radius:22px!important;
+ background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(227,243,241,.94))!important;
+ backdrop-filter:blur(24px) saturate(160%)!important;-webkit-backdrop-filter:blur(24px) saturate(160%)!important;
+ box-shadow:0 26px 70px rgba(3,32,47,.27),0 9px 27px rgba(6,73,82,.1),inset 0 1px rgba(255,255,255,.98)!important;
+ transform-origin:top right!important}
+.account-menu .account-identity-card{width:100%!important;padding:12px!important;border-radius:15px!important;border:1px solid #cadcda!important;background:rgba(255,255,255,.94)!important;box-shadow:0 5px 14px rgba(6,55,66,.07)!important}
+.account-menu .account-menu-button{width:100%!important;height:auto;min-height:44px;padding:10px 13px!important;box-shadow:none!important;background:rgba(255,255,255,.78)!important;border:1px solid #d0e1df!important;border-radius:12px!important}
+.account-menu .account-menu-button:hover{background:#fff!important;border-color:#75bdb5!important}
+.account-menu .account-menu-icon{background:#e3f3f0!important;color:#0e7c83!important;border:1px solid #bedbd7;border-radius:10px!important}
+.account-menu .account-menu-icon svg{width:17px;height:17px}
+.account-menu .account-menu-button.danger{color:#973e3b!important;background:rgba(255,250,249,.94)!important;border-color:#ecd0cc!important}
+.account-menu .account-menu-button.danger .account-menu-icon{color:#a04442!important;background:#fbe9e7!important;border-color:#e8c5c2!important}
+.account-menu .rz-role-switch{width:100%;margin:3px 0!important;padding:9px 0!important;gap:6px!important}
+.account-menu .rz-role-switch a,.account-menu .rz-role-switch .rz-role-current{min-height:41px!important;padding:8px 10px!important;display:flex;align-items:center;gap:9px;background:rgba(252,255,254,.92)}
+.account-menu .rz-role-switch a:hover{background:#effaf7}
+.account-menu .rz-role-switch small{margin-left:auto}
+.rz-role-icon{display:grid;place-items:center;color:#11878b;flex:0 0 22px}
+.rz-role-icon svg{width:19px;height:19px}
+.account-menu .account-collapse-button{margin:3px auto 0;box-shadow:none;border:1px solid #c9e0dc;background:rgba(255,255,255,.8)}
+.login-menu{width:230px!important;padding:12px!important;border:1px solid #b6d9d3!important;border-radius:19px!important;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(229,244,241,.93))!important;backdrop-filter:blur(21px)!important;-webkit-backdrop-filter:blur(21px)!important;box-shadow:0 20px 49px rgba(4,42,59,.21)!important;align-items:stretch!important}
+.login-role-button{width:100%!important;box-shadow:none!important}
+.login-role-icon svg{width:19px;height:19px}
+@media(max-width:1140px){.rz-v3-environment{font-size:.95rem;gap:6px;margin-right:0}}
+@media(max-width:690px){.rz-side-v3{padding:17px 14px}.rz-v3-environment{font-size:.77rem}.rz-profile-email{display:none}}
+@media(max-height:610px){.rz-side-v3{padding-block:10px;gap:5px}.rz-library-entry{min-height:64px;padding:10px}.rz-side-v3 .rz-side-bottom{padding-top:8px}.rz-profile-button{padding:8px}.rz-profile-avatar{width:34px;height:34px;flex-basis:34px}}

@@ -92,7 +92,8 @@
       const homeStyles = [
         "rizsim-brand-promise-home",
         "rizsim-home-v2-premium",
-        "rizsim-home-announcement-style"
+        "rizsim-home-announcement-style",
+        "rizsim-promo-v3"
       ].map(function (id) { return doc.getElementById(id); });
 
       if (!homepage || homeStyles.some(function (style) { return !style; })) {
@@ -137,6 +138,8 @@
       });
       shadow.appendChild(page);
       bindPortalNavigation(shadow);
+      // Match the official Home icons inside the dashboard Shadow DOM.
+      window.RizSimExperience?.decorateHome(shadow);
 
       // If styles do not load, retain the original working dashboard Home.
       function awaitStylesheet(sheet) {

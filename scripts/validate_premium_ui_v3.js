@@ -1,0 +1,35 @@
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const files={};
+for(const name of ['rizsim-experiences.js','rizsim-experiences.css','rizsim-roles-library.js','index.html','rizsim-shared-home.js']) files[name]=fs.readFileSync(name,'utf8');
+const nav=files['rizsim-experiences.js'];
+const css=files['rizsim-experiences.css'];
+const home=files['index.html'];
+const shared=files['rizsim-shared-home.js'];
+const roles=files['rizsim-roles-library.js'];
+assert.ok(nav.includes('rz-library-entry'));
+assert.ok(nav.includes('rz-settings-panel'));
+assert.ok(nav.includes('rz-profile-button'));
+assert.ok(nav.includes('updateProfile'));
+assert.ok(nav.includes('verifiedIdentity:null'));
+assert.ok(nav.includes('iconPaths'));
+assert.ok(nav.includes('brand.setAttribute("aria-label","RizSim general Home")'));
+assert.ok(!nav.includes('const sideLinks = Object.entries(categories)'));
+assert.ok(!nav.includes('link.id="rzBrandHome"'));
+assert.ok(home.includes('rz-promo-highlight">LAUNCH PROMOTION'));
+for(const slug of ['learning','skills','children']) assert.ok(home.includes('simulations.html?category='+slug));
+assert.ok(shared.includes('"rizsim-promo-v3"'));
+assert.ok(shared.includes('window.RizSimExperience?.decorateHome(shadow)'));
+assert.ok(roles.includes('window.RizSimExperience.updateProfile(user,role)'));
+assert.ok(css.includes('.account-menu{width:'));
+assert.ok(css.includes('backdrop-filter:blur(24px)'));
+assert.ok(css.includes('.rz-side-v3'));
+for(const kind of ['library','settings','user','graduation','faculty','logout','sparkles'])assert.ok(nav.includes(kind+':'));
+for(const path of ['access-in.html','access-out.html']){
+  const c=fs.readFileSync(path,'utf8');
+  assert.ok(c.includes('rizsim-experiences.js'));
+  assert.ok(c.includes('id="accountMenu"'));
+  assert.ok(c.includes('id="siteSidebar"'));
+  assert.ok(c.includes('rizsim-session-continuity.js'));
+}
+console.log('PASS V3 premium UI and retained authentication invariants');
