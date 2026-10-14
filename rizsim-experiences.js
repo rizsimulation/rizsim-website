@@ -96,7 +96,7 @@
       }
     }
   }
-  window.RizSimExperience=Object.freeze({svg,decorateHome,decorateMenu,updateProfile});
+  window.RizSimExperience={svg,decorateHome,decorateMenu,updateProfile,verifiedIdentity:null};
   const sidebar = document.querySelector("#siteSidebar .sidebar-inner");
   if(!sidebar)return;
   const drawerToggle=document.getElementById("sidebarToggle");
