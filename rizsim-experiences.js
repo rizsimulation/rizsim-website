@@ -67,8 +67,9 @@
       card.style.display=match?"":"none";
       if(match)shown++;
     });
-    grid.querySelector(".rz-catalog-empty")?.remove();
-    if(selected&&!shown) {
+    const existingEmpty=grid.querySelector(".rz-catalog-empty");
+    if((!selected||shown)&&existingEmpty)existingEmpty.remove();
+    if(selected&&!shown&&!existingEmpty) {
       const empty=document.createElement("div");empty.className="rz-catalog-empty";
       const strong=document.createElement("strong");strong.textContent="No published "+categories[selected]+" simulations yet";
       const note=document.createElement("p");note.textContent="This category will show its experiences when they are published.";
@@ -100,8 +101,15 @@
     filterCards();
   }
   if(!portal&&selected)document.querySelectorAll(".catalogue-filter").forEach(function(el){el.style.display="none";});
-  if(portal&&selected){
-    let tries=0;const tick=function(){if(document.querySelector(".student-app.show,.authenticated-app.show"))goto("simulations");else if(++tries<40)setTimeout(tick,250);};tick();
+  if(portal&&(selected||(student&&params.get("library")==="1"))){
+    let tries=0;
+    const tick=function(){
+      if(document.querySelector(".student-app.show,.authenticated-app.show")){
+        if(selected)goto("simulations");
+        else document.getElementById("rzHiddenLibraryNav")?.click();
+      }else if(++tries<50)setTimeout(tick,250);
+    };
+    tick();
   }
   sidebar.addEventListener("click",function(event){
     const target=event.target.closest("a,button");if(!target)return;
