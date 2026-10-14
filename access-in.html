@@ -5033,7 +5033,7 @@ document.getElementById(
 
 const courseItems=studentCourseMaterials.filter(m=>selectedStudentCourseFilter==='all'||
     String(m.course_id)===String(selectedStudentCourseFilter));
-  const platformItems=learningResources;
+  const platformItems=[]; // Platform eBooks live exclusively in the sidebar library.
   const courseOptions=studentCourses.filter(c=>studentCourseMaterials.some(m=>m.course_id===c.course_id));
   const filters=(courseOptions.length>1 || selectedStudentCourseFilter!=='all') ? `<div class="course-preview-shell" style="margin-bottom:14px">
     <label for="studentMaterialCourseSelect" style="display:block;margin-bottom:8px;font-weight:850;font-size:.7rem">Course</label>
@@ -5056,9 +5056,7 @@ const courseCards=`${courseItems.map(m=>{
   }).join('')}`;
 
 
-if(
-!learningResources.length && !courseItems.length
-){
+if(!courseItems.length){
 
 container.innerHTML = `${filters}
 
@@ -5074,7 +5072,7 @@ No learning materials available now
 
 <p>
 
-Authorized Course materials and RizSim resources appear here while access is available.
+Faculty-assigned course materials appear here. Find platform eBooks and resources in the sidebar library.
 
 </p>
 
@@ -5098,7 +5096,7 @@ ${courseCards}
 
 ${
 
-learningResources
+platformItems
 .map(
 resource => {
 
