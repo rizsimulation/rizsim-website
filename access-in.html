@@ -1946,6 +1946,7 @@ animation:none!important;
 </style>
 <link rel="stylesheet" href="rizsim-experiences.css">
 <link rel="stylesheet" href="rizsim-roles-library.css">
+<script src="rizsim-session-continuity.js" defer></script>
 </head>
 
 
@@ -3756,6 +3757,7 @@ async function signOut(){
 await supabase
 .auth
 .signOut();
+window.RizSimSession.forget();
 
 window.location.replace(
 "/access-in.html"
@@ -3931,9 +3933,7 @@ data:userResult,
 error:userError
 } =
 
-await supabase
-.auth
-.getUser();
+await window.RizSimSession.verifyUser(supabase);
 
 currentUser =
 userResult?.user
@@ -4020,6 +4020,7 @@ document
 );
 
 setIdentityUI();
+window.RizSimSession.remember("student",currentUser.id);
 
 await loadPlatformData();
 
