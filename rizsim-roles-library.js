@@ -3,11 +3,21 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const url="https://rvmumpvtvjvvuyimeybc.supabase.co";
 const key="sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf";
-const client=createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-window.rizsimSharedAuth=client;
 const student=!!document.querySelector(".student-content");
 const faculty=!!document.querySelector(".auth-page-content");
 const portal=student||faculty;
+// Existing portals already own a Supabase client. Share that exact instance
+// to prevent competing refresh-token operations from multiple GoTrue clients.
+async function waitForPortalClient(){
+  for(let i=0;i<60;i++){
+    if(window.rizsimSharedAuth)return window.rizsimSharedAuth;
+    await new Promise(resolve=>setTimeout(resolve,100));
+  }
+  throw new Error("The existing authenticated portal session is not ready.");
+}
+const client=portal ? await waitForPortalClient() :
+  createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+window.rizsimSharedAuth=client;
 const attr=student?"data-student-view":"data-auth-view";
 const go=student?"access-in.html":"access-out.html";
 function safeName(x){return typeof x==="string"?x:""}
