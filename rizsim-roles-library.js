@@ -26,8 +26,9 @@ function identityMenu(menu,user,membership){
   menu.querySelector(".rz-role-switch")?.remove();
   const area=document.createElement("div");area.className="rz-role-switch";
   const heading=document.createElement("div");heading.className="rz-role-title";heading.textContent="Switch workspace";area.append(heading);
-  const entries=[["Student","access-in.html",true],["Faculty","access-out.html",!!membership]];
   const role=membership?.role;
+  const facultyEligible=["faculty","course_lead","owner"].includes(role);
+  const entries=[["Student","access-in.html",true],["Faculty","access-out.html",facultyEligible]];
   if(role==="course_lead") entries.push(["Course Lead","access-out.html#courses",true]);
   if(role==="owner") entries.push(["Owner","access-out.html#administration",true]);
   if(role==="admin") entries.push(["Administration","access-out.html#administration",true]);
