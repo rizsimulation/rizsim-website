@@ -1944,6 +1944,8 @@ animation:none!important;
 #rizsimSharedHome.is-ready{display:block}
 #rizsimLegacyHome[hidden]{display:none!important}
 </style>
+<link rel="stylesheet" href="rizsim-experiences.css">
+<link rel="stylesheet" href="rizsim-roles-library.css">
 </head>
 
 
@@ -2071,6 +2073,8 @@ data-student-view="simulations"
 >
 Simulations
 </a>
+
+<a class="rz-internal-hidden-tab" id="rzHiddenLibraryNav" href="#resources" data-student-view="resources" tabindex="-1" aria-hidden="true">Library</a>
 
 <a
 href="#learning"
@@ -2468,6 +2472,8 @@ id="homeLearningContent"
 </section>
 
 
+
+<section class="student-view" id="view-resources" data-view="resources"><div class="content-shell"><div class="rz-library-hero"><span class="rz-library-kicker">RIZSIM DIGITAL LIBRARY</span><h1>eBooks <em>&amp;</em> Resources</h1><p>Independent reading environment for published learning materials. Your account permissions remain in effect.</p></div><div class="rz-library-grid" id="rzLibraryGrid"><div class="rz-catalog-empty">Loading your library…</div></div></div></section>
 
 <!-- ============================================================
      SIMULATIONS
@@ -3292,7 +3298,8 @@ const SUPABASE_PUBLISHABLE_KEY =
 const supabase =
 createClient(
 SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
+SUPABASE_PUBLISHABLE_KEY,
+{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
 );
 
 
@@ -3348,6 +3355,7 @@ let activeLearningTab =
 const viewOrder = [
 "home",
 "simulations",
+"resources",
 "learning",
 "player",
 "about",
@@ -7801,6 +7809,8 @@ initialize();
 </script>
 
 <script src="rizsim-shared-home.js" defer></script>
+<script src="rizsim-experiences.js" defer></script>
+<script type="module" src="rizsim-roles-library.js"></script>
 </body>
 
 </html>
