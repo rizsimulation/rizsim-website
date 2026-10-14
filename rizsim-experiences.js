@@ -92,6 +92,8 @@
       }
     }
     sidebar.querySelectorAll("[data-category]").forEach(function(el){el.classList.toggle("is-current",el.dataset.category===(selected||"all"));});
+    const crumb=document.getElementById("rzCurrentEnvironment");
+    if(crumb){crumb.textContent=selected?"› "+categories[selected]:"";crumb.hidden=!selected;}
   }
 
   const grid=document.getElementById(faculty?"portalSimulationGrid":"simulationGrid");
@@ -137,7 +139,10 @@
       const link=document.createElement("a");link.id="rzBrandHome";link.textContent="RizSim";
       link.href="#home";link.className="rz-brand-home";
       link.style.cssText="color:#126771;font-weight:850;font-size:.77rem;white-space:nowrap;margin-left:5px";
-      header.after(link);link.addEventListener("click",function(event){event.preventDefault();selected="";goto("home");});
+      header.after(link);
+      const crumb=document.createElement("span");crumb.id="rzCurrentEnvironment";crumb.className="rz-scope-cat";crumb.style.cssText="font-size:.72rem;white-space:nowrap;color:#0c7c84;font-weight:750";
+      crumb.textContent=selected?"› "+categories[selected]:"";crumb.hidden=!selected;link.after(crumb);
+      link.addEventListener("click",function(event){event.preventDefault();selected="";history.replaceState(null,"",base+"#home");filterCards();goto("home");});
     }
   }
 })();
