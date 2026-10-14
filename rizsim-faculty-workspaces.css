@@ -84,3 +84,7 @@
 @media(max-width:800px){.rz-classroom-materials-head,.rz-records-toolbar{flex-direction:column;align-items:stretch}.rz-records-actions{flex-wrap:wrap}.rz-workspace-shell{padding-block:26px 65px}}
 @media(max-width:560px){.rz-workspace-hero{padding:31px 24px}.rz-player-selection{padding:20px}.rz-records-tab{padding:11px 15px}.rz-modal-header,.rz-modal-footer{padding:16px}.rz-modal-body{padding:18px}.rz-student-submission{flex-direction:column;align-items:stretch}.rz-student-modal{padding:9px}.rz-activity-event{grid-template-columns:14px 1fr}.rz-activity-event time{grid-column:2}}
 @media(prefers-reduced-motion:reduce){.rz-licensed-card,.rz-student-card,.rz-run-button{transition:none}}
+
+.rz-player-results{margin-top:32px;padding-top:30px;border-top:2px solid #c5e3de}
+.rz-player-results>.rz-workspace-kicker{display:block;margin:0 0 19px}
+.rz-player-results .content-shell{padding-inline:0;max-width:100%}
