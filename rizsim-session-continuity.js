@@ -47,6 +47,26 @@
     } catch (_) { return null; }
   }
 
+  /*
+   * Returning visitors go straight to their last *verified* workspace.
+   * The caller MUST first verify the currently signed-in identity using
+   * supabase.auth.getUser(); this preference never authenticates anyone.
+   *
+   * ?public=1 allows an intentional visit to the public Home page.
+   * Only the two hard-coded portal URLs can ever be used as destinations.
+   */
+  function autoResume(verifiedUser, options) {
+    if (!options || options.page !== "home" || options.forcePublic === true) {
+      return false;
+    }
+
+    const target = resumeTarget(verifiedUser);
+    if (!target || typeof options.replace !== "function") return false;
+
+    options.replace(target);
+    return true;
+  }
+
   function isNonRetryable(error) {
     const status = Number(error?.status || 0);
     const code = String(error?.code || "").toLowerCase();
@@ -79,5 +99,5 @@
     return last;
   }
 
-  root.RizSimSession = Object.freeze({ remember, forget, resumeTarget, verifyUser });
+  root.RizSimSession = Object.freeze({ remember, forget, resumeTarget, autoResume, verifyUser });
 })(typeof window !== "undefined" ? window : globalThis);
