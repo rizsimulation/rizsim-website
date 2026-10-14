@@ -54,6 +54,16 @@ function identityMenu(menu,user,membership){
 async function verifyRoles(){
  const u=window.RizSimSession ? await window.RizSimSession.verifyUser(client) : await client.auth.getUser();const user=u.data?.user;
  if(!user)return;
+ // On a fresh visit to rizsim.com, directly restore the last verified
+ // dashboard. Explicit ?public=1 is an escape hatch for public browsing.
+ if(!portal && document.body.dataset.page==="home"){
+   const forcePublic=new URLSearchParams(window.location.search).get("public")==="1";
+   if(window.RizSimSession?.autoResume(user,{
+      page:"home",
+      forcePublic,
+      replace:function(path){window.location.replace(path);}
+   })) return;
+ }
  const membership=await client.from("access_out_members").select("role,active").eq("user_id",user.id).maybeSingle();
  const role=membership.error||!membership.data?.active?null:membership.data;
  if(portal){identityMenu(document.getElementById("accountMenu"),user,role);}
