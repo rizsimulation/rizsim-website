@@ -51,6 +51,8 @@ async function verifyRoles(){
    const menu=document.getElementById("loginMenu");
    if(button){const label=button.querySelector("span");if(label)label.textContent="Account";}
    if(menu){
+     // Once signed in, show only verified workspaces, not the public sign-in choices.
+     menu.querySelectorAll(".login-role-button").forEach(function(link){link.style.display="none";});
      menu.querySelector(".rz-role-switch")?.remove();
      const wrap=document.createElement("div");wrap.className="rz-role-switch";
      const title=document.createElement("div");title.className="rz-role-title";
