@@ -17,8 +17,18 @@ assert.equal(api.resumeTarget({id:'abc'}),'access-out.html#home');
 assert.equal(api.resumeTarget({id:'other'}),null);
 api.remember('student','abc');
 assert.equal(api.resumeTarget({id:'abc'}),'access-in.html#home');
+assert.equal(api.autoResume({id:'abc'},{page:'simulations',replace:()=>{throw Error('unexpected redirect')}}),false);
+let routed=null;
+assert.equal(api.autoResume({id:'abc'},{page:'home',replace:path=>{routed=path}}),true);
+assert.equal(routed,'access-in.html#home');
+routed=null;
+assert.equal(api.autoResume({id:'abc'},{page:'home',forcePublic:true,replace:path=>{routed=path}}),false);
+assert.equal(routed,null);
+assert.equal(api.autoResume({id:'someone-else'},{page:'home',replace:path=>{routed=path}}),false);
+assert.equal(routed,null);
 api.forget();
 assert.equal(api.resumeTarget({id:'abc'}),null);
+assert.equal(api.autoResume({id:'abc'},{page:'home',replace:path=>{routed=path}}),false);
 async function run(){
  let n=0;
  const after=await api.verifyUser({auth:{getUser:async()=>{n++;if(n<3)return{data:{user:null},error:{status:503}};return{data:{user:{id:'abc'}},error:null}}}},{sleep:async()=>{}});
