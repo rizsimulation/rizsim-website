@@ -11,6 +11,21 @@
   let selected = Object.prototype.hasOwnProperty.call(categories,params.get("category")) ? params.get("category") : "";
   const sidebar = document.querySelector("#siteSidebar .sidebar-inner");
   if(!sidebar)return;
+  const drawerToggle=document.getElementById("sidebarToggle");
+  const drawerOverlay=document.getElementById("sidebarOverlay");
+  if(student&&drawerToggle) {
+    drawerToggle.addEventListener("click",function(event){
+      event.stopPropagation();
+      const open=!document.body.classList.contains("sidebar-open");
+      document.body.classList.toggle("sidebar-open",open);
+      drawerToggle.setAttribute("aria-expanded",String(open));
+      drawerToggle.setAttribute("aria-label",open?"Collapse sidebar":"Open sidebar");
+      document.getElementById("siteSidebar")?.setAttribute("aria-hidden",String(!open));
+      drawerOverlay?.setAttribute("aria-hidden",String(!open));
+    });
+    drawerOverlay?.addEventListener("click",closeDrawer);
+    document.addEventListener("keydown",function(event){if(event.key==="Escape")closeDrawer();});
+  }
 
   function goto(view) {
     const link = document.querySelector("#mainNav ["+attr+"=\""+view+"\"]");
