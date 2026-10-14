@@ -415,6 +415,15 @@
 }
 @media(prefers-reduced-motion:reduce){.bp-home .bp-step{transition:none}}
 </style>
+<style id="rizsim-promo-v3">
+.bp-home .rizsim-announcement-label{display:flex;align-items:center;flex-wrap:wrap;gap:9px;font-size:.68rem;letter-spacing:.09em}
+.bp-home .rz-promo-highlight{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(110deg,#653b97,#8c58af);color:#fff!important;border:1px solid rgba(255,230,168,.58);border-radius:7px;padding:5px 11px;letter-spacing:.145em;font-size:.65rem;font-weight:900;box-shadow:0 5px 12px rgba(107,55,151,.15),0 0 16px rgba(231,195,108,.24)}
+.bp-home .rz-promo-highlight:before{content:"";width:6px;height:6px;background:#f1d48c;border-radius:50%;box-shadow:0 0 7px rgba(249,226,159,.7)}
+.bp-home .rz-promo-secondary{color:#7c598f;font-size:.62rem;font-weight:830;letter-spacing:.105em}
+.bp-home .rizsim-announcement-spark{color:#996d26}
+.bp-home .rizsim-announcement-spark svg{height:22px;width:22px}
+.bp-home .bp-category-icon svg{width:24px;height:24px}
+</style>
 <style id="rizsim-home-announcement-style">
 /* One optional announcement component shared by the public Home and role dashboards. */
 .bp-home .rizsim-announcement-region{padding:19px 0 0;background:linear-gradient(180deg,#f7fafb,#f4f9f9)}
@@ -842,7 +851,7 @@
         <div class="rizsim-announcement-card">
           <span class="rizsim-announcement-spark" aria-hidden="true">✦</span>
           <div class="rizsim-announcement-copy">
-            <span class="rizsim-announcement-label">LIMITED TIME OFFER · RIZSIM LAUNCH</span>
+            <span class="rizsim-announcement-label"><span class="rz-promo-highlight">LAUNCH PROMOTION</span><span class="rz-promo-secondary">LIMITED TIME OFFER</span></span>
             <strong>Explore with <span>complimentary access</span></strong>
             <span class="rizsim-announcement-detail">Discover all published simulations and learning resources during our launch promotion. Sign in to explore.</span>
           </div>
