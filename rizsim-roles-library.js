@@ -52,7 +52,7 @@ function identityMenu(menu,user,membership){
   if(signout)signout.before(area);else menu.append(area);
 }
 async function verifyRoles(){
- const u=await client.auth.getUser();const user=u.data?.user;
+ const u=window.RizSimSession ? await window.RizSimSession.verifyUser(client) : await client.auth.getUser();const user=u.data?.user;
  if(!user)return;
  const membership=await client.from("access_out_members").select("role,active").eq("user_id",user.id).maybeSingle();
  const role=membership.error||!membership.data?.active?null:membership.data;
@@ -89,6 +89,14 @@ async function verifyRoles(){
      title.textContent="Signed in · "+safeName(user.email).split("@")[0];wrap.append(title);
      const studentLink=document.createElement("a");studentLink.href="access-in.html";studentLink.textContent="Student dashboard";wrap.append(studentLink);
      if(role){const f=document.createElement("a");f.href="access-out.html";f.textContent=(role.role==="course_lead"?"Course Lead":role.role==="owner"?"Owner":role.role==="admin"?"Admin":role.role==="institution"?"Institution":"Faculty")+" dashboard";wrap.append(f);}
+     // Show a direct, no-login return to the last *verified* workspace.
+     const previous=window.RizSimSession?.resumeTarget(user);
+     if(previous){
+       const resume=document.createElement("a");
+       resume.href=previous;resume.textContent="Continue previous workspace →";
+       resume.style.cssText="background:#e5f5f1;border:1px solid #aedbd1;color:#126a73";
+       wrap.append(resume);
+     }
      menu.prepend(wrap);
    }
  }
