@@ -3624,6 +3624,7 @@ border-color:#315b92;
 <link rel="stylesheet" href="rizsim-experiences.css">
 <link rel="stylesheet" href="rizsim-roles-library.css">
 <script src="rizsim-session-continuity.js" defer></script>
+<link rel="stylesheet" href="rizsim-faculty-workspaces.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -3684,8 +3685,11 @@ Home
 </a>
 
 <a
+class="rz-internal-hidden-tab"
 href="#simulations"
 data-auth-view="simulations"
+tabindex="-1"
+aria-hidden="true"
 >
 Simulations
 </a>
@@ -3704,13 +3708,18 @@ href="#classroom"
 data-auth-view="classroom"
 data-role-view="classroom"
 >
-Classroom
+RizSimulation Player
 </a>
 
 <a
+href="#materials" data-auth-view="materials" data-role-view="materials">Classroom</a>
+<a href="#records" data-auth-view="records" data-role-view="records">Records</a>
+<a class="rz-internal-hidden-tab"
 href="#results"
 data-auth-view="results"
 data-role-view="results"
+tabindex="-1"
+aria-hidden="true"
 >
 Results
 </a>
@@ -3746,8 +3755,11 @@ Contact
 </a>
 
 <a
+class="rz-internal-hidden-tab"
 href="#account"
 data-auth-view="account"
+tabindex="-1"
+aria-hidden="true"
 >
 Account
 </a>
@@ -5874,11 +5886,11 @@ data-view="classroom"
 <div class="auth-section-heading">
 
 <span class="auth-kicker">
-CLASSROOM
+RIZSIMULATION PLAYER
 </span>
 
 <h1>
-Run your learning experience.
+Launch a learning experience.
 </h1>
 
 <p>
@@ -5912,6 +5924,7 @@ let RizSim generate the class code and shareable link.
 
 </div>
 
+<section class="rz-player-selection" aria-labelledby="rzLicensedHeading"><div class="rz-workspace-kicker">YOUR LICENSED SIMULATIONS</div><div class="rz-workspace-section-heading"><div><h2 id="rzLicensedHeading">Choose a simulation to run</h2><p>Hover or focus on your simulation and select Run Simulation.</p></div><span id="rzLicensedCount" class="rz-count-pill">0 licensed</span></div><div id="rzLicensedSimGrid" class="rz-licensed-grid"><div class="rz-workspace-empty">Your licensed simulations will appear here.</div></div></section><div id="rzPlayerSelectedLabel" class="rz-player-selected" hidden aria-live="polite"></div>
 <div class="classroom-grid">
 
 <div class="portal-panel">
@@ -6358,6 +6371,9 @@ Status
 </div>
 
 </section>
+<section class="auth-view" id="view-materials" data-view="materials"><div class="content-shell rz-workspace-shell"><div class="rz-workspace-hero"><span class="rz-workspace-kicker">CLASSROOM · LEARNING MATERIALS</span><h1>Classroom</h1><p>Manage course materials with the established secure publishing controls.</p></div><div class="rz-classroom-materials-head"><div><h2>Learning materials</h2><p id="rzClassroomPermission">Choose a Course to access its material management tools.</p></div><label>Course <select class="management-select" id="rzClassroomCourseSelect"><option value="">Select a Course</option></select></label></div><div class="rz-dropzone" id="rzClassroomDropZone" hidden><strong>Drag &amp; drop class materials</strong><p>Or browse files for a selected Course.</p><button id="rzChooseMaterialFile" class="rz-action" type="button">Browse files</button></div><div id="rzClassroomMaterialMount"></div><div class="rz-workspace-empty" id="rzClassroomMaterialEmpty">Select a Course to see available classroom material controls.</div></div></section>
+<section class="auth-view" id="view-records" data-view="records"><div class="content-shell rz-workspace-shell"><div class="rz-workspace-hero rz-records-hero"><span class="rz-workspace-kicker">YOUR LEARNING RECORDS</span><h1>Records</h1><p>Review student submissions and classroom activity.</p></div><div class="rz-records-tabs" role="tablist" aria-label="Records sections"><button type="button" id="rzSubmissionsTab" role="tab" aria-selected="true" aria-controls="rzSubmissionsPanel" class="rz-records-tab is-active" data-rz-subtab="submissions">Submissions</button><button type="button" id="rzActivityTab" role="tab" aria-selected="false" aria-controls="rzActivityPanel" class="rz-records-tab" data-rz-subtab="activity">Activity log</button></div><div id="rzSubmissionsPanel" role="tabpanel" aria-labelledby="rzSubmissionsTab"><div class="rz-records-toolbar"><div><h2>Student submissions</h2><p>Open a student to inspect their submission history by date.</p></div><div class="rz-records-actions"><input id="rzSearchStudents" class="management-input" type="search" placeholder="Search students" aria-label="Search students"><button class="rz-action-secondary" id="rzClearRecords" type="button">Clear list</button></div></div><div id="rzRecordMetrics" class="rz-records-metrics"></div><div id="rzStudentGrid" class="rz-student-grid"><div class="rz-workspace-empty">Student submissions will appear here.</div></div></div><div id="rzActivityPanel" role="tabpanel" aria-labelledby="rzActivityTab" hidden><div class="rz-records-toolbar"><div><h2>Activity log</h2><p>Visible class activity and submissions in chronological order.</p></div></div><div id="rzActivityTimeline" class="rz-activity-timeline"></div></div></div></section>
+<div id="rzStudentModal" class="rz-student-modal" role="dialog" aria-modal="true" aria-labelledby="rzStudentModalHeading" hidden><div class="rz-modal-scrim" data-rz-close></div><div class="rz-modal-card" tabindex="-1"><div class="rz-modal-header"><div><span class="rz-workspace-kicker">STUDENT RECORD</span><h2 id="rzStudentModalHeading">Submission history</h2><p id="rzStudentModalCaption">Most recent first</p></div><button class="rz-modal-x" type="button" data-rz-close aria-label="Close student record">×</button></div><div id="rzStudentModalBody" class="rz-modal-body"></div><div class="rz-modal-footer"><button class="rz-action-secondary" id="rzRemoveFromClass" type="button" disabled title="Class enrollment deletion requires separate authorized support">Delete student (unavailable)</button><button class="rz-action" type="button" data-rz-close>Done</button></div></div></div>
 <section
 class="auth-view"
 id="view-results"
@@ -11275,6 +11291,8 @@ function configureRoleNavigation() {
 
 const role =
 currentMembership.role;
+const resultsLink=document.querySelector('#mainNav [data-auth-view="results"]');
+if(resultsLink)resultsLink.classList.toggle("rz-internal-hidden-tab",role!=="institution");
 
 const allowed =
 new Set([
@@ -11291,13 +11309,7 @@ role ===
 "faculty"
 ) {
 
-allowed.add(
-"classroom"
-);
-
-allowed.add(
-"results"
-);
+["classroom","results","materials","records"].forEach(view=>allowed.add(view));
 
 }
 
@@ -11309,7 +11321,9 @@ role ===
 [
 "courses",
 "classroom",
-"results"
+"results",
+"materials",
+"records"
 ]
 .forEach(
 view =>
@@ -11358,6 +11372,8 @@ role ===
 "courses",
 "classroom",
 "results",
+"materials",
+"records",
 "institution",
 "administration"
 ]
@@ -31342,9 +31358,9 @@ false;
 function navigateAdjacentInternalView(
 direction
 ) {
-
+const visibleOrder=allowedViewOrder.filter(v=>{const l=document.querySelector('#mainNav [data-auth-view="'+v+'"]');return l&&!l.classList.contains("rz-internal-hidden-tab");});
 const currentIndex =
-allowedViewOrder.indexOf(
+visibleOrder.indexOf(
 activeView
 );
 
@@ -31368,7 +31384,7 @@ destinationIndex <
 0
 ||
 destinationIndex >=
-allowedViewOrder.length
+visibleOrder.length
 ) {
 
 return;
@@ -31383,7 +31399,7 @@ window.setTimeout(
 () => {
 
 navigateInternal(
-allowedViewOrder[
+visibleOrder[
 destinationIndex
 ]
 );
@@ -32766,6 +32782,13 @@ initialiseSafeSwipe();
 
 verifyAccess();
 
+
+window.RizSimFacultyBridge={
+ getSnapshot:()=>({role:currentMembership?.role||null,products:products.slice(),licences:myLicenseCatalogue.slice(),submissions:submissions.slice(),sessions:classroomSessions.slice(),courses:courses.slice(),selectedCourseId,courseMaterials:courseMaterials.slice(),licensed:getActiveLicensedSimulations()}),
+ viewResponses:id=>openResponses(id),
+ selectCourse:async id=>{await openCourseManager(id);return getSelectedCourse()},
+ refresh:()=>{renderClassroom();renderResults();window.RizSimFacultyWorkspace?.render()}
+};
 </script>
 
 <!-- =========================================================
@@ -32854,6 +32877,7 @@ Complete
 
 </div>
   
+<script src="rizsim-faculty-workspaces.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
