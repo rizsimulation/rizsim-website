@@ -3625,6 +3625,7 @@ border-color:#315b92;
 <link rel="stylesheet" href="rizsim-roles-library.css">
 <script src="rizsim-session-continuity.js" defer></script>
 <link rel="stylesheet" href="rizsim-faculty-workspaces.css">
+<link rel="stylesheet" href="rizsim-live-classroom.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -3708,11 +3709,11 @@ href="#classroom"
 data-auth-view="classroom"
 data-role-view="classroom"
 >
-RizSimulation Player
+Live Classroom
 </a>
 
 <a
-href="#materials" data-auth-view="materials" data-role-view="materials">Classroom</a>
+class="rz-internal-hidden-tab" href="#materials" data-auth-view="materials" data-role-view="materials" tabindex="-1" aria-hidden="true">Classroom</a>
 <a href="#records" data-auth-view="records" data-role-view="records">Records</a>
 <a class="rz-internal-hidden-tab"
 href="#results"
@@ -5883,48 +5884,7 @@ data-view="classroom"
 
 <div class="content-shell">
 
-<div class="auth-section-heading">
-
-<span class="auth-kicker">
-RIZSIMULATION PLAYER
-</span>
-
-<h1>
-Launch a learning experience.
-</h1>
-
-<p>
-
-Create a secure session from an actively licensed
-simulation. Live Class and Practice can be controlled
-independently, and neither can extend beyond the
-underlying licence.
-
-</p>
-
-</div>
-
-<div class="classroom-highlight">
-
-<span class="auth-welcome-label">
-FACULTY WORKSPACE
-</span>
-
-<h2>
-Licensed simulation → secure class session
-</h2>
-
-<p>
-
-Choose an active simulation licence, select Live Class,
-Practice or Both, set the permitted access periods and
-let RizSim generate the class code and shareable link.
-
-</p>
-
-</div>
-
-<section class="rz-player-selection" aria-labelledby="rzLicensedHeading"><div class="rz-workspace-kicker">YOUR LICENSED SIMULATIONS</div><div class="rz-workspace-section-heading"><div><h2 id="rzLicensedHeading">Choose a simulation to run</h2><p>Hover or focus on your simulation and select Run Simulation.</p></div><span id="rzLicensedCount" class="rz-count-pill">0 licensed</span></div><div id="rzLicensedSimGrid" class="rz-licensed-grid"><div class="rz-workspace-empty">Your licensed simulations will appear here.</div></div></section><div id="rzPlayerSelectedLabel" class="rz-player-selected" hidden aria-live="polite"></div>
+<div class="rz-live-shell"><div class="rz-live-heading"><span class="rz-workspace-kicker">FACULTY WORKSPACE</span><h1>Live Classroom</h1><p>Select an experience, configure its session, and access results.</p></div><div id="rzLiveBreadcrumb" class="rz-live-breadcrumb"></div><div id="rzLiveChoices" class="rz-live-choice-grid"></div><div id="rzLiveCollection" class="rz-live-collection" hidden><h2 id="rzLiveCollectionTitle">Choose an experience</h2><div id="rzLiveCards" class="rz-live-card-grid"></div></div><div id="rzLiveSetup" class="rz-live-setup" hidden><h2 id="rzLiveSetupTitle">Create a session</h2><div id="rzLiveSetupMount"></div></div><div id="rzLiveRunning" class="rz-live-running" hidden><div class="rz-live-running-title"><h2>Session access &amp; results</h2><button id="rzLiveJumpResults" type="button">View Results ↓</button></div><div id="rzLiveRunningMount"></div><div id="rzLiveResultsAnchor"></div></div></div><div id="rzLegacyPlayerPanels" class="rz-live-original"><section class="rz-player-selection" aria-labelledby="rzLicensedHeading"><div class="rz-workspace-kicker">YOUR LICENSED SIMULATIONS</div><div class="rz-workspace-section-heading"><div><h2 id="rzLicensedHeading">Choose a simulation to run</h2><p>Hover or focus on your simulation and select Run Simulation.</p></div><span id="rzLicensedCount" class="rz-count-pill">0 licensed</span></div><div id="rzLicensedSimGrid" class="rz-licensed-grid"><div class="rz-workspace-empty">Your licensed simulations will appear here.</div></div></section><div id="rzPlayerSelectedLabel" class="rz-player-selected" hidden aria-live="polite"></div>
 <div class="classroom-grid">
 
 <div class="portal-panel">
@@ -6370,6 +6330,7 @@ Status
 
 </div>
 
+</div>
 </section>
 <section class="auth-view" id="view-materials" data-view="materials"><div class="content-shell rz-workspace-shell"><div class="rz-workspace-hero"><span class="rz-workspace-kicker">CLASSROOM · LEARNING MATERIALS</span><h1>Classroom</h1><p>Manage course materials with the established secure publishing controls.</p></div><div class="rz-classroom-materials-head"><div><h2>Learning materials</h2><p id="rzClassroomPermission">Choose a Course to access its material management tools.</p></div><label>Course <select class="management-select" id="rzClassroomCourseSelect"><option value="">Select a Course</option></select></label></div><div class="rz-dropzone" id="rzClassroomDropZone" hidden><strong>Drag &amp; drop class materials</strong><p>Or browse files for a selected Course.</p><button id="rzChooseMaterialFile" class="rz-action" type="button">Browse files</button></div><div id="rzClassroomMaterialMount"></div><div class="rz-workspace-empty" id="rzClassroomMaterialEmpty">Select a Course to see available classroom material controls.</div></div></section>
 <section class="auth-view" id="view-records" data-view="records"><div class="content-shell rz-workspace-shell"><div class="rz-workspace-hero rz-records-hero"><span class="rz-workspace-kicker">YOUR LEARNING RECORDS</span><h1>Records</h1><p>Review student submissions and classroom activity.</p></div><div class="rz-records-tabs" role="tablist" aria-label="Records sections"><button type="button" id="rzSubmissionsTab" role="tab" aria-selected="true" aria-controls="rzSubmissionsPanel" class="rz-records-tab is-active" data-rz-subtab="submissions">Submissions</button><button type="button" id="rzActivityTab" role="tab" aria-selected="false" aria-controls="rzActivityPanel" class="rz-records-tab" data-rz-subtab="activity">Activity log</button></div><div id="rzSubmissionsPanel" role="tabpanel" aria-labelledby="rzSubmissionsTab"><div class="rz-records-toolbar"><div><h2>Student submissions</h2><p>Open a student to inspect their submission history by date.</p></div><div class="rz-records-actions"><input id="rzSearchStudents" class="management-input" type="search" placeholder="Search students" aria-label="Search students"><button class="rz-action-secondary" id="rzClearRecords" type="button">Clear list</button></div></div><div id="rzRecordMetrics" class="rz-records-metrics"></div><div id="rzStudentGrid" class="rz-student-grid"><div class="rz-workspace-empty">Student submissions will appear here.</div></div></div><div id="rzActivityPanel" role="tabpanel" aria-labelledby="rzActivityTab" hidden><div class="rz-records-toolbar"><div><h2>Activity log</h2><p>Visible class activity and submissions in chronological order.</p></div></div><div id="rzActivityTimeline" class="rz-activity-timeline"></div></div></div></section>
@@ -32878,6 +32839,7 @@ Complete
 </div>
   
 <script src="rizsim-faculty-workspaces.js" defer></script>
+<script src="rizsim-live-classroom.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
