@@ -20,7 +20,7 @@ function empty(el,message){el.replaceChildren(node("div","rz-workspace-empty",me
 function selectedAllowed(){return $("view-records")?.classList.contains("active");}
 function gotoClassroom(){document.querySelector('#mainNav [data-auth-view="classroom"]')?.click();}
 function mountPlayerResults(){
- const snap=snapshot();if(!snap||!["faculty","course_lead"].includes(snap.role)||resultsMounted)return;
+ const snap=snapshot();if(!snap||!["faculty","course_lead","owner"].includes(snap.role)||resultsMounted)return;
  const from=$("view-results")?.querySelector(".content-shell");
  const player=$("view-classroom")?.querySelector(".content-shell");
  if(!from||!player)return;
@@ -71,7 +71,7 @@ function material(){
  const select=$("rzClassroomCourseSelect"),mount=$("rzClassroomMaterialMount"),zone=$("rzClassroomDropZone"),copy=$("rzClassroomPermission");
  if(!select||!mount||!zone)return;
  const allowed=snap.role==="course_lead";
- const selectedValue=select.value||str(snap.selectedCourseId||"");
+ const selectedValue=str(snap.selectedCourseId||select.value||"");
  select.replaceChildren();
  const placeholder=node("option",null,"Select a Course");placeholder.value="";select.append(placeholder);
  snap.courses.forEach(course=>{
