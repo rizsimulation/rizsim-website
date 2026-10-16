@@ -1,0 +1,10 @@
+{
+  "purpose": "Isolated V5 real-account acceptance, not default production release",
+  "source_commit": "7c29245ffc97826bcb434108b7106c3596c14d52",
+  "application_asset_commit": "09eaa4f430ab7f29a518606754e39e429ed7f9ec",
+  "verification_run": 38886668113,
+  "browser_assertions": 79,
+  "default_site": "V4 remains unchanged",
+  "backend": "Existing real account backend; no synthetic fixtures are loaded",
+  "qa_material_helper": "qa-material-check.html downloads the existing RizSim mark as a harmless upload sample"
+}
