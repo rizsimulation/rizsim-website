@@ -43,3 +43,38 @@
 @media(hover:none){.rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}}
 @media(max-width:700px){#view-classroom>.content-shell>.rz-live-shell{padding:20px 0 40px}.rz-live-choice-grid,.rz-live-card-grid{grid-template-columns:1fr}.rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}.rz-v5-choice,.rz-v5-card{min-height:157px}}
 @media(prefers-reduced-motion:reduce){.rz-v5-choice,.rz-v5-card,.rz-v5-card-action{transition:none;transform:none}}
+
+/* V5 compact authenticated workspace headings. Preserve branding outside workspaces. */
+#view-records .rz-workspace-hero,
+#view-materials .rz-workspace-hero{
+ background:none;box-shadow:none;border:0;border-radius:0;padding:0;
+ margin:0 0 21px;overflow:visible;
+}
+#view-records .rz-workspace-hero h1,
+#view-materials .rz-workspace-hero h1{
+ color:#153f4c;font-size:clamp(1.45rem,2.4vw,2.05rem);
+ line-height:1.2;letter-spacing:-.04em;margin:5px 0 7px;
+}
+#view-records .rz-workspace-hero p,
+#view-materials .rz-workspace-hero p{color:#5b7984;font-size:.86rem;line-height:1.5}
+#view-records .rz-workspace-hero .rz-workspace-kicker,
+#view-materials .rz-workspace-hero .rz-workspace-kicker{color:#178d91}
+#view-records .rz-workspace-shell,
+#view-materials .rz-workspace-shell{padding-block:24px 48px}
+#view-results>.content-shell>.auth-section-heading{
+ background:none!important;box-shadow:none!important;border:0!important;
+ padding:0!important;margin:0 0 18px!important;
+}
+#view-results>.content-shell>.auth-section-heading h1{font-size:1.5rem;color:#153f4c}
+#view-results>.content-shell>.auth-section-heading p{color:#5b7984}
+.rz-v5-choice:focus-visible,.rz-v5-card:focus-visible,
+.rz-v5-card-action:focus-visible,.rz-v5-crumb:focus-visible,
+#rzLiveJumpResults:focus-visible{outline:3px solid #9b7332;outline-offset:3px}
+.rz-v5-choice,.rz-v5-card{min-height:165px;padding:20px 20px 16px}
+.rz-v5-card-action{margin-top:14px}
+#rzLiveJumpResults[hidden]{display:none!important}
+@media(hover:none),(pointer:coarse){
+ .rz-v5-choice .rz-v5-card-action,.rz-v5-card .rz-v5-card-action{
+ opacity:1;transform:none;pointer-events:auto
+ }
+}
