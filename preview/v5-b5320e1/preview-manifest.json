@@ -1,0 +1,10 @@
+{
+  "purpose": "Isolated V5 real-account acceptance preview; not the default production release",
+  "candidate_commit": "b5320e1480b864cb9cce465fd0180a8b580fba63",
+  "default_application_commit": "5b0a7ef98ffd85aec9f96ff9866b1c85e3d7ed25",
+  "application_assets": "Exact Git blobs from the candidate commit; no authentication or role modifications",
+  "backend": "Existing RizSim backend: actions operate on real account data. Use clearly named QA sessions only.",
+  "ordinary_faculty_acceptance": "pending",
+  "course_lead_acceptance": "pending",
+  "main_application_files_changed": false
+}

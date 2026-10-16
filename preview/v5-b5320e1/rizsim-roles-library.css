@@ -1,0 +1,24 @@
+
+/* A premium, separate library never appears in the top navigation. */
+.rz-library-hero{padding:49px 48px;margin-bottom:29px;border-radius:29px;color:white;
+ background:radial-gradient(circle at 92% 0%,rgba(233,199,110,.24),transparent 40%),linear-gradient(130deg,#061827,#0d5260);
+ border:1px solid rgba(236,207,135,.45);box-shadow:0 23px 54px rgba(5,38,53,.22)}
+.rz-library-kicker{color:#a5f2e4;letter-spacing:.15em;font-size:.67rem;font-weight:900}
+.rz-library-hero h1{font-size:clamp(2.2rem,5vw,4.2rem);margin:10px 0;letter-spacing:-.07em;color:#fff}
+.rz-library-hero h1 em{color:#edc978;font-style:normal}
+.rz-library-hero p{max-width:650px;line-height:1.7;color:#ceeee9;font-size:.93rem}
+.rz-library-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,265px),1fr));gap:20px}
+.rz-book{display:flex;flex-direction:column;gap:13px;border:1px solid #bfdbdc;border-radius:22px;padding:22px;
+ background:linear-gradient(145deg,#fff,#eaf5f4);box-shadow:0 16px 34px rgba(6,57,75,.085)}
+.rz-book-cover{height:155px;display:grid;place-items:center;border-radius:15px;color:white;
+ background:linear-gradient(140deg,#092e45,#0d8080);box-shadow:inset 6px 0 rgba(233,197,107,.85),0 12px 27px rgba(3,46,59,.16)}
+.rz-book:nth-child(3n+2) .rz-book-cover{background:linear-gradient(140deg,#735896,#364b7f)}
+.rz-book:nth-child(3n+3) .rz-book-cover{background:linear-gradient(140deg,#aa823e,#176d77)}
+.rz-book-cover span{font-size:3.3rem;color:#fff9e9}
+.rz-book small{font-size:.67rem;letter-spacing:.12em;color:#168184;font-weight:900}
+.rz-book h2{margin:0;font-size:1.2rem;color:#153e50;line-height:1.32}
+.rz-book p{margin:0;flex:1;font-size:.84rem;line-height:1.65;color:#55747f}
+.rz-book a{display:inline-flex;justify-content:center;border-radius:11px;padding:12px 15px;color:#fff;background:#0c9897;text-decoration:none;font-size:.8rem;font-weight:850}
+.rz-book a:hover{background:#067c83}
+#view-resources.active{display:block}
+@media(max-width:650px){.rz-library-hero{padding:32px 26px}.rz-library-grid{grid-template-columns:1fr}}

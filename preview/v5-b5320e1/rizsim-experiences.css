@@ -1,0 +1,154 @@
+
+/* RizSim scoped category environments, shared side panel and account areas.
+   The approved sea-glass header, login, splash and brand theme are unchanged. */
+.site-sidebar .sidebar-inner {padding:0;display:flex;flex-direction:column;}
+.rz-side {display:flex;flex-direction:column;gap:22px;flex:1;min-height:100%;padding:26px 20px 22px;}
+.rz-side-top {display:flex;align-items:center;gap:12px;padding:17px;border-radius:20px;color:white;
+  background:radial-gradient(circle at 95% 0%,rgba(117,234,213,.21),transparent 55%),linear-gradient(145deg,#061827,#0c5060);
+  box-shadow:0 18px 37px rgba(6,35,50,.18);border:1px solid rgba(127,222,210,.22)}
+.rz-side-mark{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;background:rgba(255,255,255,.1);border:1px solid rgba(160,241,229,.35);border-radius:13px;color:#9fe6d8;font-weight:900}
+.rz-side-top strong{display:block;font-size:1.08rem;letter-spacing:-.045em;color:#fff}
+.rz-side-top small{font-size:.69rem;color:#b9e7e2;letter-spacing:.035em}
+.rz-side-label{display:block;padding:0 10px 9px;color:#718b96;font-size:.64rem;letter-spacing:.145em;font-weight:900;text-transform:uppercase}
+.rz-side-nav{display:grid;gap:8px}
+.rz-side-link{display:flex;align-items:center;gap:12px;text-align:left;width:100%;min-height:53px;
+ padding:12px 13px;border:1px solid transparent;border-radius:14px;background:transparent;color:#1e4656;cursor:pointer;
+ font-size:.86rem;font-weight:800;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.rz-side-link:hover{background:#eaf7f5;border-color:#c3e5e0;transform:translateX(3px)}
+.rz-side-link.is-current{background:linear-gradient(120deg,#dff4ef,#f8fbfa);border-color:#7bcac0;
+  box-shadow:0 8px 16px rgba(8,111,112,.08);color:#075d67}
+.rz-side-icon{display:grid;place-items:center;width:35px;height:35px;flex:0 0 35px;border:1px solid #d2e4e4;
+ border-radius:11px;background:#fff;color:#138c8f;font-size:1.02rem;font-weight:900}
+.rz-side-link[data-category="skills"] .rz-side-icon{background:#fff8eb;border-color:#ebd8aa;color:#a77b35}
+.rz-side-link[data-category="children"] .rz-side-icon{background:#eff5fd;border-color:#d2deee;color:#577ba4}
+.rz-side-link strong{display:block;font-weight:800}
+.rz-side-link small{display:block;margin-top:2px;color:#738f99;font-size:.67rem;font-weight:560}
+.rz-side-divider{height:1px;margin:4px 10px;background:linear-gradient(90deg,transparent,#b7d2d2,transparent)}
+.rz-side-resources{border:1px solid #bed9d9;background:linear-gradient(138deg,#f8fcfc,#eaf4f3);
+ box-shadow:0 9px 20px rgba(7,70,82,.055);border-radius:17px;padding:14px}
+.rz-side-resources .rz-side-link{padding:6px}
+.rz-side-resources .rz-side-icon{background:linear-gradient(145deg,#0c3a51,#116575);color:#fff;border-color:#287588}
+.rz-side-foot{margin-top:auto;padding-top:18px;border-top:1px solid #dce8e9;display:grid;gap:6px}
+.rz-side-foot .rz-side-link{min-height:45px;padding:8px 12px;font-size:.79rem}
+.rz-side-foot .rz-side-icon{width:30px;height:30px;flex-basis:30px;font-size:.87rem}
+.rz-side-caption{padding:8px 12px 0;font-size:.66rem;color:#8496a0;line-height:1.5}
+.rz-scope{display:flex;align-items:center;gap:6px;min-width:0;flex:0 1 170px;white-space:nowrap;
+ color:#235766;font-size:.74rem;letter-spacing:.01em;font-weight:750}
+.rz-scope a{color:#1a6371;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rz-scope a:hover{color:#078e91;text-decoration:underline;text-underline-offset:3px}
+.rz-scope-sep{color:#a3bdbe}
+.rz-scope-cat{color:#0e7a83!important}
+.rz-catalog-scope{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 21px;margin-bottom:22px;
+ background:linear-gradient(115deg,#e4f6f3,#fffaf0);border:1px solid #c2dcda;border-left:4px solid #0d9899;
+ border-radius:16px;box-shadow:0 10px 22px rgba(8,67,83,.065)}
+.rz-catalog-scope strong{display:block;font-size:1.02rem;color:#103b4b}
+.rz-catalog-scope small{display:block;color:#5c7c83;margin-top:3px;font-size:.76rem}
+.rz-catalog-scope a,.rz-catalog-scope button{flex:0 0 auto;border:1px solid #acd4d1;background:#fff;padding:9px 13px;
+ border-radius:10px;color:#176872;font-size:.76rem;font-weight:850;cursor:pointer}
+.rz-catalog-empty{border:1px dashed #9ecac6;border-radius:17px;text-align:center;padding:44px 20px;margin:14px 0 28px;
+ color:#557780;background:linear-gradient(150deg,#f6fcfb,#fff)}
+.rz-catalog-empty strong{display:block;margin-bottom:7px;color:#153d49;font-size:1.04rem}
+.rz-catalog-empty a{display:inline-block;margin-top:10px;color:#078c8c;font-weight:850}
+.rz-role-switch{display:grid;gap:5px;padding:9px 0;margin:9px 0;border-block:1px solid rgba(26,93,103,.11)}
+.rz-role-title{padding:4px 12px;color:#78919a;font-size:.61rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.rz-role-switch a,.rz-role-switch .rz-role-current{display:flex;justify-content:space-between;align-items:center;gap:9px;
+ width:100%;padding:10px 12px;text-align:left;border:1px solid #d5e7e5;border-radius:11px;
+ color:#204b56;background:#f7fbfa;font-size:.75rem;font-weight:820}
+.rz-role-switch a:hover{border-color:#7ac9c0;background:#e9f7f3}
+.rz-role-switch .rz-role-current{background:#e5f4f1;border-color:#a9d9d0;color:#0d7078}
+.rz-role-switch small{font-size:.62rem;color:#7c9299;font-weight:700}
+.rz-role-switch .rz-role-current small{color:#197f80}
+.bp-categories{padding:61px 0 72px;background:radial-gradient(circle at 91% 0%,rgba(225,195,115,.13),transparent 36%),linear-gradient(140deg,#f6fbfa,#eaf5f6);border-block:1px solid #d8e7e7}
+.bp-categories-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:25px}
+.bp-categories-head h2{font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.14;letter-spacing:-.045em;margin:8px 0 0;color:#0a3346}
+.bp-categories-head p{color:#5d7882;max-width:440px;margin:0;font-size:.91rem;line-height:1.65}
+.bp-category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.bp-category-tile{position:relative;display:flex;flex-direction:column;min-height:185px;justify-content:space-between;padding:23px 27px;
+ border:1px solid #b6d9d7;border-radius:22px;background:linear-gradient(145deg,#fff,#d9f1ed);
+ box-shadow:0 15px 30px rgba(5,53,68,.09);transition:transform .2s ease,box-shadow .2s ease}
+.bp-category-tile:hover{transform:translateY(-5px);box-shadow:0 22px 40px rgba(5,53,68,.14)}
+.bp-category-tile:nth-child(2){background:linear-gradient(145deg,#fffdfa,#f1e3c0);border-color:#dec990}
+.bp-category-tile:nth-child(3){background:linear-gradient(145deg,#f9fcff,#dbe7f7);border-color:#bdd1e2}
+.bp-category-tile .bp-category-icon{display:grid;place-items:center;width:47px;height:47px;border-radius:14px;background:#0b7884;color:#fff;font-size:1.13rem;box-shadow:0 7px 16px rgba(4,75,83,.17)}
+.bp-category-tile:nth-child(2) .bp-category-icon{background:#b28a42}
+.bp-category-tile:nth-child(3) .bp-category-icon{background:#567fa8}
+.bp-category-tile strong{display:block;color:#103f4c;font-size:1.24rem;letter-spacing:-.027em;margin-top:20px}
+.bp-category-tile small{display:block;color:#567581;font-size:.8rem;line-height:1.55;margin-top:5px}
+.bp-category-tile .bp-category-arrow{position:absolute;right:22px;top:26px;color:#157c86;font-size:1.2rem}
+@media(max-width:1080px){.rz-scope{flex-basis:130px;font-size:.7rem}}
+@media(max-width:850px){.bp-category-grid{grid-template-columns:1fr}.bp-category-tile{min-height:140px}
+ .bp-categories-head{display:block}.bp-categories-head p{margin-top:12px}}
+@media(max-width:570px){.rz-scope{flex-basis:auto;max-width:95px;font-size:.65rem}
+ .rz-side{padding:20px 15px}.rz-catalog-scope{display:block;padding:14px}.rz-catalog-scope a{display:inline-block;margin-top:10px}
+ .bp-categories{padding:45px 0}.bp-category-tile{padding:21px}}
+@media(prefers-reduced-motion:reduce){.rz-side-link,.bp-category-tile{transition:none}}
+
+/* Summit V3: restrained design-system refinements; base brand colors remain locked. */
+.site-sidebar .sidebar-inner{overflow-y:auto;overscroll-behavior:contain}
+.rz-side-v3{min-height:100%;height:100%;gap:0;padding:clamp(16px,2.5vh,25px) 17px 19px}
+.rz-side-v3 .rz-side-main{display:grid;gap:8px}
+.rz-side-v3 .rz-side-label{padding:3px 7px 8px;color:#66858e;letter-spacing:.16em;font-size:.61rem}
+.rz-library-entry{display:flex;align-items:center;gap:12px;min-height:80px;padding:13px;border-radius:17px;border:1px solid #9dcfc8;background:linear-gradient(136deg,#ffffff,#e5f5f1);color:#123e4b;text-decoration:none;box-shadow:0 12px 23px rgba(9,63,75,.085)}
+.rz-library-entry:hover{background:linear-gradient(136deg,#fff,#d5f0e8);border-color:#4aafa7;transform:translateY(-1px)}
+.rz-library-entry-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#0a4255,#0b858b);color:#fff}
+.rz-library-entry-text{flex:1;min-width:0;display:grid;gap:4px}
+.rz-library-entry-text strong{font-size:.87rem;font-weight:850}
+.rz-library-entry-text small{font-size:.69rem;color:#63818a;line-height:1.35}
+.rz-library-entry-arrow{color:#167c86;display:grid;place-items:center}
+.rz-library-entry-arrow svg{width:16px;height:16px}
+.rz-side-v3 .rz-side-bottom{margin-top:auto;display:grid;gap:9px;padding-top:20px;border-top:1px solid #cddfdf}
+.rz-settings-link{width:100%;min-height:44px;padding:9px 12px;display:flex;align-items:center;gap:12px;border:1px solid transparent;border-radius:13px;color:#285662;background:transparent;font-weight:820;font-size:.83rem;text-align:left;cursor:pointer}
+.rz-settings-link:hover,.rz-settings-link[aria-expanded="true"]{background:#e2f3f0;border-color:#b4d8d4}
+.rz-settings-link-icon{display:grid;place-items:center;color:#127d84}
+.rz-settings-chevron{margin-left:auto;display:grid;place-items:center}
+.rz-settings-chevron svg{width:16px;height:16px;transition:transform .18s ease}
+.rz-settings-link[aria-expanded="true"] .rz-settings-chevron svg{transform:rotate(90deg)}
+.rz-settings-panel{display:grid;gap:12px;padding:14px;border:1px solid #c6e0dd;border-radius:14px;background:rgba(255,255,255,.8);box-shadow:0 8px 19px rgba(5,53,70,.06)}
+.rz-settings-panel[hidden]{display:none!important}
+.rz-settings-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.78rem;font-weight:800;color:#194c58}
+.rz-settings-toggle small{display:block;margin-top:3px;color:#66818b;font-size:.65rem;font-weight:550}
+.rz-settings-toggle input{accent-color:#138c88;width:17px;height:17px}
+.rz-settings-manage{display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;border-top:1px solid #e1ece9;background:transparent;padding:10px 0 0;color:#0e7a82;text-align:left;font-weight:800;font-size:.73rem;cursor:pointer}
+.rz-settings-manage svg{width:16px;height:16px}
+.rz-profile-button{display:flex;width:100%;align-items:center;gap:11px;padding:13px 11px;text-align:left;border:1px solid #a7cecb;border-radius:18px;background:linear-gradient(128deg,rgba(255,255,255,.96),rgba(223,242,239,.95));box-shadow:0 12px 24px rgba(6,54,74,.095);cursor:pointer}
+.rz-profile-button:hover{border-color:#56b9b0;box-shadow:0 16px 30px rgba(6,54,74,.14)}
+.rz-profile-avatar{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:14px;overflow:hidden;background:linear-gradient(140deg,#0c5265,#12a5a0);color:#fff;font-weight:900;font-size:.8rem;border:1px solid rgba(255,255,255,.5)}
+.rz-profile-avatar img{width:100%;height:100%;object-fit:cover}
+.rz-profile-copy{min-width:0;flex:1;display:grid;gap:3px}
+.rz-profile-copy strong{font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#133e4b}
+.rz-profile-copy small{font-size:.65rem;color:#0e8583;font-weight:850}
+.rz-profile-email{font-size:.59rem;color:#66818a;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.rz-profile-chevron{color:#447c86}.rz-profile-chevron svg{width:15px;height:15px}
+.rz-v3-svg{display:block;flex-shrink:0}
+.rz-v3-environment{display:inline-flex;align-items:center;gap:10px;flex:0 0 auto;white-space:nowrap;font-size:clamp(.96rem,1.35vw,1.27rem);letter-spacing:-.044em;font-weight:850;color:#0b6c7c;margin-left:-2px;margin-right:8px}
+.rz-v3-environment-separator{font-weight:450;color:#5d9ba2;font-size:1.3em}
+.rz-v3-environment-name{color:#0c6676}
+.rz-v3-environment[hidden]{display:none!important}
+.rz-reduced-motion *,.rz-reduced-motion *::before,.rz-reduced-motion *::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+/* Profile dropdown is now one clearly delineated frosted floating surface. */
+.account-wrap{isolation:isolate}
+.account-menu{width:clamp(255px,22vw,285px)!important;max-width:calc(100vw - 22px)!important;padding:13px!important;gap:8px!important;align-items:stretch!important;border:1px solid rgba(129,191,187,.67)!important;border-radius:22px!important;
+ background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(227,243,241,.94))!important;
+ backdrop-filter:blur(24px) saturate(160%)!important;-webkit-backdrop-filter:blur(24px) saturate(160%)!important;
+ box-shadow:0 26px 70px rgba(3,32,47,.27),0 9px 27px rgba(6,73,82,.1),inset 0 1px rgba(255,255,255,.98)!important;
+ transform-origin:top right!important}
+.account-menu .account-identity-card{width:100%!important;padding:12px!important;border-radius:15px!important;border:1px solid #cadcda!important;background:rgba(255,255,255,.94)!important;box-shadow:0 5px 14px rgba(6,55,66,.07)!important}
+.account-menu .account-menu-button{width:100%!important;height:auto;min-height:44px;padding:10px 13px!important;box-shadow:none!important;background:rgba(255,255,255,.78)!important;border:1px solid #d0e1df!important;border-radius:12px!important}
+.account-menu .account-menu-button:hover{background:#fff!important;border-color:#75bdb5!important}
+.account-menu .account-menu-icon{background:#e3f3f0!important;color:#0e7c83!important;border:1px solid #bedbd7;border-radius:10px!important}
+.account-menu .account-menu-icon svg{width:17px;height:17px}
+.account-menu .account-menu-button.danger{color:#973e3b!important;background:rgba(255,250,249,.94)!important;border-color:#ecd0cc!important}
+.account-menu .account-menu-button.danger .account-menu-icon{color:#a04442!important;background:#fbe9e7!important;border-color:#e8c5c2!important}
+.account-menu .rz-role-switch{width:100%;margin:3px 0!important;padding:9px 0!important;gap:6px!important}
+.account-menu .rz-role-switch a,.account-menu .rz-role-switch .rz-role-current{min-height:41px!important;padding:8px 10px!important;display:flex;align-items:center;gap:9px;background:rgba(252,255,254,.92)}
+.account-menu .rz-role-switch a:hover{background:#effaf7}
+.account-menu .rz-role-switch small{margin-left:auto}
+.rz-role-icon{display:grid;place-items:center;color:#11878b;flex:0 0 22px}
+.rz-role-icon svg{width:19px;height:19px}
+.account-menu .account-collapse-button{margin:3px auto 0;box-shadow:none;border:1px solid #c9e0dc;background:rgba(255,255,255,.8)}
+.login-menu{width:230px!important;padding:12px!important;border:1px solid #b6d9d3!important;border-radius:19px!important;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(229,244,241,.93))!important;backdrop-filter:blur(21px)!important;-webkit-backdrop-filter:blur(21px)!important;box-shadow:0 20px 49px rgba(4,42,59,.21)!important;align-items:stretch!important}
+.login-role-button{width:100%!important;box-shadow:none!important}
+.login-role-icon svg{width:19px;height:19px}
+@media(max-width:1140px){.rz-v3-environment{font-size:.95rem;gap:6px;margin-right:0}}
+@media(max-width:690px){.rz-side-v3{padding:17px 14px}.rz-v3-environment{font-size:.77rem}.rz-profile-email{display:none}}
+@media(max-height:610px){.rz-side-v3{padding-block:10px;gap:5px}.rz-library-entry{min-height:64px;padding:10px}.rz-side-v3 .rz-side-bottom{padding-top:8px}.rz-profile-button{padding:8px}.rz-profile-avatar{width:34px;height:34px;flex-basis:34px}}
