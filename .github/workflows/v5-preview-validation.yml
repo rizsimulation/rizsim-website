@@ -1,0 +1,75 @@
+name: V5 Isolated Preview Validation
+on:
+  push:
+    branches: ["feat/live-classroom-compact-v5-20261015"]
+    paths: [".github/workflows/v5-preview-validation.yml"]
+  pull_request:
+    paths: [".github/workflows/v5-preview-validation.yml"]
+permissions:
+  contents: read
+jobs:
+  verify-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: b5320e1480b864cb9cce465fd0180a8b580fba63
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify unchanged candidate and existing regression gates
+        run: |
+          test "$(git rev-parse HEAD)" = b5320e1480b864cb9cce465fd0180a8b580fba63
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_premium_ui_v3.js
+          python scripts/validate_category_release.py
+      - name: Install pinned isolated browser dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Verify both supported flows from the isolated preview URL
+        run: |
+          python - <<'PY'
+          import http.server, json, sys, threading
+          from pathlib import Path
+          sys.path.insert(0, str(Path('scripts').resolve()))
+          import test_live_classroom_v5 as core
+          import test_live_classroom_v5_extended as extended
+          from playwright.sync_api import sync_playwright
+          prefix = '/preview/v5-b5320e1'
+          class PreviewHandler(core.Handler):
+              def translate_path(self, path):
+                  if path.startswith(prefix + '/'):
+                      path = path[len(prefix):]
+                  return super().translate_path(path)
+          server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), PreviewHandler)
+          threading.Thread(target=server.serve_forever, daemon=True).start()
+          url = 'http://127.0.0.1:' + str(server.server_port) + prefix
+          try:
+              with sync_playwright() as p:
+                  browser = p.chromium.launch(headless=True)
+                  try:
+                      core.run(browser, url)
+                      extended.run(browser, url)
+                      result = {'candidate': 'b5320e1480b864cb9cce465fd0180a8b580fba63', 'preview_path': prefix, 'backend': 'isolated synthetic only', 'checks': core.checks, 'passed': len(core.checks)}
+                      (core.OUT / 'preview-verification.json').write_text(json.dumps(result, indent=2))
+                      print('PASS preview assertions:', len(core.checks))
+                  finally:
+                      browser.close()
+          finally:
+              server.shutdown()
+          PY
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-v5-preview-path-evidence
+          path: test-results/
+          retention-days: 7
