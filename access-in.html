@@ -1946,11 +1946,12 @@ animation:none!important;
 </style>
 <link rel="stylesheet" href="rizsim-experiences.css">
 <link rel="stylesheet" href="rizsim-roles-library.css">
+<link rel="stylesheet" href="rizsim-student-workspace.css">
 <script src="rizsim-session-continuity.js" defer></script>
 </head>
 
 
-<body data-rizsim-home-portal="student">
+<body data-rizsim-home-portal="student" data-student-workspace="v8">
 
 
 <!-- ============================================================
@@ -2070,21 +2071,11 @@ data-student-view="home"
 Home
 </a>
 
-<a
-href="#simulations"
-data-student-view="simulations"
->
-Simulations
-</a>
 
-<a class="rz-internal-hidden-tab" id="rzHiddenLibraryNav" href="#resources" data-student-view="resources" tabindex="-1" aria-hidden="true">Library</a>
 
-<a
-href="#learning"
-data-student-view="learning"
->
-My Learning
-</a>
+<a id="rzHiddenLibraryNav" href="#resources" data-student-view="resources">Simulation Library</a>
+
+
 
 <a
 href="#player"
@@ -2092,6 +2083,7 @@ data-student-view="player"
 >
 RizSimulation Player
 </a>
+<a href="#practice" data-student-view="practice">Practice</a>
 
 <a
 href="#about"
@@ -2107,12 +2099,7 @@ data-student-view="contact"
 Contact
 </a>
 
-<a
-href="#account"
-data-student-view="account"
->
-Account
-</a>
+
 
 </nav>
 
@@ -2752,6 +2739,8 @@ role="tabpanel"
 
 
 
+<section class="student-view" id="view-practice" data-view="practice"><div class="content-shell" id="rzStudentPractice"></div></section>
+
 <!-- ============================================================
      PLAYER
      ============================================================ -->
@@ -3340,6 +3329,7 @@ let products =
 
 let attempts =
 [];
+let studentAttemptDataError = null;
 
 let learningResources =
 [];
@@ -3359,19 +3349,12 @@ let activeView =
 let activeLearningTab =
 "active";
 
-const viewOrder = [
-"home",
-"simulations",
-"resources",
-"learning",
-"player",
-"about",
-"contact",
-"account"
-];
+const viewOrder = ["home","player","practice","resources","about","contact"];
 
 let resolvedSession =
 null;
+let studentResolveGeneration=0;
+let studentJoinBusy=false;
 
 let resolvedSourceType =
 null;
@@ -4029,7 +4012,7 @@ renderAll();
 hideLoading();
 
 if(
-incomingShareToken
+incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
 ){
 
 navigateStudent(
@@ -4044,7 +4027,7 @@ incomingShareToken
 
 }
 else if(
-incomingClassCode
+incomingClassCode && (!location.hash || ["#home","#player"].includes(location.hash))
 ){
 
 document
@@ -4069,7 +4052,11 @@ await resolveSession(
 incomingClassCode
 );
 
+}else{
+const wanted=location.hash.slice(1);
+if(wanted)navigateStudent(wanted,false);
 }
+window.dispatchEvent(new Event("rizsim:student-ready"));
 
 }
 
@@ -4079,6 +4066,7 @@ incomingClassCode
    ============================================================ */
 
 async function loadPlatformData(){
+const requestUser=currentUser?.id;if(!requestUser)return;
 
 const [
 categoryResult,
@@ -4154,6 +4142,7 @@ classroom_session_id,
 classroom_access_type,
 joined_at
 `)
+.eq("user_id",currentUser.id)
 
 .order(
 "started_at",
@@ -4167,6 +4156,7 @@ supabase.rpc(
 )
 
 ]);
+if(currentUser?.id!==requestUser)return;
 
 categories =
 categoryResult.data
@@ -4178,6 +4168,7 @@ productResult.data
 ||
 [];
 
+studentAttemptDataError = attemptResult.error?.message || null;
 attempts =
 attemptResult.data
 ||
@@ -4218,10 +4209,12 @@ await loadExceptionalAccess();
 }
 
 async function loadStudentCourseWorkspace(){
+  const requestUser=currentUser?.id;if(!requestUser)return;
   const [coursesResult,materialsResult]=await Promise.all([
     supabase.rpc('get_my_rizsim_student_courses'),
     supabase.rpc('get_my_rizsim_student_course_materials')
   ]);
+  if(currentUser?.id!==requestUser)return;
   studentCourses=coursesResult.error?[]:(coursesResult.data||[]);
   studentCourseMaterials=materialsResult.error?[]:(materialsResult.data||[]);
   studentCourseDataError=coursesResult.error?.message||materialsResult.error?.message||null;
@@ -4287,6 +4280,7 @@ item.allowed
 }
 
 async function reloadAttempts(){
+const requestUser=currentUser?.id;if(!requestUser)return;
 
 const {
 data,
@@ -4313,6 +4307,7 @@ classroom_session_id,
 classroom_access_type,
 joined_at
 `)
+.eq("user_id",currentUser.id)
 
 .order(
 "started_at",
@@ -4321,6 +4316,8 @@ ascending:false
 }
 );
 
+if(currentUser?.id!==requestUser)return;
+studentAttemptDataError = error?.message || null;
 attempts =
 error
 ?
@@ -4431,6 +4428,7 @@ currentProfile
    ============================================================ */
 
 function renderAll(){
+window.dispatchEvent(new Event("rizsim:student-data"));
 
 renderStats();
 
@@ -5802,6 +5800,9 @@ async function resolveSession(
 sourceType,
 value
 ){
+const generation=++studentResolveGeneration;
+const requestUser=currentUser?.id;
+joinedAttempt=null;
 
 setPlayerMessage(
 "Checking the classroom session…"
@@ -5863,6 +5864,7 @@ await supabase.rpc(
 "resolve_rizsim_classroom_access",
 params
 );
+if(generation!==studentResolveGeneration || currentUser?.id!==requestUser)return;
 
 hideLoading();
 
@@ -6403,6 +6405,12 @@ renderJoinedAttempt();
 async function joinSession(
 requestedAccessType
 ){
+if(studentJoinBusy)return;
+studentJoinBusy=true;
+const requestUser=currentUser?.id;
+const joiningSession=resolvedSession?.session_id;
+const joiningGeneration=studentResolveGeneration;
+try {
 
 if(
 !resolvedSession
@@ -6459,6 +6467,7 @@ requestedAccessType
 );
 
 hideLoading();
+if(currentUser?.id!==requestUser || joiningSession!==resolvedSession?.session_id || joiningGeneration!==studentResolveGeneration)return;
 
 if(error){
 
@@ -6505,6 +6514,7 @@ joinedAttempt.is_existing_attempt
 
 renderJoinedAttempt();
 
+} finally { studentJoinBusy=false; }
 }
 
 
@@ -6538,6 +6548,9 @@ const route =
 getLaunchURL(
 product
 );
+if(joinedAttempt.attempt_status === "submitted" || joinedAttempt.submitted_at){
+ target.innerHTML = `<div class="launch-ready"><strong>Submission complete</strong><p>Your response is saved. Submitted work is read-only.</p><button type="button" class="small-action" data-student-view-button="learning">View My Learning</button></div>`;return;
+}
 
 target.innerHTML = `
 
@@ -6608,6 +6621,7 @@ connected to a launch URL in RizSim.
    ============================================================ */
 
 async function launchJoinedSimulation(){
+if(joinedAttempt?.attempt_status === "submitted" || joinedAttempt?.submitted_at){setPlayerMessage("This response has already been submitted.",true);return;}
 
 if(
 !joinedAttempt
@@ -6617,6 +6631,10 @@ return;
 
 }
 
+const launchUser=currentUser?.id;
+const launchAttempt=joinedAttempt;
+const launchGeneration=studentResolveGeneration;
+if(!launchUser)return;
 showLoading();
 
 const {
@@ -6633,6 +6651,7 @@ joinedAttempt.attempt_id
 );
 
 hideLoading();
+if(currentUser?.id!==launchUser || joinedAttempt!==launchAttempt || studentResolveGeneration!==launchGeneration)return;
 
 if(error){
 
@@ -6656,6 +6675,8 @@ null;
 
 if(
 !access
+||
+access.attempt_status === "submitted" || access.submitted_at
 ||
 access.allowed !==
 true
@@ -6723,6 +6744,8 @@ destination.href;
    ============================================================ */
 
 function setViewImmediately(view){
+view = view === "simulations" ? "resources" : view;
+if(view === "account"){window.RizSimStudentWorkspace?.openAccount();return;}
 
 activeView =
 view;
@@ -6780,26 +6803,13 @@ link.removeAttribute(
 
 try{
 
-history.replaceState(
-null,
-"",
-window.location.pathname
-+
-window.location.search
-+
-"#"
-+
-view
-);
+if(location.hash !== "#"+view) history.pushState(null,"",location.pathname+location.search+"#"+view);
 
 }
 catch{
 }
 
-window.scrollTo(
-0,
-0
-);
+window.dispatchEvent(new CustomEvent("rizsim:student-view",{detail:{view}}));
 
 }
 
@@ -6807,11 +6817,14 @@ function navigateStudent(
 view,
 animate = true
 ){
+view = view === "simulations" ? "resources" : view;
+window.RizSimStudentWorkspace?.closeDrawer();
+if(view === "account"){closeAccountMenu();window.RizSimStudentWorkspace?.openAccount();return;}
 
 if(
 !viewOrder.includes(
 view
-)
+) && view !== "learning"
 ){
 return;
 }
@@ -6840,9 +6853,9 @@ return;
 }
 
 const currentIndex =
-viewOrder.indexOf(
+Math.max(0,viewOrder.indexOf(
 activeView
-);
+));
 
 const destinationIndex =
 viewOrder.indexOf(
@@ -7218,9 +7231,9 @@ duration <=
 if(valid){
 
 const currentIndex =
-viewOrder.indexOf(
+Math.max(0,viewOrder.indexOf(
 activeView
-);
+));
 
 const nextIndex =
 dx < 0
@@ -7803,6 +7816,38 @@ closeProductModal();
 );
 
 
+
+/* V8 bounded student presentation bridge. All access remains server verified. */
+window.RizSimStudentBridge = Object.freeze({
+ snapshot(){return {userId:currentUser?.id||null,profile:currentProfile ? {display_name:currentProfile.display_name,email:currentProfile.email,account_status:currentProfile.account_status}:null,
+  products:products.map(p=>({...p})),attempts:attempts.filter(a=>a.user_id===currentUser?.id).map(a=>({...a})),courses:studentCourses.map(c=>({...c})),materials:studentCourseMaterials.map(m=>({...m})),
+  errors:{attempts:studentAttemptDataError,materials:studentCourseDataError},resolved:resolvedSession?{...resolvedSession}:null,joined:joinedAttempt?{...joinedAttempt}:null};},
+ navigate(view){navigateStudent(view,false);},
+ async workspace(){const result=await supabase.rpc('get_my_rizsim_student_workspace');if(result.error)throw new Error(result.error.message);return result.data;},
+ async refresh(){if(!currentUser)return;await reloadAttempts();if(currentUser)renderAll();},
+ async openAttempt(attempt){
+  if(!attempt || !attempt.class_code)return;
+  navigateStudent('player',false);
+  await resolveSession('code',attempt.class_code);
+  if(resolvedSession?.session_id!==attempt.classroom_session_id)return;
+  const own=attempts.find(a=>a.id===attempt.id && a.user_id===currentUser?.id);
+  if(!own)return;
+  joinedAttempt={attempt_id:own.id,session_id:own.classroom_session_id,product_id:own.product_id,classroom_access_type:own.classroom_access_type,attempt_status:own.status,submitted_at:own.submitted_at,is_existing_attempt:true};
+  renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
+ },
+ async practice(attemptId){const result=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attemptId});if(result.error)throw new Error(result.error.message);await reloadAttempts();return result.data;},
+ async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
+});
+window.addEventListener('popstate',()=>{navigateStudent(location.hash.slice(1)||'home',false);});
+// The underlying auth client remains the single owner of token refresh.
+supabase.auth.onAuthStateChange((event,session)=>{
+ if(event==='SIGNED_OUT' || (currentUser && session?.user && session.user.id!==currentUser.id)){
+  currentUser=null;currentProfile=null;attempts=[];studentCourses=[];studentCourseMaterials=[];resolvedSession=null;joinedAttempt=null;studentResolveGeneration++;
+  window.dispatchEvent(new Event('rizsim:student-cleared'));
+  document.getElementById('studentApp').classList.remove('show');document.getElementById('authGate').classList.remove('hidden');
+ }
+});
+
 /* ============================================================
    START
    ============================================================ */
@@ -7813,6 +7858,7 @@ initialize();
 
 </script>
 
+<script src="rizsim-student-workspace.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>

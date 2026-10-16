@@ -39,6 +39,9 @@
       if (url.origin !== window.location.origin) return;
 
       const page = url.pathname.split("/").pop();
+      if(mode === "student" && page === "simulations.html"){
+        event.preventDefault();activatePortalView("resources");return;
+      }
       // Category selection belongs to the environment, never to the account.
       // A same-origin portal reload retains the Supabase session while allowing
       // its native category filter to pick up the selected category from URL.
@@ -140,6 +143,7 @@
       bindPortalNavigation(shadow);
       // Match the official Home icons inside the dashboard Shadow DOM.
       window.RizSimExperience?.decorateHome(shadow);
+      if(mode === "student") window.RizSimStudentWorkspace?.decorateHome(shadow);
 
       // If styles do not load, retain the original working dashboard Home.
       function awaitStylesheet(sheet) {

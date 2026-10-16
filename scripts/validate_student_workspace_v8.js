@@ -1,0 +1,15 @@
+const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm');
+const page=fs.readFileSync('access-in.html','utf8'),ui=fs.readFileSync('rizsim-student-workspace.js','utf8'),home=fs.readFileSync('rizsim-shared-home.js','utf8'),sql=fs.readFileSync('sql/student_workspace_v8.sql','utf8');
+const nav=page.slice(page.indexOf('id="mainNav"'),page.indexOf('</nav>',page.indexOf('id="mainNav"')));
+for(const view of ['simulations','account','learning'])assert(!nav.includes('data-student-view="'+view+'"'),view+' must not be a primary student tab');
+for(const view of ['home','player','practice','resources'])assert(nav.includes('data-student-view="'+view+'"'));
+assert(home.includes('if(mode === "student") window.RizSimStudentWorkspace?.decorateHome(shadow)'));
+assert(ui.includes("data-rz-student-history"));assert(ui.includes("practice_access_ends_at"));assert(ui.includes("statement_timestamp")===false);
+assert(ui.includes("new Intl.DateTimeFormat"));assert(ui.includes(".textContent="));
+assert(sql.includes('a.user_id=auth.uid()'));assert(sql.includes("status='submitted' or a.submitted_at is not null"));assert(sql.includes('from public,anon'));
+assert(!sql.includes('create table'));assert(!sql.includes('insert into public.simulation_attempts'));assert(!sql.includes('delete from'));
+assert(!ui.includes('localStorage'));assert(!ui.includes('service_role'));
+for(const file of ['rizsim-student-workspace.js','rizsim-shared-home.js'])new vm.Script(fs.readFileSync(file,'utf8'));
+const inline=page.match(/<script type="module">([\s\S]*?)<\/script>/)[1].replace(/import\s*\{[\s\S]*?\}\s*from\s*"https:[^;]+;/,'');
+new vm.Script(inline);
+console.log('PASS V8 navigation, same-client integration, syntax, identity and submission boundaries');
