@@ -43,6 +43,7 @@ def run(browser,url):
     base.check('Session metadata and buttons meet 4.5:1 contrast',len(values)>=9 and all(v['ratio']>=4.5 for v in values))
     shot(page,'session-access-contrast.png')
     page.locator('.classroom-created-card:visible [data-close-classroom-session]').click()
+    page.locator('#rzEndSessionConfirm').click()
     page.wait_for_function('__fixture.sessions.find(s=>s.session_id==="existing-1").active===false')
     page.wait_for_selector('#rzLiveSessionNotice:not([hidden])')
     base.check('Ending a session preserves its results',page.locator('#resultRows').is_visible())

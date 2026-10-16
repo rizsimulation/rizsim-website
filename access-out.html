@@ -9747,6 +9747,7 @@ aria-hidden="true"
 </span>
 
 </div>
+<script src="rizsim-session-confirmation.js"></script>
 <script type="module">
 
 import {
@@ -20888,7 +20889,9 @@ return;
 
 
 const confirmed =
-window.confirm(
+window.RizSimSessionConfirmation
+? await window.RizSimSessionConfirmation.ask(sessionId, true)
+: window.confirm(
 
 "End this Course classroom session?\n\n"
 +
@@ -20995,7 +20998,9 @@ return;
 }
 
 const confirmed =
-window.confirm(
+window.RizSimSessionConfirmation
+? await window.RizSimSessionConfirmation.ask(sessionId, false)
+: window.confirm(
 
 "End this classroom session? Student access will stop immediately. The session and student progress will remain available in RizSim history."
 
