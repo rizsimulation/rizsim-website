@@ -1,0 +1,93 @@
+name: Student Workspace V8 Integration
+on:
+  push:
+    branches: ['feat/student-workspace-v8-20261016']
+    paths: ['.v8-bootstrap/**','scripts/integrate_student_v8.py','scripts/repair_student_v8.py','.github/workflows/student-v8-integration.yml']
+permissions:
+  contents: write
+concurrency:
+  group: student-v8-integration
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: student_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify and integrate bounded student source
+        run: |
+          python scripts/integrate_student_v8.py
+          if test -f scripts/repair_student_v8.py; then python scripts/repair_student_v8.py; fi
+      - name: Student syntax and existing security boundaries
+        run: |
+          node scripts/validate_student_workspace_v8.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_premium_ui_v3.js
+          python scripts/validate_category_release.py
+          node scripts/test_resource_stream_v6.js
+      - name: Isolated PostgreSQL student access assertions
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d student_test -v ON_ERROR_STOP=1 -f scripts/sql/runtime_test_schema.sql -f sql/course_runtime_v6.sql -f scripts/sql/student_test_schema.sql -f sql/student_workspace_v8.sql -f scripts/sql/student_assertions.sql 2>&1 | tee test-results/v8-sql.txt
+      - name: Pinned isolated browser dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Actual portal with synthetic backend only
+        run: |
+          python scripts/test_student_workspace_v8.py
+          python scripts/test_live_classroom_v5.py
+          python scripts/test_live_classroom_v5_extended.py
+          python scripts/test_session_confirmation_v5.py
+          python scripts/test_course_environment_v6.py
+          python scripts/test_course_authoring_v7.py
+          python scripts/test_authoring_touch_v7.py
+      - name: Save tested source to the same development branch only
+        run: |
+          git add access-in.html rizsim-shared-home.js rizsim-student-workspace.js rizsim-student-workspace.css scripts/fixtures/student-workspace-backend.js scripts/test_student_workspace_v8.py scripts/validate_student_workspace_v8.js scripts/sql/student_test_schema.sql scripts/sql/student_assertions.sql sql/student_workspace_v8.sql docs/STUDENT_WORKSPACE_V8.md .github/workflows/student-workspace-v8.yml .github/workflows/student-workspace-v8-production.yml scripts/verify_student_workspace_release.py
+          git rm -r .v8-bootstrap scripts/integrate_student_v8.py .github/workflows/student-v8-integration.yml
+          if test -f scripts/repair_student_v8.py; then git rm scripts/repair_student_v8.py; fi
+          git config user.name 'RizSim verification'
+          git config user.email 'rizsimulation@users.noreply.github.com'
+          git commit -m 'feat(v8): save verified student navigation, Practice and learning history'
+          git push origin HEAD:refs/heads/feat/student-workspace-v8-20261016
+          git rev-parse HEAD > test-results/verified-revision.txt
+      - name: Package source for review
+        if: always()
+        run: tar --exclude=.git --exclude=.v8-bootstrap --exclude=test-results -czf /tmp/rizsim-v8-source.tar.gz .
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: student-v8-test-evidence
+          path: test-results/
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: student-v8-review-source
+          path: /tmp/rizsim-v8-source.tar.gz
+          retention-days: 3
