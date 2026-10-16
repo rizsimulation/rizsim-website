@@ -7,6 +7,7 @@ on:
       - "access-out.html"
       - "rizsim-live-classroom*"
       - "rizsim-faculty-workspaces*"
+      - "rizsim-session-confirmation.js"
       - "rizsim-qr.js"
       - "scripts/**"
       - ".github/workflows/live-classroom-v5.yml"
@@ -33,6 +34,7 @@ jobs:
       - name: Validate exact committed assets and established regressions
         run: |
           echo 'c75d70a0e18c3609c5428d17d744121023073cf3f480e3194ed93a354756496d  rizsim-qr.js' | sha256sum --check
+          node --check rizsim-session-confirmation.js
           node scripts/validate_live_classroom_v5.js
           node scripts/validate_faculty_workspaces.js
           node scripts/validate_session_continuity.js
@@ -46,6 +48,7 @@ jobs:
         run: |
           python scripts/test_live_classroom_v5.py
           python scripts/test_live_classroom_v5_extended.py
+          python scripts/test_session_confirmation_v5.py
           git diff --exit-code
           git rev-parse HEAD > test-results/verified-revision.txt
       - name: Package exact revision for review
