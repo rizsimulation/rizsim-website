@@ -20,6 +20,7 @@ function empty(el,message){el.replaceChildren(node("div","rz-workspace-empty",me
 function selectedAllowed(){return $("view-records")?.classList.contains("active");}
 function gotoClassroom(){document.querySelector('#mainNav [data-auth-view="classroom"]')?.click();}
 function mountPlayerResults(){
+ if($("rzLiveChoices"))return; // V5 exclusively owns session results panel placement.
  const snap=snapshot();if(!snap||!["faculty","course_lead","owner"].includes(snap.role)||resultsMounted)return;
  const from=$("view-results")?.querySelector(".content-shell");
  const player=$("rzLiveResultsAnchor")||$("view-classroom")?.querySelector(".content-shell");
@@ -33,6 +34,7 @@ function mountPlayerResults(){
  resultsMounted=true;
 }
 function player(){
+ if($("rzLiveChoices")){window.RizSimLiveClassroom?.draw();return;}
  const snap=snapshot();if(!snap)return;
  mountPlayerResults();
  const grid=$("rzLicensedSimGrid"),count=$("rzLicensedCount");
@@ -186,6 +188,8 @@ function init(){
    zone.addEventListener("dragleave",()=>zone.classList.remove("is-over"));
    zone.addEventListener("drop",e=>{
     e.preventDefault();zone.classList.remove("is-over");
+    const snap=snapshot();const selected=snap?.courses?.find(c=>str(c.course_id)===str(snap.selectedCourseId));
+    if(snap?.role!=="course_lead"||selected?.active!==true)return;
     const files=e.dataTransfer?.files;if(!files?.length)return;
     try{const transfer=new DataTransfer();transfer.items.add(files[0]);file.files=transfer.files;
       const title=$("courseMaterialFileTitle");
@@ -200,5 +204,11 @@ function init(){
 }
 function render(){const snap=snapshot();if(!snap)return;init();if($("view-classroom")?.classList.contains("active"))player();if($("view-materials")?.classList.contains("active"))material();if(selectedAllowed())renderRecords();}
 window.RizSimFacultyWorkspace={render};
-document.addEventListener("DOMContentLoaded",()=>{let count=0;function ready(){if(snapshot()){init();render();return;}if(++count<60)setTimeout(ready,220);}ready();});
+document.addEventListener("DOMContentLoaded",()=>{
+ init();
+ const observer=new MutationObserver(()=>render());
+ for(const id of ["resultRows","classroomSessionRows"]){const n=$(id);if(n)observer.observe(n,{childList:true});}
+ const view=$("view-records");if(view)observer.observe(view,{attributes:true,attributeFilter:["class"]});
+ render();
+});
 })();
