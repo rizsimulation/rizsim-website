@@ -11,9 +11,9 @@ if 'V5 contrast regression fix' not in s:
 .rz-live-running .classroom-session-meta strong{color:#143d4b;font-size:.82rem;line-height:1.5}
 .rz-live-running .classroom-created-actions .small-action{color:#164653;background:#fff;border-color:#adc8c8;font-size:.76rem;min-height:36px}
 .rz-live-running .classroom-created-actions .small-action:hover{background:#dcefe9;color:#123e4c}
-.rz-live-running .classroom-created-actions .classroom-end-button{color:#872e22;background:#fde7e1;border-color:#d1a398}
-.rz-live-running .classroom-created-actions .classroom-end-button:hover{background:#f6d5cb;color:#6d211a}
-.rz-live-running .management-primary-button,.rz-live-running .rz-action{background:linear-gradient(115deg,#0a7277,#0a5d70);color:#fff}
+.rz-live-running .classroom-created-actions .classroom-end-button{color:#872e22!important;background:#fde7e1!important;border-color:#d1a398!important}
+.rz-live-running .classroom-created-actions .classroom-end-button:hover{background:#f6d5cb!important;color:#6d211a!important}
+.rz-live-setup .management-action,.rz-live-running .management-action,.rz-live-running .rz-action{background:#0a7277;background-image:linear-gradient(115deg,#0a7277,#0a5d70);color:#fff}
 .rz-v5-results-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:12px}
 .rz-v5-results-heading h3{margin:0;color:#174754;font-size:1.1rem}
 .rz-v5-results-heading .rz-action-secondary{font-size:.79rem;white-space:nowrap}
