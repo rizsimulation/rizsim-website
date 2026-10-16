@@ -35,10 +35,12 @@ jobs:
           mkdir -p /tmp/rizsim-qr-source
           cd /tmp/rizsim-qr-source
           npm pack --ignore-scripts qrcode-generator@1.4.4
+          echo 'ab6ed47d378877441deae95972e07b2716c26545a735a23aa6b9d442b33026ed  qrcode-generator-1.4.4.tgz' | sha256sum --check
           sha256sum qrcode-generator-1.4.4.tgz > qr-source-sha256.txt
           tar -xzf qrcode-generator-1.4.4.tgz
           cd "$GITHUB_WORKSPACE"
           python scripts/integrate_live_classroom_v5.py /tmp/rizsim-qr-source/package/qrcode.js
+          python scripts/refine_live_classroom_v5.py
       - name: Static and established regression gates
         run: |
           node scripts/validate_live_classroom_v5.js
@@ -52,7 +54,9 @@ jobs:
           python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
           python -m playwright install --with-deps chromium
       - name: Browser acceptance with synthetic backend only
-        run: python scripts/test_live_classroom_v5.py
+        run: |
+          python scripts/test_live_classroom_v5.py
+          python scripts/test_live_classroom_v5_extended.py
       - name: Save verified generated assets to the same development branch only
         if: github.event_name == 'push' && github.ref == 'refs/heads/feat/live-classroom-compact-v5-20261015'
         run: |
@@ -60,11 +64,11 @@ jobs:
           branch='feat/live-classroom-compact-v5-20261015'
           remote_head=$(git ls-remote origin "refs/heads/$branch" | cut -f1)
           test "$remote_head" = "$GITHUB_SHA" || { echo 'Branch advanced; refusing to overwrite concurrent work.'; exit 1; }
-          git add -- access-out.html rizsim-faculty-workspaces.js scripts/validate_faculty_workspaces.js rizsim-qr.js
+          git add -- access-out.html rizsim-faculty-workspaces.js scripts/validate_faculty_workspaces.js rizsim-qr.js rizsim-live-classroom.css rizsim-live-classroom.js
           if ! git diff --cached --quiet; then
             git config user.name 'RizSim verification'
             git config user.email 'rizsimulation@users.noreply.github.com'
-            git commit -m 'build(v5): save browser-verified legacy integration and local QR asset'
+            git commit -m 'build(v5): save browser-verified compact classroom and contrast fixes'
             git push origin "HEAD:refs/heads/$branch"
           fi
           git rev-parse HEAD > test-results/verified-revision.txt
