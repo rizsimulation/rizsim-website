@@ -1,0 +1,1162 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="RizSim — interactive simulation-based learning that moves learners from knowing to doing."
+  >
+
+  <meta
+    name="theme-color"
+    content="#9fc9c6"
+  >
+
+  <title>
+    RizSim — From Knowing to Doing
+  </title>
+
+  <link
+    rel="icon"
+    href="rizsim-r.png"
+    type="image/png"
+  >
+
+
+  <!-- ========================================================
+       PRE-PAINT SPLASH GUARD
+
+       This runs BEFORE the page is rendered.
+
+       If the splash has already been shown during this
+       browser session, Home loads directly with no splash
+       flash or replay.
+  ========================================================= -->
+
+  <script>
+
+    (function () {
+
+      try {
+
+        if (
+          sessionStorage.getItem(
+            "rizsimSplashSeen"
+          ) === "true"
+        ) {
+
+          document.documentElement
+            .classList.add(
+              "rizsim-splash-seen"
+            );
+
+        }
+
+      } catch (error) {
+
+        /* Continue normally */
+
+      }
+
+    })();
+
+  </script>
+
+
+  <style>
+
+    /*
+       Prevent the splash from being painted at all
+       when it has already been viewed this session.
+    */
+
+    html.rizsim-splash-seen
+    .splash-screen {
+      display: none !important;
+    }
+
+  </style>
+
+
+  <link
+    rel="stylesheet"
+    href="site.css"
+  >
+
+
+<style id="rizsim-brand-promise-home">
+/* Scoped Home-page design. Existing splash, nav, palette, transitions and footer remain intact. */
+.bp-home{--bp-ink:#061827;--bp-teal:#18b8b0;--bp-muted:#617680;overflow:hidden;color:var(--bp-ink)}
+.bp-home section{position:relative}
+.bp-eyebrow{display:inline-flex;align-items:center;gap:11px;color:#087f86;font-size:.75rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase}
+.bp-eyebrow:before{content:"";display:block;width:29px;height:2px;background:linear-gradient(90deg,#18b8b0,#efc15b);border-radius:3px}
+.bp-heading{max-width:770px;margin-bottom:34px}
+.bp-heading h2{font-size:clamp(2.2rem,4.3vw,3.6rem);line-height:1.1;letter-spacing:-.052em;margin:16px 0 10px}
+.bp-heading h2 em{font-style:normal;color:#0b9d9a}
+.bp-heading p{max-width:640px;color:var(--bp-muted);line-height:1.75;font-size:1rem;margin:0}
+.bp-heading-center{text-align:center;margin-inline:auto}
+.bp-heading-center .bp-eyebrow{justify-content:center}
+.bp-heading-center p{margin-inline:auto}
+.bp-heading-split{max-width:none;display:flex;align-items:end;justify-content:space-between;gap:30px}
+.bp-heading-split>div{max-width:730px}
+.bp-heading-split>p{max-width:350px;margin-bottom:7px}
+.bp-hero{padding:93px 0 88px;background:radial-gradient(circle at 84% 15%,rgba(24,184,176,.13),transparent 32%),radial-gradient(circle at 4% 80%,rgba(239,193,91,.11),transparent 27%),#fff;border-bottom:1px solid #e3eded}
+.bp-hero-layout{display:grid;grid-template-columns:1fr 1.06fr;gap:clamp(30px,5vw,82px);align-items:center}
+.bp-hero-copy h1{font-size:clamp(3.8rem,6.3vw,6.3rem);font-weight:860;letter-spacing:-.075em;line-height:.98;margin:25px 0 21px}
+.bp-hero-copy h1 span{display:block;color:#18b8b0}
+.bp-hero-copy>p{font-size:1.15rem;color:#516d78;line-height:1.8;max-width:530px;margin:0 0 29px}
+.bp-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bp-proof{display:flex;flex-wrap:wrap;gap:9px;margin-top:28px}
+.bp-proof span{display:inline-flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid #d9ecea;border-radius:50px;background:#f7fcfb;color:#486873;font-size:.75rem;font-weight:780}
+.bp-proof span:before{content:"";width:6px;height:6px;background:#18b8b0;border-radius:50%}
+.bp-visual{height:475px;min-width:0;position:relative;isolation:isolate;background:linear-gradient(145deg,#041723,#0a3b48 72%,#08646c);border-radius:31px;overflow:hidden;box-shadow:0 27px 65px rgba(3,38,52,.22)}
+.bp-visual:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 47%,rgba(44,231,205,.17),transparent 42%);z-index:-1}
+.bp-visual-kicker{position:absolute;left:29px;top:29px;color:#ace7df;letter-spacing:.16em;font-size:.69rem;font-weight:860}
+.bp-visual-rings{position:absolute;left:50%;top:46%;width:460px;height:460px;transform:translate(-50%,-50%);border:1px solid rgba(101,228,207,.19);border-radius:50%;box-shadow:0 0 0 56px rgba(86,215,202,.038),inset 0 0 0 58px rgba(25,194,174,.045)}
+.bp-visual-rings:after{content:"";position:absolute;inset:73px;border:1px dashed rgba(128,237,222,.33);border-radius:50%}
+.bp-visual-core{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;justify-content:center;align-items:center;width:179px;height:179px;border-radius:50%;background:radial-gradient(circle,#166d70,#052936 72%);border:1px solid rgba(108,239,217,.37);box-shadow:0 0 0 13px rgba(47,190,173,.07),0 0 38px rgba(54,226,204,.13)}
+.bp-visual-core img{height:80px;width:80px;object-fit:contain}
+.bp-visual-core small{color:#dcf9f4;letter-spacing:.13em;font-size:.64rem;font-weight:900}
+.bp-visual-node{position:absolute;padding:15px 16px;width:146px;border-radius:17px;background:rgba(7,49,60,.88);color:white;border:1px solid rgba(130,235,214,.28);box-shadow:0 16px 36px rgba(0,0,0,.16);display:flex;flex-direction:column;gap:4px}
+.bp-visual-node span{font-size:.64rem;letter-spacing:.13em;font-weight:850;color:#86eddf}
+.bp-visual-node strong{font-size:1.02rem;letter-spacing:-.025em}
+.bp-node-a{top:116px;left:5%;transform:rotate(-4deg)}
+.bp-node-b{top:116px;right:5%;transform:rotate(4deg)}
+.bp-node-c{bottom:73px;left:50%;transform:translateX(-50%) rotate(-2deg);border-color:rgba(239,193,91,.5)}
+.bp-visual-caption{position:absolute;left:20px;right:20px;bottom:25px;text-align:center;color:#c9eae7;font-size:.8rem}
+.bp-questions{padding:91px 0 85px;background:#f8fbfb}
+.bp-question-flow{display:grid;grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);gap:15px;align-items:stretch}
+.bp-question-card{min-height:204px;border:1px solid #dfebec;border-radius:24px;background:#fff;padding:31px 34px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 15px 34px rgba(6,29,38,.05)}
+.bp-question-card>span{font-size:.72rem;letter-spacing:.14em;font-weight:800;color:#138d8b}
+.bp-question-card h3{margin:27px 0 0;font-size:clamp(1.4rem,2.7vw,2.15rem);line-height:1.3;letter-spacing:-.045em}
+.bp-question-dark{background:linear-gradient(140deg,#041c29,#0c4d58);border-color:transparent;color:#fff}
+.bp-question-dark>span{color:#7ae9db}
+.bp-question-arrow{display:grid;place-items:center;font-size:2rem;font-weight:900;color:#078d8e}
+.bp-question-arrow:before{content:"";width:58px;height:58px;border-radius:50%;background:#e2f7f2;border:1px solid #b2e9df;position:absolute;z-index:0;box-shadow:0 10px 25px rgba(13,136,135,.08)}
+.bp-question-arrow{isolation:isolate}.bp-question-arrow:before{z-index:-1}
+.bp-journey{padding:97px 0 105px;background:#fff}
+.bp-steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
+.bp-step{position:relative;min-height:225px;border-radius:20px;padding:23px 16px;background:linear-gradient(180deg,#fff,#f7fcfb);border:1px solid #dbece9;box-shadow:0 9px 25px rgba(5,38,48,.045);transition:transform .2s ease,box-shadow .2s ease}
+.bp-step:hover{transform:translateY(-5px);box-shadow:0 15px 30px rgba(5,38,48,.095)}
+.bp-step:not(:last-child):after{content:"→";position:absolute;right:-19px;top:39%;color:#0fa49c;font-size:1.4rem;font-weight:900;z-index:2}
+.bp-step-num{display:grid;place-items:center;width:45px;height:45px;border-radius:14px;background:#e5f7f3;color:#078987;font-size:1.01rem;font-weight:900;margin-bottom:23px}
+.bp-step h3{font-size:1.03rem;letter-spacing:-.025em;margin:0 0 7px}
+.bp-step p{color:#657d86;font-size:.82rem;line-height:1.65;margin:0}
+.bp-step:last-child{background:linear-gradient(145deg,#08646c,#052e43);border-color:transparent;color:#fff}
+.bp-step:last-child .bp-step-num{background:rgba(255,255,255,.18);color:#fff}
+.bp-step:last-child p{color:#d4efeb}
+.bp-difference{padding:94px 0 96px;background:radial-gradient(circle at 9% 10%,rgba(24,184,176,.075),transparent 28%),#f4f9fa;border-top:1px solid #e5edee;border-bottom:1px solid #e5edee}
+.bp-compare{display:grid;grid-template-columns:.88fr 1.12fr;gap:23px}
+.bp-compare-card{border:1px solid #dfe9ec;border-radius:25px;background:#fff;padding:31px;box-shadow:0 14px 28px rgba(5,39,45,.045)}
+.bp-compare-card h3{display:flex;align-items:center;gap:11px;font-size:1.05rem;margin:0 0 24px}
+.bp-dot{display:block;width:10px;height:10px;border-radius:50%;background:#b8c5ca}
+.bp-flow{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.bp-flow span{font-size:.78rem;white-space:nowrap;padding:10px 12px;border:1px solid #e5eced;background:#f7f9fa;border-radius:10px;color:#50636c;font-weight:820}
+.bp-flow b{color:#92a6ae}
+.bp-compare-card p{margin:22px 0 0;font-size:.88rem;color:#657b86}
+.bp-compare-rizsim{background:linear-gradient(135deg,#061d2a,#0c5961);border-color:transparent;color:#fff;box-shadow:0 24px 44px rgba(4,44,52,.17)}
+.bp-compare-rizsim .bp-dot{background:#6debd8}
+.bp-compare-rizsim .bp-flow span{background:rgba(255,255,255,.12);border-color:rgba(138,234,222,.3);color:#fff}
+.bp-compare-rizsim .bp-flow b{color:#86e9dc}
+.bp-compare-rizsim p{color:#c9e9e5}
+.bp-scenarios{padding:99px 0 80px;background:#fff}
+.bp-scenario-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.bp-scenario{min-height:213px;position:relative;overflow:hidden;background:#fff;border:1px solid #e1e9ed;border-radius:20px;padding:26px 22px;box-shadow:0 11px 23px rgba(6,34,45,.045)}
+.bp-scenario:after{content:"";position:absolute;right:-45px;top:-40px;width:120px;height:120px;border-radius:50%;border:1px solid rgba(24,184,176,.16);box-shadow:0 0 0 28px rgba(24,184,176,.03)}
+.bp-scenario:nth-child(even){background:#f7fcfb}
+.bp-scenario-index{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#e3f6f2;color:#087e85;font-weight:900;font-size:.79rem;margin-bottom:31px}
+.bp-scenario h3{margin:0 0 8px;font-size:1.03rem}
+.bp-scenario p{font-size:.87rem;line-height:1.66;color:#637b83;margin:0}
+.bp-audience{padding:0 0 89px;background:#fff}
+.bp-audience-shell{padding:37px 41px;background:linear-gradient(140deg,#f4fbfa,#fff);border:1px solid #e3efee;border-radius:27px}
+.bp-audience-shell .bp-heading{margin-bottom:26px}
+.bp-audience-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.bp-audience-chip{display:flex;align-items:center;gap:11px;padding:15px 12px;background:#fff;border:1px solid #e1edec;border-radius:14px;font-size:.85rem;font-weight:790;color:#2c4b54}
+.bp-audience-chip span{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:11px;background:#e7f7f3;color:#0a8387;font-size:.77rem;font-weight:900}
+.bp-last{padding:0 0 102px;background:#fff}
+.bp-last-shell{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:30px;background:linear-gradient(122deg,#061827,#073847 68%,#075e68);border-radius:31px;padding:51px clamp(28px,5vw,64px);box-shadow:0 24px 50px rgba(4,31,43,.16);color:#fff}
+.bp-last-shell:after{content:"";position:absolute;right:-110px;top:-165px;width:390px;height:390px;border:1px solid rgba(120,238,221,.28);border-radius:50%;box-shadow:0 0 0 60px rgba(107,235,215,.05)}
+.bp-last-shell>div{z-index:1}
+.bp-last .bp-eyebrow{color:#85eadb}
+.bp-last h2{font-size:clamp(2.2rem,4.8vw,4rem);letter-spacing:-.054em;margin:15px 0 8px;line-height:1.12}
+.bp-last p{margin:0;color:#cee6e7}
+.bp-last-actions{display:flex;flex-direction:column;gap:10px;min-width:190px}
+.bp-last-actions .button{justify-content:center;white-space:nowrap;text-align:center}
+.bp-last-actions .button-secondary{color:#fff;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.31)}
+.bp-last-actions .button-secondary:hover{background:rgba(255,255,255,.19);color:#fff}
+@media(max-width:1120px){.bp-steps{grid-template-columns:repeat(3,1fr);gap:21px}.bp-step:nth-child(3):after{display:none}.bp-scenario-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:870px){.bp-hero-layout{grid-template-columns:1fr}.bp-hero{padding:64px 0}.bp-hero-copy h1{font-size:clamp(3.4rem,10vw,5.7rem)}.bp-visual{height:390px}.bp-heading-split{display:block}.bp-heading-split>p{max-width:650px}.bp-questions,.bp-journey,.bp-difference,.bp-scenarios{padding:72px 0}.bp-compare{grid-template-columns:1fr}.bp-audience-grid{grid-template-columns:repeat(2,1fr)}.bp-last-shell{display:block}.bp-last-actions{flex-direction:row;flex-wrap:wrap;margin-top:25px}}
+@media(max-width:570px){.bp-hero-copy h1{font-size:clamp(3.05rem,12vw,4.5rem)}.bp-hero-copy>p{font-size:1rem}.bp-actions .button{width:100%;justify-content:center}.bp-visual{height:355px;border-radius:23px}.bp-visual-kicker{top:21px;left:20px}.bp-visual-core{width:141px;height:141px}.bp-visual-core img{width:62px;height:62px}.bp-visual-node{width:112px;padding:11px;border-radius:13px}.bp-visual-node strong{font-size:.9rem}.bp-node-a{top:88px;left:2%}.bp-node-b{top:88px;right:2%}.bp-node-c{bottom:50px}.bp-visual-caption{bottom:15px;font-size:.72rem}.bp-heading h2{font-size:clamp(2rem,9vw,2.9rem)}.bp-question-flow{grid-template-columns:1fr;gap:0}.bp-question-card{min-height:165px;padding:26px}.bp-question-card h3{margin-top:15px}.bp-question-arrow{height:55px}.bp-question-arrow:before{width:48px;height:48px}.bp-question-arrow{transform:rotate(90deg)}.bp-steps{grid-template-columns:1fr;gap:28px}.bp-step{min-height:auto;padding:24px}.bp-step:not(:last-child):after,.bp-step:nth-child(3):after{display:block;content:"↓";right:auto;left:50%;top:auto;bottom:-29px;transform:translateX(-50%)}.bp-scenario-grid{grid-template-columns:1fr;gap:13px}.bp-scenario{min-height:162px}.bp-scenario-index{margin-bottom:17px}.bp-audience-shell{padding:27px 22px}.bp-audience-grid{grid-template-columns:1fr}.bp-last{padding-bottom:68px}.bp-last-shell{padding:34px 25px}.bp-last-actions{flex-direction:column}.bp-last-actions .button{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.bp-step{transition:none}}
+</style>
+
+<style id="rizsim-home-v2-premium">
+/* Home V2; scoped only to the brand-promise Home content. All approved global site features remain intact. */
+.bp-home{--premium-navy:#061827;--premium-petrol:#104858;--premium-teal:#18b8b0;--premium-gold:#e9c56b;--premium-mist:#edf6f7;color:#0c2938;background:#fff}
+.bp-home .bp-eyebrow{font-weight:900;font-size:.7rem;letter-spacing:.16em;color:#087f87}
+.bp-home .bp-eyebrow:before{background:linear-gradient(90deg,#087f87,#e9c56b);height:3px}
+.bp-home .bp-heading h2{line-height:1.08;font-weight:850;letter-spacing:-.055em}
+.bp-home .bp-heading h2 em{color:#057f88}
+.bp-home .bp-heading p{color:#516f7b}
+/* Gallery-style two-column hero, with a softly textured pearl backdrop and richly lit orbit. */
+.bp-home .bp-hero{padding:103px 0 111px;border-bottom:1px solid #cee1e4;background:
+ radial-gradient(ellipse at 89% 2%,rgba(71,171,175,.25),transparent 36%),
+ radial-gradient(ellipse at 2% 94%,rgba(232,196,119,.15),transparent 32%),
+ repeating-linear-gradient(0deg,rgba(15,91,111,.024) 0 1px,transparent 1px 39px),
+ repeating-linear-gradient(90deg,rgba(15,91,111,.018) 0 1px,transparent 1px 39px),
+ linear-gradient(125deg,#fffefc,#f0f7f8 69%,#e9f4f4)}
+.bp-home .bp-hero-copy .bp-eyebrow{background:#fff;border:1px solid #badbdf;border-radius:99px;padding:10px 14px;box-shadow:0 8px 19px rgba(6,70,86,.065)}
+.bp-home .bp-hero-copy h1{font-weight:900;letter-spacing:-.078em;line-height:1.01}
+.bp-home .bp-hero-copy h1 span{background:linear-gradient(96deg,#076e80,#10b3ac 53%,#066b83);background-clip:text;-webkit-background-clip:text;color:transparent}
+.bp-home .bp-hero-copy>p{color:#355868;line-height:1.82;font-size:1.15rem}
+.bp-home .bp-proof span{background:#fff;border:1px solid #b8d9dc;box-shadow:0 8px 19px rgba(9,65,74,.08);padding:9px 14px;font-weight:850;color:#26505d}
+.bp-home .bp-proof span:nth-child(2){background:#e0f5ed}
+.bp-home .bp-proof span:nth-child(3){background:#fff4df;border-color:#e8d09b}
+.bp-home .bp-proof span:nth-child(3):before{background:#bd963d}
+.bp-home .bp-proof span:nth-child(4){background:#eaf2fc;border-color:#c8d9ea}
+.bp-home .bp-proof span:nth-child(4):before{background:#6684ad}
+.bp-home .bp-visual{height:490px;border-radius:34px;border:1px solid rgba(238,207,134,.43);background:
+ radial-gradient(ellipse at 15% 0%,rgba(98,234,201,.24),transparent 43%),
+ radial-gradient(ellipse at 93% 100%,rgba(239,192,106,.21),transparent 37%),
+ linear-gradient(142deg,#07182b,#0b3248 51%,#0b5867);
+ box-shadow:0 33px 76px rgba(3,40,55,.27),inset 0 0 0 1px rgba(255,255,255,.07)}
+.bp-home .bp-visual:after{content:"";position:absolute;inset:12px;border:1px solid rgba(233,196,114,.16);border-radius:26px;pointer-events:none}
+.bp-home .bp-visual-rings{border-color:rgba(239,208,128,.3);box-shadow:0 0 0 58px rgba(72,213,191,.035),inset 0 0 0 56px rgba(68,222,204,.038)}
+.bp-home .bp-visual-rings:after{border-color:rgba(113,227,210,.4)}
+.bp-home .bp-visual-kicker{z-index:2;color:#e8f8f3;font-size:.67rem}
+.bp-home .bp-visual-signal{display:inline-block;width:8px;height:8px;background:#e9c56b;border-radius:50%;margin-right:5px;box-shadow:0 0 0 5px rgba(233,197,107,.12)}
+.bp-home .bp-visual-core{border-color:rgba(239,204,124,.7);background:radial-gradient(circle at 36% 20%,#237987,#07384b 60%,#052538);box-shadow:0 0 0 13px rgba(239,208,136,.075),0 0 0 30px rgba(49,215,195,.035),0 12px 39px rgba(0,0,0,.24)}
+.bp-home .bp-visual-core small{color:#ffedc5}
+.bp-home .bp-visual-node{z-index:1;width:152px;padding:16px 17px;border-radius:17px;box-shadow:0 16px 34px rgba(0,0,0,.24);font-weight:800}
+.bp-home .bp-node-a{background:linear-gradient(145deg,#fffefa,#f5e7c4);border:1px solid #e6bf70;color:#123540}
+.bp-home .bp-node-a span{color:#8e6b2f}
+.bp-home .bp-node-b{background:linear-gradient(140deg,#f1fffb,#9ce4d5);border:1px solid #76d9c5;color:#0b3948}
+.bp-home .bp-node-b span{color:#086f77}
+.bp-home .bp-node-c{background:linear-gradient(145deg,#116c8a,#094157);border:1px solid #78d8dd;color:#fff}
+.bp-home .bp-node-c span{color:#ffdf8c}
+.bp-home .bp-visual-caption{color:#d9efea;letter-spacing:.02em;font-weight:740}
+.bp-home .bp-visual-caption span{color:#f1cc76;margin-right:6px}
+/* Dark contrast section: the two cards cannot blend into their container. */
+.bp-home .bp-questions{padding:105px 0 100px;border-color:#143f4c;background:
+ radial-gradient(ellipse at 85% 11%,rgba(59,200,184,.18),transparent 38%),
+ repeating-linear-gradient(120deg,rgba(148,230,214,.025) 0 1px,transparent 1px 34px),
+ linear-gradient(130deg,#061a29,#0c3849 69%,#10515a)}
+.bp-home .bp-questions .bp-eyebrow{color:#b3ecdf}
+.bp-home .bp-questions .bp-heading h2{color:#fff}
+.bp-home .bp-questions .bp-heading h2 em{color:#f1d38c}
+.bp-home .bp-questions .bp-heading p{color:#d0e4e4}
+.bp-home .bp-question-card{min-height:248px;padding:35px 36px;border-radius:25px;border:1px solid #e8d7ae;background:linear-gradient(145deg,#fffefa,#f2f0e7);box-shadow:0 22px 51px rgba(0,14,22,.24)}
+.bp-home .bp-question-card>span{color:#92763d}
+.bp-home .bp-question-card h3{font-size:clamp(1.55rem,2.8vw,2.3rem);color:#0e3441}
+.bp-home .bp-question-dark{border:1px solid #63cbc2;color:#fff;background:linear-gradient(143deg,#126b82,#0b5061 70%,#083c4e);box-shadow:0 22px 51px rgba(0,12,23,.28)}
+.bp-home .bp-question-dark>span{color:#b1f2e8}
+.bp-home .bp-question-dark h3{color:#fff}
+.bp-home .bp-question-arrow{color:#fff5d4}
+.bp-home .bp-question-arrow:before{background:linear-gradient(140deg,#e9ce87,#cba954);border:1px solid #f7e6ac;box-shadow:0 12px 28px rgba(1,16,24,.24)}
+/* Journey: 3x2 editorial staircase, alternate shades, gold accents and a connecting ribbon. */
+.bp-home .bp-journey{padding:105px 0 113px;background:
+ radial-gradient(ellipse at 90% 8%,rgba(234,195,109,.16),transparent 33%),
+ repeating-linear-gradient(90deg,rgba(10,99,112,.024) 0 1px,transparent 1px 45px),
+ linear-gradient(145deg,#f9fcfc,#e9f4f5)}
+.bp-home .bp-journey-track{display:flex;align-items:center;justify-content:space-around;position:relative;isolation:isolate;margin:-1px 0 22px}
+.bp-home .bp-journey-track:before{content:"";position:absolute;top:50%;left:13%;right:13%;height:1px;background:linear-gradient(90deg,#c9a657,#0ea89f,#4385a3);z-index:-1}
+.bp-home .bp-journey-track span{padding:8px 16px;border-radius:60px;background:#edf8f7;border:1px solid #bcdcdf;color:#306478;font-size:.65rem;font-weight:900;letter-spacing:.14em;box-shadow:0 5px 14px rgba(6,66,84,.09)}
+.bp-home .bp-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:27px 27px}
+.bp-home .bp-step{min-height:205px;padding:29px;border-radius:22px;border:1px solid #bfd9df;background:linear-gradient(145deg,#fff,#eaf4f6);box-shadow:0 18px 34px rgba(8,62,82,.12);transition:transform .22s ease,box-shadow .22s ease}
+.bp-home .bp-step:before{content:"";position:absolute;left:26px;right:26px;top:-1px;height:4px;background:#21b5b0;border-radius:0 0 8px 8px}
+.bp-home .bp-step:nth-child(2){background:linear-gradient(145deg,#fffcf4,#f6eacb);border-color:#dcc897;transform:translateY(13px)}
+.bp-home .bp-step:nth-child(2):before{background:#d0a84f}
+.bp-home .bp-step:nth-child(3){background:linear-gradient(145deg,#103952,#0a5a6d);border-color:#3b8792;color:#fff;box-shadow:0 18px 38px rgba(2,42,59,.25)}
+.bp-home .bp-step:nth-child(3):before{background:#e9c56b}
+.bp-home .bp-step:nth-child(4){background:linear-gradient(145deg,#e8f9f2,#b7e4d6);border-color:#91cfbf}
+.bp-home .bp-step:nth-child(5){background:linear-gradient(145deg,#fbfcff,#dbe8f5);border-color:#adc9de;transform:translateY(13px)}
+.bp-home .bp-step:nth-child(5):before{background:#6591b6}
+.bp-home .bp-step:nth-child(6){background:linear-gradient(145deg,#073146,#086c76);border-color:#348b91;color:#fff;box-shadow:0 19px 38px rgba(2,46,63,.24)}
+.bp-home .bp-step:nth-child(6):before{background:#e9c56b}
+.bp-home .bp-step h3{font-size:1.27rem;letter-spacing:-.035em}
+.bp-home .bp-step p{font-size:.9rem;color:#526f7c;max-width:235px}
+.bp-home .bp-step:nth-child(3) p,.bp-home .bp-step:nth-child(6) p{color:#d7efec}
+.bp-home .bp-step-num{width:49px;height:49px;background:#fff;border:1px solid #c6e4e1;color:#087985;box-shadow:0 8px 17px rgba(5,66,80,.1)}
+.bp-home .bp-step:nth-child(2) .bp-step-num{color:#916b28;background:#fff7e5;border-color:#e8ca82}
+.bp-home .bp-step:nth-child(3) .bp-step-num,.bp-home .bp-step:nth-child(6) .bp-step-num{color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.32)}
+.bp-home .bp-step:nth-child(5) .bp-step-num{color:#517da6;background:#f6faff}
+.bp-home .bp-step:not(:last-child):after{right:-27px;top:38%;color:#147d86;font-weight:900;text-shadow:0 1px #fff}
+.bp-home .bp-step:nth-child(3):after{content:"↙";right:47%;top:auto;bottom:-35px;font-size:1.8rem;color:#b18d46}
+.bp-home .bp-step:hover{transform:translateY(-4px);box-shadow:0 25px 40px rgba(7,64,85,.18)}
+.bp-home .bp-step:nth-child(2):hover,.bp-home .bp-step:nth-child(5):hover{transform:translateY(6px)}
+/* Two clearly distinct editorial lanes. */
+.bp-home .bp-difference{padding:103px 0;background:
+ radial-gradient(ellipse at 0% 0%,rgba(217,185,113,.14),transparent 31%),
+ repeating-linear-gradient(115deg,rgba(10,95,106,.018) 0 1px,transparent 1px 43px),
+ linear-gradient(155deg,#fffefa,#f4f8fa)}
+.bp-home .bp-compare{grid-template-columns:1fr 1fr;gap:25px}
+.bp-home .bp-compare-card{padding:37px 32px 34px;border:1px solid #dccfac;border-radius:26px;background:linear-gradient(145deg,#fdfaf3,#f2eee4);box-shadow:0 20px 44px rgba(8,52,70,.12)}
+.bp-home .bp-compare-card h3{font-size:1.2rem;padding-bottom:17px;border-bottom:1px solid #ded2b9}
+.bp-home .bp-compare-card .bp-dot{background:#c09b5b;box-shadow:0 0 0 5px rgba(197,160,95,.14)}
+.bp-home .bp-flow{gap:8px}
+.bp-home .bp-flow span{background:#fff;min-height:49px;display:flex;align-items:center;justify-content:center;text-align:center;padding:11px;border-color:#dfd6c7;border-radius:11px;color:#4b5964;font-size:.83rem;font-weight:850;white-space:normal}
+.bp-home .bp-compare-card p{color:#5d6b74;font-size:.93rem}
+.bp-home .bp-compare-rizsim{border:1px solid #4ab7ad;background:radial-gradient(circle at 95% 0%,rgba(127,229,211,.23),transparent 40%),linear-gradient(145deg,#061e32,#0a4a62 68%,#0f6570);box-shadow:0 25px 51px rgba(3,43,58,.23)}
+.bp-home .bp-compare-rizsim h3{border-bottom-color:rgba(159,227,220,.3)}
+.bp-home .bp-compare-rizsim .bp-dot{background:#f1d082;box-shadow:0 0 0 5px rgba(238,203,126,.16)}
+.bp-home .bp-compare-rizsim .bp-flow span{background:rgba(255,255,255,.13);border-color:rgba(145,225,218,.38);color:#fff}
+.bp-home .bp-compare-rizsim .bp-flow span:nth-of-type(3),.bp-home .bp-compare-rizsim .bp-flow span:nth-of-type(6){background:rgba(231,194,108,.22);border-color:#d5bc7b}
+.bp-home .bp-compare-rizsim .bp-flow b{color:#e7d394}
+.bp-home .bp-compare-rizsim p{color:#d3f0ee}
+/* Layout shift: deliberately irregular, multi-shade editorial scenario mosaic. */
+.bp-home .bp-scenarios{padding:107px 0 100px;background:
+ radial-gradient(ellipse at 100% 0%,rgba(31,162,164,.16),transparent 37%),
+ repeating-linear-gradient(90deg,rgba(10,89,103,.019) 0 1px,transparent 1px 42px),
+ linear-gradient(140deg,#f5fbfa,#eaf3f5)}
+.bp-home .bp-scenario-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(2,minmax(195px,auto));gap:18px}
+.bp-home .bp-scenario{grid-column:span 3;min-height:196px;padding:26px 25px;border:1px solid #b6d2de;border-radius:24px;background:linear-gradient(140deg,#f8fbff,#dbe9f6);box-shadow:0 15px 31px rgba(6,57,78,.1)}
+.bp-home .bp-scenario:nth-child(1){grid-column:span 6;grid-row:span 2;min-height:410px;color:#fff;border:1px solid #28858c;background:radial-gradient(ellipse at 96% 5%,rgba(103,235,204,.23),transparent 42%),linear-gradient(140deg,#06273b,#0b5d6c);box-shadow:0 25px 52px rgba(2,44,61,.25)}
+.bp-home .bp-scenario:nth-child(2){grid-column:span 6;background:linear-gradient(145deg,#fffdf7,#f3e5be);border-color:#d9c182}
+.bp-home .bp-scenario:nth-child(3){background:linear-gradient(140deg,#f4fffa,#c1e9d9);border-color:#94cfbd}
+.bp-home .bp-scenario:nth-child(4){background:linear-gradient(140deg,#f5f9ff,#d9e6f4);border-color:#b4cde1}
+.bp-home .bp-scenario:first-child:after{right:-80px;top:-72px;width:320px;height:320px;border-color:rgba(240,212,140,.43);box-shadow:0 0 0 40px rgba(237,202,112,.05),0 0 0 77px rgba(89,216,208,.035)}
+.bp-home .bp-scenario-index{width:44px;height:44px;border:1px solid #badbd7;background:#fff;color:#217681;box-shadow:0 7px 18px rgba(7,65,81,.09)}
+.bp-home .bp-scenario:nth-child(1) .bp-scenario-index{background:rgba(255,255,255,.13);border-color:rgba(236,206,134,.52);color:#ffe29b}
+.bp-home .bp-scenario:nth-child(2) .bp-scenario-index{background:#fff7e8;border-color:#dfc887;color:#977030}
+.bp-home .bp-scenario:nth-child(1) h3{font-size:clamp(1.7rem,2.5vw,2.35rem);margin-top:112px;color:#fff;max-width:340px}
+.bp-home .bp-scenario:nth-child(1) p{font-size:1.03rem;max-width:325px;color:#d8f2ef}
+.bp-home .bp-scenario h3{font-size:1.1rem;color:#0f4050}
+.bp-home .bp-scenario p{color:#4a6b75;font-size:.9rem}
+.bp-home .bp-scenario-feature-icon{position:absolute;top:82px;right:49px;display:grid;place-items:center;width:93px;height:93px;border:1px solid rgba(245,220,154,.45);border-radius:50%;box-shadow:0 0 0 20px rgba(125,224,207,.065);background:rgba(255,255,255,.06);font-size:3.15rem;color:#edd083}
+/* Ecosystem cluster layout: differentiated audience chips rather than one flat four-card row. */
+.bp-home .bp-audience{padding:102px 0 113px;background:radial-gradient(ellipse at 8% 0%,rgba(226,189,111,.18),transparent 35%),linear-gradient(140deg,#fffef8,#f2f7f5)}
+.bp-home .bp-audience-shell{display:grid;grid-template-columns:.84fr 1.16fr;align-items:center;gap:51px;padding:48px clamp(29px,5vw,65px);background:linear-gradient(135deg,#fffefa,#e5f3f2);border:1px solid #c8dedd;border-radius:30px;box-shadow:0 23px 47px rgba(4,58,74,.12)}
+.bp-home .bp-audience-shell .bp-heading,.bp-home .bp-audience-shell .bp-heading-split{display:block;margin:0}
+.bp-home .bp-audience-shell .bp-heading-split>p{max-width:440px}
+.bp-home .bp-audience-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.bp-home .bp-audience-chip{min-height:103px;border-radius:19px;padding:17px;background:linear-gradient(142deg,#fff,#dff5ec);border:1px solid #add4ce;box-shadow:0 12px 20px rgba(6,61,79,.09);font-size:.95rem;color:#164351;font-weight:850;line-height:1.4}
+.bp-home .bp-audience-chip:nth-child(2){background:linear-gradient(142deg,#fffef4,#f4e5bf);border-color:#dec891;transform:translateY(14px)}
+.bp-home .bp-audience-chip:nth-child(3){background:linear-gradient(142deg,#f6fbff,#d6e4f2);border-color:#b6d0e4}
+.bp-home .bp-audience-chip:nth-child(4){background:linear-gradient(142deg,#f2fff8,#bce3d7);border-color:#92c8b9;transform:translateY(14px)}
+.bp-home .bp-audience-chip span{width:44px;height:44px;flex:0 0 44px;background:linear-gradient(135deg,#0e7580,#0a4259);color:#fff;border-radius:14px;box-shadow:0 7px 15px rgba(6,59,72,.15)}
+.bp-home .bp-audience-chip:nth-child(2) span{background:linear-gradient(135deg,#bf9648,#9b6f2e)}
+.bp-home .bp-audience-chip:nth-child(3) span{background:linear-gradient(135deg,#719bc1,#3e6b95)}
+.bp-home .bp-audience-chip:nth-child(4) span{background:linear-gradient(135deg,#159f98,#086171)}
+/* End card: gallery-finish midnight / teal / champagne. */
+.bp-home .bp-last{padding:0 0 110px;background:linear-gradient(180deg,#f4f8f6,#fff)}
+.bp-home .bp-last-shell{position:relative;isolation:isolate;padding:61px clamp(29px,5vw,69px);border:1px solid rgba(235,200,127,.49);background:radial-gradient(ellipse at 85% 7%,rgba(74,214,191,.23),transparent 38%),linear-gradient(125deg,#061927,#0a364a 59%,#0c6270);box-shadow:0 28px 62px rgba(4,36,53,.25)}
+.bp-home .bp-last-shell:before{content:"";position:absolute;top:0;left:0;width:42%;height:3px;background:linear-gradient(90deg,#e9c56b,#79e6d6,transparent)}
+.bp-home .bp-last .bp-eyebrow{color:#b7ebdf}
+.bp-home .bp-last h2{letter-spacing:-.067em}
+.bp-home .bp-last-actions .button-secondary{border:1px solid rgba(204,240,231,.45);background:rgba(255,255,255,.12)}
+.bp-home .bp-last-rings{position:absolute;width:340px;height:340px;right:8%;top:50%;transform:translateY(-50%);border:1px solid rgba(232,197,108,.22);border-radius:50%;box-shadow:0 0 0 43px rgba(122,231,211,.037),0 0 0 83px rgba(231,195,112,.03);pointer-events:none}
+/* Tablet: preserve diverse surfaces, avoid overly narrow path and mosaic columns. */
+@media(max-width:1120px){
+ .bp-home .bp-hero{padding:77px 0 88px}
+ .bp-home .bp-scenario:nth-child(1) h3{margin-top:78px}
+ .bp-home .bp-audience-shell{gap:26px}
+}
+@media(max-width:900px){
+ .bp-home .bp-hero-layout{grid-template-columns:1fr}
+ .bp-home .bp-visual{max-width:720px;margin:0 auto;height:433px}
+ .bp-home .bp-heading-split{display:block}
+ .bp-home .bp-questions,.bp-home .bp-journey,.bp-home .bp-difference,.bp-home .bp-scenarios,.bp-home .bp-audience{padding:76px 0}
+ .bp-home .bp-audience-shell{grid-template-columns:1fr;gap:26px}
+ .bp-home .bp-scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}
+ .bp-home .bp-scenario{grid-column:span 1}
+ .bp-home .bp-scenario:nth-child(1){grid-column:span 2;grid-row:span 1;min-height:275px}
+ .bp-home .bp-scenario:nth-child(2){grid-column:span 2}
+ .bp-home .bp-scenario:nth-child(1) h3{margin-top:36px}
+ .bp-home .bp-audience-chip:nth-child(2),.bp-home .bp-audience-chip:nth-child(4){transform:none}
+}
+@media(max-width:680px){
+ .bp-home .bp-hero{padding:54px 0 63px}
+ .bp-home .bp-hero-copy h1{font-size:clamp(3rem,12vw,4.4rem)}
+ .bp-home .bp-hero-copy>p{font-size:1rem}
+ .bp-home .bp-visual{height:355px;border-radius:23px}
+ .bp-home .bp-visual:after{inset:8px;border-radius:18px}
+ .bp-home .bp-visual-core{width:143px;height:143px}
+ .bp-home .bp-visual-core img{width:63px;height:63px}
+ .bp-home .bp-visual-kicker{top:21px;left:19px;font-size:.57rem;letter-spacing:.11em}
+ .bp-home .bp-visual-node{width:112px;padding:11px;border-radius:13px}
+ .bp-home .bp-visual-node strong{font-size:.88rem}
+ .bp-home .bp-node-a{top:92px;left:3%}
+ .bp-home .bp-node-b{top:92px;right:3%}
+ .bp-home .bp-node-c{bottom:50px}
+ .bp-home .bp-visual-caption{bottom:12px;font-size:.68rem}
+ .bp-home .bp-question-flow{grid-template-columns:1fr;gap:0}
+ .bp-home .bp-question-card{min-height:173px;padding:25px 27px}
+ .bp-home .bp-question-arrow{height:55px;transform:rotate(90deg)}
+ .bp-home .bp-journey-track{display:none}
+ .bp-home .bp-steps{grid-template-columns:1fr;gap:27px}
+ .bp-home .bp-step,.bp-home .bp-step:nth-child(2),.bp-home .bp-step:nth-child(5){min-height:172px;padding:23px 24px;transform:none}
+ .bp-home .bp-step:hover,.bp-home .bp-step:nth-child(2):hover,.bp-home .bp-step:nth-child(5):hover{transform:translateY(-3px)}
+ .bp-home .bp-step:not(:last-child):after,.bp-home .bp-step:nth-child(3):after{content:"↓";top:auto;bottom:-28px;left:50%;right:auto;transform:translateX(-50%)}
+ .bp-home .bp-step:last-child:after{display:none}
+ .bp-home .bp-compare{grid-template-columns:1fr}
+ .bp-home .bp-compare-card{padding:26px 23px}
+ .bp-home .bp-scenario-grid{grid-template-columns:1fr;grid-template-rows:auto;gap:15px}
+ .bp-home .bp-scenario,.bp-home .bp-scenario:nth-child(1),.bp-home .bp-scenario:nth-child(2){grid-column:1;grid-row:auto;min-height:187px}
+ .bp-home .bp-scenario:nth-child(1){min-height:297px}
+ .bp-home .bp-scenario:nth-child(1) h3{margin-top:73px}
+ .bp-home .bp-scenario-feature-icon{right:25px;top:82px;width:64px;height:64px;font-size:2.25rem}
+ .bp-home .bp-audience-shell{padding:27px 22px}
+ .bp-home .bp-audience-grid{grid-template-columns:1fr}
+ .bp-home .bp-audience-chip{min-height:78px}
+ .bp-home .bp-last{padding-bottom:70px}
+ .bp-home .bp-last-shell{padding:37px 26px}
+ .bp-home .bp-last-rings{right:-190px}
+ .bp-home .bp-last-actions{flex-direction:column}
+ .bp-home .bp-last-actions .button{white-space:normal}
+}
+@media(prefers-reduced-motion:reduce){.bp-home .bp-step{transition:none}}
+</style>
+<style id="rizsim-promo-v3">
+.bp-home .rizsim-announcement-label{display:flex;align-items:center;flex-wrap:wrap;gap:9px;font-size:.68rem;letter-spacing:.09em}
+.bp-home .rz-promo-highlight{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(110deg,#653b97,#8c58af);color:#fff!important;border:1px solid rgba(255,230,168,.58);border-radius:7px;padding:5px 11px;letter-spacing:.145em;font-size:.65rem;font-weight:900;box-shadow:0 5px 12px rgba(107,55,151,.15),0 0 16px rgba(231,195,108,.24)}
+.bp-home .rz-promo-highlight:before{content:"";width:6px;height:6px;background:#f1d48c;border-radius:50%;box-shadow:0 0 7px rgba(249,226,159,.7)}
+.bp-home .rz-promo-secondary{color:#7c598f;font-size:.62rem;font-weight:830;letter-spacing:.105em}
+.bp-home .rizsim-announcement-spark{color:#996d26}
+.bp-home .rizsim-announcement-spark svg{height:22px;width:22px}
+.bp-home .bp-category-icon svg{width:24px;height:24px}
+</style>
+<style id="rizsim-home-announcement-style">
+/* One optional announcement component shared by the public Home and role dashboards. */
+.bp-home .rizsim-announcement-region{padding:19px 0 0;background:linear-gradient(180deg,#f7fafb,#f4f9f9)}
+.bp-home .rizsim-announcement-region[data-visible="false"]{display:none}
+.bp-home .rizsim-announcement-card{position:relative;isolation:isolate;display:flex;align-items:center;gap:20px;min-height:105px;padding:20px 28px;overflow:hidden;border:1px solid rgba(216,173,91,.65);border-radius:19px;background:radial-gradient(ellipse at 84% 2%,rgba(253,217,158,.31),transparent 37%),linear-gradient(104deg,#f9f2ff 0%,#eee2ff 49%,#e3d8fb 100%);box-shadow:0 8px 28px rgba(109,78,156,.13),0 0 22px rgba(233,193,99,.25),inset 0 1px rgba(255,255,255,.92)}
+.bp-home .rizsim-announcement-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(120deg,rgba(110,78,150,.022) 0 1px,transparent 1px 20px)}
+.bp-home .rizsim-announcement-card:after{content:"";position:absolute;right:-40px;top:-105px;width:280px;height:280px;border:1px solid rgba(224,179,87,.38);border-radius:50%;box-shadow:0 0 0 25px rgba(239,201,120,.07),0 0 0 53px rgba(180,144,226,.055);pointer-events:none}
+.bp-home .rizsim-announcement-spark{z-index:1;display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;color:#956326;font-size:1.55rem;background:linear-gradient(135deg,#fff9dc,#f3d792);border:1px solid #e9c982;box-shadow:0 6px 17px rgba(199,152,58,.19)}
+.bp-home .rizsim-announcement-copy{z-index:1;display:flex;flex:1 1 auto;flex-direction:column;gap:4px;min-width:0}
+.bp-home .rizsim-announcement-label{color:#815c9a;font-size:.66rem;font-weight:900;letter-spacing:.15em}
+.bp-home .rizsim-announcement-copy strong{font-size:clamp(1.03rem,2vw,1.35rem);line-height:1.25;letter-spacing:-.025em;color:#442b66}
+.bp-home .rizsim-announcement-copy strong span{color:#8050b0}
+.bp-home .rizsim-announcement-detail{font-size:.81rem;line-height:1.55;color:#695b78}
+.bp-home .rizsim-announcement-link{z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:11px;flex:0 0 auto;min-height:40px;padding:10px 16px;background:rgba(255,255,255,.78);border:1px solid #d3b9e5;border-radius:11px;box-shadow:0 6px 13px rgba(79,45,123,.08);color:#60378b;font-size:.8rem;font-weight:850;white-space:nowrap;transition:background .2s ease,transform .2s ease}
+.bp-home .rizsim-announcement-link:hover{background:#fff;transform:translateY(-2px)}
+.bp-home .rizsim-announcement-link:focus-visible{outline:3px solid #8763b4;outline-offset:3px}
+@media(max-width:730px){
+ .bp-home .rizsim-announcement-card{flex-wrap:wrap;gap:11px;padding:17px}
+ .bp-home .rizsim-announcement-spark{width:41px;height:41px;flex-basis:41px}
+ .bp-home .rizsim-announcement-copy{flex-basis:calc(100% - 56px)}
+ .bp-home .rizsim-announcement-link{margin-left:52px}
+}
+@media(max-width:460px){
+ .bp-home .rizsim-announcement-card{border-radius:16px}
+ .bp-home .rizsim-announcement-link{margin-left:0;width:100%}
+}
+@media(prefers-reduced-motion:reduce){.bp-home .rizsim-announcement-link{transition:none}}
+</style>
+<link rel="stylesheet" href="rizsim-experiences.css">
+<link rel="stylesheet" href="rizsim-roles-library.css">
+<script src="rizsim-session-continuity.js" defer></script>
+</head>
+
+
+<body data-page="home">
+
+
+  <!-- ========================================================
+       SPLASH
+  ========================================================= -->
+
+  <div
+    id="rizsimSplash"
+    class="splash-screen"
+  >
+
+    <div
+      class="splash-glow splash-glow-one"
+    ></div>
+
+    <div
+      class="splash-glow splash-glow-two"
+    ></div>
+
+    <div class="splash-sweep"></div>
+
+
+    <div class="splash-content">
+
+      <img
+        class="splash-logo"
+        src="RizSim finalized logo.png"
+        alt="RizSim — From Knowing to Doing"
+      >
+
+
+      <div class="splash-progress-track">
+
+        <div class="splash-progress"></div>
+
+      </div>
+
+
+      <div class="splash-subtitle">
+        INTERACTIVE LEARNING
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       NAVIGATION
+  ========================================================= -->
+
+  <header class="site-header">
+
+    <div class="nav-glow"></div>
+
+
+    <div class="nav-shell">
+
+
+      <!-- SIDEBAR BUTTON -->
+
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        type="button"
+        aria-label="Open sidebar"
+        aria-expanded="false"
+        aria-controls="siteSidebar"
+        data-swipe-block
+      >
+
+        <span class="sidebar-toggle-icon">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </span>
+
+      </button>
+
+
+
+      <!-- LOGO -->
+
+      <a
+        class="nav-logo-link"
+        href="index.html"
+        data-page-link
+        aria-label="RizSim Home"
+      >
+
+        <img
+          class="nav-logo"
+          src="RizSim finalized logo.png"
+          alt="RizSim — From Knowing to Doing"
+        >
+
+      </a>
+
+
+
+      <!-- NAVIGATION -->
+
+      <nav
+        class="main-nav"
+        id="mainNav"
+      >
+
+        <a
+          href="index.html"
+          data-page-link
+          data-page="home"
+        >
+          Home
+        </a>
+
+
+        <a
+          href="simulations.html"
+          data-page-link
+          data-page="simulations"
+        >
+          Simulations
+        </a>
+
+
+        <a
+          href="about.html"
+          data-page-link
+          data-page="about"
+        >
+          About
+        </a>
+
+
+        <a
+          href="contact.html"
+          data-page-link
+          data-page="contact"
+        >
+          Contact
+        </a>
+
+      </nav>
+
+
+
+      <!-- LOGIN -->
+
+      <div class="nav-actions">
+
+        <div class="login-wrap">
+
+
+          <button
+            class="login-button"
+            id="loginButton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="loginMenu"
+          >
+
+            <span>
+              Login
+            </span>
+
+
+            <svg
+              class="login-chevron"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M5.5 7.5L10 12L14.5 7.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
+          </button>
+
+
+
+          <div
+            class="login-menu"
+            id="loginMenu"
+            aria-hidden="true"
+            data-swipe-block
+          >
+
+
+            <!-- STUDENT -->
+
+            <a
+              class="login-role-button"
+              href="access-in.html"
+            >
+
+              <span class="login-role-text">
+                Student
+              </span>
+
+
+              <span class="login-role-icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="M3.5 8.5L12 4.5L20.5 8.5L12 12.5L3.5 8.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                  />
+
+                  <path
+                    d="M7 10.5V15C7 16.8 9.25 18.3 12 18.3C14.75 18.3 17 16.8 17 15V10.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <!-- FACULTY -->
+
+            <a
+              class="login-role-button"
+              href="access-out.html"
+            >
+
+              <span class="login-role-text">
+                Faculty
+              </span>
+
+
+              <span
+                class="login-role-icon faculty-icon"
+              >
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+
+                  <circle
+                    cx="12"
+                    cy="7"
+                    r="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  />
+
+                  <path
+                    d="M6 19V17C6 14.8 8.2 13 12 13C15.8 13 18 14.8 18 17V19"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                  <path
+                    d="M4 20H20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+
+                </svg>
+
+              </span>
+
+            </a>
+
+
+
+            <!-- CLOSE LOGIN MENU -->
+
+            <button
+              class="login-collapse-button"
+              id="loginCollapseButton"
+              type="button"
+              aria-label="Close login options"
+            >
+
+              <svg
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="M5 12.5L10 7.5L15 12.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+              </svg>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ========================================================
+       LEFT SIDEBAR
+  ========================================================= -->
+
+  <div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <aside
+    class="site-sidebar"
+    id="siteSidebar"
+    aria-hidden="true"
+    data-swipe-block
+  >
+
+    <div class="sidebar-inner">
+
+      <!-- EMPTY FOR NOW -->
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- ========================================================
+       PAGE
+  ========================================================= -->
+
+  
+  <main class="page-content bp-home" id="pageContent">
+    <!-- Optional universal announcement above the Brand Promise; toggle via data-visible. -->
+    <aside class="rizsim-announcement-region" data-rizsim-announcement data-visible="true" aria-label="RizSim launch announcement">
+      <div class="content-shell">
+        <div class="rizsim-announcement-card">
+          <span class="rizsim-announcement-spark" aria-hidden="true">✦</span>
+          <div class="rizsim-announcement-copy">
+            <span class="rizsim-announcement-label"><span class="rz-promo-highlight">LAUNCH PROMOTION</span><span class="rz-promo-secondary">LIMITED TIME OFFER</span></span>
+            <strong>Explore with <span>complimentary access</span></strong>
+            <span class="rizsim-announcement-detail">Discover all published simulations and learning resources during our launch promotion. Sign in to explore.</span>
+          </div>
+          <a class="rizsim-announcement-link" href="simulations.html" data-page-link>Explore RizSim <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Public general Home remains the category selection hub. -->
+    <section class="bp-categories" aria-labelledby="bpCategoryTitle">
+      <div class="content-shell">
+        <div class="bp-categories-head">
+          <div><span class="bp-eyebrow">EXPLORE BY ENVIRONMENT</span><h2 id="bpCategoryTitle">Choose what you want to explore.</h2></div>
+          <p>Each environment shows its own simulations. Your sign-in and access never change when browsing.</p>
+        </div>
+        <div class="bp-category-grid">
+          <a class="bp-category-tile" href="simulations.html?category=learning"><span class="bp-category-icon">◈</span><span><strong>Learning</strong><small>Concepts, research and understanding through experience</small></span><span class="bp-category-arrow" aria-hidden="true">↗</span></a>
+          <a class="bp-category-tile" href="simulations.html?category=skills"><span class="bp-category-icon">✦</span><span><strong>Skills</strong><small>Judgment, decisions and applied capabilities</small></span><span class="bp-category-arrow" aria-hidden="true">↗</span></a>
+          <a class="bp-category-tile" href="simulations.html?category=children"><span class="bp-category-icon">✿</span><span><strong>Children</strong><small>Discovery and exploration for younger learners</small></span><span class="bp-category-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero: a fresh visual treatment inside the existing approved shell -->
+    <section class="bp-hero" aria-labelledby="bpHeroTitle">
+      <div class="content-shell bp-hero-layout">
+        <div class="bp-hero-copy">
+          <span class="bp-eyebrow">SIMULATION-BASED LEARNING</span>
+          <h1 id="bpHeroTitle">From knowing <span>to doing.</span></h1>
+          <p>Enter the situation. Make the decision. Discover what follows — then use your learning when the context changes.</p>
+          <div class="bp-actions">
+            <a class="button button-primary" data-page-link href="simulations.html">Explore Simulations <span aria-hidden="true">→</span></a>
+            <a class="button button-secondary" data-page-link href="about.html">The RizSim Idea</a>
+          </div>
+          <div class="bp-proof" aria-label="RizSim learning principles"><span>Think</span><span>Decide</span><span>Discover</span><span>Apply</span></div>
+        </div>
+        <div class="bp-visual" aria-label="Visual pathway: Understand, Decide, Transfer" data-swipe-block>
+          <div class="bp-visual-kicker"><span class="bp-visual-signal" aria-hidden="true"></span> THE EXPERIENCE BEHIND THE PROMISE</div>
+          <div class="bp-visual-rings"></div>
+          <div class="bp-visual-core"><img src="rizsim-r.png" alt=""><small>EXPERIENCE</small></div>
+          <div class="bp-visual-node bp-node-a"><span>01 / KNOW</span><strong>Understand</strong></div>
+          <div class="bp-visual-node bp-node-b"><span>02 / DECIDE</span><strong>Act in context</strong></div>
+          <div class="bp-visual-node bp-node-c"><span>03 / TRANSFER</span><strong>Apply again</strong></div>
+          <div class="bp-visual-caption"><span aria-hidden="true">✦</span> Learning that travels beyond the lesson.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Knowing -> Doing: brand promise as two contrasting visual cards -->
+    <section class="bp-questions" aria-labelledby="bpGapTitle">
+      <div class="content-shell">
+        <div class="bp-heading bp-heading-split">
+          <div><span class="bp-eyebrow">THE GAP RIZSIM CLOSES</span><h2 id="bpGapTitle">Knowing matters. <em>Using it matters more.</em></h2></div>
+          <p>A concept remembered is valuable. A concept applied in an unfamiliar situation becomes usable knowledge.</p>
+        </div>
+        <div class="bp-question-flow">
+          <article class="bp-question-card"><span>THE FAMILIAR QUESTION</span><h3>“Do you know this?”</h3></article>
+          <div class="bp-question-arrow" aria-hidden="true">→</div>
+          <article class="bp-question-card bp-question-dark"><span>THE RIZSIM QUESTION</span><h3>“Can you use what you know?”</h3></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Six-stage learning flowchart -->
+    <section class="bp-journey" aria-labelledby="bpJourneyTitle">
+      <div class="content-shell">
+        <div class="bp-heading bp-heading-center">
+          <span class="bp-eyebrow">THE RIZSIM LEARNING JOURNEY</span>
+          <h2 id="bpJourneyTitle">Six stages. <em>One transformation.</em></h2>
+          <p>Make a judgment before the answer is revealed. Discover what follows. Reflect, transfer and act.</p>
+        </div>
+        <div class="bp-journey-track" aria-hidden="true"><span>EXPERIENCE</span><span>RECONSIDER</span><span>APPLY</span></div>
+        <div class="bp-steps" role="list" aria-label="Explore, Decide, Discover, Reflect, Transfer, Do"><article class="bp-step" role="listitem"><div class="bp-step-num">01</div><h3>Explore</h3><p>Enter a realistic situation.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">02</div><h3>Decide</h3><p>Commit to a judgment.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">03</div><h3>Discover</h3><p>Meet feedback and consequences.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">04</div><h3>Reflect</h3><p>Examine assumptions and evidence.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">05</div><h3>Transfer</h3><p>Apply learning to a new context.</p></article>
+<article class="bp-step" role="listitem"><div class="bp-step-num">06</div><h3>Do</h3><p>Carry better judgment forward.</p></article></div>
+      </div>
+    </section>
+
+    <!-- Teaching-method comparison, rendered as two structured pathways -->
+    <section class="bp-difference" aria-labelledby="bpDifferenceTitle">
+      <div class="content-shell">
+        <div class="bp-heading">
+          <span class="bp-eyebrow">THE RIZSIM DIFFERENCE</span>
+          <h2 id="bpDifferenceTitle">Not just knowledge transfer. <em>Learning transfer.</em></h2>
+          <p>Two paths. One checks what learners remember; the other helps reveal how they use what they know.</p>
+        </div>
+        <div class="bp-compare">
+          <article class="bp-compare-card">
+            <h3><span class="bp-dot"></span>Traditional learning</h3>
+            <div class="bp-flow" aria-label="Content to explanation to question to correct answer"><span>Content</span><b>→</b><span>Explanation</span><b>→</b><span>Question</span><b>→</b><span>Correct answer</span></div>
+            <p>From information to recall.</p>
+          </article>
+          <article class="bp-compare-card bp-compare-rizsim">
+            <h3><span class="bp-dot"></span>RizSim learning</h3>
+            <div class="bp-flow" aria-label="Situation to decision to consequence to reflection to new context to application"><span>Situation</span><b>→</b><span>Decision</span><b>→</b><span>Consequence</span><b>→</b><span>Reflection</span><b>→</b><span>New context</span><b>→</b><span>Application</span></div>
+            <p>From active experience to applied judgment.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Concrete examples of judgment under uncertainty -->
+    <section class="bp-scenarios" aria-labelledby="bpScenarioTitle">
+      <div class="content-shell">
+        <div class="bp-heading">
+          <span class="bp-eyebrow">REAL SITUATIONS · REAL JUDGMENT</span>
+          <h2 id="bpScenarioTitle">Where knowledge meets <em>the moment.</em></h2>
+          <p>Understanding the theory is only a beginning. What happens when the decision is yours?</p>
+        </div>
+        <div class="bp-scenario-grid"><article class="bp-scenario bp-scenario-feature"><span class="bp-scenario-feature-icon" aria-hidden="true">↗</span><span class="bp-scenario-index">01</span><h3>Cognitive bias</h3><p>You know anchoring. Can you resist the first number?</p></article>
+<article class="bp-scenario"><span class="bp-scenario-index">02</span><h3>Ethical leadership</h3><p>What happens to your values under pressure?</p></article>
+<article class="bp-scenario"><span class="bp-scenario-index">03</span><h3>Research methods</h3><p>Can you apply a method to an unfamiliar problem?</p></article>
+<article class="bp-scenario"><span class="bp-scenario-index">04</span><h3>Executive judgment</h3><p>Can you recognise bias in your own decisions?</p></article></div>
+      </div>
+    </section>
+
+    <!-- Short application & audience grid, not a wall of text -->
+    <section class="bp-audience" aria-labelledby="bpAudienceTitle">
+      <div class="content-shell">
+        <div class="bp-audience-shell">
+          <div class="bp-heading bp-heading-split"><div><span class="bp-eyebrow">ONE PLATFORM · MANY CONTEXTS</span><h2 id="bpAudienceTitle">Built for people <em>who decide.</em></h2></div>
+            <p>Educational simulations · classroom experiments · decision labs · interactive workshops · executive learning.</p></div>
+          <div class="bp-audience-grid" aria-label="RizSim learning audiences"><div class="bp-audience-chip"><span>01</span>Universities & students</div>
+<div class="bp-audience-chip"><span>02</span>Faculty & trainers</div>
+<div class="bp-audience-chip"><span>03</span>Managers & executives</div>
+<div class="bp-audience-chip"><span>04</span>Organisations & teams</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Existing paths retained: browse, Faculty and Student -->
+    <section class="bp-last" aria-labelledby="bpLastTitle">
+      <div class="content-shell">
+        <div class="bp-last-shell"><div class="bp-last-rings" aria-hidden="true"></div>
+          <div>
+            <span class="bp-eyebrow">THE EXPERIENCE BEHIND THE PROMISE</span>
+            <h2 id="bpLastTitle">Explore. Decide. Grow.</h2>
+            <p>Move beyond recognition. Put your thinking to work.</p>
+          </div>
+          <div class="bp-last-actions">
+            <a class="button button-primary" data-page-link href="simulations.html">Explore Simulations →</a>
+            <a class="button button-secondary" href="access-out.html">Faculty Access</a>
+            <a class="button button-secondary" href="access-in.html">Student Access</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+  <!-- ========================================================
+       FOOTER
+  ========================================================= -->
+
+  <footer class="site-footer">
+
+    <div class="content-shell footer-grid">
+
+
+      <div class="footer-brand">
+
+        <img
+          src="RizSim finalized logo.png"
+          alt="RizSim"
+        >
+
+        <p>
+          Interactive learning through decisions,
+          reflection and application.
+        </p>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Explore
+        </h4>
+
+        <a
+          href="simulations.html"
+          data-page-link
+        >
+          Simulations
+        </a>
+
+
+        <a
+          href="about.html"
+          data-page-link
+        >
+          About
+        </a>
+
+
+        <a
+          href="contact.html"
+          data-page-link
+        >
+          Contact
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Access
+        </h4>
+
+        <a href="access-in.html">
+          Student
+        </a>
+
+        <a href="access-out.html">
+          Faculty
+        </a>
+
+      </div>
+
+
+
+      <div class="footer-column">
+
+        <h4>
+          Policies
+        </h4>
+
+        <a href="privacy-policy.html">
+          Privacy Policy
+        </a>
+
+
+        <a href="terms.html">
+          Terms & Conditions
+        </a>
+
+
+        <a href="refund-policy.html">
+          Refund & Cancellation
+        </a>
+
+
+        <a href="service-delivery.html">
+          Digital Service Delivery
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="content-shell footer-bottom">
+
+      <span>
+        © <span id="footerYear"></span> RizSim.
+      </span>
+
+      <span>
+        From Knowing to Doing.
+      </span>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- ========================================================
+       SWIPE INDICATOR
+  ========================================================= -->
+
+  <div
+    class="swipe-indicator"
+    id="swipeIndicator"
+    aria-hidden="true"
+  >
+
+    <span id="swipeIndicatorIcon">
+      →
+    </span>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       GLOBAL JAVASCRIPT
+  ========================================================= -->
+
+  <script src="site.js"></script>
+
+
+<script src="rizsim-experiences.js" defer></script>
+<script type="module" src="rizsim-roles-library.js"></script>
+</body>
+
+</html>
