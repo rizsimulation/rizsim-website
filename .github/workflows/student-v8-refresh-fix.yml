@@ -1,0 +1,46 @@
+name: Student V8 First Join Refresh Verification
+on:
+  push:
+    branches: ['feat/student-workspace-v8-20261016']
+    paths: ['scripts/patch_student_refresh_v8.py','.github/workflows/student-v8-refresh-fix.yml']
+permissions:
+  contents: write
+concurrency:
+  group: student-v8-refresh-patch
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply exact guarded patch
+        run: python scripts/patch_student_refresh_v8.py
+      - name: Static student integration checks
+        run: node scripts/validate_student_workspace_v8.js
+      - name: Install isolated browser dependency
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Actual student page with synthetic data only
+        run: python scripts/test_student_workspace_v8.py
+      - name: Save only the three tested application and test files
+        run: |
+          git add rizsim-student-workspace.js scripts/fixtures/student-workspace-backend.js scripts/test_student_workspace_v8.py
+          git config user.name 'RizSim verification'
+          git config user.email 'rizsimulation@users.noreply.github.com'
+          git commit -m 'fix(v8): refresh newly joined class resources and Practice immediately'
+          git push origin HEAD:refs/heads/feat/student-workspace-v8-20261016
+          git rev-parse HEAD > test-results/verified-revision.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: student-v8-first-join-evidence
+          path: test-results/
+          retention-days: 3
