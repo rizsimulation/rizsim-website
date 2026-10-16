@@ -22,7 +22,7 @@ function gotoClassroom(){document.querySelector('#mainNav [data-auth-view="class
 function mountPlayerResults(){
  const snap=snapshot();if(!snap||!["faculty","course_lead","owner"].includes(snap.role)||resultsMounted)return;
  const from=$("view-results")?.querySelector(".content-shell");
- const player=$("view-classroom")?.querySelector(".content-shell");
+ const player=$("rzLiveResultsAnchor")||$("view-classroom")?.querySelector(".content-shell");
  if(!from||!player)return;
  const wrap=node("section","rz-player-results");
  wrap.append(node("div","rz-workspace-kicker","RESULTS & PARTICIPANT PROGRESS"));
