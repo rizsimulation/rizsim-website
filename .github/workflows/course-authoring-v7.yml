@@ -1,12 +1,20 @@
-name: Course Authoring V7 Integration
+name: Course Authoring V7 Verification
 on:
   push:
     branches: ['feat/courses-authoring-v7-20261016']
+  pull_request:
+    paths:
+      - 'access-out.html'
+      - 'rizsim-course-authoring*'
+      - 'scripts/**'
+      - 'sql/**'
+      - '.github/workflows/course-authoring-v7.yml'
+  workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: authoring-v7-integration
-  cancel-in-progress: false
+  group: authoring-v7-${{ github.ref }}
+  cancel-in-progress: true
 defaults:
   run:
     shell: bash
@@ -26,18 +34,15 @@ jobs:
           --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify transported source and integrate authoring-only mount
-        run: |
-          python scripts/unpack_authoring_v7.py
-          python scripts/integrate_course_authoring_v7.py
-          if test -f scripts/repair_authoring_v7.py; then python scripts/repair_authoring_v7.py; fi
-      - name: Syntax and existing regression boundaries
+      - name: Check exact committed source and existing boundaries
         run: |
           node --check rizsim-course-authoring.js
           node --check rizsim-course-authoring-service.js
@@ -47,47 +52,29 @@ jobs:
           node scripts/validate_premium_ui_v3.js
           python scripts/validate_category_release.py
           node scripts/test_resource_stream_v6.js
-      - name: Atomic save and permission tests in isolated PostgreSQL only
+      - name: Transactional authoring and permissions in isolated PostgreSQL
         env:
           PGPASSWORD: isolated-test-only
         run: |
           set -euo pipefail
           mkdir -p test-results
           psql -h 127.0.0.1 -U postgres -d authoring_test -v ON_ERROR_STOP=1 -f scripts/sql/runtime_test_schema.sql -f sql/course_runtime_v6.sql -f scripts/sql/authoring_test_schema.sql -f sql/course_authoring_v7.sql -f scripts/sql/authoring_assertions.sql 2>&1 | tee test-results/v7-sql.txt
-      - name: Install isolated browser test dependencies
+      - name: Install pinned isolated browser dependencies
         run: |
           python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
           python -m playwright install --with-deps chromium
-      - name: Existing portal and new authoring with synthetic backend only
+      - name: Existing runtime and authoring browser checks with synthetic data
         run: |
           python scripts/test_live_classroom_v5.py
           python scripts/test_live_classroom_v5_extended.py
           python scripts/test_session_confirmation_v5.py
           python scripts/test_course_environment_v6.py
           python scripts/test_course_authoring_v7.py
-      - name: Save verified source to the same development branch only
-        run: |
-          expected=$(git rev-parse HEAD)
-          remote=$(git ls-remote origin refs/heads/feat/courses-authoring-v7-20261016 | cut -f1)
-          test "$expected" = "$remote"
-          git add access-out.html rizsim-course-authoring.js rizsim-course-authoring.css rizsim-course-authoring-service.js sql/course_authoring_v7.sql scripts/test_course_authoring_v7.py scripts/sql/authoring_test_schema.sql scripts/sql/authoring_assertions.sql scripts/fixtures/live-classroom-backend.js
-          if git diff --cached --quiet; then exit 0; fi
-          git config user.name 'RizSim verification'
-          git config user.email 'rizsimulation@users.noreply.github.com'
-          git commit -m 'feat(v7): save tested authoring-only Courses workspace'
-          git push origin HEAD:refs/heads/feat/courses-authoring-v7-20261016
-      - name: Package source for review
-        if: always()
-        run: tar --exclude=.git --exclude=.v7-bootstrap --exclude=test-results -czf /tmp/rizsim-v7-source.tar.gz .
+          git diff --exit-code
+          git rev-parse HEAD > test-results/verified-revision.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: courses-v7-test-evidence
           path: test-results/
-          retention-days: 3
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: courses-v7-review-source
-          path: /tmp/rizsim-v7-source.tar.gz
           retention-days: 3
