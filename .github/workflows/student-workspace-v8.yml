@@ -1,13 +1,14 @@
-name: Student Workspace V8 Integration
+name: Student Workspace V8 Verification
 on:
   push:
     branches: ['feat/student-workspace-v8-20261016']
-    paths: ['.v8-bootstrap/**','scripts/integrate_student_v8.py','scripts/repair_student_v8.py','.github/workflows/student-v8-integration.yml']
+  pull_request:
+    paths: ['access-in.html','rizsim-student-*','rizsim-shared-home.js','scripts/**','sql/student_workspace_v8.sql','.github/workflows/student-workspace-v8.yml']
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: student-v8-integration
-  cancel-in-progress: false
+  group: student-v8-${{ github.ref }}
+  cancel-in-progress: true
 defaults:
   run:
     shell: bash
@@ -27,17 +28,15 @@ jobs:
           --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify and integrate bounded student source
-        run: |
-          python scripts/integrate_student_v8.py
-          if test -f scripts/repair_student_v8.py; then python scripts/repair_student_v8.py; fi
-      - name: Student syntax and existing security boundaries
+      - name: Student syntax and established authentication/runtime boundaries
         run: |
           node scripts/validate_student_workspace_v8.js
           node scripts/validate_live_classroom_v5.js
@@ -46,7 +45,7 @@ jobs:
           node scripts/validate_premium_ui_v3.js
           python scripts/validate_category_release.py
           node scripts/test_resource_stream_v6.js
-      - name: Isolated PostgreSQL student access assertions
+      - name: Isolated student database and permission checks
         env:
           PGPASSWORD: isolated-test-only
         run: |
@@ -57,7 +56,7 @@ jobs:
         run: |
           python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
           python -m playwright install --with-deps chromium
-      - name: Actual portal with synthetic backend only
+      - name: Student portal and preserved Faculty flows with synthetic data only
         run: |
           python scripts/test_student_workspace_v8.py
           python scripts/test_live_classroom_v5.py
@@ -66,27 +65,11 @@ jobs:
           python scripts/test_course_environment_v6.py
           python scripts/test_course_authoring_v7.py
           python scripts/test_authoring_touch_v7.py
-      - name: Save tested application source only within existing contents permission
-        run: |
-          git add access-in.html rizsim-shared-home.js rizsim-student-workspace.js rizsim-student-workspace.css scripts/fixtures/student-workspace-backend.js scripts/test_student_workspace_v8.py scripts/validate_student_workspace_v8.js scripts/sql/student_test_schema.sql scripts/sql/student_assertions.sql sql/student_workspace_v8.sql docs/STUDENT_WORKSPACE_V8.md scripts/verify_student_workspace_release.py
-          if git diff --cached --name-only | grep -q '^.github/'; then echo 'Workflow writes are not permitted in this source-save step'; exit 1; fi
-          git config user.name 'RizSim verification'
-          git config user.email 'rizsimulation@users.noreply.github.com'
-          git commit -m 'feat(v8): save verified student navigation, Practice and learning history'
-          git push origin HEAD:refs/heads/feat/student-workspace-v8-20261016
+          git diff --exit-code
           git rev-parse HEAD > test-results/verified-revision.txt
-      - name: Package source for review
-        if: always()
-        run: tar --exclude=.git --exclude=.v8-bootstrap --exclude=test-results -czf /tmp/rizsim-v8-source.tar.gz .
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: student-v8-test-evidence
           path: test-results/
-          retention-days: 3
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: student-v8-review-source
-          path: /tmp/rizsim-v8-source.tar.gz
           retention-days: 3
