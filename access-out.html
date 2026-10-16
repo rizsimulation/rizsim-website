@@ -3626,6 +3626,7 @@ border-color:#315b92;
 <script src="rizsim-session-continuity.js" defer></script>
 <link rel="stylesheet" href="rizsim-faculty-workspaces.css">
 <link rel="stylesheet" href="rizsim-live-classroom.css">
+<link rel="stylesheet" href="rizsim-course-authoring.css">
 <link rel="stylesheet" href="rizsim-course-environment.css">
 </head>
 
@@ -4308,6 +4309,9 @@ data-view="courses"
 >
 
 <div class="content-shell">
+<section id="rzCourseAuthoring" aria-label="Course authoring"><p>Loading course authoring...</p></section>
+<div id="rzCourseLegacy" hidden>
+
 
 <div class="auth-section-heading">
 
@@ -5873,6 +5877,7 @@ No Course materials added yet.
 
 </div>
 
+</div><!-- End authoring-only legacy mount -->
 </div>
 
 </section>
@@ -9749,6 +9754,7 @@ aria-hidden="true"
 
 </div>
 <script src="rizsim-session-confirmation.js"></script>
+<script src="rizsim-course-authoring-service.js"></script>
 <script src="rizsim-course-service.js"></script>
 <script type="module">
 
@@ -32754,6 +32760,10 @@ window.RizSimFacultyBridge={
  selectCourse:async id=>{await openCourseManager(id);return getSelectedCourse()},
  refresh:()=>{renderClassroom();renderResults();window.RizSimFacultyWorkspace?.render()}
 };
+window.RizSimFacultyBridge.authoring=window.createRizSimCourseAuthoringService({
+ client:supabase, snapshot:()=>window.RizSimFacultyBridge.getSnapshot(),
+ refresh:async()=>{await reloadCourses();renderCourses();window.RizSimLiveClassroom?.draw();}
+});
 window.RizSimFacultyBridge.runtime=window.createRizSimCourseService({
  client:supabase,
  snapshot:()=>window.RizSimFacultyBridge.getSnapshot(),
@@ -32851,6 +32861,7 @@ Complete
 <script src="rizsim-faculty-workspaces.js" defer></script>
 <script src="rizsim-course-environment.js" defer></script>
 <script src="rizsim-live-classroom.js" defer></script>
+<script src="rizsim-course-authoring.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>

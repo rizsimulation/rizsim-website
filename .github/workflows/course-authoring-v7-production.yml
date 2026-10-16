@@ -1,0 +1,33 @@
+name: Course Authoring V7 Production Verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'access-out.html'
+      - 'rizsim-course-authoring*'
+      - 'scripts/verify_course_authoring_release.py'
+      - '.github/workflows/course-authoring-v7-production.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify 18 public production assets against this exact release
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_course_authoring_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: courses-v7-production-verification
+          path: test-results/production-verification.json
+          retention-days: 3
