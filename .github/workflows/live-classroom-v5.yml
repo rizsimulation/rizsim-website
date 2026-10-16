@@ -20,65 +20,37 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Prepare deterministic V5 integration and local QR asset
+      - name: Validate exact committed assets and established regressions
         run: |
-          mkdir -p /tmp/rizsim-qr-source
-          cd /tmp/rizsim-qr-source
-          npm pack --ignore-scripts qrcode-generator@1.4.4
-          echo 'ab6ed47d378877441deae95972e07b2716c26545a735a23aa6b9d442b33026ed  qrcode-generator-1.4.4.tgz' | sha256sum --check
-          sha256sum qrcode-generator-1.4.4.tgz > qr-source-sha256.txt
-          tar -xzf qrcode-generator-1.4.4.tgz
-          cd "$GITHUB_WORKSPACE"
-          python scripts/integrate_live_classroom_v5.py /tmp/rizsim-qr-source/package/qrcode.js
-          python scripts/refine_live_classroom_v5.py
-      - name: Static and established regression gates
-        run: |
+          echo 'c75d70a0e18c3609c5428d17d744121023073cf3f480e3194ed93a354756496d  rizsim-qr.js' | sha256sum --check
           node scripts/validate_live_classroom_v5.js
           node scripts/validate_faculty_workspaces.js
           node scripts/validate_session_continuity.js
           node scripts/validate_premium_ui_v3.js
           python scripts/validate_category_release.py
-          git diff --exit-code -- supabase access-in.html rizsim-session-continuity.js rizsim-roles-library.js site.css site.js index.html
       - name: Install isolated browser test dependencies
         run: |
           python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
           python -m playwright install --with-deps chromium
-      - name: Browser acceptance with synthetic backend only
+      - name: Browser regression with synthetic backend only
         run: |
           python scripts/test_live_classroom_v5.py
           python scripts/test_live_classroom_v5_extended.py
-      - name: Save verified generated assets to the same development branch only
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/live-classroom-compact-v5-20261015'
-        run: |
-          set -eu
-          branch='feat/live-classroom-compact-v5-20261015'
-          remote_head=$(git ls-remote origin "refs/heads/$branch" | cut -f1)
-          test "$remote_head" = "$GITHUB_SHA" || { echo 'Branch advanced; refusing to overwrite concurrent work.'; exit 1; }
-          git add -- access-out.html rizsim-faculty-workspaces.js scripts/validate_faculty_workspaces.js rizsim-qr.js rizsim-live-classroom.css rizsim-live-classroom.js
-          if ! git diff --cached --quiet; then
-            git config user.name 'RizSim verification'
-            git config user.email 'rizsimulation@users.noreply.github.com'
-            git commit -m 'build(v5): save browser-verified compact classroom and contrast fixes'
-            git push origin "HEAD:refs/heads/$branch"
-          fi
+          git diff --exit-code
           git rev-parse HEAD > test-results/verified-revision.txt
-      - name: Package exact reviewed working tree and evidence
+      - name: Package exact revision for review
         if: always()
-        run: |
-          mkdir -p test-results
-          git diff --stat > test-results/generated-diff-stat.txt
-          cp /tmp/rizsim-qr-source/qr-source-sha256.txt test-results/ 2>/dev/null || true
-          tar --exclude=.git --exclude=test-results -czf /tmp/rizsim-v5-source.tar.gz .
+        run: git archive --format=tar.gz HEAD -o /tmp/rizsim-v5-source.tar.gz
       - uses: actions/upload-artifact@v4
         if: always()
         with:
