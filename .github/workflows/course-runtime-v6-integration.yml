@@ -1,0 +1,82 @@
+name: Course Runtime V6 Integration
+on:
+  push:
+    branches: ['feat/course-runtime-v6-20261016']
+permissions:
+  contents: write
+concurrency:
+  group: course-v6-integration
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: runtime_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd 'pg_isready -U postgres'
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source transport and integrate bounded adapter
+        run: |
+          python scripts/unpack_course_v6.py
+          python scripts/integrate_course_v6.py
+      - name: JavaScript and established static regression checks
+        run: |
+          node --check rizsim-course-service.js
+          node --check rizsim-course-environment.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_premium_ui_v3.js
+          python scripts/validate_category_release.py
+      - name: Isolated SQL migration and authorization tests
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d runtime_test -v ON_ERROR_STOP=1 -f scripts/sql/runtime_test_schema.sql -f sql/course_runtime_v6.sql -f scripts/sql/runtime_assertions.sql | tee test-results/v6-sql.txt
+      - name: Install pinned isolated browser dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Run original and new browser flows with synthetic backend only
+        run: |
+          python scripts/test_live_classroom_v5.py
+          python scripts/test_live_classroom_v5_extended.py
+          python scripts/test_session_confirmation_v5.py
+          python scripts/test_course_environment_v6.py
+      - name: Commit tested source only to the same development branch
+        run: |
+          git config user.name 'RizSim verification'
+          git config user.email 'rizsimulation@users.noreply.github.com'
+          git add access-out.html rizsim-course-service.js rizsim-course-environment.js rizsim-course-environment.css rizsim-live-classroom.js scripts/fixtures/live-classroom-backend.js scripts/test_course_environment_v6.py scripts/test_live_classroom_v5.py scripts/test_live_classroom_v5_extended.py scripts/sql/runtime_test_schema.sql scripts/sql/runtime_assertions.sql sql/course_runtime_v6.sql edge-functions/rizsim-course-material-stream/index.ts
+          git commit -m 'feat(v6): save tested course environment and resource publication implementation'
+          git push origin HEAD:refs/heads/feat/course-runtime-v6-20261016
+      - name: Package reviewed working tree
+        if: always()
+        run: tar --exclude=.git --exclude=test-results --exclude=.v6-bootstrap -czf /tmp/rizsim-course-v6-source.tar.gz .
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: course-v6-test-evidence
+          path: test-results/
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: course-v6-review-source
+          path: /tmp/rizsim-course-v6-source.tar.gz
+          retention-days: 3
