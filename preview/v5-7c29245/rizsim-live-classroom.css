@@ -1,0 +1,104 @@
+/* V5 compact authenticated workspaces. Public branding, navigation and splash are untouched. */
+#mainNav [data-auth-view="materials"]{display:none!important}
+#authenticatedApp .auth-view{padding-top:28px}
+#authenticatedApp .auth-section-heading,#authenticatedApp .rz-workspace-hero,#authenticatedApp .rz-library-hero{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important;min-height:0!important;margin:0 0 20px!important;overflow:visible}
+#authenticatedApp .auth-section-heading::before,#authenticatedApp .auth-section-heading::after,#authenticatedApp .rz-workspace-hero::before,#authenticatedApp .rz-workspace-hero::after{display:none}
+#authenticatedApp .auth-section-heading h1,#authenticatedApp .rz-workspace-hero h1,#authenticatedApp .rz-library-hero h1{color:#153f4c;font-size:clamp(1.5rem,2.5vw,2rem);line-height:1.2;letter-spacing:-.035em;margin:5px 0 7px}
+#authenticatedApp .auth-section-heading p,#authenticatedApp .rz-workspace-hero p,#authenticatedApp .rz-library-hero p{color:#466570;font-size:.9rem;line-height:1.55;margin:0;max-width:760px}
+#authenticatedApp .rz-workspace-hero .rz-workspace-kicker,#authenticatedApp .rz-library-kicker,#authenticatedApp .rz-library-hero h1 em{color:#176971}
+#authenticatedApp .rz-workspace-shell{padding-block:0 44px}
+#view-classroom>.content-shell>.rz-live-shell{max-width:1180px;margin:0 auto;padding:0 0 44px}
+.rz-live-heading{margin-bottom:14px}
+.rz-live-heading h1{font-size:clamp(1.5rem,2.5vw,2rem);letter-spacing:-.035em;color:#103f4c;margin:5px 0}
+.rz-live-heading p{color:#466570;font-size:.9rem;margin:0}
+.rz-live-breadcrumb{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:0 0 20px;color:#285b65}
+.rz-v5-crumb{border:0;background:none;color:#126774;font-weight:800;font-size:.86rem;cursor:pointer;padding:5px 0}
+.rz-v5-crumb:hover{text-decoration:underline;color:#095869}
+.rz-v5-slash{color:#5b7980}
+.rz-v5-crumb-current{font-weight:750;font-size:.84rem;color:#234c56}
+.rz-live-choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.rz-live-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,245px),1fr));gap:17px}
+.rz-v5-card{box-sizing:border-box;min-width:0;min-height:188px;display:flex;flex-direction:column;align-items:stretch;gap:20px;border:1px solid #b9d5cb;border-radius:19px;padding:22px 20px 17px;background:linear-gradient(140deg,#edf7f2,#dceee7);box-shadow:0 8px 23px rgba(4,61,76,.07);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.rz-v5-card-1{background:linear-gradient(140deg,#fff9eb,#f3e8cf);border-color:#d9c397}
+.rz-v5-card-2{background:linear-gradient(140deg,#f0f7fe,#dfebf6);border-color:#b2ccd9}
+.rz-v5-card-3{background:linear-gradient(140deg,#f5f6ed,#e7edda);border-color:#c4d0aa}
+.rz-v5-card-add{background:linear-gradient(140deg,#fff1d4,#f2dcaa);border:1.5px dashed #aa8038;box-shadow:0 9px 25px rgba(137,96,28,.10)}
+.rz-v5-card:hover,.rz-v5-card:focus-within{transform:translateY(-3px);box-shadow:0 17px 30px rgba(6,58,73,.13);border-color:#579b98}
+.rz-v5-card-copy h3{font-weight:800;letter-spacing:-.022em;font-size:1.12rem;color:#124454;line-height:1.3;margin:0 0 9px;overflow-wrap:anywhere}
+.rz-v5-card-copy p{margin:0;color:#46616b;line-height:1.55;font-size:.86rem;overflow-wrap:anywhere}
+.rz-v5-card-action{display:flex;align-items:center;justify-content:center;text-align:center;box-sizing:border-box;margin-top:auto;align-self:stretch;min-height:42px;padding:10px 12px;border-radius:11px;border:1px solid #086c73;background:linear-gradient(115deg,#0a7277,#0a5d70);color:#fff;text-decoration:none;font:inherit;font-size:.83rem;font-weight:750;cursor:pointer;opacity:0;transform:translateY(7px);pointer-events:none;transition:opacity .22s ease,transform .22s ease,box-shadow .22s ease}
+.rz-v5-card:hover .rz-v5-card-action,.rz-v5-card:focus-within .rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}
+.rz-v5-card-action:hover{color:#fff;box-shadow:0 7px 18px rgba(8,99,107,.22);background:#085b6b}
+.rz-v5-card-add .rz-v5-card-action,.rz-v5-card.is-locked .rz-v5-card-action{border-color:#74541e;background:#805d24}
+.rz-v5-card.is-locked{background:#edf0ee;border-color:#ccd6d1;box-shadow:none}
+.rz-v5-card.is-locked .rz-v5-card-copy h3,.rz-v5-card.is-locked .rz-v5-card-copy p{color:#536661}
+.rz-live-shell [hidden],.rz-v5-hidden,#rzLegacyPlayerPanels,.rz-v5-fixed-selection{display:none!important}
+.rz-live-collection,.rz-live-setup,.rz-live-running{padding:0}
+.rz-live-collection h2,.rz-live-setup h2,.rz-live-running h2{font-size:1.35rem;color:#174754;letter-spacing:-.025em;margin:0 0 18px}
+.rz-live-setup .portal-panel,.rz-live-running .portal-panel{background:#f7fbf8;border:1px solid #b6d2c9;border-radius:17px;box-shadow:0 9px 24px rgba(13,64,75,.06);margin:0!important;min-width:0}
+.rz-live-setup .portal-panel-header,.rz-live-running .portal-panel-header{background:#e4f1eb;border-radius:17px 17px 0 0}
+.rz-live-setup .portal-panel-title,.rz-live-running .portal-panel-title{color:#174754}
+.rz-live-setup .portal-panel-note,.rz-live-running .portal-panel-note{color:#496671}
+.rz-live-running-title{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:15px}
+.rz-live-running-title h2{margin:0}
+#rzLiveJumpResults{border:1px solid #086c73;background:linear-gradient(115deg,#0a7277,#0a5d70);padding:11px 16px;border-radius:10px;font-weight:750;color:#fff;cursor:pointer;white-space:nowrap}
+#rzLiveJumpResults:hover{background:#085b6b;box-shadow:0 7px 18px rgba(14,107,115,.16)}
+#rzLiveSetupMount{max-width:820px}
+#rzLiveRunningMount,#rzLiveResultsAnchor{display:grid;gap:18px;min-width:0}
+#rzLiveResultsAnchor{scroll-margin-top:110px;margin-top:22px}
+#rzLiveResultsAnchor>.portal-panel{border-color:#aac6d7;background:#f3f8fc}
+#rzLiveResultsAnchor>.portal-panel>.portal-panel-header{background:#e1edf6}
+.rz-live-running .classroom-created-card{background:#f3f9f5;border:1px solid #b0cfc4;color:#153f4c;box-shadow:none}
+.rz-live-running .classroom-created-label{color:#265d68}
+.rz-live-running .classroom-created-card h3{color:#123e4c}
+.rz-live-running .classroom-created-card p{color:#466570}
+.rz-live-running .classroom-code-box{background:#e0f1e9;border:1px solid #9dc6b7}
+.rz-live-running .classroom-code-value{color:#104b57}
+.rz-live-running .classroom-link-box{background:#fff;border:1px solid #bdcfd8;color:#174b5c;overflow-wrap:anywhere}
+.rz-v5-empty,.rz-v5-help{padding:17px 20px;border:1px solid #d5c194;border-radius:14px;background:#fff6e5;color:#674e29;font-size:.89rem;line-height:1.6;margin:0 0 17px}
+.rz-live-card-grid>.rz-v5-empty{grid-column:1/-1;margin:0}
+.rz-v5-help.is-error{border-color:#c79788;background:#fff1e9;color:#793c29}
+.rz-v5-course-setup>.portal-panel-header,.rz-v5-course-setup>.table-scroll,.rz-v5-course-setup #courseClassroomCreateArea>.management-card:nth-child(2){display:none}
+.rz-v5-course-setup #courseClassroomCreateArea{grid-template-columns:1fr}
+.rz-v5-course-setup #courseClassroomCreateArea[inert]{opacity:.6;pointer-events:none}
+.rz-v5-course-setup .management-card{background:#fff;border-color:#c3d8ce}
+#rzLiveRunningMount .rz-dropzone{margin:0;background:#edf7f2;border-color:#67a99b;padding:23px}
+#rzLiveRunningMount .rz-dropzone p{color:#486b70}
+.rz-v5-resume,.rz-v5-session-history{margin-top:24px;border:1px solid #bccfd1;border-radius:14px;background:#f5f9f8;padding:15px 18px;color:#234c57}
+.rz-v5-resume summary,.rz-v5-session-history summary{font-size:.88rem;font-weight:750;cursor:pointer}
+.rz-v5-resume-list{display:grid;gap:9px;margin-top:14px}
+.rz-v5-resume-row{display:flex;justify-content:space-between;align-items:center;gap:14px;border-top:1px solid #d8e5e2;padding-top:9px;font-size:.86rem}
+.rz-v5-session-history>.portal-panel{margin-top:14px!important}
+.rz-v5-qr{display:flex;align-items:center;gap:16px;margin:17px 0;padding:14px;background:#fff;border:1px solid #bbcfc7;border-radius:12px}
+.rz-v5-qr svg{display:block;width:160px;height:160px;flex-shrink:0;max-width:100%}
+.rz-v5-qr figcaption{font-size:.86rem;color:#234e59}
+.rz-v5-card-action:focus-visible,.rz-v5-crumb:focus-visible,#rzLiveJumpResults:focus-visible,.rz-v5-resume summary:focus-visible,.rz-v5-session-history summary:focus-visible{outline:3px solid #986d24;outline-offset:4px}
+@media(hover:none),(pointer:coarse){.rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}}
+@media(max-width:700px){.rz-live-choice-grid{grid-template-columns:1fr}.rz-v5-card{min-height:168px}.rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}#authenticatedApp .auth-view{padding-top:20px}.rz-live-running-title{align-items:flex-start;flex-direction:column}.rz-v5-qr{flex-wrap:wrap}.rz-v5-resume-row{align-items:flex-start;flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.rz-v5-card,.rz-v5-card-action{transition:none;transform:none}}
+
+/* V5 contrast regression fix: legacy session panels were designed for dark backgrounds. */
+.rz-live-running .classroom-session-meta{background:#e4f1eb;border:1px solid #bfd5cc;border-radius:10px;padding:12px}
+.rz-live-running .classroom-session-meta span{color:#285e68;font-size:.68rem}
+.rz-live-running .classroom-session-meta strong{color:#143d4b;font-size:.82rem;line-height:1.5}
+.rz-live-running .classroom-created-actions .small-action{color:#164653;background:#fff;border-color:#adc8c8;font-size:.76rem;min-height:36px}
+.rz-live-running .classroom-created-actions .small-action:hover{background:#dcefe9;color:#123e4c}
+.rz-live-running .classroom-created-actions .classroom-end-button{color:#872e22!important;background:#fde7e1!important;border-color:#d1a398!important}
+.rz-live-running .classroom-created-actions .classroom-end-button:hover{background:#f6d5cb!important;color:#6d211a!important}
+.rz-live-setup .management-action,.rz-live-running .management-action,.rz-live-running .rz-action{background:#0a7277;background-image:linear-gradient(115deg,#0a7277,#0a5d70);color:#fff}
+.rz-v5-results-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:12px}
+.rz-v5-results-heading h3{margin:0;color:#174754;font-size:1.1rem}
+.rz-v5-results-heading .rz-action-secondary{font-size:.79rem;white-space:nowrap}
+
+/* RizSim explicit session confirmation: cancel is the initial focus. */
+.rz-session-confirm{width:min(440px,calc(100vw - 40px));box-sizing:border-box;border:1px solid #b6d4cb;border-radius:20px;padding:26px;background:#f7fcf8;color:#173f49;box-shadow:0 24px 70px rgba(12,49,60,.24);font-family:inherit}
+.rz-session-confirm::backdrop{background:rgba(9,35,47,.48);backdrop-filter:blur(4px)}
+.rz-session-confirm h2{margin:0 0 12px;font-size:1.25rem;color:#173f49;letter-spacing:-.025em}
+.rz-session-confirm p{font-size:.9rem;line-height:1.6;color:#345d66}
+.rz-session-confirm .rz-session-confirm-name{font-weight:750;overflow-wrap:anywhere;color:#173f49}
+.rz-session-confirm-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;margin-top:24px}
+.rz-session-confirm button{min-height:44px;padding:10px 15px;border-radius:10px;border:1px solid #9ebfb7;color:#234e58;background:#fff;font:inherit;font-weight:700;cursor:pointer}
+.rz-session-confirm button:hover{background:#e5f0eb}
+.rz-session-confirm .rz-session-confirm-danger{background:#8d352a;border-color:#8d352a;color:white}
+.rz-session-confirm .rz-session-confirm-danger:hover{background:#70291f}
+.rz-session-confirm button:focus-visible{outline:3px solid #98732c;outline-offset:3px}
