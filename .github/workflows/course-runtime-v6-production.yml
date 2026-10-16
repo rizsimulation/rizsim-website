@@ -1,0 +1,28 @@
+name: Course Runtime V6 Production Verification
+on:
+  push:
+    branches: [main]
+    paths: ['access-out.html','rizsim-course-*','rizsim-live-classroom.js','scripts/verify_course_runtime_release.py','.github/workflows/course-runtime-v6-production.yml']
+permissions:
+  contents: read
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare served files to this exact release and check anonymous denial
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_course_runtime_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: course-v6-production-verification
+          path: test-results/
+          retention-days: 3
