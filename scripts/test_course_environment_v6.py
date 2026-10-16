@@ -1,0 +1,146 @@
+"""Actual portal browser tests with synthetic backend. No live logins or paid services."""
+import http.server,json,os,threading
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+import test_live_classroom_v5 as v5
+
+def page(browser,base,role='course_lead',path='',purchased=False,mobile=False):
+ old=v5.MOCK
+ v5.MOCK='window.__testV6Resources=true;window.__testPurchase='+str(purchased).lower()+';\n'+old
+ try:return v5.page_for(browser,base,role,path,mobile=mobile)
+ finally:v5.MOCK=old
+
+def run(browser,base):
+ check=v5.check
+ ctx,p,errors=page(browser,base)
+ v5.mode(p,1);v5.choose(p,'My Marketing Course')
+ p.wait_for_selector('#rzCourseEnvironment .rz-course-columns')
+ check('Course opens a fresh environment, not a simulation setup','live=own-environment' in p.url and p.locator('#rzLiveSetup').is_hidden())
+ check('Simulations on left, resources on right',p.locator('.rz-course-columns>.rz-course-panel').count()==2)
+ check('Multiple included simulation cards',p.locator('[data-rz-run-product]').count()==2)
+ check('Course resources preloaded without a file form',p.locator('.rz-resource-card[data-resource-id]').count()==2 and p.locator('#courseMaterialsCreateArea').is_hidden())
+ p.screenshot(path=str(v5.OUT/'v6-owned-environment.png'),full_page=True)
+ saved=p.locator('[data-resource-id=saved-1]')
+ saved.get_by_role('button',name='Publish to Class',exact=True).click()
+ p.wait_for_selector('#rzRuntimeDialog[open]')
+ check('Saved resource needs confirmation only',p.locator('#rzRuntimeDialog input').count()==0)
+ p.locator('#rzRuntimeDialog').get_by_role('button',name='Publish to Class',exact=True).click()
+ p.wait_for_function('__fixture.materials[0].published_to_class===true')
+ check('Publication confirmed by server response',p.get_by_role('heading',name='Published to class',exact=True).is_visible())
+ p.locator('.rz-dialog-close').click()
+ saved.get_by_role('button',name='Revoke',exact=True).click();p.locator('#rzRuntimeDialog').get_by_role('button',name='Revoke',exact=True).click()
+ p.wait_for_function('__fixture.materials[0].published_to_class===false')
+ check('Revoke preserves the library entry',p.evaluate('__fixture.materials.length')==2)
+ p.locator('.rz-dialog-close').click()
+ p.locator('[data-rz-add-resource]').click()
+ p.locator('#rzRuntimeDialog .rz-composer-link').fill('javascript:alert(1)');p.locator('#rzRuntimeDialog h2').click()
+ p.wait_for_function('document.getElementById("rzRuntimeDialogTitle").textContent==="Check the link"')
+ check('Unsafe link opens a clear validation dialog')
+ p.locator('.rz-dialog-close').click()
+ p.wait_for_selector('#rzRuntimeDialog .rz-composer-link')
+ link=p.locator('#rzRuntimeDialog .rz-composer-link');link.fill('https://example.org/new-reading')
+ p.locator('#rzRuntimeDialog .rz-link-row').get_by_role('button',name='Publish',exact=True).click()
+ check('Metadata form has no repeated URL or file chooser',p.locator('#rzRuntimeDialog .rz-composer-link').count()==0 and p.locator('#rzRuntimeDialog input[type=file]').count()==0)
+ check('Resource types are selectable, not a dropdown',p.locator('#rzRuntimeDialog input[type=radio]').count()==6 and p.locator('#rzRuntimeDialog select').count()==0)
+ p.locator('#rzResourceTitle').fill('New course web resource')
+ p.locator('#rzResourceFinalPublish').click();p.wait_for_function('__fixture.materials.length===3')
+ check('Link adds one library entry and publishes',p.evaluate('__fixture.materials.at(-1).published_to_class') is True)
+ p.locator('.rz-dialog-close').click()
+ p.locator('[data-rz-add-resource]').click()
+ p.locator('#rzRuntimeDialog input[type=file]').set_input_files({'name':'lecture.pdf','mimeType':'application/pdf','buffer':b'%PDF-1.4\nfixture'})
+ p.wait_for_selector('[data-rz-file-publish]:not([disabled])')
+ check('Browse immediately shows filename and icon',p.locator('#rzRuntimeDialog [data-rz-file-caption]').inner_text().startswith('lecture.pdf') and p.locator('#rzRuntimeDialog [data-rz-file-caption] svg').count()==1)
+ p.screenshot(path=str(v5.OUT/'v6-file-selected.png'),full_page=True)
+ p.locator('[data-rz-file-publish]').click();p.locator('#rzResourceTitle').fill('Lecture file')
+ p.evaluate('__fixture.failPublication=true');p.locator('#rzResourceFinalPublish').click()
+ p.wait_for_selector('#rzRuntimeDialog .rz-runtime-error:not([hidden])')
+ check('Failed publication never displays success',p.locator('#rzResourceTitle').is_visible() and p.locator('#rzRuntimeDialogTitle').inner_text()=='Publish resource')
+ uploads=p.evaluate('__fixture.calls.filter(c=>c.kind==="storage"&&c.name==="lecture.pdf").length')
+ p.evaluate('__fixture.failPublication=false');p.locator('#rzResourceFinalPublish').click();p.wait_for_function('__fixture.materials.length===4')
+ check('Retry does not upload twice',p.evaluate('__fixture.calls.filter(c=>c.kind==="storage"&&c.name==="lecture.pdf").length')==uploads)
+ p.screenshot(path=str(v5.OUT/'v6-published-dialog.png'),full_page=True)
+ p.locator('.rz-dialog-close').click()
+ before=p.evaluate('__scrollCalls.length')
+ p.locator('[data-rz-run-product=sim-2]').locator('..').hover();p.locator('[data-rz-run-product=sim-2]').click()
+ p.wait_for_selector('#rzLiveSetup:not([hidden])');p.wait_for_function('document.getElementById("courseClassroomSimulationSelect").value==="sim-2"')
+ check('Course Run preselects the included simulation',p.locator('#courseClassroomSimulationSelect').is_hidden())
+ check('No automatic scroll on course simulation selection',p.evaluate('__scrollCalls.length')==before)
+ p.locator('#courseClassroomSessionName').fill('V6 Course Session');p.locator('#createCourseClassroomSessionButton').click()
+ p.wait_for_selector('#rzLiveRunning:not([hidden])');p.wait_for_selector('.rz-v5-qr svg')
+ check('Course session retains environment and access',p.locator('#rzCourseEnvironment').is_visible())
+ check('No duplicate course upload forms',p.locator('#courseMaterialsCreateArea').is_hidden() and p.locator('#rzClassroomDropZone').is_hidden())
+ p.locator('#rzLiveJumpResults').click()
+ check('Explicit results jump remains available')
+ p.get_by_role('button',name='Course environment',exact=True).click();p.wait_for_selector('#rzCourseEnvironment .rz-course-columns')
+ check('Return to course allows another simulation',p.locator('[data-rz-run-product]').count()==2)
+ check('Owned environment has no uncaught errors',not errors)
+ identity_before=p.evaluate('RizSimFacultyBridge.getSnapshot().userId')
+ check('Snapshot exposes only verified identity for account isolation',bool(identity_before))
+ p.evaluate('''() => {const bridge=RizSimFacultyBridge,old=bridge.getSnapshot;bridge.getSnapshot=()=>({...old(),userId:'another-user',role:'faculty',courses:[]});window.__oldSnapshot=old;RizSimCourseEnvironment.leave();}''')
+ check('Account switch clears saved course content',p.locator('#rzCourseEnvironment').inner_text()=='')
+ check('Account switch drops previous purchased catalogue',p.evaluate('RizSimCourseEnvironment.catalogue().length')==0)
+ p.evaluate('RizSimFacultyBridge.getSnapshot=window.__oldSnapshot')
+
+ v5.close(ctx)
+
+ ctx,p,errors=page(browser,base,'faculty','?live=simulation-running&selection=sim-1&live_session=existing-1#classroom')
+ p.wait_for_selector('#rzStandaloneResources .rz-resource-composer')
+ check('Ordinary Faculty can compose standalone-session resources')
+ zone=p.locator('#rzStandaloneResources .rz-file-zone')
+ zone.evaluate("n=>{const dt=new DataTransfer();dt.items.add(new File(['%PDF-1.4\\nfixture'],'dropped.pdf',{type:'application/pdf'}));n.dispatchEvent(new DragEvent('drop',{bubbles:true,dataTransfer:dt}));}")
+ p.wait_for_selector('[data-rz-file-publish]:not([disabled])')
+ check('Drop shows filename immediately','dropped.pdf' in p.locator('[data-rz-file-caption]').inner_text())
+ p.locator('[data-rz-file-publish]').click();p.locator('#rzResourceTitle').fill('Session handout');p.locator('#rzResourceFinalPublish').click()
+ p.wait_for_function('__fixture.sessionResources.length===1')
+ check('Standalone resource bound only to selected session',p.evaluate('__fixture.sessionResources[0].session_id')=='existing-1')
+ check('Standalone upload has a session-isolated path',p.evaluate('__fixture.calls.some(c=>c.kind==="storage"&&c.path.startsWith("sessions/existing-1/"))'))
+ p.locator('.rz-dialog-close').click()
+ check('Standalone does not expose a reusable course library',p.locator('[data-rz-add-resource]').count()==0)
+ check('Standalone resource flow has no errors',not errors)
+ v5.close(ctx)
+
+ ctx,p,errors=page(browser,base,'faculty',purchased=True)
+ v5.mode(p,2);p.wait_for_function('document.getElementById("rzLiveCards").textContent.includes("Publisher Strategy")')
+ v5.choose(p,'Publisher Strategy Course');p.wait_for_selector('#rzCourseEnvironment .rz-course-columns')
+ check('Purchased course environment requires verified catalogue entry')
+ check('Purchased course has no add/edit/upload controls',p.locator('[data-rz-add-resource]').count()==0 and p.locator('#rzCourseEnvironment input').count()==0)
+ p.locator('[data-resource-id=publisher-resource]').get_by_role('button',name='Publish to Class').click()
+ p.locator('#rzRuntimeDialog').get_by_role('button',name='Publish to Class',exact=True).click();p.wait_for_function('__fixture.purchasedPublished===true')
+ p.locator('.rz-dialog-close').click()
+ check('Purchaser can publish without modifying publisher content',p.evaluate('__fixture.materials.length')==2)
+ p.locator('[data-rz-run-product=sim-1]').locator('..').hover();p.locator('[data-rz-run-product=sim-1]').click();p.wait_for_selector('#rzPurchasedSetup:not([hidden])')
+ p.locator('#rzPurchasedSessionName').fill('Purchased QA');p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
+ p.wait_for_selector('#rzLiveRunning:not([hidden])');p.wait_for_selector('.rz-v5-qr svg')
+ check('Ordinary Faculty runs only included purchased simulation',p.evaluate('__fixture.sessions[0].course_id')=='purchased-1')
+ check('Purchased course never exposes material-add controls',p.locator('[data-rz-add-resource]').count()==0)
+ check('Purchased environment has no browser errors',not errors)
+ v5.close(ctx)
+
+ ctx,p,errors=page(browser,base,'faculty','?live=purchased-environment&selection=course-1#classroom')
+ p.wait_for_selector('#rzLiveCollection:not([hidden])')
+ check('Forged purchase route fails closed',p.locator('#rzCourseEnvironment').is_hidden())
+ v5.close(ctx)
+ ctx,p,errors=page(browser,base,'course_lead',mobile=True)
+ v5.mode(p,1);v5.choose(p,'My Marketing Course');p.wait_for_selector('.rz-course-columns')
+ check('Mobile course screen has no horizontal overflow',p.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+ p.screenshot(path=str(v5.OUT/'v6-course-mobile.png'),full_page=True)
+ check('Touch simulation action is visible',p.locator('[data-rz-run-product]').first.evaluate('n=>getComputedStyle(n).opacity')=='1')
+ v5.close(ctx)
+
+if __name__=='__main__':
+ server=http.server.ThreadingHTTPServer(('127.0.0.1',0),v5.Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
+ try:
+  with sync_playwright() as tool:
+   kwargs={'headless':True}
+   if os.environ.get('RIZSIM_CHROMIUM'):kwargs['executable_path']=os.environ['RIZSIM_CHROMIUM']
+   browser=tool.chromium.launch(**kwargs)
+   try:run(browser,'http://127.0.0.1:'+str(server.server_port))
+   except Exception:
+    for i,ctx in enumerate(v5.contexts):
+     for j,p in enumerate(ctx.pages):
+      try:p.screenshot(path=str(v5.OUT/f'v6-failure-{i}-{j}.png'),full_page=True);(v5.OUT/f'v6-failure-{i}-{j}.html').write_text(p.content())
+      except:pass
+    raise
+   finally:browser.close()
+  (v5.OUT/'v6-summary.json').write_text(json.dumps({'passed':len(v5.checks),'checks':v5.checks,'backend':'synthetic only'},indent=2))
+ finally:server.shutdown()

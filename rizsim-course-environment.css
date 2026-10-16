@@ -1,0 +1,80 @@
+/* Course runtime only. Course builder, student layout and premium site branding are unchanged. */
+.rz-course-environment{margin:0 0 24px;color:#153f4c}
+.rz-course-environment[hidden],.rz-resource-area[hidden],.rz-runtime-dialog [hidden]{display:none!important}
+.rz-course-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+.rz-course-top h2{margin:0 0 5px;font-size:1.4rem;letter-spacing:-.025em}
+.rz-course-top p{margin:0;color:#466570;line-height:1.55;font-size:.86rem}
+.rz-course-columns{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,1fr);gap:22px;align-items:start}
+.rz-course-panel{min-width:0;border:1px solid #bdd3c8;border-radius:18px;padding:20px;background:#f5faf6;box-shadow:0 9px 24px #173f490a}
+.rz-course-panel.resources{background:#fff9ee;border-color:#decea9}
+.rz-course-panel h3,.rz-resource-area h3{font-size:1rem;margin:0 0 7px;color:#153f4c}
+.rz-course-panel .rz-panel-caption,.rz-resource-area .rz-panel-caption{font-size:.8rem;color:#48636d;line-height:1.5;margin:0 0 16px}
+.rz-course-sims{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr));gap:14px}
+.rz-course-sims .rz-v5-card{min-height:170px;padding:18px;gap:16px}
+.rz-course-sims h3{font-size:1rem}
+.rz-course-sims .rz-v5-card-action:disabled{opacity:1;transform:none;pointer-events:none;background:#dde4e0;border-color:#bfcec6;color:#50665e}
+.rz-course-sessions{margin-top:16px;display:grid;gap:10px}
+.rz-runtime-session{background:#e5f0f6;border:1px solid #b8cfdd;border-radius:12px;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rz-runtime-session strong{font-size:.83rem;overflow-wrap:anywhere;display:block}
+.rz-runtime-session small{font-size:.72rem;color:#41616c;display:block;margin-top:3px}
+.rz-runtime-session>div:last-child{display:flex;gap:7px;flex-wrap:wrap}
+.rz-runtime-btn{min-height:38px;border:1px solid #9dbfb5;border-radius:9px;background:#fff;color:#174e59;font:inherit;font-size:.79rem;font-weight:750;padding:8px 12px;cursor:pointer;white-space:normal}
+.rz-runtime-btn.primary{background:#0a6b73;color:#fff;border-color:#0a6b73}
+.rz-runtime-btn.danger{background:#fff0eb;color:#84382a;border-color:#d3a396}
+.rz-runtime-btn:disabled{background:#e4e9e5;color:#596e68;border-color:#c5d2cc;cursor:not-allowed}
+.rz-runtime-btn:hover:not(:disabled){filter:brightness(.95)}
+.rz-runtime-btn:focus-visible,.rz-composer-link:focus-visible,.rz-file-zone:focus-visible,.rz-runtime-dialog input:focus-visible,.rz-runtime-dialog textarea:focus-visible{outline:3px solid #9b7831;outline-offset:3px}
+.rz-resource-list{display:grid;gap:11px}
+.rz-resource-card{display:grid;grid-template-columns:38px minmax(0,1fr);gap:11px;background:#fffef9;border:1px solid #dacaab;border-radius:13px;padding:15px}
+.rz-resource-card.is-published{background:#ecf6f0;border-color:#b5cdbf}
+.rz-resource-icon{width:35px;height:39px;display:grid;place-items:center;color:#176573;flex-shrink:0}
+.rz-resource-icon svg{width:30px;height:32px}
+.rz-resource-card h4{margin:0 0 5px;color:#204754;font-size:.91rem;overflow-wrap:anywhere;line-height:1.4}
+.rz-resource-card p{margin:0;font-size:.76rem;line-height:1.55;color:#4b6368;overflow-wrap:anywhere}
+.rz-resource-actions{grid-column:2;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
+.rz-resource-status{font-size:.69rem;font-weight:750;color:#5c632c}
+.is-published .rz-resource-status{color:#246448}
+.rz-resource-add{border:1.5px dashed #b3924e;background:#fff0ce;cursor:pointer;align-items:center;text-align:left;font:inherit;color:#513f22;min-height:78px}
+.rz-resource-add strong{display:block;font-size:.87rem;color:#5c4520}
+.rz-resource-add small{font-size:.77rem;color:#675637}
+.rz-resource-add svg{color:#886224}
+.rz-resource-area{margin:18px 0;background:#fff9ef;border:1px solid #dbc9a6;border-radius:17px;padding:20px}
+.rz-resource-composer{display:grid;gap:15px;margin:14px 0 18px}
+.rz-link-row{display:flex;gap:10px;align-items:center}
+.rz-link-field{flex:1;min-width:0}
+.rz-link-field label{display:block;margin-bottom:7px;font-size:.79rem;font-weight:750;color:#305961}
+.rz-composer-link{box-sizing:border-box;width:100%;border:1px solid #aac5bc;border-radius:10px;padding:12px;background:#fff;color:#173f49;font:inherit;font-size:.84rem;min-height:44px}
+.rz-link-row>.rz-runtime-btn{margin-top:23px}
+.rz-file-zone{border:1.5px dashed #77a696;border-radius:14px;background:#edf6f0;padding:22px 16px;text-align:center;transition:background .18s,border-color .18s}
+.rz-file-zone.is-over{background:#d7ece1;border-color:#226d62}
+.rz-file-zone p{margin:9px 0 0;font-size:.76rem;color:#49666b}
+.rz-file-zone strong{display:block;margin-bottom:9px;font-size:.87rem;color:#234e57}
+.rz-file-input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;overflow:hidden!important;pointer-events:none!important}
+.rz-file-caption{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #bad0c5;border-radius:11px;padding:11px;min-width:0}
+.rz-file-caption>div{flex:1;min-width:0}
+.rz-file-caption strong{display:block;font-size:.82rem;color:#214a54;overflow-wrap:anywhere}
+.rz-file-caption small{display:block;color:#4b666d;font-size:.73rem;margin-top:3px}
+.rz-composer-note{font-size:.76rem;color:#51666a;line-height:1.55;margin:0}
+.rz-runtime-dialog{box-sizing:border-box;width:min(600px,calc(100vw - 28px));max-height:calc(100dvh - 40px);overflow:auto;padding:27px;border:1px solid #bad1c7;border-radius:21px;background:#f9fcf8;color:#183e48;box-shadow:0 24px 80px #15374444;font-family:inherit}
+.rz-runtime-dialog::backdrop{background:#112f3d88;backdrop-filter:blur(4px)}
+.rz-dialog-close{position:absolute;right:14px;top:12px;width:38px;height:38px;border:1px solid #c7d8cf;border-radius:50%;display:grid;place-items:center;background:#fff;color:#234d57;cursor:pointer}
+.rz-dialog-close svg{width:18px;height:18px}
+.rz-runtime-dialog h2{font-size:1.35rem;margin:0 35px 8px 0;color:#163f4c;letter-spacing:-.025em}
+.rz-runtime-dialog .rz-dialog-description{font-size:.87rem;line-height:1.65;color:#47636d;margin:0 0 20px;overflow-wrap:anywhere}
+.rz-runtime-dialog label{display:block;font-size:.82rem;font-weight:700;margin-bottom:8px;color:#294e58}
+.rz-runtime-dialog input:not([type=radio]):not([type=file]),.rz-runtime-dialog textarea{box-sizing:border-box;width:100%;padding:12px;border:1px solid #b5cdc1;border-radius:10px;background:#fff;color:#173f49;font:inherit;font-size:.86rem;margin-bottom:17px}
+.rz-runtime-dialog textarea{min-height:83px;resize:vertical}
+.rz-runtime-dialog fieldset{padding:0;border:0;margin:0 0 18px}
+.rz-runtime-dialog legend{font-size:.82rem;font-weight:750;margin-bottom:10px}
+.rz-selectable-options{display:flex;flex-wrap:wrap;gap:8px}
+.rz-selectable-options label{display:flex;align-items:center;gap:7px;padding:10px 12px;margin:0;border:1px solid #c5d3c6;border-radius:10px;background:#fff;cursor:pointer;font-size:.78rem;font-weight:650}
+.rz-selectable-options label:has(input:checked){border-color:#3d8474;background:#dcefe4;color:#164f4b}
+.rz-selectable-options input{accent-color:#0a6b73}
+.rz-dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+.rz-runtime-error{border:1px solid #d7aa9c;background:#fff0e9;color:#773626;font-size:.82rem;line-height:1.55;padding:13px;border-radius:10px;margin-bottom:15px}
+.rz-success-icon{width:56px;height:56px;margin:4px 0 18px;border:1px solid #a3c8b1;border-radius:50%;background:#ddefe3;color:#1b6748;display:grid;place-items:center}
+.rz-success-icon svg{width:28px;height:28px}
+.rz-purchased-setup{background:#f7fbf8;border:1px solid #b6d2c9;border-radius:17px;padding:24px;max-width:780px}
+.rz-runtime-loading{padding:22px;border:1px solid #c5d8ce;border-radius:14px;background:#f1f6f1;color:#42646b;font-size:.85rem}
+@media(max-width:850px){.rz-course-columns{grid-template-columns:1fr}.rz-course-top{flex-wrap:wrap}.rz-course-panel{padding:16px}.rz-link-row{align-items:stretch}.rz-runtime-dialog{padding:23px 19px}.rz-file-caption{flex-wrap:wrap}.rz-file-caption .rz-runtime-btn{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){.rz-file-zone{transition:none}}
