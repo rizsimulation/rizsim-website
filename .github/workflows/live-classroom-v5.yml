@@ -1,0 +1,38 @@
+name: Live Classroom V5 Verification
+on:
+  push:
+    branches: ["feat/live-classroom-compact-v5-20261015"]
+  pull_request:
+    paths:
+      - "access-out.html"
+      - "rizsim-live-classroom*"
+      - "rizsim-faculty-workspaces*"
+      - "scripts/**"
+      - ".github/workflows/live-classroom-v5.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: JavaScript syntax
+        run: |
+          node --check rizsim-live-classroom.js
+          node --check rizsim-faculty-workspaces.js
+      - name: Established continuity and category regression checks
+        run: |
+          node scripts/validate_session_continuity.js
+          python3 scripts/validate_category_release.py
+      - name: Package this exact revision for isolated review
+        if: always()
+        run: git archive --format=tar.gz HEAD -o /tmp/rizsim-v5-source.tar.gz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-v5-review-source
+          path: /tmp/rizsim-v5-source.tar.gz
+          retention-days: 3
