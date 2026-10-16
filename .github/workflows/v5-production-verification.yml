@@ -1,0 +1,41 @@
+name: V5 Production Asset Verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'access-out.html'
+      - 'rizsim-live-classroom*'
+      - 'rizsim-faculty-workspaces.js'
+      - 'rizsim-session-confirmation.js'
+      - 'rizsim-qr.js'
+      - 'scripts/verify_live_classroom_release.py'
+      - '.github/workflows/v5-production-verification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: v5-production-asset-verification
+  cancel-in-progress: true
+jobs:
+  verify-live:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare public production bytes with this exact release
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_live_classroom_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-v5-production-verification
+          path: test-results/production-verification.json
+          retention-days: 3
