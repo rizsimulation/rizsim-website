@@ -7,7 +7,7 @@ let pendingCourse="",confirmedCourse="";
 const e=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n};
 const bridge=()=>window.RizSimFacultyBridge;
 const snapshot=()=>{try{return bridge()?.getSnapshot()}catch(_){return null}};
-const visibility=()=>$("view-classroom")?.classList.contains("active");
+
 const freshUrl=()=>{try{return new URL(location.href)}catch(_){return null}};
 function navigate(nextMode,nextStage,item){
  mode=nextMode||"";stage=nextStage||"menu";selection=item||"";
@@ -17,7 +17,7 @@ function navigate(nextMode,nextStage,item){
  u.hash="classroom";history.pushState(null,"",u.pathname+u.search+u.hash);}
  draw();
  // User explicitly requested no automatic scroll on selection.
- window.scrollTo({top:0,behavior:"instant"});
+
 }
 function back(){
  if(stage==="running"||stage==="setup")navigate(mode,"list");
@@ -57,7 +57,7 @@ function collection(){
  $("rzLiveCollectionTitle").textContent=types[mode]||"Choose an experience";
  let arr=[];
  if(mode==="simulation")arr=s?.licensed||[];
- if(mode==="own")arr=(s?.courses||[]).filter(x=>x.active===true);
+ if(mode==="own"&&s?.role==="course_lead")arr=(s?.courses||[]).filter(x=>x.active===true);
  // There is currently no licensed, ready-made RizSim course catalogue/RPC.
  // Display an honest empty state rather than treating a Course Lead course as purchased.
  if(mode==="purchased")arr=[];
@@ -69,7 +69,8 @@ function collection(){
  const destination=mode==="own"?"courses":"home";
  grid.append(card(addText,mode==="own"?"Open your Courses workspace to build another course.":"Browse available RizSim categories on Home.",()=>{
   // Existing validated navigation handler is reused; no separate auth.
-  document.querySelector('#mainNav [data-auth-view="'+destination+'"]')?.click();
+  const link=document.querySelector('#mainNav [data-auth-view="'+destination+'"]');
+  if(link)link.click();else document.querySelector('[data-auth-view="'+destination+'"]')?.click();
  },arr.length,true));
  if(arr.length===0){
   const warning=e("div","rz-v5-empty",mode==="purchased"?"You have no ready-made RizSim courses licensed to this account yet.":"No eligible experiences have been found for this account.");
@@ -89,8 +90,9 @@ function mount(){
  const out=$("rzLiveSetupMount"),run=$("rzLiveRunningMount");
  if(createPanel&&out)out.append(createPanel);
  if(run){[accessPanel,roster,rows].forEach(n=>{if(n)run.append(n)});}
- const results=$("view-results")?.querySelector(".content-shell")||$("view-classroom")?.querySelector(".rz-player-results");
- if(results){const area=$("rzLiveResultsAnchor");area.append(results);area.id="rzLiveResultsAnchor";}
+ // Keep global Records/Results views in place: their presenters still own them.
+ const results=$("view-classroom")?.querySelector(".rz-player-results");
+ if(results&&!$("rzLiveResultsAnchor").contains(results))$("rzLiveResultsAnchor").append(results);
  mounted=true;
 }
 function setup(){
@@ -101,11 +103,11 @@ function setup(){
   if(!product){navigate(mode,"list");return}
   $("rzLiveSetupTitle").textContent=product.title||"Create a session";
   const pick=$("classroomSimulationSelect");
-  if(pick&&Array.from(pick.options).some(o=>o.value===selection)){
+  if(pick&&pick.value!==selection&&Array.from(pick.options).some(o=>o.value===selection)){
    pick.value=selection;pick.dispatchEvent(new Event("change",{bubbles:true}));
   }
   const form=$("classroomCreateForm");if(form)form.hidden=false;
-  const unavailable=$("classroomCreateUnavailable");if(unavailable)unavailable.hidden=true;
+  // Existing license check continues to control form availability.
   // Keep original form and privileged session-creation handler unchanged.
  } else {
   const course=(s?.courses||[]).find(x=>String(x.course_id)===selection);
@@ -113,7 +115,12 @@ function setup(){
   $("rzLiveSetupTitle").textContent=course.title||"Create a class";
   const target=$("rzLiveSetupMount"), existing=$("courseClassroomPanel");
   if(existing&&target&&!target.contains(existing))target.append(existing);
-  if(confirmedCourse!==selection&&pendingCourse!==selection){\n   const requested=selection;pendingCourse=requested;\n   Promise.resolve(bridge()?.selectCourse(requested)).then(()=>{\n    if(pendingCourse===requested){confirmedCourse=requested;pendingCourse="";if(selection===requested&&stage==="setup")draw();}\n   }).catch(()=>{if(pendingCourse===requested)pendingCourse="";});\n  }
+  if(confirmedCourse!==selection&&pendingCourse!==selection){
+   const requested=selection;pendingCourse=requested;
+   Promise.resolve(bridge()?.selectCourse(requested)).then(()=>{
+    if(pendingCourse===requested){confirmedCourse=requested;pendingCourse="";if(selection===requested&&stage==="setup")draw();}
+   }).catch(()=>{if(pendingCourse===requested)pendingCourse="";});
+  }
  }
 }
 function running(){
@@ -122,14 +129,16 @@ function running(){
   const material=$("courseMaterialsPanel");
   const anchor=$("rzLiveRunningMount");
   if(material&&anchor&&!anchor.contains(material))anchor.append(material);
-  material.hidden=false;
+  if(material)material.hidden=false;
   const drop=$("rzClassroomDropZone");
   if(drop&&anchor&&!anchor.contains(drop))anchor.append(drop);
  }
  $("rzLiveResultsAnchor").hidden=false;
 }
 function draw(){
- const active=snapshot();if(!active)return;\n if(mode==="own"&&active.role!=="course_lead"){mode="";stage="menu";selection="";}\n if(mode==="purchased"&&(stage==="setup"||stage==="running")){stage="list";selection="";}
+ const active=snapshot();if(!active)return;
+ if(mode==="own"&&active.role!=="course_lead"){mode="";stage="menu";selection="";}
+ if(mode==="purchased"&&(stage==="setup"||stage==="running")){stage="list";selection="";}
  const live=$("view-classroom");if(!live)return;
  const [choice,list,form,run]=["rzLiveChoices","rzLiveCollection","rzLiveSetup","rzLiveRunning"].map($);
  if(!choice||!list||!form||!run)return;
@@ -143,6 +152,7 @@ function draw(){
  if(stage==="list")collection();
  if(stage==="setup")setup();
  if(stage==="running")running();
+ const jump=$("rzLiveJumpResults");if(jump)jump.hidden=stage!=="running";
 }
 function init(){
  if(ready||!snapshot()||!$("rzLiveChoices"))return;
