@@ -19,7 +19,7 @@ jobs:
           POSTGRES_DB: runtime_test
         ports: ['5432:5432']
         options: >-
-          --health-cmd 'pg_isready -U postgres'
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +33,7 @@ jobs:
         run: |
           python scripts/unpack_course_v6.py
           python scripts/integrate_course_v6.py
+          if test -f scripts/repair_course_v6.py; then python scripts/repair_course_v6.py; fi
       - name: JavaScript and established static regression checks
         run: |
           node --check rizsim-course-service.js
@@ -63,6 +64,7 @@ jobs:
           git config user.name 'RizSim verification'
           git config user.email 'rizsimulation@users.noreply.github.com'
           git add access-out.html rizsim-course-service.js rizsim-course-environment.js rizsim-course-environment.css rizsim-live-classroom.js scripts/fixtures/live-classroom-backend.js scripts/test_course_environment_v6.py scripts/test_live_classroom_v5.py scripts/test_live_classroom_v5_extended.py scripts/sql/runtime_test_schema.sql scripts/sql/runtime_assertions.sql sql/course_runtime_v6.sql edge-functions/rizsim-course-material-stream/index.ts
+          if git diff --cached --quiet; then exit 0; fi
           git commit -m 'feat(v6): save tested course environment and resource publication implementation'
           git push origin HEAD:refs/heads/feat/course-runtime-v6-20261016
       - name: Package reviewed working tree
