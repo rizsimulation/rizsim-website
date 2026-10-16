@@ -70,6 +70,7 @@ jobs:
           python scripts/test_session_confirmation_v5.py
           python scripts/test_course_environment_v6.py
           python scripts/test_course_authoring_v7.py
+          python scripts/test_authoring_touch_v7.py
           git diff --exit-code
           git rev-parse HEAD > test-results/verified-revision.txt
       - uses: actions/upload-artifact@v4
