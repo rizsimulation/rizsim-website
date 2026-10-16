@@ -216,6 +216,7 @@
     const hasResults = (s.submissions || []).some(x => text(x.classroom_session_id) === text(session.session_id));
     const filter = $(prefix + 'SessionFilter'), available = Array.from(filter?.options || []).some(o => o.value === text(session.session_id));
     panel.classList.toggle('rz-v5-hidden',!available);
+    const empty = $('rzLiveNoResults'); if (empty.parentNode.lastElementChild !== empty) empty.parentNode.append(empty);
     $('rzLiveNoResults').hidden = available;
     $('rzLiveNoResults').textContent = hasResults && !available ? 'Results for this session are not loaded yet. Refresh the page to retrieve the latest authorized submissions.' : 'No submitted responses are available for this session yet. Student progress is shown above.';
     const key = route.mode + ':' + session.session_id;
@@ -320,6 +321,13 @@
     const title = $('rzLiveRunning').querySelector('h2'); title.id = 'rzLiveSessionTitle';
     const notice = el('p','rz-v5-empty'); notice.id = 'rzLiveSessionNotice'; notice.hidden = true; $('rzLiveRunningMount').before(notice);
     const noResults = el('p','rz-v5-empty'); noResults.id = 'rzLiveNoResults'; noResults.hidden = true; $('rzLiveResultsAnchor').append(noResults);
+    const resultsHeading = el('div','rz-v5-results-heading');
+    const refresh = button('Refresh results','rz-action-secondary',() => location.reload());
+    refresh.id = 'rzLiveRefreshResults';
+    refresh.title = 'Reload this session to retrieve the latest authorized submissions';
+    resultsHeading.append(el('h3','','Session results'),refresh);
+    $('rzLiveResultsAnchor').before(resultsHeading);
+
     $('rzLiveJumpResults').addEventListener('click',() => $('rzLiveResultsAnchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'}));
     for (const [id,mode] of [['createClassroomSessionButton','simulation'],['createCourseClassroomSessionButton','own']]) {
       $(id)?.addEventListener('click',() => {

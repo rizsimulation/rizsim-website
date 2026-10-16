@@ -76,3 +76,16 @@
 @media(hover:none),(pointer:coarse){.rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}}
 @media(max-width:700px){.rz-live-choice-grid{grid-template-columns:1fr}.rz-v5-card{min-height:168px}.rz-v5-card-action{opacity:1;transform:none;pointer-events:auto}#authenticatedApp .auth-view{padding-top:20px}.rz-live-running-title{align-items:flex-start;flex-direction:column}.rz-v5-qr{flex-wrap:wrap}.rz-v5-resume-row{align-items:flex-start;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.rz-v5-card,.rz-v5-card-action{transition:none;transform:none}}
+
+/* V5 contrast regression fix: legacy session panels were designed for dark backgrounds. */
+.rz-live-running .classroom-session-meta{background:#e4f1eb;border:1px solid #bfd5cc;border-radius:10px;padding:12px}
+.rz-live-running .classroom-session-meta span{color:#285e68;font-size:.68rem}
+.rz-live-running .classroom-session-meta strong{color:#143d4b;font-size:.82rem;line-height:1.5}
+.rz-live-running .classroom-created-actions .small-action{color:#164653;background:#fff;border-color:#adc8c8;font-size:.76rem;min-height:36px}
+.rz-live-running .classroom-created-actions .small-action:hover{background:#dcefe9;color:#123e4c}
+.rz-live-running .classroom-created-actions .classroom-end-button{color:#872e22!important;background:#fde7e1!important;border-color:#d1a398!important}
+.rz-live-running .classroom-created-actions .classroom-end-button:hover{background:#f6d5cb!important;color:#6d211a!important}
+.rz-live-setup .management-action,.rz-live-running .management-action,.rz-live-running .rz-action{background:#0a7277;background-image:linear-gradient(115deg,#0a7277,#0a5d70);color:#fff}
+.rz-v5-results-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:12px}
+.rz-v5-results-heading h3{margin:0;color:#174754;font-size:1.1rem}
+.rz-v5-results-heading .rz-action-secondary{font-size:.79rem;white-space:nowrap}
