@@ -3626,6 +3626,7 @@ border-color:#315b92;
 <script src="rizsim-session-continuity.js" defer></script>
 <link rel="stylesheet" href="rizsim-faculty-workspaces.css">
 <link rel="stylesheet" href="rizsim-live-classroom.css">
+<link rel="stylesheet" href="rizsim-course-environment.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -9748,6 +9749,7 @@ aria-hidden="true"
 
 </div>
 <script src="rizsim-session-confirmation.js"></script>
+<script src="rizsim-course-service.js"></script>
 <script type="module">
 
 import {
@@ -32747,11 +32749,17 @@ verifyAccess();
 
 
 window.RizSimFacultyBridge={
- getSnapshot:()=>({role:currentMembership?.role||null,products:products.slice(),licences:myLicenseCatalogue.slice(),submissions:submissions.slice(),sessions:classroomSessions.slice(),courses:courses.slice(),selectedCourseId,courseMaterials:courseMaterials.slice(),licensed:getActiveLicensedSimulations()}),
+ getSnapshot:()=>({userId:currentUser?.id||null,role:currentMembership?.role||null,products:products.slice(),licences:myLicenseCatalogue.slice(),submissions:submissions.slice(),sessions:classroomSessions.slice(),courses:courses.slice(),selectedCourseId,courseMaterials:courseMaterials.slice(),courseSimulations:selectedCourseSimulations.slice(),courseSessions:courseClassroomSessions.slice(),licensed:getActiveLicensedSimulations()}),
  viewResponses:id=>openResponses(id),
  selectCourse:async id=>{await openCourseManager(id);return getSelectedCourse()},
  refresh:()=>{renderClassroom();renderResults();window.RizSimFacultyWorkspace?.render()}
 };
+window.RizSimFacultyBridge.runtime=window.createRizSimCourseService({
+ client:supabase,
+ snapshot:()=>window.RizSimFacultyBridge.getSnapshot(),
+ refresh:async()=>{await reloadClassroomSessions();renderClassroom();renderResults();},
+ closeSession:id=>closeClassroomSession(id)
+});
 </script>
 
 <!-- =========================================================
@@ -32841,6 +32849,7 @@ Complete
 </div>
   
 <script src="rizsim-faculty-workspaces.js" defer></script>
+<script src="rizsim-course-environment.js" defer></script>
 <script src="rizsim-live-classroom.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
