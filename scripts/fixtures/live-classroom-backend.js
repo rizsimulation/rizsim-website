@@ -17,7 +17,45 @@ const licenses=products.map(p=>({product_id:p.id,license_status:p.id==='sim-revo
 function query(table){let filters=[],single=false,write=null;const chain={select(){return chain},order(){return chain},eq(k,v){filters.push([k,v]);return chain},in(){return chain},limit(){return chain},maybeSingle(){single=true;return chain},single(){single=true;return chain},upsert(v){write=v;return chain},insert(v){write=v;return chain},update(v){write=v;return chain},then(resolve,reject){return Promise.resolve().then(()=>{state.calls.push({kind:'table',table,write});if(write&&table==='rizsim_course_materials'){state.materials.push({id:'material-'+state.materials.length,...write,active:true,created_at:start});return ok(null)}
 const rows={profiles:[{id:user.id,display_name:'QA Faculty',email:user.email,account_status:'active',created_at:start}],access_out_members:[{user_id:user.id,role,active:true,created_at:start}],categories:[{id:'cat-1',name:'Learning',slug:'learning',active:true}],products,simulation_license_options:[],rizsim_course_materials:state.materials,rizsim_session_resources:state.sessionResources,simulation_responses:[{question_key:'q1',response_data:{question:'What did you decide?',answer:'Evidence-based decision'},created_at:start}]}[table]||[];
 const data=rows.filter(x=>filters.every(([k,v])=>x[k]===undefined||x[k]===v));return ok(single?(data[0]||null):data);}).then(resolve,reject)}};return chain;}
+// V7 isolated authoring fixtures. Never included in application assets.
+state.authorCourses=courses;state.authorSims={};state.authorRev={};state.authorReceipts={};state.authorSaveFail=false;
+for(const c of courses){state.authorRev[c.course_id]=1;state.authorSims[c.course_id]=[{product_id:c.course_id==='course-1'?'sim-2':'sim-1',title:c.course_id==='course-1'?'Attention Lab':'Decision Lab',description:'Included activity'}];}
+function authorData(id){const c=courses.find(c=>c.course_id===id&&!c.deleted);if(!c)return null;return {...c,revision:'rev-'+state.authorRev[id],can_edit:c.active,description:c.description||'',simulations:clone(state.authorSims[id]||[]),resources:clone(state.materials.filter(m=>m.course_id===id&&m.active!==false))};}
+async function authorRPC(name,args){
+ if(role!=='course_lead')return {data:null,error:{message:'Active Course Lead access is required.'}};
+ if(name==='get_my_rizsim_course_authoring'){
+  if(state.authorLoadFail)return {data:null,error:{message:'Fixture: authoring read failed'}};
+  if(state.authorDelay)await new Promise(r=>setTimeout(r,state.authorDelay));
+  if(!args.p_course_id)return ok(courses.filter(c=>!c.deleted));
+  const data=authorData(args.p_course_id);return data?ok(data):{data:null,error:{message:'Course not found in your created courses.'}};
+ }
+ if(name==='prepare_rizsim_course_authoring')return ok({course_id:args.p_course_id});
+ if(name==='save_my_rizsim_course_authoring'){
+  if(state.authorSaveFail)return {data:null,error:{message:'Fixture: save rejected, draft preserved'}};
+  if(state.authorReceipts[args.p_request_id])return ok(state.authorReceipts[args.p_request_id]);
+  const old=authorData(args.p_course_id),p=args.p_data;
+  if(old&&args.p_expected_revision!==old.revision)return {data:null,error:{message:'This course changed in another workspace. Reload before saving.'}};
+  if(p.simulations.includes('sim-revoked'))return {data:null,error:{message:'Active simulation licence required'}};
+  let c=courses.find(c=>c.course_id===args.p_course_id);
+  if(!c){c={course_id:args.p_course_id,title:p.title,description:p.description,active:true};courses.push(c);state.authorRev[c.course_id]=0;}
+  c.title=p.title;c.description=p.description;state.authorRev[c.course_id]++;
+  state.authorSims[c.course_id]=p.simulations.map(id=>({product_id:id,title:products.find(x=>x.id===id).title,description:'Included activity'}));
+  state.materials.filter(r=>r.course_id===c.course_id&&!p.keep_resources.includes(r.id)).forEach(r=>{r.active=false;r.published_to_class=false;});
+  p.new_resources.forEach(r=>state.materials.push({...r,course_id:c.course_id,published_to_class:false,active:true}));
+  const result=authorData(c.course_id);state.authorReceipts[args.p_request_id]=clone(result);
+  if(state.authorLostResponse){state.authorLostResponse=false;return {data:null,error:{message:'Fixture: response lost after commit'}};}
+  return ok(result);
+ }
+ if(name==='delete_my_rizsim_course_authoring'){
+  const c=courses.find(c=>c.course_id===args.p_course_id);
+  if(state.sessions.some(s=>s.course_id===args.p_course_id&&s.active))return {data:null,error:{message:'This course has open sessions. End them in Live Classroom before deleting.'}};
+  c.deleted=true;c.active=false;return ok({course_id:c.course_id,deleted:true});
+ }
+ return {data:null,error:{message:'Unknown authoring operation'}};
+}
+
 async function rpc(name,args={}){state.calls.push({kind:'rpc',name,args});
+if(['get_my_rizsim_course_authoring','prepare_rizsim_course_authoring','save_my_rizsim_course_authoring','delete_my_rizsim_course_authoring'].includes(name))return authorRPC(name,args);
 if(name==='get_rizsim_session_runtime_scope'){const x=state.sessions.find(x=>x.session_id===args.p_session_id);return x?ok({mode:x.course_id==='purchased-1'?'purchased':x.course_id&&role==='course_lead'?'own':'simulation',selection:x.course_id||x.product_id}):{data:null,error:{message:'Session not available'}};}
 if(name==='get_my_rizsim_purchased_courses')return ok(state.purchased?[{course_id:'purchased-1',title:'Publisher Strategy Course',description:'Complete publisher course',active:true}]:[]);
 if(name==='get_rizsim_course_runtime'){
