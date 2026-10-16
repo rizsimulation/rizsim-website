@@ -129,6 +129,18 @@ def run(browser,base):
   check('Delayed material response closes its blank window after sign-out',child.is_closed() and not errors)
  finally:ctx.close()
 
+
+ ctx,p,errors=open_page(browser,base)
+ try:
+  p.evaluate("__studentFixture.allowNewJoin=true;__studentFixture.sessions.push({...__studentFixture.sessions[0],session_id:'session-new',class_code:'NEWP1234',class_name:'Freshly joined class'});__studentFixture.materials.push({...__studentFixture.materials[0],material_id:'material-new',course_id:'session-new',title:'New class handout'})")
+  nav(p,'player');p.locator('#classCodeInput').fill('NEWP1234');p.locator('#findClassButton').click();p.wait_for_selector('[data-join-access=practice]')
+  p.locator('[data-join-access=practice]').click();p.wait_for_selector('[data-launch-attempt]')
+  p.locator('#rzStudentPlayerMaterials .rz-st-resource-card').filter(has_text='New class handout').wait_for(timeout=5000)
+  check('First-time join immediately reveals its authorized class resources')
+  nav(p,'practice');p.wait_for_selector('[data-practice-attempt="attempt-new"]',timeout=5000)
+  check('First-time join immediately appears in Practice without manual refresh',not errors)
+ finally:ctx.close()
+
 if __name__=='__main__':
  server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
  try:

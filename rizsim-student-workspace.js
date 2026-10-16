@@ -27,6 +27,7 @@
  function date(v){const n=time(v);return n===null?'Not recorded':new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(n);}
  function progress(v){return Math.max(0,Math.min(100,Number(v)||0));}
  const complete=a=>a.status==='submitted'||!!a.submitted_at;
+ let refreshQueued=false;
  let ready=false, identity='', epoch=0, inFlight=null, data=null, error='', lastFetched=0, baseServer=0, baseMonotonic=0;
  let historyFilter='all', historySearch='', lastPhase='', actionBusy=false, dialogSerial=0;
  const now=()=>baseServer ? baseServer+(performance.now()-baseMonotonic):Date.now();
@@ -189,10 +190,11 @@
   const materials=el('section','rz-st-materials');materials.id='rzStudentPlayerMaterials';materials.hidden=true;target.querySelector('.content-shell').append(materials);
  }
  function render(){if(!ready)return;renderPractice();renderHistory();renderLibrary();renderMaterials();}
+ function attemptRevision(rows){return (rows||[]).map(a=>[a.id,a.status,progress(a.progress_percent),a.classroom_access_type||'',time(a.last_activity_at)||0,time(a.submitted_at)||0].join('|')).sort().join(';');}
  async function refresh(force=false){
   const snap=bridge()?.snapshot();if(!snap?.userId||snap.profile?.account_status!=='active')return;
   if(identity!==snap.userId){clear();identity=snap.userId;}
-  if(inFlight)return inFlight;if(!force&&Date.now()-lastFetched<15000)return;
+  if(inFlight){if(force)refreshQueued=true;return inFlight;}if(!force&&Date.now()-lastFetched<15000)return;
   const myEpoch=epoch,who=identity;error='';
   inFlight=(async()=>{try{
    const result=await bridge().workspace();
@@ -200,10 +202,10 @@
    if(!result||!Array.isArray(result.attempts)||time(result.server_time)===null)throw new Error('The learning response could not be verified.');
    data=result;baseServer=time(result.server_time);baseMonotonic=performance.now();lastFetched=Date.now();
   }catch(e){if(myEpoch===epoch)error=e.message||'Unable to load learning';}
-  finally{if(myEpoch===epoch){inFlight=null;render();}}})();
+  finally{if(myEpoch===epoch){inFlight=null;render();if(refreshQueued){refreshQueued=false;queueMicrotask(()=>refresh(true));}}}})();
   render();return inFlight;
  }
- function clear(){epoch++;identity='';data=null;inFlight=null;error='';lastFetched=0;baseServer=0;baseMonotonic=0;historySearch='';historyFilter='all';lastPhase='';actionBusy=false;
+ function clear(){epoch++;refreshQueued=false;identity='';data=null;inFlight=null;error='';lastFetched=0;baseServer=0;baseMonotonic=0;historySearch='';historyFilter='all';lastPhase='';actionBusy=false;
   document.querySelectorAll('.rz-st-dialog[open]').forEach(n=>n.close());
   for(const id of ['rzStudentPractice','rzStudentHistory','rzStudentSimulationLibrary','rzStudentLibraryMaterials','rzStudentPlayerMaterials'])$(id)?.replaceChildren();
  }
@@ -218,7 +220,7 @@
   $('view-simulations').setAttribute('inert','');$('view-account').setAttribute('inert','');
   document.addEventListener('click',e=>{if(e.target.closest?.('#siteSidebar [data-rz-account]')){e.preventDefault();e.stopImmediatePropagation();openAccount();}},true);
   window.addEventListener('rizsim:student-ready',()=>refresh(true));
-  window.addEventListener('rizsim:student-data',()=>{refresh();renderMaterials();});
+  window.addEventListener('rizsim:student-data',()=>{const snap=bridge()?.snapshot();refresh(!data||attemptRevision(snap?.attempts)!==attemptRevision(data.attempts));renderMaterials();});
   window.addEventListener('rizsim:student-view',()=>{refresh();render();});
   window.addEventListener('rizsim:student-cleared',clear);
   window.addEventListener('pageshow',e=>{if(e.persisted){refresh(true);bridge()?.refresh();}});
