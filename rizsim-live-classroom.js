@@ -1,176 +1,356 @@
-/* RizSim V5 | Unified Live Classroom, presentation only; permissions and session RPCs unchanged */
-(function(){
-"use strict";
-const $=id=>document.getElementById(id);
-let mode="",stage="menu",selection="",mounted=false,ready=false;
-let pendingCourse="",confirmedCourse="";
-const e=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n};
-const bridge=()=>window.RizSimFacultyBridge;
-const snapshot=()=>{try{return bridge()?.getSnapshot()}catch(_){return null}};
-
-const freshUrl=()=>{try{return new URL(location.href)}catch(_){return null}};
-function navigate(nextMode,nextStage,item){
- mode=nextMode||"";stage=nextStage||"menu";selection=item||"";
- const u=freshUrl();
- if(u){if(mode)u.searchParams.set("live",mode+"-"+stage);else u.searchParams.delete("live");
- if(selection)u.searchParams.set("selection",selection);else u.searchParams.delete("selection");
- u.hash="classroom";history.pushState(null,"",u.pathname+u.search+u.hash);}
- draw();
- // User explicitly requested no automatic scroll on selection.
-
-}
-function back(){
- if(stage==="running"||stage==="setup")navigate(mode,"list");
- else if(stage==="list")navigate("","menu");
- else navigate("","menu");
-}
-function button(label,cls,click){const b=e("button",cls,label);b.type="button";b.addEventListener("click",click);return b}
-function card(title,description,callback,index,add=false){
- const box=e("article","rz-v5-card"+(add?" rz-v5-card-add":" rz-v5-card-"+(index%4))),top=e("div","rz-v5-card-copy");
- top.append(e("h3",null,title),e("p",null,description));
- const cta=button(add?"+  "+(title.replace(/^Add /,"Add ")):"Select "+(mode==="simulation"?"Simulation":"Course"),"rz-v5-card-action",callback);
- box.append(top,cta);box.tabIndex=0;
- box.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();callback()}});
- return box;
-}
-function options(){
- const grid=$("rzLiveChoices");grid.replaceChildren();
- const s=snapshot(),lead=s?.role==="course_lead";
- const data=[
-  ["simulation","Run Simulation","Choose from licensed interactive simulations."],
-  ["own","Run My Own Course","Run a course you have built as a Course Lead."],
-  ["purchased","Run Purchased Course","Run a complete ready-made RizSim course."]
- ];
- data.forEach(([key,title,subtitle],i)=>{
-  const wrap=e("article","rz-v5-choice rz-v5-choice-"+key+(key==="own"&&!lead?" is-locked":""));
-  const body=e("div","rz-v5-card-copy");body.append(e("h3",null,title),e("p",null,subtitle));
-  wrap.append(body,button(key==="own"&&!lead?"Become a Course Lead":"Explore","rz-v5-card-action",()=>{
-    if(key==="own"&&!lead){const el=$("rzLiveHelp");el.hidden=false;el.textContent="Course-building access is available through RizSim Course Lead membership. Contact RizSim to request an upgrade.";return;}
-    navigate(key,"list");
-  }));
-  grid.append(wrap);
- });
-}
-function collection(){
- const s=snapshot();const grid=$("rzLiveCards");grid.replaceChildren();
- const types={simulation:"Licensed simulations",own:"My created courses",purchased:"Purchased RizSim courses"};
- $("rzLiveCollectionTitle").textContent=types[mode]||"Choose an experience";
- let arr=[];
- if(mode==="simulation")arr=s?.licensed||[];
- if(mode==="own"&&s?.role==="course_lead")arr=(s?.courses||[]).filter(x=>x.active===true);
- // There is currently no licensed, ready-made RizSim course catalogue/RPC.
- // Display an honest empty state rather than treating a Course Lead course as purchased.
- if(mode==="purchased")arr=[];
- arr.forEach((item,i)=>{
-  const id=String(mode==="simulation"?item.id:item.course_id);
-  grid.append(card(item.title||"Untitled experience",item.short_description||item.description||"Ready to prepare for your learners.",()=>navigate(mode,"setup",id),i));
- });
- const addText=mode==="simulation"?"Add More Simulations":mode==="own"?"Create More Courses":"Add More Courses";
- const destination=mode==="own"?"courses":"home";
- grid.append(card(addText,mode==="own"?"Open your Courses workspace to build another course.":"Browse available RizSim categories on Home.",()=>{
-  // Existing validated navigation handler is reused; no separate auth.
-  const link=document.querySelector('#mainNav [data-auth-view="'+destination+'"]');
-  if(link)link.click();else document.querySelector('[data-auth-view="'+destination+'"]')?.click();
- },arr.length,true));
- if(arr.length===0){
-  const warning=e("div","rz-v5-empty",mode==="purchased"?"You have no ready-made RizSim courses licensed to this account yet.":"No eligible experiences have been found for this account.");
-  grid.prepend(warning);
- }
-}
-function mount(){
- if(mounted)return;
- const source=$("rzLegacyPlayerPanels");
- if(!source)return;
- // Move, never clone, existing panels so their event listeners and secure operations remain intact.
- const form=$("classroomCreateForm");
- const createPanel=form?.closest(".portal-panel");
- const accessPanel=$("classroomCreatedResult")?.closest(".portal-panel");
- const roster=$("classroomRosterPanel");
- const rows=$("classroomSessionRows")?.closest(".portal-panel");
- const out=$("rzLiveSetupMount"),run=$("rzLiveRunningMount");
- if(createPanel&&out)out.append(createPanel);
- if(run){[accessPanel,roster,rows].forEach(n=>{if(n)run.append(n)});}
- // Keep global Records/Results views in place: their presenters still own them.
- const results=$("view-classroom")?.querySelector(".rz-player-results");
- if(results&&!$("rzLiveResultsAnchor").contains(results))$("rzLiveResultsAnchor").append(results);
- mounted=true;
-}
-function setup(){
- mount();
- const s=snapshot();
- if(mode==="simulation"){
-  const product=(s?.licensed||[]).find(x=>String(x.id)===selection);
-  if(!product){navigate(mode,"list");return}
-  $("rzLiveSetupTitle").textContent=product.title||"Create a session";
-  const pick=$("classroomSimulationSelect");
-  if(pick&&pick.value!==selection&&Array.from(pick.options).some(o=>o.value===selection)){
-   pick.value=selection;pick.dispatchEvent(new Event("change",{bubbles:true}));
+/* RizSim V5. Presentation only: existing verified bridge, forms and RPC handlers own access.
+   One router and one owner for moved panels. No authentication, licence or database writes. */
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const MODES = { simulation: 'Run Simulation', own: 'Run My Own Course', purchased: 'Run Purchased Course' };
+  const ROLES = ['faculty', 'course_lead', 'owner'];
+  const homes = new Map(), courseOwners = new Map();
+  let route = readRoute(), ready = false, scheduled = false, drawing = false;
+  let courseRequest = null, loadedCourse = '', courseError = '', submitting = null;
+  let lastView = '', lastCards = '', lastScope = '', qrPromise = null;
+  let createPanel, accessPanel, sessionsPanel, resultsPanel;
+  const text = v => String(v ?? '');
+  const bridge = () => window.RizSimFacultyBridge;
+  function snapshot() { try { return bridge()?.getSnapshot() || null; } catch (_) { return null; } }
+  function el(tag, cls, value) {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (value !== undefined) n.textContent = text(value);
+    return n;
   }
-  const form=$("classroomCreateForm");if(form)form.hidden=false;
-  // Existing license check continues to control form availability.
-  // Keep original form and privileged session-creation handler unchanged.
- } else {
-  const course=(s?.courses||[]).find(x=>String(x.course_id)===selection);
-  if(mode!=="own"||!course||s.role!=="course_lead"){navigate(mode,"list");return}
-  $("rzLiveSetupTitle").textContent=course.title||"Create a class";
-  const target=$("rzLiveSetupMount"), existing=$("courseClassroomPanel");
-  if(existing&&target&&!target.contains(existing))target.append(existing);
-  if(confirmedCourse!==selection&&pendingCourse!==selection){
-   const requested=selection;pendingCourse=requested;
-   Promise.resolve(bridge()?.selectCourse(requested)).then(()=>{
-    if(pendingCourse===requested){confirmedCourse=requested;pendingCourse="";if(selection===requested&&stage==="setup")draw();}
-   }).catch(()=>{if(pendingCourse===requested)pendingCourse="";});
+  function button(label, cls, action) {
+    const n = el('button', cls, label); n.type = 'button'; n.addEventListener('click', action); return n;
   }
- }
-}
-function running(){
- mount();
- if(mode==="own"){
-  const material=$("courseMaterialsPanel");
-  const anchor=$("rzLiveRunningMount");
-  if(material&&anchor&&!anchor.contains(material))anchor.append(material);
-  if(material)material.hidden=false;
-  const drop=$("rzClassroomDropZone");
-  if(drop&&anchor&&!anchor.contains(drop))anchor.append(drop);
- }
- $("rzLiveResultsAnchor").hidden=false;
-}
-function draw(){
- const active=snapshot();if(!active)return;
- if(mode==="own"&&active.role!=="course_lead"){mode="";stage="menu";selection="";}
- if(mode==="purchased"&&(stage==="setup"||stage==="running")){stage="list";selection="";}
- const live=$("view-classroom");if(!live)return;
- const [choice,list,form,run]=["rzLiveChoices","rzLiveCollection","rzLiveSetup","rzLiveRunning"].map($);
- if(!choice||!list||!form||!run)return;
- const crumbs=$("rzLiveBreadcrumb");crumbs.replaceChildren();
- crumbs.append(button("Live Classroom","rz-v5-crumb",()=>navigate("","menu")));
- if(mode)crumbs.append(e("span","rz-v5-slash","/"),button({simulation:"Run Simulation",own:"Run My Own Course",purchased:"Run Purchased Course"}[mode],"rz-v5-crumb",()=>navigate(mode,"list")));
- if(stage==="setup"||stage==="running")crumbs.append(e("span","rz-v5-slash","/"),e("span","rz-v5-crumb-current",stage==="setup"?"Create Session":"Session & Results"));
- choice.hidden=stage!=="menu";list.hidden=stage!=="list";form.hidden=stage!=="setup";run.hidden=stage!=="running";
- $("rzLiveHelp").hidden=true;
- if(stage==="menu")options();
- if(stage==="list")collection();
- if(stage==="setup")setup();
- if(stage==="running")running();
- const jump=$("rzLiveJumpResults");if(jump)jump.hidden=stage!=="running";
-}
-function init(){
- if(ready||!snapshot()||!$("rzLiveChoices"))return;
- ready=true;window.RizSimLiveClassroom={draw};
- const url=freshUrl(),parts=(url?.searchParams.get("live")||"").split("-");
- if(["simulation","own","purchased"].includes(parts[0])){mode=parts[0];stage=["list","setup","running"].includes(parts[1])?parts[1]:"list";selection=url?.searchParams.get("selection")||"";}
- const help=e("p","rz-v5-help");help.id="rzLiveHelp";help.hidden=true;$("rzLiveChoices").after(help);
- $("rzLiveJumpResults")?.addEventListener("click",()=>$("rzLiveResultsAnchor")?.scrollIntoView({behavior:"smooth",block:"start"}));
- window.addEventListener("popstate",()=>{const u=freshUrl();const parts=(u?.searchParams.get("live")||"").split("-");mode=["simulation","own","purchased"].includes(parts[0])?parts[0]:"";stage=mode&&["list","setup","running"].includes(parts[1])?parts[1]:"menu";selection=u?.searchParams.get("selection")||"";draw();});
- document.querySelector('#mainNav [data-auth-view="classroom"]')?.addEventListener("click",()=>{if(location.hash!=="#classroom")return;setTimeout(draw,320)});
- // Show the access/result stage after the existing handler has produced a session.
- const panel=$("classroomCreatedResult");if(panel){
-  const observer=new MutationObserver(()=>{
-   if(stage!=="setup"||mode!=="simulation")return;
-   if(panel.querySelector(".classroom-created-card,.classroom-code-value,.classroom-code-box"))navigate(mode,"running",selection);
-  });observer.observe(panel,{childList:true,subtree:true});
- }
- draw();
-}
-document.addEventListener("DOMContentLoaded",()=>{let attempts=0;const check=()=>{if(snapshot()&&$("rzLiveChoices"))init();else if(++attempts<100)setTimeout(check,200)};check()});
+  function readRoute() {
+    const u = new URL(location.href), [mode, stage] = (u.searchParams.get('live') || '').split('-');
+    return { mode: MODES[mode] ? mode : '', stage: MODES[mode] && ['list','setup','running'].includes(stage) ? stage : 'menu',
+      selection: u.searchParams.get('selection') || '', session: u.searchParams.get('live_session') || '' };
+  }
+  function urlFor(r) {
+    const u = new URL(location.href);
+    for (const key of ['live','selection','live_session']) u.searchParams.delete(key);
+    if (r.mode) u.searchParams.set('live', r.mode + '-' + r.stage);
+    if (r.selection) u.searchParams.set('selection', r.selection);
+    if (r.session) u.searchParams.set('live_session', r.session);
+    u.hash = 'classroom'; return u.pathname + u.search + u.hash;
+  }
+  function navigate(mode = '', stage = 'menu', selection = '', session = '', replace = false) {
+    route = {mode, stage, selection: text(selection), session: text(session)};
+    const url = urlFor(route);
+    if (location.pathname + location.search + location.hash !== url) history[replace ? 'replaceState' : 'pushState'](null, '', url);
+    lastCards = ''; lastScope = ''; if (drawing) scheduleDraw(); else draw();
+    // Focus announces a new screen without moving the viewport. Never scroll on selection.
+    const heading = $(stage === 'list' ? 'rzLiveCollectionTitle' : stage === 'setup' ? 'rzLiveSetupTitle' : 'rzLiveBreadcrumb');
+    if (heading) { heading.tabIndex = -1; heading.focus({preventScroll: true}); }
+  }
+  function message(value, error = false) {
+    const n = $('rzLiveHelp'); n.hidden = !value; n.textContent = value || ''; n.classList.toggle('is-error', error);
+  }
+  function remember(n) {
+    if (!n || homes.has(n)) return;
+    const marker = document.createComment('RizSim V5 panel home'); n.before(marker); homes.set(n, marker);
+  }
+  function move(n, target) { if (n && target && n.parentNode !== target) { remember(n); target.append(n); } }
+  function restore(n) {
+    const marker = homes.get(n);
+    if (marker?.parentNode && n.parentNode !== marker.parentNode) marker.after(n);
+    if (n) { n.classList.remove('rz-v5-hidden'); n.removeAttribute('inert'); }
+  }
+  function restoreCourse() {
+    ['courseClassroomPanel','courseMaterialsPanel','courseResultsPanel','rzClassroomDropZone'].forEach(id => restore($(id)));
+    $('courseClassroomPanel')?.classList.remove('rz-v5-course-setup');
+    $('courseClassroomCreateArea')?.removeAttribute('inert');
+    const zone = $('rzClassroomDropZone'); if (zone) zone.hidden = true;
+  }
+  function restoreAll() { for (const n of homes.keys()) restore(n); restoreCourse(); }
+  function active() { return $('view-classroom')?.classList.contains('active') && $('authenticatedApp')?.classList.contains('show'); }
+  function dataReady() { return $('classroomSessionCount')?.textContent.trim() !== '\u2014'; }
+  function licensed(s) { return s.licensed || []; } // Already filtered by the verified licence catalogue.
+  function ownCourses(s) { return s.role === 'course_lead' ? (s.courses || []).filter(c => c.active === true) : []; }
+  function currentCourse(s) { return ownCourses(s).find(c => text(c.course_id) === route.selection); }
+  function courseSessionIds(s) {
+    if (text(s.selectedCourseId) !== route.selection || loadedCourse !== route.selection) return new Set();
+    return new Set(Array.from($('courseClassroomRows')?.querySelectorAll('[data-course-session-progress]') || []).map(n => n.dataset.courseSessionProgress));
+  }
+  function eligibleSession(s, item) {
+    if (!item) return false;
+    if (route.mode === 'own') return text(item.course_id) === route.selection || courseSessionIds(s).has(text(item.session_id));
+    return route.mode === 'simulation' && text(item.product_id) === route.selection;
+  }
+  function card(title, subtitle, actionLabel, action, tone, locked = false, href = '') {
+    const n = el('article', 'rz-v5-card rz-v5-card-' + tone + (locked ? ' is-locked' : ''));
+    const copy = el('div', 'rz-v5-card-copy'); copy.append(el('h3', '', title), el('p', '', subtitle));
+    const a = href ? el('a', 'rz-v5-card-action', actionLabel) : button(actionLabel, 'rz-v5-card-action', action);
+    if (href) {
+      a.href = href;
+      a.addEventListener('click', ev => {
+        if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button) return;
+        ev.preventDefault(); action();
+      });
+    }
+    n.append(copy, a); return n;
+  }
+  function openWorkspace(view) {
+    restoreCourse();
+    const link = document.querySelector('#mainNav [data-auth-view="' + view + '"]');
+    if (!link || link.style.display === 'none') { message('This workspace is not available for your verified role.', true); return; }
+    const u = new URL(location.href);
+    for (const k of ['live','selection','live_session']) u.searchParams.delete(k);
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+    link.click();
+  }
+  function choices(s) {
+    const key = 'menu:' + s.role; if (lastCards === key) return; lastCards = key;
+    const grid = $('rzLiveChoices'); grid.replaceChildren();
+    const descriptions = {simulation:'Choose an actively licensed interactive simulation.', own:'Run a course you have created as a Course Lead.', purchased:'Run a complete, ready-made course purchased from RizSim.'};
+    Object.keys(MODES).forEach((mode, i) => {
+      const locked = mode === 'own' && s.role !== 'course_lead';
+      const r = {mode, stage:'list'};
+      grid.append(card(MODES[mode], descriptions[mode], locked ? 'Become a Course Lead' : 'Explore', () => {
+        if (locked) { message('Course Lead is the premium Faculty tier. Contact RizSim to request an authorized upgrade. This action does not change your access.'); return; }
+        navigate(mode, 'list');
+      }, i, locked, locked ? '' : urlFor(r)));
+    });
+  }
+  function collection(s) {
+    const items = route.mode === 'simulation' ? licensed(s) : route.mode === 'own' ? ownCourses(s) : [];
+    const key = route.mode + ':' + s.role + ':' + JSON.stringify(items);
+    $('rzLiveCollectionTitle').textContent = {simulation:'Choose a simulation', own:'Choose your course', purchased:'Purchased RizSim courses'}[route.mode];
+    if (lastCards === key) return; lastCards = key;
+    const grid = $('rzLiveCards'); grid.replaceChildren();
+    if (!items.length) grid.append(el('p','rz-v5-empty',route.mode === 'purchased'
+      ? 'Ready-made RizSim courses are not available in the licensed catalogue yet. Your own courses are kept separate and are not shown as purchases.'
+      : 'No active ' + (route.mode === 'own' ? 'courses' : 'licensed simulations') + ' are available for this account.'));
+    [...items].sort((a,b) => text(a.title).localeCompare(text(b.title))).forEach((item, i) => {
+      const id = text(route.mode === 'simulation' ? item.id : item.course_id), r = {mode:route.mode, stage:'setup', selection:id};
+      grid.append(card(item.title || 'Untitled experience', item.short_description || item.description || 'Prepare a session for your learners.',
+        'Select ' + (route.mode === 'simulation' ? 'Simulation' : 'Course'), () => navigate(route.mode,'setup',id), i % 4, false, urlFor(r)));
+    });
+    const own = route.mode === 'own', title = own ? 'Create More Courses' : route.mode === 'simulation' ? 'Add More Simulations' : 'Add More Courses';
+    grid.append(card(title, own ? 'Build another course in your Courses workspace.' : 'Explore the Learning, Skills and Children categories on Home.',
+      '+ ' + title, () => openWorkspace(own ? 'courses' : 'home'), 'add'));
+  }
+  function ensureCourse(s) {
+    if (loadedCourse === route.selection && text(s.selectedCourseId) === route.selection) return true;
+    if (courseRequest || courseError) return false;
+    const requested = route.selection;
+    if (!bridge()?.selectCourse) return false;
+    courseRequest = requested;
+    // Serialize requests: an older, slower request must not overwrite a later course selection.
+    Promise.resolve().then(() => bridge().selectCourse(requested)).then(value => {
+      if (value && text(value.course_id) === requested) { loadedCourse = requested;
+        for (const n of $('courseClassroomRows').querySelectorAll('[data-course-session-progress]')) courseOwners.set(n.dataset.courseSessionProgress,requested);
+      }
+      else courseError = 'The selected course could not be loaded. Return to your courses and try again.';
+    }).catch(() => { courseError = 'Course loading failed. Return to your courses and try again.'; })
+      .finally(() => { courseRequest = null; scheduleDraw(); });
+    return false;
+  }
+  function setSelect(id, value) {
+    const n = $(id); if (!n || !Array.from(n.options).some(o => o.value === value)) return false;
+    if (n.value !== value) { n.value = value; n.dispatchEvent(new Event('change',{bubbles:true})); }
+    return true;
+  }
+  function mountCommon() {
+    move(createPanel, $('rzLiveSetupMount'));
+    move(accessPanel, $('rzLiveRunningMount'));
+    move($('classroomRosterPanel'), $('rzLiveResultsAnchor'));
+    move(sessionsPanel, $('rzLiveSessionHistory'));
+  }
+  function setup(s) {
+    mountCommon();
+    createPanel.classList.toggle('rz-v5-hidden', route.mode !== 'simulation');
+    if (route.mode === 'simulation') {
+      restoreCourse();
+      const product = licensed(s).find(p => text(p.id) === route.selection);
+      if (!product || !['faculty','course_lead'].includes(s.role)) { navigate('simulation','list','','',true); message('Session creation requires an active Faculty or Course Lead licence.',true); return; }
+      $('rzLiveSetupTitle').textContent = product.title;
+      setSelect('classroomSimulationSelect', route.selection);
+      // Hide only the redundant picker, never override the secure form's hidden/disabled state.
+      $('classroomSimulationSelect')?.closest('.management-field')?.classList.add('rz-v5-fixed-selection');
+      return;
+    }
+    const course = currentCourse(s);
+    if (!course) { navigate('own','list','','',true); message('This course is not active or not available to your account.',true); return; }
+    $('rzLiveSetupTitle').textContent = course.title;
+    const panel = $('courseClassroomPanel'); move(panel,$('rzLiveSetupMount')); panel.classList.add('rz-v5-course-setup');
+    const loaded = ensureCourse(s); $('courseClassroomCreateArea').inert = !loaded;
+    if (!loaded) message(courseError || 'Loading your course and its authorized session controls...',!!courseError);
+  }
+  function qrLibrary() {
+    if (window.RizSimQR) return Promise.resolve(window.RizSimQR);
+    if (!qrPromise) qrPromise = new Promise((resolve,reject) => {
+      const script = document.createElement('script'); script.src = 'rizsim-qr.js';
+      script.onload = () => window.RizSimQR ? resolve(window.RizSimQR) : reject(new Error('QR unavailable'));
+      script.onerror = () => reject(new Error('QR unavailable')); document.head.append(script);
+    });
+    return qrPromise;
+  }
+  function addQR(cardNode) {
+    if (cardNode.querySelector('.rz-v5-qr')) return;
+    const raw = cardNode.querySelector('.classroom-link-box')?.textContent.trim();
+    let u; try { u = new URL(raw); } catch (_) { return; }
+    if (u.origin !== location.origin || u.pathname !== '/access-in.html' || !u.searchParams.get('session')) return;
+    const box = el('figure','rz-v5-qr'), caption = el('figcaption','','Scan to join this session');
+    box.append(caption); cardNode.querySelector('.classroom-code-box')?.after(box);
+    qrLibrary().then(qr => { if (box.isConnected) box.prepend(qr.svg(u.href, 'QR code for this classroom session')); })
+      .catch(() => { caption.textContent = 'QR unavailable. Use the class code or student link above.'; });
+  }
+  function showAccess(s, session) {
+    let found = false;
+    for (const n of $('classroomCreatedResult').querySelectorAll('.classroom-created-card')) {
+      const id = n.querySelector('[data-roster-session]')?.dataset.rosterSession;
+      const show = id === text(session.session_id); n.classList.toggle('rz-v5-hidden',!show);
+      if (show) { found = true; addQR(n); }
+    }
+    $('rzLiveSessionNotice').hidden = found;
+    if (!found) $('rzLiveSessionNotice').textContent = 'This session is closed, ended, or no longer open for entry. Existing student progress and submissions are preserved below.';
+    accessPanel.classList.toggle('rz-v5-hidden',!found);
+    setSelect('classroomRosterSessionSelect',text(session.session_id));
+  }
+  function scopeResults(s, session) {
+    const own = route.mode === 'own', panel = own ? $('courseResultsPanel') : resultsPanel;
+    restore(own ? resultsPanel : $('courseResultsPanel')); move(panel,$('rzLiveResultsAnchor'));
+    const prefix = own ? 'courseResult' : 'result';
+    const hasResults = (s.submissions || []).some(x => text(x.classroom_session_id) === text(session.session_id));
+    const filter = $(prefix + 'SessionFilter'), available = Array.from(filter?.options || []).some(o => o.value === text(session.session_id));
+    panel.classList.toggle('rz-v5-hidden',!available);
+    $('rzLiveNoResults').hidden = available;
+    $('rzLiveNoResults').textContent = hasResults && !available ? 'Results for this session are not loaded yet. Refresh the page to retrieve the latest authorized submissions.' : 'No submitted responses are available for this session yet. Student progress is shown above.';
+    const key = route.mode + ':' + session.session_id;
+    if (available && lastScope !== key) { setSelect(prefix + 'SessionFilter',text(session.session_id)); lastScope = key; }
+  }
+  function running(s) {
+    mountCommon();
+    if (route.mode === 'own') {
+      if (!currentCourse(s)) { navigate('own','list','','',true); return; }
+      if (!ensureCourse(s)) { message(courseError || 'Loading course session details...',!!courseError); $('rzLiveRunningMount').classList.add('rz-v5-hidden'); return; }
+      restore($('courseClassroomPanel')); $('courseClassroomPanel').classList.remove('rz-v5-course-setup');
+    } else restoreCourse();
+    $('rzLiveRunningMount').classList.remove('rz-v5-hidden');
+    const sessions = (s.sessions || []).filter(x => eligibleSession(s,x));
+    const session = route.session ? sessions.find(x => text(x.session_id) === route.session) : sessions[0];
+    if (!session) { navigate(route.mode,'list','','',true); message('That session is not available in your verified account.',true); return; }
+    if (!route.session) { route.session = text(session.session_id); history.replaceState(null,'',urlFor(route)); }
+    $('rzLiveSessionTitle').textContent = session.class_name || 'Session access & results';
+    showAccess(s,session);
+    if (route.mode === 'own') {
+      const canUpload = s.role === 'course_lead' && currentCourse(s)?.active === true && text(s.selectedCourseId) === route.selection;
+      move($('rzClassroomDropZone'),$('rzLiveRunningMount'));
+      move($('courseMaterialsPanel'),$('rzLiveRunningMount'));
+      $('rzClassroomDropZone').hidden = !canUpload;
+      // The existing create-area permission checks remain authoritative.
+      $('courseMaterialsPanel').classList.toggle('rz-v5-hidden',!canUpload);
+    }
+    scopeResults(s,session);
+  }
+  function resume(s) {
+    const holder = $('rzLiveResume'), entries = s.sessions || [];
+    holder.hidden = !['menu','list'].includes(route.stage) || !entries.length;
+    const key = JSON.stringify(entries.map(x => [x.session_id,x.class_name,x.product_id,x.course_id,x.active]));
+    if (holder.dataset.key === key) return; holder.dataset.key = key;
+    const list = holder.querySelector('.rz-v5-resume-list'); list.replaceChildren();
+    [...entries].sort((a,b) => text(b.created_at).localeCompare(text(a.created_at))).forEach(item => {
+      const row = el('div','rz-v5-resume-row');
+      row.append(el('span','',item.class_name || 'Classroom session'),button('Open session','rz-action-secondary',() => {
+        const owner = item.course_id || courseOwners.get(text(item.session_id));
+        const own = s.role === 'course_lead' && ownCourses(s).some(c => text(c.course_id) === text(owner));
+        navigate(own ? 'own' : 'simulation','running',own ? owner : item.product_id,item.session_id);
+      })); list.append(row);
+    });
+  }
+  function checkCreated(s) {
+    if (!submitting) return;
+    const own = submitting.mode === 'own', msg = $(own ? 'courseClassroomCreateMessage' : 'classroomCreateMessage');
+    const create = $(own ? 'createCourseClassroomSessionButton' : 'createClassroomSessionButton');
+    if (msg?.classList.contains('error') && !create?.disabled) { submitting = null; return; }
+    if (!/created successfully/i.test(msg?.textContent || '')) return;
+    const item = (s.sessions || []).find(x => !submitting.ids.has(text(x.session_id)) && text(x.product_id) === submitting.product && text(x.class_name) === submitting.name);
+    if (!item) return;
+    const pending = submitting; submitting = null;
+    if (route.stage === 'setup' && route.mode === pending.mode && route.selection === pending.selection) navigate(pending.mode,'running',pending.selection,item.session_id);
+  }
+  function draw() {
+    if (!ready || drawing) return; drawing = true;
+    try {
+      const s = snapshot();
+      if (!s || !ROLES.includes(s.role) || !active()) { if (lastView === 'classroom') restoreAll(); lastView = ''; return; }
+      lastView = 'classroom';
+      if (!dataReady()) { message('Loading your verified classroom access...'); return; }
+      if (route.mode === 'own' && s.role !== 'course_lead') { route = {mode:'',stage:'menu',selection:'',session:''}; history.replaceState(null,'',urlFor(route)); }
+      if (route.mode === 'purchased' && !['menu','list'].includes(route.stage)) { route.stage = 'list'; route.selection = ''; route.session = ''; history.replaceState(null,'',urlFor(route)); }
+      for (const [id,stage] of [['rzLiveChoices','menu'],['rzLiveCollection','list'],['rzLiveSetup','setup'],['rzLiveRunning','running']]) $(id).hidden = route.stage !== stage;
+      message('');
+      const crumbKey = route.mode + ':' + route.stage;
+      const crumb = $('rzLiveBreadcrumb');
+      if (crumb.dataset.key !== crumbKey) {
+        crumb.dataset.key = crumbKey; crumb.replaceChildren(button('Live Classroom','rz-v5-crumb',() => navigate()));
+        if (route.mode) crumb.append(el('span','rz-v5-slash','/'),button(MODES[route.mode],'rz-v5-crumb',() => { courseError = ''; navigate(route.mode,'list'); }));
+        if (['setup','running'].includes(route.stage)) crumb.append(el('span','rz-v5-slash','/'),el('span','rz-v5-crumb-current',route.stage === 'setup' ? 'Create Session' : 'Session & Results'));
+      }
+      if (['menu','list'].includes(route.stage)) restoreCourse();
+      if (route.stage === 'menu') choices(s);
+      if (route.stage === 'list') collection(s);
+      if (route.stage === 'setup') setup(s);
+      if (route.stage === 'running') running(s);
+      if (s.role === 'course_lead' && (s.courses || []).some(c => text(c.course_id) === text(s.selectedCourseId))) {
+        for (const n of $('courseClassroomRows').querySelectorAll('[data-course-session-progress]')) courseOwners.set(n.dataset.courseSessionProgress,text(s.selectedCourseId));
+      }
+      resume(s); checkCreated(s);
+    } finally { drawing = false; }
+  }
+  function scheduleDraw() {
+    if (scheduled) return; scheduled = true;
+    requestAnimationFrame(() => { scheduled = false; draw(); });
+  }
+  function init() {
+    if (ready || !$('rzLiveChoices')) return;
+    ready = true;
+    createPanel = $('classroomCreateForm')?.closest('.portal-panel');
+    accessPanel = $('classroomCreatedResult')?.closest('.portal-panel');
+    sessionsPanel = $('classroomSessionRows')?.closest('.portal-panel');
+    resultsPanel = $('resultRows')?.closest('.portal-panel');
+    const help = el('p','rz-v5-help'); help.id = 'rzLiveHelp'; help.hidden = true; help.setAttribute('role','status');
+    $('rzLiveBreadcrumb').after(help);
+    $('rzLiveBreadcrumb').setAttribute('aria-label','Live Classroom steps');
+    const resumeBox = el('details','rz-v5-resume'); resumeBox.id = 'rzLiveResume'; resumeBox.hidden = true;
+    resumeBox.append(el('summary','','Resume an existing session'),el('div','rz-v5-resume-list')); $('rzLiveCollection').after(resumeBox);
+    const historyBox = el('details','rz-v5-session-history'); historyBox.id = 'rzLiveSessionHistory'; historyBox.append(el('summary','','All classroom sessions and controls')); $('rzLiveRunning').append(historyBox);
+    const title = $('rzLiveRunning').querySelector('h2'); title.id = 'rzLiveSessionTitle';
+    const notice = el('p','rz-v5-empty'); notice.id = 'rzLiveSessionNotice'; notice.hidden = true; $('rzLiveRunningMount').before(notice);
+    const noResults = el('p','rz-v5-empty'); noResults.id = 'rzLiveNoResults'; noResults.hidden = true; $('rzLiveResultsAnchor').append(noResults);
+    $('rzLiveJumpResults').addEventListener('click',() => $('rzLiveResultsAnchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'}));
+    for (const [id,mode] of [['createClassroomSessionButton','simulation'],['createCourseClassroomSessionButton','own']]) {
+      $(id)?.addEventListener('click',() => {
+        const s = snapshot(); if (!s || !active() || route.stage !== 'setup' || route.mode !== mode || $(id).disabled) return;
+        const prefix = mode === 'own' ? 'courseClassroom' : 'classroom';
+        submitting = {mode,selection:route.selection,ids:new Set((s.sessions || []).map(x => text(x.session_id))),product:$(prefix + 'SimulationSelect').value,name:$(prefix + 'SessionName').value.trim()};
+      },true);
+    }
+    // Observe only legacy data outputs. V5 never writes these nodes, preventing observer loops.
+    const observer = new MutationObserver(scheduleDraw);
+    for (const id of ['classroomCreatedResult','classroomSessionRows','courseRows','courseClassroomRows','courseMaterialRows','resultRows','courseResultRows','classroomCreateMessage','courseClassroomCreateMessage']) {
+      const n = $(id); if (n) observer.observe(n,{childList:true});
+    }
+    const views = new MutationObserver(scheduleDraw);
+    for (const id of ['view-classroom','view-courses','authenticatedApp']) if ($(id)) views.observe($(id),{attributes:true,attributeFilter:['class']});
+    window.addEventListener('popstate',() => {
+      route = readRoute(); lastCards = ''; lastScope = ''; courseError = '';
+      const view = location.hash.slice(1), link = Array.from(document.querySelectorAll('#mainNav [data-auth-view]')).find(n => n.dataset.authView === view);
+      if (link && link.style.display !== 'none' && !$('view-' + view)?.classList.contains('active')) link.click();
+      scheduleDraw();
+    });
+    window.addEventListener('hashchange',() => { route = readRoute(); scheduleDraw(); });
+    document.addEventListener('click',ev => {
+      const n = ev.target.closest('[data-course-session-progress],[data-roster-session]');
+      if (!n || !active() || route.stage !== 'running') return;
+      const id = n.dataset.courseSessionProgress || n.dataset.rosterSession;
+      const s = snapshot(), item = s?.sessions.find(x => text(x.session_id) === id);
+      if (item && id !== route.session) navigate('simulation','running',item.product_id,id);
+    });
+    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw});
+    scheduleDraw();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 })();
