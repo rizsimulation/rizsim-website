@@ -303,7 +303,9 @@
     const code=card.querySelector('.classroom-code-value')?.textContent.trim()||'';
     const link=card.querySelector('.classroom-link-box')?.textContent.trim()||'';
     let parsed;try{parsed=new URL(link)}catch(_){clearAccess(false);return;}
-    if(!code||parsed.origin!==location.origin||parsed.pathname!=='/access-in.html'||parsed.searchParams.get('session')!==id){
+    // The join URL uses a protected share token, not the internal session ID.
+    const token=parsed.searchParams.get('session');
+    if(!code||!token||parsed.origin!==location.origin||parsed.pathname!=='/access-in.html'||(session.share_token&&token!==text(session.share_token))){
       clearAccess(false);return;
     }
     card.classList.add('rz-v5-access-source');
