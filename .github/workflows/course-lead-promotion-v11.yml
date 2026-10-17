@@ -1,0 +1,26 @@
+name: Course Lead Promotion V11
+on:
+  pull_request:
+    paths:
+      - 'access-out.html'
+      - 'rizsim-course-authoring.js'
+      - 'rizsim-roles-library.js'
+      - 'rizsim-course-lead-upgrade.css'
+      - 'scripts/validate_faculty_course_lead_upgrade.js'
+      - '.github/workflows/course-lead-promotion-v11.yml'
+  workflow_dispatch:
+jobs:
+  faculty-promotion-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Course Lead promotion role and UI contract
+        run: node scripts/validate_faculty_course_lead_upgrade.js
+      - name: Validate unchanged Course Lead runtime JavaScript
+        run: |
+          node --check rizsim-course-authoring.js
+          node --check rizsim-course-authoring-service.js
+          node --check rizsim-course-service.js
