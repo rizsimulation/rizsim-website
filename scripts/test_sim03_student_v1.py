@@ -99,7 +99,28 @@ async def run_arm(browser,port,arm):
  await page.route('**/simulation-assets/hotel-judgment/cloud.js',stub)
  url=f'http://127.0.0.1:{port}/{HOSTED}?attempt={AID}&session={SID}&access=practice'
  await page.goto(url)
- await page.locator('#stimulusStage:not(.hidden)').wait_for(timeout=25000)
+ try:
+  await page.locator('#stimulusStage:not(.hidden)').wait_for(timeout=14000)
+ except Exception:
+  print('SIM03 hosted startup diagnostics',await page.evaluate("""() => ({
+    htmlClass:document.documentElement.className,
+    gate:document.getElementById('rizHotelAuthGate')?.innerText,
+    status:document.getElementById('connectionStatus')?.innerText,
+    photoReady:window.RizHotelStimuli?.ready,
+    photos:[...document.querySelectorAll('img[data-hotel-view]')].map(x=>({
+      src:x.getAttribute('src'),complete:x.complete,natural:x.naturalWidth,
+      missing:x.dataset.missing
+    })),
+    live:window.RizHotelParticipantLive?{
+      enabled:window.RizHotelParticipantLive.enabled,
+      assignedGroup:window.RizHotelParticipantLive.assignedGroup,
+      assignedQuestion:window.RizHotelParticipantLive.assignedQuestion
+    }:null,
+    calls:window.__hotel03RPCs||[]
+  })"""))
+  (ROOT/'test-results').mkdir(exist_ok=True)
+  await page.screenshot(path=str(ROOT/'test-results'/'sim03-startup-diagnostic.png'),full_page=True)
+  raise
  assert await page.locator('#groupStage').is_hidden(),'students must not self-select A/B'
  assert await page.locator('#groupBadge').inner_text()=='Group '+arm
  await page.wait_for_function('window.RizHotelStimuli?.ready===true')
