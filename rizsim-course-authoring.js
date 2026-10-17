@@ -270,9 +270,11 @@
     async function choose(files){
       if(!files?.length)return;if(files.length!==1){notice('Choose one file','Choose one file at a time so each resource has its own title.');return;}
       const seq=++serial;selected=files[0];selectedMime=null;caption.hidden=false;caption.replaceChildren(fileCaption(selected,selected.type));
-      const publish=button('Publish',()=>resourceDetails(draft,{file:selected,mime_type:selectedMime||selected.type,source_type:'file'},d),'primary');publish.dataset.authorFilePublish='true';publish.disabled=true;caption.firstChild.append(publish);
+      const publish=button('Publish',()=>resourceDetails(draft,{file:selected,mime_type:selectedMime||selected.type,source_type:'file'},d),'primary');publish.dataset.authorFilePublish='true';publish.disabled=true;
+      const review=button('Review File',()=>previewDraftFile({file:selected,title:selected.name,mime_type:selectedMime}));review.dataset.authorReview='picker';review.classList.add('rz-review-file');review.disabled=true;
+      caption.firstChild.append(review,publish);
       try{const value=await validation().inspectFile(selected);if(seq!==serial||gen!==generation||!d.isConnected)return;
-        selectedMime=value.mime;caption.querySelector('.rz-author-item-icon').replaceChildren(icon(value.mime.startsWith('image/')?'image':'file'));publish.disabled=false;
+        selectedMime=value.mime;caption.querySelector('.rz-author-item-icon').replaceChildren(icon(value.mime.startsWith('image/')?'image':'file'));publish.disabled=false;review.disabled=false;
       }catch(e){if(seq===serial&&gen===generation&&d.isConnected)caption.append(node('p','rz-author-error',e.message));}
     }
     input.addEventListener('change',()=>choose(input.files));zone.addEventListener('keydown',e=>{if(e.target===zone&&[' ','Enter'].includes(e.key)){e.preventDefault();input.click();}});
