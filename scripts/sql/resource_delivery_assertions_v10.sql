@@ -72,10 +72,14 @@ select public.test_assert('Course authoring re-read preserves chosen file mode',
  (select (m->>'delivery_mode')='downloadable' and (m->>'published_to_class')='false'
  from jsonb_array_elements(public.get_my_rizsim_course_authoring('70000000-0000-4000-8000-0000000000a1')->'resources') m
  where m->>'id'='80000000-0000-4000-8000-0000000000a1'));
-select public.test_assert('Existing secure-mode course file stayed secure',
- (select (m->>'delivery_mode')='secure_view'
- from jsonb_array_elements(public.get_my_rizsim_course_authoring('70000000-0000-4000-8000-000000000001')->'resources') m
- where m->>'id'='80000000-0000-4000-8000-000000000001'));
+-- The preceding V7 regression soft-deletes that older course; the archived row must retain its safe mode.
+reset role;
+select public.test_assert('Archived secure-mode file still has its safe default',
+ (select delivery_mode='secure_view'
+ from public.rizsim_course_materials
+ where id='80000000-0000-4000-8000-000000000001'));
+set role authenticated;
+set request.jwt.claim.sub='10000000-0000-4000-8000-000000000001';
 select public.test_assert('Runtime course data exposes only selected mode, never storage path',
  (select (m->>'delivery_mode')='downloadable' and not (m ? 'storage_path')
  from jsonb_array_elements(public.get_rizsim_course_runtime('70000000-0000-4000-8000-0000000000a1','own')->'resources') m
