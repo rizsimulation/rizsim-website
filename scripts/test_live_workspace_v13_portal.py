@@ -39,6 +39,17 @@ def run(browser, base):
           panelRect:document.getElementById('rzLiveRunning')?.getBoundingClientRect().toJSON()
         })'''), flush=True)
         raise
+    print('V13 POSITION',page.evaluate('''() => ({
+      state:RizSimLiveWorkspace?.state(),
+      runParent:document.getElementById('rzLiveRunning')?.parentElement?.id,
+      runClosest:!!document.getElementById('rzLiveRunning')?.closest('#rzV13StudioOverview'),
+      studio:!!document.getElementById('rzV13StudioOverview'),
+      setupParent:document.getElementById('rzLiveSetup')?.parentElement?.id,
+      paneParent:document.getElementById('rzV13PaneStudio')?.parentElement?.className,
+      choicesParent:document.getElementById('rzLiveChoices')?.parentElement?.className,
+      runCount:document.querySelectorAll('#rzLiveRunning').length,
+      workspaceCount:document.querySelectorAll('#rzLiveV13Workspace').length
+    })'''), flush=True)
     verify(page.locator('#rzLiveRunning').evaluate('n=>!!n.closest("#rzV13StudioOverview")'),
            'original authenticated session runs inside Studio, not copied')
     verify(page.locator('#rzLiveAccessFab').is_visible(),
