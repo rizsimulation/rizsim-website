@@ -120,7 +120,7 @@ function testLiveChoice(role){
   const own=menu.children[1],button=own.children[1];
   assert.equal(own.children[0].children[0].textContent,'Run My Own Course');
   assert.ok(button.handlers.click,'Course choice must have a real click handler');
-  button.handlers.click();
+  button.handlers.click({metaKey:false,ctrlKey:false,shiftKey:false,altKey:false,button:0,preventDefault(){}});
   return {opening,pushed,help:help.textContent};
 }
 const facultyLive=testLiveChoice('faculty');
