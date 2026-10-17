@@ -218,7 +218,7 @@
    if(tab)tab.location.replace(url.href);else{const n=dialog('Your resource is ready','Your browser blocked the new window. Use the link below.','link'),a=el('a','rz-st-button','Open resource');a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';n.append(a);}
   }catch(e){tab?.close();if(materialEpoch!==epoch||materialUser!==bridge()?.snapshot().userId)return;dialog('Resource unavailable',e.message);await bridge().refresh();renderMaterials();}
  }
- function materialCard(m){const n=el('article','rz-st-resource-card');n.append(icon(m.source_type==='file'?'file':'link'));const text=el('div');text.append(el('h3','',m.title||'Learning resource'),el('p','',m.description||m.file_name||'Published by your Faculty'),el('span','rz-st-meta',m.course_title||'Class resource'));n.append(text,btn(m.source_type==='file'?'Open securely':'Open link',()=>openMaterial(m.material_id),'rz-st-button secondary'));return n;}
+ function materialCard(m){const n=el('article','rz-st-resource-card');n.append(icon(m.source_type==='file'?'file':'link'));const text=el('div');text.append(el('h3','',m.title||'Learning resource'),el('p','',m.description||m.file_name||'Published by your Faculty'),el('span','rz-st-meta',m.course_title||'Class resource'));n.append(text,btn(m.source_type==='file'?'Open in RizSim':'Open link',()=>openMaterial(m.material_id),'rz-st-button secondary'));return n;}
  function renderMaterials(){
   const snap=bridge()?.snapshot();if(!snap?.userId)return;
   for(const id of ['rzStudentLibraryMaterials','rzStudentPlayerMaterials']){
