@@ -1950,6 +1950,7 @@ animation:none!important;
 <link rel="stylesheet" href="rizsim-refinements-v10.css">
 <script src="rizsim-refinements-v10.js" defer></script>
 <script src="rizsim-session-continuity.js" defer></script>
+<link rel="stylesheet" href="rizsim-brand-about.css">
 </head>
 
 
@@ -2879,8 +2880,10 @@ class="student-view"
 id="view-about"
 data-view="about"
 >
+<div id="rizsimSharedAbout" class="rz-about" hidden aria-label="About RizSim"></div>
 
-<div class="content-shell">
+
+<div id="rizsimLegacyAbout" class="content-shell">
 
 
 <div class="student-heading">
@@ -7885,6 +7888,7 @@ initialize();
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
+<script src="rizsim-shared-about.js" defer></script>
 </body>
 
 </html>
