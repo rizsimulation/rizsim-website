@@ -252,7 +252,20 @@
    e.preventDefault();if(submit.disabled)return;
     if(!window.RizSimFieldFeedback?.required(name,'a class / session name')){name.focus({preventScroll:true});return;}
     const mode=form.querySelector('input[name="access-mode"]:checked').value,fields={p_class_name:name.value.trim(),p_access_mode:mode};
-   for(const [id,{input}] of Object.entries(inputs)){const included=mode==='both'||id.startsWith(mode);fields['p_'+id]=included&&input.value?new Date(input.value).toISOString():null;}
+   const validWindow=(kind,label)=>{
+    const start=inputs[kind+'_starts_at'].input,end=inputs[kind+'_ends_at'].input;
+    const startTime=new Date(start.value).getTime(),endTime=new Date(end.value).getTime();
+    if(!start.value||!end.value||!Number.isFinite(startTime)||!Number.isFinite(endTime)||endTime<=startTime){
+     const message=!start.value||!end.value?label+' requires a start and end time.':!Number.isFinite(startTime)||!Number.isFinite(endTime)?label+' contains an invalid date or time.':label+' end must be later than its start.';
+     window.RizSimFieldFeedback?.invalidWindow(start,end,message);
+     return false;
+    }
+    window.RizSimFieldFeedback?.show(start,'');window.RizSimFieldFeedback?.show(end,'');
+    return true;
+   };
+   if((mode==='live'||mode==='both')&&!validWindow('live','Live Class'))return;
+   if((mode==='practice'||mode==='both')&&!validWindow('practice','Practice'))return;
+   for(const [id,{input}] of Object.entries(inputs)){const included=mode==='both'||id.startsWith(mode);fields['p_'+id]=included?new Date(input.value).toISOString():null;}
    submit.disabled=true;error.hidden=true;
    try{const result=await service().createPurchased(route.selection,product.product_id,fields);cache.delete(key('purchased',route.selection));nav('purchased','running',route.selection,result.session_id);}
    catch(e){error.textContent=e.message;error.hidden=false;}
