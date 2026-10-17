@@ -1,0 +1,68 @@
+'use strict';
+/* Simulation 02 — public-source regression and secure integrated boundary tests. */
+const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm');
+const path=require('node:path'),read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
+const html=read('simulation-system-1-system-2.html');
+const cloud=read('simulation-assets/system-1-system-2/cloud.js');
+const bridge=read('simulation-assets/system-1-system-2/bridge_student.js');
+const faculty=read('rizsim-system-faculty.js');
+const portal=read('access-out.html'),live=read('rizsim-live-classroom.js');
+const sql=read('sql/sim02_secure_results_v1.sql');
+const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
+assert(scripts.length>=2,'hosted Student needs the original instrument and hosted entry flag');
+scripts.forEach((s,i)=>new vm.Script(s,{filename:'sim02-inline-'+i+'.js'}));
+[cloud,bridge,faculty,live].forEach((s,i)=>new vm.Script(s,{filename:'sim02-js-'+i+'.js'}));
+const m=html.match(/const DATA=(\{[\s\S]*?\});\s*const LETTERS=/);
+assert(m,'original source questions must remain in hosted HTML');
+const D=JSON.parse(m[1]);
+assert.equal(D.meta.id,'riz-ai-pedagogy-2026-s1s2-v1');
+assert.equal(D.meta.version,'1.0.0');
+assert.equal(D.meta.title,'System 1 & System 2 Thinking');
+assert.equal(D.review.length,6);
+assert.deepEqual(D.review.map(q=>q.id),['K1','K2','K3','K4','K5','K6']);
+assert.equal(D.pairs.length,2);
+assert(D.pairs[0].concept.toLowerCase().includes('bystander'));
+assert(D.pairs[1].concept.toLowerCase().includes('confirmation'));
+for(const item of D.review)assert(item.stem&&item.options?.length===4);
+for(const pair of D.pairs)for(const phase of ['source','transfer']){
+ const item=pair[phase];assert(item.stem&&item.options?.length===4);
+}
+assert(!/const LOCAL_SCORE_KEY|function localSummary\(|\/api\/(?:state|record|key)\b|const KEY=/.test(html),
+ 'hosted Student must not contain offline answer keys or obsolete LAN endpoints');
+assert(!/\breview:\[1,3,0,1,2,0\]/.test(html+cloud+bridge+faculty+sql),
+ 'never ship the original answer sequence in public source');
+assert(!/\bconst KEY=/.test(faculty));
+assert(html.includes('Verifying your RizSim classroom'));
+assert(html.includes('simulation-assets/system-1-system-2/cloud.js'));
+assert(html.includes('simulation-assets/system-1-system-2/bridge_student.js'));
+assert(cloud.includes('get_my_rizsim_s1s2_personal_result'));
+assert(cloud.includes("result.receipt!=='submitted'"));
+assert(cloud.includes('submit_my_rizsim_classroom_attempt'));
+assert(cloud.includes('check_my_rizsim_classroom_attempt_access'));
+assert(cloud.includes('personalRGA=validRGA(proof)'));
+assert(bridge.includes('rizsim:student-ready')&&bridge.includes('rizsim:student-response'));
+assert(bridge.includes('if(!window.__RIZSIM_SIM02_HOSTED__)snapshot(reason,true)'));
+assert(faculty.includes("get_my_rizsim_s1s2_session_records"));
+assert(faculty.includes('p_session_id:session'));
+assert(faculty.includes('View student result'));
+assert(faculty.includes('rz-s02-progress'));
+assert(faculty.includes('item_kr')&&faculty.includes('lt_source'));
+assert(faculty.includes('Number.isInteger(x.metrics.kr)'));
+assert(!faculty.includes('PREVIEW_ONLY_SYNTHETIC_RECORDS'));
+assert(sql.includes('private.rizsim_s1s2_scoring_key'));
+assert(sql.includes("revoke all on table private.rizsim_s1s2_scoring_key from public,anon,authenticated"));
+assert(sql.includes('auth.uid()'));
+assert(sql.includes('private.is_rizsim_owner()'));
+assert(sql.includes("v_session.created_by=v_uid"));
+assert(sql.includes("im.member_type='institution_admin'"));
+assert(sql.includes('a.classroom_session_id=p_session_id'));
+assert(sql.includes("and a.status='submitted'"));
+assert(sql.includes('revoke all on function public.get_my_rizsim_s1s2_personal_result(uuid)'));
+assert(sql.includes('revoke all on function public.get_my_rizsim_s1s2_session_records(uuid)'));
+assert(portal.includes('rizsim-system-faculty.css')&&portal.includes('rizsim-system-faculty.js'));
+assert(portal.includes('rizsim-support.js')&&portal.includes('rizsim-shared-about.js'));
+assert(portal.includes('rizsim-course-lead-upgrade.css'));
+assert(live.includes('window.RizSimSystemFaculty?.draw(s,route)'));
+assert(live.includes('window.RizSimSystemFaculty?.draw(null,null)'));
+assert(live.includes("if (!s || !ROLES.includes(s.role) || !active()) { clearAccess();"));
+console.log('SIM02 preserved instrument, secure key boundary and Live Classroom integration PASS');
