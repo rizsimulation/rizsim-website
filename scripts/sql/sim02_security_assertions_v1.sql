@@ -15,7 +15,7 @@ values(
       'transfer',jsonb_build_object('a',0,'at',now(),'seen',now())),
     jsonb_build_object('source',jsonb_build_object('a',0,'at',now(),'seen',now()),
       'transfer',jsonb_build_object('a',0,'at',now(),'seen',now())))
-  )))
+  ))
 ),
 (
  '30000000-0000-4000-8000-000000000002','system-1-system-2-v1-record',
@@ -29,7 +29,7 @@ values(
       'transfer',jsonb_build_object('a',null,'at',null,'seen',null)),
     jsonb_build_object('source',jsonb_build_object('a',null,'at',null,'seen',null),
       'transfer',jsonb_build_object('a',null,'at',null,'seen',null)))
-  )))
+  ))
 );
 create function public.sim02_assert(label text,condition boolean) returns void
 language plpgsql as $$

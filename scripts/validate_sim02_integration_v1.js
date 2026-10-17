@@ -12,7 +12,7 @@ const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].ma
 assert(scripts.length>=2,'hosted Student needs the original instrument and hosted entry flag');
 scripts.forEach((s,i)=>new vm.Script(s,{filename:'sim02-inline-'+i+'.js'}));
 [cloud,bridge,faculty,live].forEach((s,i)=>new vm.Script(s,{filename:'sim02-js-'+i+'.js'}));
-const m=html.match(/const DATA=(\{[\s\S]*?\});\s*const LETTERS=/);
+const m=html.match(/const DATA=(\{[\s\S]*?\});\s*'use strict';/);
 assert(m,'original source questions must remain in hosted HTML');
 const D=JSON.parse(m[1]);
 assert.equal(D.meta.id,'riz-ai-pedagogy-2026-s1s2-v1');
