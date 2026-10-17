@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en" data-rizsim-hosted="1">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>RizSimulation · Hotel Judgment Lab · Participant</title>
+<style>
+/* RizSimulation Activity 03: reconstructed layout CSS. Original CSS was not provided.
+   Preserves the source dashboard's academic cream / teal / mustard direction. */
+:root{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#203f3d;background:#f4f5ef;--ink:#203f3d;--muted:#657672;--teal:#176b67;--teal2:#dff1ec;--gold:#d9a919;--line:#d9e1d7;--card:#fff;--shadow:0 14px 32px rgba(12,56,53,.07);font-size:16px;line-height:1.57;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(145deg,#f6f5eb,#f0f7f4 60%,#f5f4e9);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #dbb732;outline-offset:3px}button,select,input{min-height:44px}h1,h2,h3,h4,p{margin-top:0}h1{font-size:clamp(1.9rem,3.6vw,3rem);letter-spacing:-.05em;line-height:1.13;color:#173f3b;margin-bottom:12px}h2{font-size:clamp(1.23rem,2vw,1.65rem);line-height:1.26;letter-spacing:-.03em}h3{font-size:1.1rem}p{margin-bottom:14px}.app{max-width:1210px;margin:0 auto;padding:28px 25px 70px}.eyebrow{text-transform:uppercase;font-size:.72rem;font-weight:850;letter-spacing:.14em;color:var(--teal);margin-bottom:9px}.hero{position:relative;background:linear-gradient(112deg,#fffdf3 0%,#e5f6f0 100%);border:1px solid #d7e9de;padding:27px 32px;border-radius:24px;box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden}.hero:after{content:"";position:absolute;width:280px;height:280px;right:-155px;top:-155px;border-radius:50%;border:30px solid rgba(23,107,103,.07);pointer-events:none}.hero p{max-width:78ch;font-size:.94rem;color:#526862}.riz-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:12px;position:relative;z-index:1}.riz-logo{width:44px;height:44px;object-fit:contain;border-radius:11px;box-shadow:0 2px 12px rgba(6,61,60,.14)}.riz-logo-label{font-weight:850;font-size:.85rem;color:#235453}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip,.badge{display:inline-flex;align-items:center;border-radius:99px;padding:5px 11px;background:#dfeee7;color:#20615c;font-size:.77rem;font-weight:750}.sub,.small,.field-note{color:var(--muted);font-size:.87rem;line-height:1.63}.stage,.card,.panel.active{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px}.stage{padding:25px 28px;margin-bottom:17px}.card{padding:23px;margin-bottom:16px}.panel{display:none}.panel.active{display:block;padding:21px 23px;margin-top:15px}.panel.active .card{box-shadow:none;border-color:#e6eee7}.hidden{display:none!important}.group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:19px 0 20px}.group-btn{border:2px solid #cddfd7;border-radius:17px;background:linear-gradient(#fbfefd,#f2f9f6);text-align:left;display:flex;flex-direction:column;align-items:flex-start;padding:23px;gap:9px;color:var(--ink);min-height:170px}.group-btn:hover{border-color:var(--teal);background:#eef8f3}.group-btn .group-letter,.letter{display:grid;place-items:center;width:45px;height:45px;border-radius:12px;background:#f8eab0;color:#644d00;font-weight:900;font-size:1.2rem}.group-btn strong{font-size:1.15rem}.group-btn span:last-child{font-size:.82rem;color:var(--muted)}.group-btn[data-group="B"] .group-letter{background:#dbf1eb;color:#155a56}.notice{display:flex;gap:12px;align-items:flex-start;background:#fff9e6;border:1px solid #efdfac;border-radius:13px;padding:15px 18px;font-size:.88rem;color:#665528}.notice .dot{width:11px;height:11px;flex:none;border-radius:50%;background:#cfaa2a;margin-top:7px}.notice.missing-stimuli{background:#fff1ec;border-color:#e7bbaa;color:#91482e}.topline{display:flex;justify-content:space-between;gap:15px;align-items:start;margin-bottom:14px}.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.hotel-card,.preview-card{margin:0;border:1px solid #d6dcd2;overflow:hidden;border-radius:14px;background:#f6f4e9;min-width:0;position:relative}.hotel-card img,.preview-card img{display:block;width:100%;height:190px;object-fit:cover;background:#eff2ea}.hotel-card figcaption,.preview-card figcaption{padding:9px 12px;font-size:.76rem;font-weight:700;color:#476460;background:#fff}.hotel-card.is-placeholder img,.preview-card.is-placeholder img{object-fit:contain;padding:18px;background:#fcf6e8}.question-card{margin-top:22px;padding:23px;border-radius:15px;background:#f8faf7;border:1px solid #d9e6df}.exact{font-weight:850;font-size:clamp(1.1rem,2.2vw,1.35rem);padding:15px 18px;border-radius:12px;border-left:5px solid #d7af29;background:#fffdf3;color:#24413f}.choice-row{display:flex;gap:12px;margin:18px 0 21px}.choice{padding:11px 30px;background:#fff;color:#315851;border:2px solid #d2ddd7;border-radius:11px;font-weight:800;min-width:106px}.choice[aria-pressed="true"]{background:#e1f2ed;border-color:var(--teal);color:#135651}.label{display:block;font-size:.89rem;font-weight:800;margin:13px 0 8px}.money-wrap{display:flex;align-items:stretch;width:min(440px,100%);border:1.5px solid #becdc7;border-radius:12px;overflow:hidden;background:#fff}.money-prefix{padding:12px 15px;background:#e4f2ed;color:#175c56;border-right:1px solid #bdcdc4;font-weight:900;white-space:nowrap}.money-wrap input{flex:1;min-width:0;border:0;padding:11px 13px;background:#fff;color:var(--ink);font-weight:750;font-size:1.15rem}.question-card input[type=text]{background:#fff}.field-note{margin:8px 0 4px}.validation,.msg{font-size:.86rem;color:#9d3d31;font-weight:700;min-height:17px;margin:12px 0 5px}.actions,.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.actions{margin-top:20px}.primary,.secondary,.danger{display:inline-flex;align-items:center;justify-content:center;min-height:45px;border-radius:11px;padding:11px 17px;text-decoration:none;line-height:1.36;font-size:.9rem;font-weight:790;border:1px solid transparent}.primary{background:var(--teal);color:#fff}.primary:hover:not(:disabled){background:#105a57}.secondary{color:#1d5551;background:#eef8f4;border-color:#c5dfd5}.secondary:hover:not(:disabled){background:#dff1ea}.danger{background:#fff4f1;color:#9b4035;border-color:#e8c6bd}.summary-grid,.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:20px 0}.metric,.stat{background:#f1f8f5;border:1px solid #d7e9df;border-radius:12px;padding:18px;min-width:0}.metric small,.stat small{display:block;color:var(--muted);font-size:.76rem}.metric strong,.stat strong{display:block;font-size:1.32rem;font-weight:850;margin-top:5px;overflow-wrap:anywhere}.footer{text-align:center;color:#6b817a;font-size:.8rem;padding:30px 10px 10px}.modal{position:fixed;inset:0;background:#1e403fb6;display:grid;place-items:center;padding:17px;z-index:30}.modal-card{background:#fffdf8;padding:28px;width:min(95vw,490px);border-radius:21px;box-shadow:0 25px 65px #03191555}.modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.nav button{padding:10px 18px;color:#39615a;background:#fff;border:1px solid #d4e2d8;border-radius:11px;font-weight:760}.nav button.active{background:var(--teal);color:#fff;border-color:var(--teal)}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.flow>div{padding:12px 8px;display:flex;align-items:center;gap:8px;background:#f1f8f5;border-radius:9px;font-size:.83rem;font-weight:750}.flow span,.num{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:8px;color:#fff;background:var(--teal);font-size:.75rem;font-weight:800}.condition{background:#fffae5;border:1px solid #e8db9f;padding:17px;border-radius:13px}.condition.b{background:#eaf8f4;border-color:#bde0d2}.condition .letter{margin-bottom:12px}.condition .prompt{font-weight:820;font-size:1.1rem;line-height:1.55}.condition p{margin:12px 0 0}.note{border:1px solid #ebdba5;background:#fff9e8;border-radius:11px;padding:15px;font-size:.87rem}.note.teal{background:#e8f6f2;border-color:#bbe0d3}.stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.stat.a{border-top:4px solid var(--gold)}.stat.b{border-top:4px solid var(--teal)}.chartbox{background:#f9fcfa;border:1px solid #e0e9e2;border-radius:14px;padding:15px;overflow:hidden}.chartbox svg{width:100%;height:auto}.legend{display:flex;gap:16px;flex-wrap:wrap;margin:11px 0 0;font-size:.8rem;color:var(--muted)}.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:middle;margin-right:5px}.reveal{border-radius:14px;background:#e6f6f1;border:1px solid #bae0d5;padding:20px;margin-top:17px}.pattern{font-size:1.2rem;font-weight:850;color:#165a53}.table-wrap{overflow:auto;max-width:100%;border:1px solid #e4eae4;border-radius:12px}table{border-collapse:collapse;width:100%;font-size:.82rem}th,td{padding:11px 13px;text-align:left;border-bottom:1px solid #e8eee8;vertical-align:top}th{background:#eef6f2;font-size:.73rem;text-transform:uppercase;letter-spacing:.02em}tr:last-child td{border:0}.tag{display:inline-block;border-radius:9px;padding:3px 9px;background:#fff0b6;font-weight:850}.tag.b{background:#d8eee5}.steps{display:grid;gap:12px}.step{display:flex;align-items:flex-start;gap:14px;border:1px solid #e1e9e3;border-radius:12px;padding:15px;background:#fcfefb}.step h4{margin:0 0 5px}.step p{margin:0;color:#52645f;font-size:.86rem}.preview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.preview-card img{height:170px}.controls select,.controls input[type=number]{border:1px solid #cbdad2;border-radius:10px;padding:9px 10px;max-width:240px;min-width:0;color:var(--ink);background:#fff}.controls select{max-width:180px}.live-controls{border-color:#b6d8cf}.mode-status{margin:12px 0 16px;border:1px solid #b6d8cf;border-radius:13px;background:#e9f7f3;color:#17574f;padding:10px 14px;font-weight:750;font-size:.92rem}.mode-status.soft{background:#fffdf5;color:#5c664b}.print-only{display:none}
+@media(max-width:850px){.gallery,.preview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app{padding:20px 17px 65px}.panel.active{padding:12px}}
+@media(max-width:600px){.hero{padding:19px 18px}.stage{padding:18px 17px}.card{padding:17px 15px}.group-grid,.grid2{grid-template-columns:1fr}.group-btn{min-height:125px;padding:18px}.summary-grid{grid-template-columns:1fr}.gallery,.preview-grid{gap:8px}.hotel-card img,.preview-card img{height:145px}.hotel-card figcaption,.preview-card figcaption{font-size:.67rem;padding:7px}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.choice{flex:1}.controls>button{flex:1}.nav button{flex:1 1 38%;font-size:.81rem;padding:9px 8px}.modal-card{padding:20px}.stat strong{font-size:1.15rem}.app{padding:14px 12px 48px}.hero h1{font-size:1.85rem}}
+@media(max-width:380px){.gallery,.preview-grid{grid-template-columns:1fr 1fr}.hotel-card img{height:122px}.flow>div{font-size:.75rem}.stat-grid{gap:7px}.stat{padding:12px}.primary,.secondary,.danger{font-size:.84rem;padding:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media print{body{background:#fff;color:#000;font-size:10pt}.app{max-width:none;padding:10px}.hero{box-shadow:none;padding:9px 0;border:0}.nav,.controls,.actions,.footer,.modal,.no-print,.live-controls,#groupStage,#stimulusStage,.mode-status{display:none!important}.print-only{display:block}.panel{display:none!important}.panel.active{display:block!important;padding:0;border:0;box-shadow:none}.panel.active .card,.stage{box-shadow:none;border:1px solid #ddd;break-inside:avoid}.hotel-card img,.preview-card img{height:125px}.summary-grid{grid-template-columns:repeat(3,1fr)}.chartbox svg{max-height:260px}.reveal{break-inside:avoid}.table-wrap{overflow:visible}tr{break-inside:avoid}thead{display:table-header-group}h1{font-size:21pt}h2{font-size:14pt}h3{font-size:11pt}}
+
+.print-meta{margin:16px 0;padding:12px 15px;border:1px solid #d9e5df;border-radius:10px;background:#fbfdfa;font-size:.87rem}.print-meta p{margin:5px 0}.print-meta strong{color:#36615a}
+
+</style>
+<style>
+.riz-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;position:relative;z-index:1}
+.riz-logo{width:44px;height:44px;object-fit:contain;border-radius:11px;box-shadow:0 2px 12px rgba(6,61,60,.14)}
+.riz-logo-label{font-weight:850;letter-spacing:.025em;font-size:.84rem;color:#235453}
+.mode-status{margin:12px 0 0;border:1px solid #b6d8cf;border-radius:13px;background:#e9f7f3;color:#17574f;padding:10px 14px;font-weight:750;font-size:.92rem}
+.mode-status.soft{background:#fffdf5;color:#5c664b}
+button:disabled{opacity:.47;cursor:not-allowed;box-shadow:none}
+.hotel-card img{object-fit:contain;max-height:360px;background:#f4f1e9}.gallery{gap:13px}.hotel-card{border-radius:16px}
+@media(max-width:720px){.hotel-card img{max-height:280px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.hotel-card figcaption{font-size:.68rem;padding:7px}}</style><style>html[data-rizsim-hosted]:not(.rizsim-authorized) .app{display:none!important}
+html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!important}</style></head>
+<body>
+<section id="rizHotelAuthGate" aria-live="polite" style="background:#fff;border-radius:18px;margin:24px auto;padding:28px;max-width:760px;font:16px/1.5 system-ui;color:#234e49"><h2>RizSim · Checking classroom access</h2><p>Verifying your account, assigned classroom attempt and original hotel stimulus files.</p></section><main class="app">
+<section class="hero"><div class="riz-logo-row"><img alt="RizSimulation R logo" class="riz-logo" src="https://rizsim.com/rizsim-r.png" onerror="this.style.display='none'"/><div class="riz-logo-label">RizSimulation · Learning through experience</div></div>
+<div class="eyebrow">Teaching and Learning Symposium-2026</div>
+<h1>AI in Pedagogy</h1>
+<p><strong>Hotel Judgment Lab · My Hotel Choice · Participant Dashboard</strong><br/>Work independently. Select the group assigned to you in the workshop, study the hotel pictures, and record your judgment. Do not discuss your response until your presenter closes the activity.</p>
+</section><div aria-live="polite" class="mode-status" id="connectionStatus" role="status">Offline practice · Your response can be exported to the presenter.</div>
+<section class="stage" id="groupStage">
+<h2>1. Select your assigned group</h2>
+<p class="sub">Choose only the group you were assigned in the workshop. Once confirmed, this session will stay on that group.</p>
+<div class="group-grid">
+<button class="group-btn" data-group="A" type="button"><span class="group-letter">A</span><strong>Group A</strong><span>Use this if you are seated with Group A / the left side assigned by your presenter.</span></button>
+<button class="group-btn" data-group="B" type="button"><span class="group-letter">B</span><strong>Group B</strong><span>Use this if you are seated with Group B / the right side assigned by your presenter.</span></button>
+</div>
+<div class="notice"><span class="dot"></span><div><strong>Before you continue:</strong> keep your screen to yourself and do not compare questions or answers with the other group.</div></div>
+</section>
+<section class="stage hidden" id="stimulusStage">
+<div class="topline"><div><h2 style="margin:0">2. View the hotel</h2><p class="sub" style="margin:5px 0 0;font-weight:900;color:var(--ink)">Look at all four pictures before answering.</p></div><span class="badge" id="groupBadge"></span></div>
+<div class="gallery"><figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 1" src="/simulation-assets/hotel-judgment/hotel_view_1.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
+<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 2" src="/simulation-assets/hotel-judgment/hotel_view_2.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
+<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 3" src="/simulation-assets/hotel-judgment/hotel_view_3.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
+<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 4" src="/simulation-assets/hotel-judgment/hotel_view_4.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure></div>
+<form class="question-card" id="responseForm" novalidate="">
+<h3>Your judgment</h3>
+<p class="exact" id="comparisonQuestion"></p>
+<div aria-label="Yes or No" class="choice-row" role="group">
+<button aria-pressed="false" class="choice" id="yesBtn" type="button">Yes</button>
+<button aria-pressed="false" class="choice" id="noBtn" type="button">No</button>
+</div>
+<label class="label" for="wtp">If so, how much would you be willing to pay for this room per night in PKR?</label>
+<div class="money-wrap"><span class="money-prefix">PKR</span><input id="wtp" inputmode="numeric" min="0" placeholder="Enter amount" required="" step="1" type="number"/></div>
+<p class="field-note">Enter your own best judgment. There is no need to justify it yet.</p>
+<label class="label" for="participant" style="margin-top:18px">Participant code (optional)</label>
+<input id="participant" maxlength="40" placeholder="e.g., your workshop participant code" style="width:min(520px,100%);border:2px solid #d9d5bd;border-radius:14px;padding:13px 14px;background:#fff" type="text"/>
+<div aria-live="polite" class="validation" id="validation"></div>
+<div class="actions"><button class="primary" type="submit">Submit &amp; lock response</button></div>
+</form>
+</section>
+<section aria-live="polite" class="stage locked hidden" id="submittedStage">
+<h2>Response submitted</h2>
+<p class="sub">Your response is locked for this session. Keep the result private until the presenter reveals the workshop pattern.</p>
+<div class="summary-grid">
+<div class="metric"><small>Group</small><strong id="sumGroup"></strong></div>
+<div class="metric"><small>Comparison answer</small><strong id="sumYN"></strong></div>
+<div class="metric"><small>Willingness to pay</small><strong id="sumWTP"></strong></div>
+</div>
+<div class="print-meta"><p><strong>Condition:</strong> <span id="sumPrompt"></span></p><p><strong>Participant code:</strong> <span id="sumCode"></span></p><p><strong>Submitted:</strong> <span id="sumTime"></span></p></div><div class="actions"><button class="primary" id="downloadBtn" type="button">Download response JSON</button><button class="secondary" id="printBtn" type="button">Print / save response</button></div>
+<div class="notice"><span class="dot"></span><div>Wait for your presenter before discussing what the two groups saw.</div></div>
+<div aria-live="polite" class="mode-status soft" id="saveStatus" role="status">The response is locked. Export it to your presenter when using offline mode.</div></section>
+<div class="footer">RizSimulation</div>
+</main>
+<div aria-labelledby="confirmTitle" aria-modal="true" class="modal hidden" id="confirmModal" role="dialog">
+<div class="modal-card">
+<div class="eyebrow">Confirm assignment</div>
+<h2 id="confirmTitle">Continue as Group <span id="confirmGroup"></span>?</h2>
+<p class="sub">Your assigned group remains locked in this browser. Confirm before viewing the hotel photographs.</p>
+<div class="modal-actions"><button class="secondary" id="cancelGroup" type="button">Go back</button><button class="primary" id="confirmGroupBtn" type="button">Confirm group</button></div>
+</div>
+</div>
+<script>/* This asset gate never substitutes a different hotel's photos for the original four.
+   The uploaded source references assets/hotel_view_1..4.png but did not contain them.
+   Explicit ?preview=1 permits interface tests only; exports are flagged demo_only. */
+(function(){'use strict';
+ const qp=new URLSearchParams(location.search);
+ const preview=(qp.get('preview')==='1'||window.__rizSim03Preview===true) && !document.documentElement.hasAttribute('data-rizsim-hosted');
+ const info={ready:false,preview,missing:[]};window.RizHotelStimuli=info;
+ const escapeSvg=s=>encodeURIComponent(s);
+ function fallback(n){const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480"><rect width="800" height="480" fill="#fbf4e5"/><rect x="40" y="40" width="720" height="400" rx="22" fill="#fffaf0" stroke="#d9c899" stroke-width="4" stroke-dasharray="14 10"/><path d="M275 285h250M400 180v210" stroke="#d7c48e" stroke-width="13" stroke-linecap="round"/><text x="400" y="115" fill="#6a5b32" font-size="34" font-family="sans-serif" font-weight="700" text-anchor="middle">SOURCE HOTEL IMAGE ${n}</text><text x="400" y="160" fill="#8b7950" font-size="27" font-family="sans-serif" text-anchor="middle">NOT PROVIDED</text><text x="400" y="430" fill="#8c7952" font-size="21" font-family="sans-serif" text-anchor="middle">Technical preview only, not the study stimulus</text></svg>`;return 'data:image/svg+xml;charset=utf-8,'+escapeSvg(svg)}
+ function refresh(){const all=[...document.querySelectorAll('img[data-hotel-view]')];info.missing=[...new Set(all.filter(i=>i.dataset.missing==='yes'||(!i.dataset.missing && i.complete && !i.naturalWidth)).map(i=>Number(i.dataset.hotelView)))];info.ready=all.length>=4&&info.missing.length===0&&all.every(i=>i.complete&&i.naturalWidth>0);
+  const banner=document.getElementById('stimulusIntegrityBanner');if(!banner)return;
+  if(info.ready){banner.className='notice';banner.textContent='The four local photo files are available. Check that they are the same original Istanbul hotel pictures before collecting participant responses.'}
+  else{banner.className='notice missing-stimuli';banner.textContent=info.preview?'PREVIEW ONLY: Original four Istanbul hotel photographs were not uploaded. Placeholder cards let you test the interface. Preview exports are excluded from genuine experimental analysis.':'Original Istanbul hotel photographs are missing. Supply hotel_view_1.png through hotel_view_4.png in the assets folder. Genuine responses are disabled until all four images load. Use ?preview=1 for an explicitly marked interface test.';}
+ }
+ function init(){const app=document.querySelector('main.app');if(app&&!document.getElementById('stimulusIntegrityBanner')){const banner=document.createElement('aside');banner.id='stimulusIntegrityBanner';banner.setAttribute('role','status');banner.setAttribute('aria-live','polite');banner.className='notice missing-stimuli';app.querySelector('.hero')?.insertAdjacentElement('afterend',banner)}
+  for(const img of document.querySelectorAll('img[src*="hotel_view_"]')){const m=/hotel_view_([1-4])\.png/.exec(img.getAttribute('src'));if(!m)continue;img.dataset.hotelView=m[1];const fail=()=>{if(img.dataset.missing==='yes')return;img.dataset.missing='yes';img.closest('figure')?.classList.add('is-placeholder');img.src=fallback(m[1]);refresh()};img.addEventListener('error',fail,{once:true});img.addEventListener('load',refresh);if(img.complete&&!img.naturalWidth)fail()}
+  refresh();
+  document.addEventListener('submit',function(e){if(e.target?.id==='responseForm'&&!info.ready&&!info.preview){e.preventDefault();e.stopImmediatePropagation();const out=document.getElementById('validation');if(out)out.textContent='Cannot submit without the four source hotel photographs. Use preview mode only for technical testing.';}},true);
+ }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+<script src="/simulation-assets/hotel-judgment/cloud.js"></script><script data-source="core">/** RizSimulation Activity 03 · Hotel Judgment Lab / My Hotel Choice
+ * Original Istanbul hotel photographs and the two anchor questions are preserved.
+ * This code is embedded in participant.html; the .txt source is Notepad-readable.
+ */
+(function(){'use strict';
+  const $=(selector)=>document.querySelector(selector);
+  const GROUP_QUESTIONS={
+    A:'Does this hotel cost Less than PKR 1000 per night?',
+    B:'Does this hotel cost More than PKR 80,000 per night?'
+  };
+  const offlineKey='RizSimulation.HotelJudgment.Activity03.Offline.v1';
+  const live=window.RizHotelParticipantLive||{enabled:false,init:async()=>false};
+  const state={group:null,yn:null,pending:null,submitted:null,submitting:false};
+   window.RizHotelSim03GetRecord=()=>state.submitted;
+  const groupStage=$('#groupStage'),stimulusStage=$('#stimulusStage'),submittedStage=$('#submittedStage');
+  const confirmModal=$('#confirmModal'),validation=$('#validation');
+  let key=offlineKey;
+
+  function save(){
+    try{localStorage.setItem(key,JSON.stringify({group:state.group,submitted:state.submitted}))}catch(e){
+      try{sessionStorage.setItem(key,JSON.stringify({group:state.group,submitted:state.submitted}))}catch{}
+    }
+  }
+  function restore(){
+    try{
+      const data=JSON.parse(localStorage.getItem(key)||sessionStorage.getItem(key)||'null');
+      if(!data)return;
+      if(data.group==='A'||data.group==='B')state.group=data.group;
+      if(data.submitted && data.submitted.group===state.group && validLocal(data.submitted))state.submitted=data.submitted;
+    }catch{}
+  }
+  function validLocal(r){return r&&typeof r.response_id==='string'&&
+    (r.group==='A'||r.group==='B')&&['Yes','No'].includes(r.binary_response)&&
+    Number.isSafeInteger(r.willing_to_pay_pkr)&&r.willing_to_pay_pkr>=0&&
+    r.condition_question===GROUP_QUESTIONS[r.group]}
+  function positionAt(section){
+    requestAnimationFrame(()=>section.scrollIntoView({block:'start',behavior:'smooth'}));
+  }
+  function revealExperiment(group,scroll=true){
+    state.group=group;state.pending=null;save();
+    groupStage.classList.add('hidden');stimulusStage.classList.remove('hidden');
+    submittedStage.classList.add('hidden');
+    $('#groupBadge').textContent='Group '+group;
+    $('#groupBadge').classList.toggle('b',group==='B');
+    $('#comparisonQuestion').textContent=GROUP_QUESTIONS[group];
+    if(scroll)positionAt(stimulusStage);
+  }
+  function revealCompletion(scroll=true){
+    if(!state.submitted)return;
+    groupStage.classList.add('hidden');stimulusStage.classList.add('hidden');submittedStage.classList.remove('hidden');
+    $('#sumGroup').textContent='Group '+state.submitted.group;
+    $('#sumYN').textContent=state.submitted.binary_response;
+    $('#sumWTP').textContent='PKR '+state.submitted.willing_to_pay_pkr.toLocaleString();$('#sumPrompt').textContent=GROUP_QUESTIONS[state.submitted.group];$('#sumCode').textContent=state.submitted.participant_code||'Not provided';$('#sumTime').textContent=new Date(state.submitted.submitted_at).toLocaleString();
+    $('#saveStatus').textContent=live.enabled?'Response safely received by the live workshop. JSON download remains available as a backup.':'Response locked in this browser. Download the JSON to give it to the presenter.';
+    if(scroll)positionAt(submittedStage);
+  }
+  function setYesNo(choice){
+    state.yn=choice;
+    for(const [selector,value] of [['#yesBtn','Yes'],['#noBtn','No']]){
+      $(selector).setAttribute('aria-pressed',String(choice===value));
+    }
+  }
+  function persistGroup(){
+    try{sessionStorage.setItem('hotelJudgmentGroup',state.group)}catch{}
+  }
+  for(const btn of document.querySelectorAll('.group-btn')){
+    btn.addEventListener('click',()=>{
+      if(state.group || state.submitted)return;
+      state.pending=btn.dataset.group;
+      $('#confirmGroup').textContent=state.pending;
+      confirmModal.classList.remove('hidden');
+      $('#confirmGroupBtn').focus();
+    });
+  }
+  $('#cancelGroup').addEventListener('click',()=>{state.pending=null;confirmModal.classList.add('hidden')});
+  $('#confirmGroupBtn').addEventListener('click',()=>{
+    const group=state.pending;
+    confirmModal.classList.add('hidden');
+    if(group!=='A'&&group!=='B')return;
+    persistGroup();revealExperiment(group);
+    refreshStatus();
+  });
+  $('#yesBtn').addEventListener('click',()=>setYesNo('Yes'));
+  $('#noBtn').addEventListener('click',()=>setYesNo('No'));
+  const submit=$('#responseForm button[type="submit"]');
+  function generateId(){
+    if(typeof crypto!=='undefined'&&crypto.randomUUID)return 'HJ-'+crypto.randomUUID();
+    return 'HJ-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,11);
+  }
+  function getResponse(){
+    if(!state.group)return {error:'Confirm your assigned group before answering.'};
+    if(!state.yn)return {error:'Please select Yes or No.'};
+    const raw=$('#wtp').value.trim(),amount=Number(raw);
+    if(raw===''||!Number.isSafeInteger(amount)||amount<0||amount>1000000000000){
+      return {error:'Please enter a non-negative whole-number PKR amount.'};
+    }
+    return {version:'hotel-judgment-v1',response_id:generateId(),
+      group:state.group,condition_question:GROUP_QUESTIONS[state.group],binary_response:state.yn,
+      willing_to_pay_pkr:amount,participant_code:$('#participant').value.trim().slice(0,40),
+       demo_only:!!(window.RizHotelStimuli&&!window.RizHotelStimuli.ready),
+      submitted_at:new Date().toISOString()};
+  }
+  function refreshStatus(){
+    const banner=$('#connectionStatus');
+    if(!live.enabled){
+      banner.textContent='Offline practice · Responses remain on this device. Export JSON for faculty aggregation.';
+      submit.disabled=state.submitting||!!state.submitted;
+      return;
+    }
+    const x=live.state||{};
+    const word=x.closed?'Collection stopped':x.paused?'Collection paused':x.started?'Collection open':'Waiting for faculty to start';
+    banner.textContent='Live classroom · '+word+' · '+(x.total||0)+' response(s) received'+(x.revealed?' · Faculty pattern revealed':'');
+    submit.disabled=state.submitting||!!state.submitted||!x.started||x.paused||x.closed;
+    if(!state.submitted && state.group){
+      const status=validation.textContent;
+      const blocking=x.closed?'Collection has closed. Ask the faculty before submitting.':
+        x.paused?'Collection is temporarily paused. Your form remains in place.':
+        !x.started?'Please wait for the presenter to open collection.':'';
+      if(!status||status.startsWith('Collection')||status.startsWith('Please wait'))validation.textContent=blocking;
+    }
+  }
+  $('#responseForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(state.submitting||state.submitted)return;
+    validation.textContent='';
+    const record=getResponse();
+    if(record.error){validation.textContent=record.error;return}
+    state.submitting=true;submit.disabled=true;submit.textContent='Saving response…';
+    try{
+      if(live.enabled)await live.submit(record);
+      state.submitted=record;save();window.dispatchEvent(new CustomEvent('rizsim:hotel-committed',{detail:record}));
+      try{sessionStorage.setItem('hotelJudgmentResponse',JSON.stringify(record))}catch{}
+      revealCompletion();
+    }catch(error){
+      validation.textContent=error.message||'The response could not be saved. Please try again.';
+    }finally{
+      state.submitting=false;submit.textContent='Submit & lock response';refreshStatus();
+    }
+  });
+  $('#downloadBtn').addEventListener('click',()=>{
+    if(!state.submitted)return;
+    const blob=new Blob([JSON.stringify(state.submitted,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=`hotel-judgment-${state.submitted.group}-${state.submitted.response_id}.json`;
+    document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},500);
+  });
+  $('#printBtn').addEventListener('click',()=>window.print());
+  async function initialize(){
+    await live.init();
+    if(live.enabled)key=`RizSimulation.HotelJudgment.Activity03.Live.${live.runId}`;
+    restore();
+    // Compatibility with the original September 2026 standalone participant HTML.
+    if(!state.submitted&&!state.group&&!live.enabled){
+      try{
+        const old=JSON.parse(sessionStorage.getItem('hotelJudgmentResponse')||'null');
+        if(validLocal(old)){state.group=old.group;state.submitted=old}
+        else{const g=sessionStorage.getItem('hotelJudgmentGroup');if(g==='A'||g==='B')state.group=g}
+      }catch{}
+    }
+    if(state.submitted)revealCompletion(false);
+    else if(state.group)revealExperiment(state.group,false);
+    save();refreshStatus();
+    if(live.enabled)setInterval(async()=>{
+      try{await live.refresh();refreshStatus()}catch{
+        $('#connectionStatus').textContent='Local classroom connection lost. Keep this page open and reconnect.';
+        submit.disabled=true;
+      }
+    },3000);
+  }
+  initialize();
+})();
+</script><script>/* Activity 03 Student dashboard <-> RizSimulation Player, committed only.
+   The original experimental design contains ONE final decision (no learning score). */
+(function(){'use strict';
+ const SID='RizHotelJudgment.v1',SCHEMA='hotel-judgment-v1',BRIDGE='rizsim-sync-v1';
+ const qp=new URLSearchParams(location.search);
+ const ctx={attempt_id:qp.get('attempt')||qp.get('attempt_id')||null,session_id:qp.get('session')||qp.get('session_id')||null,course_id:qp.get('course_id')||null,simulation_instance_id:qp.get('simulation_instance_id')||null};
+ let revision=0,lastId='';const cacheKey=()=>`RizHotelJudgment.bridge.rev.${ctx.attempt_id||ctx.session_id||'standalone'}`;
+ try{revision=Math.max(0,Number(sessionStorage.getItem(cacheKey()))||0)}catch{}
+ const valid=r=>r&&r.version===SCHEMA&&['A','B'].includes(r.group)&&['Yes','No'].includes(r.binary_response)&&Number.isSafeInteger(r.willing_to_pay_pkr)&&r.willing_to_pay_pkr>=0&&r.willing_to_pay_pkr<=1e12&&typeof r.response_id==='string';
+ function current(){const direct=window.RizHotelSim03GetRecord?.();if(valid(direct)&&document.querySelector('#submittedStage:not(.hidden)'))return direct;try{const r=JSON.parse(sessionStorage.getItem('hotelJudgmentResponse')||'null');if(valid(r)&&document.querySelector('#submittedStage:not(.hidden)'))return r}catch{}return null}
+ function send(packet){if(window.parent!==window){window.parent.postMessage(packet,location.origin==='null'?'*':location.origin)}try{window.dispatchEvent(new CustomEvent('rizsim:student-bridge',{detail:packet}))}catch{}}
+ function snapshot(r,reason,increment){if(!valid(r))return;if(increment){revision++;try{sessionStorage.setItem(cacheKey(),String(revision))}catch{}}send({source:'rizsimulation-dashboard',bridge_version:BRIDGE,type:'rizsim:student-response',event:'student_response',kind:'simulation-response',reason,simulation_id:SID,schema_version:SCHEMA,attempt_id:ctx.attempt_id||r.response_id,session_id:ctx.session_id,revision,sync_revision:revision,payload:{simulation:{id:SID,title:'Hotel Judgment Lab · My Hotel Choice'},schema_version:SCHEMA,record:r,participant:{participant_code:r.participant_code||''},responses:[{item_id:'hotel-group',value:r.group,committed:true},{item_id:'binary-response',value:r.binary_response,committed:true},{item_id:'willingness-to-pay-pkr',value:r.willing_to_pay_pkr,committed:true}],completed:true,finalized_item_count:1,integration:{bridge_version:BRIDGE,...ctx,attempt_id:ctx.attempt_id||r.response_id}}})}
+ function check(){const r=current();if(!r)return;if(lastId!==r.response_id){lastId=r.response_id;snapshot(r,'decision-locked',true)}}
+ window.addEventListener('message',e=>{if(e.source!==window.parent || (location.origin!=='null'&&e.origin!==location.origin))return;let q=e.data;if(!q||!['rizsim:request-state','rizsim:ping','rizsim:session-context'].includes(q.type))return;if(q.type==='rizsim:session-context'&&q.context&&typeof q.context==='object'){for(const k of Object.keys(ctx)){const v=q.context[k];if(v&&!ctx[k])ctx[k]=String(v)}}const r=current();if(r)snapshot(r,'host-state-request',false)});
+ function boot(){const r=current();if(r)lastId=r.response_id;const target=document.getElementById('submittedStage');if(target){new MutationObserver(check).observe(target,{attributes:true,attributeFilter:['class']});target.addEventListener('transitionend',check)}send({source:'rizsimulation-dashboard',bridge_version:BRIDGE,type:'rizsim:student-ready',event:'student_ready',kind:'bridge-ready',simulation_id:SID,schema_version:SCHEMA,session_id:ctx.session_id,capabilities:['decision-snapshots','completed-export','request-state','session-context']})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+ window.addEventListener('rizsim:hotel-committed',e=>{const r=e.detail;if(valid(r)&&lastId!==r.response_id){lastId=r.response_id;snapshot(r,'decision-locked',true)}});
+ window.RizHotelSim03StudentBridge={getRevision:()=>revision,request:()=>{const r=current();if(r)snapshot(r,'manual-request',false)}};
+})();
+</script>
+</body></html>
