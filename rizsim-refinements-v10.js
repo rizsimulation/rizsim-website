@@ -23,11 +23,26 @@
   }
   return !msg;
  }
+ // Only explicitly failed fields trigger navigation. Merely editing or
+ // blurring another input must never move the page or open a different tab.
+ function reveal(input){
+  if(!input||!input.isConnected)return false;
+  try{input.focus({preventScroll:true});}catch(_){input.focus();}
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
+  try{input.scrollIntoView({block:'center',inline:'nearest',behavior:reduced?'auto':'smooth'});}
+  catch(_){input.scrollIntoView();}
+  return true;
+ }
+ function reject(input,message){
+  fieldError(input,message);
+  reveal(input);
+  return false;
+ }
  function required(input,label){
   if(!input)return false;
   const v=String(input.value||'').trim();
-  if(!v)return fieldError(input,'Enter '+(label||'a value')+' before continuing.');
-  if(input.validity&&!input.validity.valid)return fieldError(input,input.validationMessage||'Check this value.');
+  if(!v)return reject(input,'Enter '+(label||'a value')+' before continuing.');
+  if(input.validity&&!input.validity.valid)return reject(input,input.validationMessage||'Check this value.');
   fieldError(input,'');return true;
  }
  function picker(initial='secure_view'){
@@ -48,14 +63,21 @@
  }
  document.addEventListener('invalid',event=>{
   const input=event.target;
-  if(!input.closest?.('.rz-author-editor,.rz-author-modal,.rz-runtime-dialog,.rz-purchased-setup,#view-classroom'))return;
-  event.preventDefault();fieldError(input,input.validity?.valueMissing?'This field is required.':input.validationMessage||'Please check this value.');
+  if(!input.closest?.('#authenticatedApp,.rz-author-modal,.rz-runtime-dialog,.rz-purchased-setup'))return;
+  event.preventDefault();
+  fieldError(input,input.validity?.valueMissing?'This field is required.':input.validationMessage||'Please check this value.');
+  // Native constraint validation can report several errors in one submit.
+  // Reveal only the FIRST wrong field, not the last one reported.
+  const first=Array.from(input.form?.elements||[]).find(field=>field.willValidate&&field.validity&&!field.validity.valid);
+  if(!first||first===input)reveal(input);
  },true);
- document.addEventListener('input',event=>{
+ function clearCorrected(event){
   const input=event.target;
   if(!input?.classList?.contains('rz-field-invalid'))return;
   if(input.validity?.valid&&String(input.value||'').trim())fieldError(input,'');
- },true);
- window.RizSimFieldFeedback=Object.freeze({show:fieldError,required});
+ }
+ document.addEventListener('input',clearCorrected,true);
+ document.addEventListener('change',clearCorrected,true);
+ window.RizSimFieldFeedback=Object.freeze({show:fieldError,required,reveal,invalid:reject});
  window.RizSimFileDelivery=Object.freeze({picker});
 })();
