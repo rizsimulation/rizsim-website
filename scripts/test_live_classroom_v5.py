@@ -157,12 +157,14 @@ def run(browser,base):
     page.locator('#courseClassroomSessionName').fill('New Course Seminar')
     page.locator('#createCourseClassroomSessionButton').click()
     page.wait_for_selector('#rzV13StudioShare:not([hidden])',timeout=15000)
-    page.wait_for_selector('#rzCourseEnvironment [data-rz-add-resource]')
     page.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible')
+    check('Original course resources remain mounted behind Studio Share',
+          page.locator('#rzCourseEnvironment [data-rz-add-resource]').count()>=1)
     check('Course creation opens verified QR/code/link inside Studio Share Access')
     check('No floating QR button exists for Course Lead',
           page.locator('#rzLiveAccessFab,#rzLiveAccessLayer').count()==0)
     page.locator('#rzV13SubviewOverview').click()
+    page.wait_for_selector('#rzCourseEnvironment [data-rz-add-resource]:visible')
     page.locator('[data-rz-add-resource]').click()
     page.locator('#rzRuntimeDialog .rz-file-zone').evaluate("el=>{const dt=new DataTransfer();dt.items.add(new File(['%PDF-1.4\\nfixture'],'class-notes.pdf',{type:'application/pdf'}));el.dispatchEvent(new DragEvent('drop',{bubbles:true,dataTransfer:dt}));}")
     page.wait_for_selector('[data-rz-file-publish]:not([disabled])')
