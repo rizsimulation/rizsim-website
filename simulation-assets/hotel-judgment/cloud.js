@@ -55,8 +55,10 @@
    return r&&r.version==='hotel-judgment-v1'&&
      r.attempt_id===attempt?.id&&r.session_id===attempt?.classroom_session_id&&
      r.group===assignedGroup&&r.condition_question===assignedQuestion&&
-     ['Yes','No'].includes(r.binary_response)&&Number.isSafeInteger(Number(r.willing_to_pay_pkr))&&
-     Number(r.willing_to_pay_pkr)>=0&&Number(r.willing_to_pay_pkr)<=1000000000000&&
+     ['Yes','No'].includes(r.binary_response)&&
+     typeof r.willing_to_pay_pkr==='number'&&
+     r.willing_to_pay_pkr>=0&&r.willing_to_pay_pkr<=1000000000000&&
+     Math.floor(r.willing_to_pay_pkr)===r.willing_to_pay_pkr&&
      typeof r.response_id==='string'&&r.response_id.startsWith('HJ-')&&r.demo_only===false;
  }
  async function initialize(){
