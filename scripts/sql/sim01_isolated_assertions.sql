@@ -59,7 +59,7 @@ select public.test_reject('Student may not call Faculty class RPC',
 -- A student with an active classroom attempt may update their own locked-stage
 -- storage only while class open. The full integrity of stage lock transitions
 -- remains a separate release review task.
-do $declare n bigint;begin
+do $$declare n bigint;begin
  update public.simulation_responses set response_data='{"saved":true}'::jsonb
  where attempt_id='30000000-0000-4000-8000-000000000001';
  get diagnostics n=row_count;
@@ -71,7 +71,7 @@ select public.test_reject('Student may not insert into already-submitted attempt
 select set_config('request.jwt.claim.sub','00000000-0000-4000-8000-000000000006',false);
 select public.test_reject('Closed classroom prevents new response insert',
  $$insert into public.simulation_responses(attempt_id,question_key,response_data) values('30000000-0000-4000-8000-000000000002','test','{}')$$);
-do $declare n bigint;begin
+do $$declare n bigint;begin
  update public.simulation_responses set response_data='{"bad":true}'::jsonb
  where attempt_id='30000000-0000-4000-8000-000000000002';
  get diagnostics n=row_count;
