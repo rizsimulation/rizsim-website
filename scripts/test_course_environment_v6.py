@@ -126,7 +126,21 @@ def run(browser,base):
  p.locator('.rz-dialog-close').click()
  check('Purchaser can publish without modifying publisher content',p.evaluate('__fixture.materials.length')==2)
  p.locator('[data-rz-run-product=sim-1]').locator('..').hover();p.locator('[data-rz-run-product=sim-1]').click();p.wait_for_selector('#rzPurchasedSetup:not([hidden])')
- p.locator('#rzPurchasedSessionName').fill('Purchased QA');p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
+ p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
+ check('Blank purchased-session name is auto-focused and visibly invalid',
+  p.evaluate('document.activeElement?.id==="rzPurchasedSessionName"') and
+  p.locator('#rzPurchasedSessionName[aria-invalid="true"] + .rz-inline-error').is_visible())
+ p.locator('#rzPurchasedSessionName').fill('Purchased QA')
+ start=p.locator('#rzPurchasedSetup input[type=datetime-local]').nth(2)
+ end=p.locator('#rzPurchasedSetup input[type=datetime-local]').nth(3)
+ prior_end=end.input_value()
+ end.fill(start.input_value())
+ p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
+ check('Wrong practice end auto-scrolls to the precise invalid time',
+  p.evaluate('document.activeElement?.type==="datetime-local" && document.activeElement?.value===document.querySelectorAll("#rzPurchasedSetup input[type=datetime-local]")[3].value') and
+  end.get_attribute('aria-invalid')=='true')
+ end.fill(prior_end)
+ p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
  p.wait_for_selector('#rzLiveRunning:not([hidden])');p.wait_for_selector('.rz-v5-qr svg')
  check('Ordinary Faculty runs only included purchased simulation',p.evaluate('__fixture.sessions[0].course_id')=='purchased-1')
  check('Purchased course never exposes material-add controls',p.locator('[data-rz-add-resource]').count()==0)
