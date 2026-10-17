@@ -123,7 +123,23 @@ def run(browser,base):
    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])',timeout=20000)
    page.evaluate(SETUP)
    page.evaluate("window['"+mod+"'].refresh()")
-   page.wait_for_function("window['"+mod+"'].state().joined=="+str(n),timeout=18000)
+   try:
+    page.wait_for_function("window['"+mod+"'].state().joined=="+str(n),timeout=14000)
+   except Exception:
+    diag=page.evaluate("""({moduleName}) => ({
+      href:location.href,
+      moduleState:window[moduleName]?.state?.(),
+      hasModule:!!window[moduleName],
+      bridge:window.RizSimFacultyBridge?.getSnapshot?.(),
+      fixtureRows:{sim01:window.__step4?.sim01?.length,
+        sim02:window.__step4?.sim02?.length,sim03:window.__step4?.sim03?.length},
+      foundStud:!!document.getElementById('rzV13SimulationStudentResults'),
+      v13:window.RizSimLiveWorkspace?.state?.(),
+      errors:document.querySelectorAll('.rz-s02-error').length
+    })""",mod)
+    print('STEP4 DEBUG '+code+': '+json.dumps(diag,default=str)[:7000],flush=True)
+    capture(page,'step4-debug-sim'+code+'.png')
+    raise
    assert page.locator('#rzV13Tabstudio[aria-selected=true]').count()==1,'Studio first'
    page.locator('#rzV13Tabstudents').click()
    page.locator('#'+student_id).wait_for(state='visible')
