@@ -80,10 +80,15 @@ def run(browser,base):
  check('Course Run preselects the included simulation',p.locator('#courseClassroomSimulationSelect').is_hidden())
  check('No automatic scroll on course simulation selection',p.evaluate('__scrollCalls.length')==before)
  p.locator('#courseClassroomSessionName').fill('V6 Course Session');p.locator('#createCourseClassroomSessionButton').click()
- p.wait_for_selector('#rzLiveRunning:not([hidden])');p.wait_for_selector('#rzLiveAccessLayer:not([hidden]) #rzLiveAccessQR svg')
+ p.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible',timeout=18000)
+ check('New course session uses original verified code in Studio Share',
+   p.locator('#rzV13ShareCode').text_content().strip()==
+   p.locator('.classroom-created-card:visible .classroom-code-value').text_content().strip())
+ check('Course Lead Studio has no floating QR launcher',
+   p.locator('#rzLiveAccessLayer,#rzLiveAccessFab').count()==0)
+ p.locator('#rzV13SubviewOverview').click()
  check('Course session retains environment and access',p.locator('#rzCourseEnvironment').is_visible())
  check('No duplicate course upload forms',p.locator('#courseMaterialsCreateArea').is_hidden() and p.locator('#rzClassroomDropZone').is_hidden())
- p.locator('#rzLiveAccessMinimize').click();p.wait_for_selector('#rzLiveAccessFab:visible')
  p.locator('#rzLiveJumpResults').click()
  check('Explicit results jump remains available')
  p.get_by_role('button',name='Course environment',exact=True).click();p.wait_for_selector('#rzCourseEnvironment .rz-course-columns')
@@ -142,9 +147,11 @@ def run(browser,base):
   end.get_attribute('aria-invalid')=='true')
  end.fill(prior_end)
  p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
- p.wait_for_selector('#rzLiveRunning:not([hidden])');p.wait_for_selector('#rzLiveAccessLayer:not([hidden]) #rzLiveAccessQR svg')
- check('Purchased session also opens floating access immediately',p.locator('#rzLiveAccessLayer').is_visible())
- p.locator('#rzLiveAccessMinimize').click()
+ p.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible',timeout=18000)
+ check('Purchased session opens Studio-only token-backed QR immediately',
+   p.locator('#rzV13ShareCode').is_visible() and
+   p.locator('#rzLiveAccessLayer,#rzLiveAccessFab').count()==0)
+ p.locator('#rzV13SubviewOverview').click()
  check('Ordinary Faculty runs only included purchased simulation',p.evaluate('__fixture.sessions[0].course_id')=='purchased-1')
  check('Purchased course never exposes material-add controls',p.locator('[data-rz-add-resource]').count()==0)
  check('Purchased environment has no browser errors',not errors)

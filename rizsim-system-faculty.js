@@ -288,7 +288,9 @@
    tab.append(body);
    const hint=elem('p','rz-s02-scroll-hint','Scroll horizontally to view all Student results and report actions ↔');
    hint.id='rzS02RosterScrollHint';card.append(hint);
-   const scroll=box(card,'rz-s02-table-scroller',tab);
+   box(card,'rz-s02-table-scroller',tab);
+   // box() returns its parent. The focusable/scrollable element is its child.
+   const scroll=card.querySelector('.rz-s02-table-scroller');
    scroll.tabIndex=0;scroll.setAttribute('role','region');
    scroll.setAttribute('aria-label','Student progress and results table');
    scroll.setAttribute('aria-describedby','rzS02RosterScrollHint');

@@ -65,5 +65,7 @@ assert(portal.includes('rizsim-support.js')&&portal.includes('rizsim-shared-abou
 assert(portal.includes('rizsim-course-lead-upgrade.css'));
 assert(live.includes('window.RizSimSystemFaculty?.draw(s,route)'));
 assert(live.includes('window.RizSimSystemFaculty?.draw(null,null)'));
-assert(live.includes("if (!s || !ROLES.includes(s.role) || !active()) { clearAccess();"));
+assert(live.includes("if (!s || !ROLES.includes(s.role) || !active()) { shareAutoOpen='';"));
+assert(live.includes('function verifiedShare()')&&live.includes('eligibleSession(s,x)'),'Sim02 shares only original authorized sessions');
+assert(!live.includes('rzLiveAccessFab')&&!live.includes('rzLiveAccessLayer'),'Sim02 portal does not recreate pinned QR controls');
 console.log('SIM02 preserved instrument, secure key boundary and Live Classroom integration PASS');

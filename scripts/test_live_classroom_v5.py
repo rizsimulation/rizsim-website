@@ -104,7 +104,7 @@ def run(browser,base):
     page.evaluate('__fixture.failCreate=false')
     page.locator('#classroomSessionName').fill('New QA Seminar')
     page.locator('#createClassroomSessionButton').click()
-    page.wait_for_selector('#rzLiveRunning:not([hidden])',timeout=15000)
+    page.wait_for_selector('#rzV13StudioShare:not([hidden])',timeout=15000)
     page.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible',timeout=18000)
     check('New session automatically opens authenticated Studio Share Access',
           page.locator('#rzV13SubviewShare[aria-pressed=true]').count()==1)
@@ -156,7 +156,7 @@ def run(browser,base):
     assert page.locator('#courseClassroomSimulationSelect').input_value()=='sim-2'
     page.locator('#courseClassroomSessionName').fill('New Course Seminar')
     page.locator('#createCourseClassroomSessionButton').click()
-    page.wait_for_selector('#rzLiveRunning:not([hidden])',timeout=15000)
+    page.wait_for_selector('#rzV13StudioShare:not([hidden])',timeout=15000)
     page.wait_for_selector('#rzCourseEnvironment [data-rz-add-resource]')
     page.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible')
     check('Course creation opens verified QR/code/link inside Studio Share Access')
