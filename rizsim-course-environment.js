@@ -21,6 +21,16 @@
  function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=str(value);return n;}
  function icon(kind){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 32 32');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.8');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',paths[kind]||paths.file);svg.append(p);return svg;}
  function btn(label,action,variant=''){const n=node('button','rz-runtime-btn '+variant,label);n.type='button';n.addEventListener('click',action);return n;}
+ // The private viewer and protected file endpoint enforce current permissions.
+ // Do not expose private storage URLs or access tokens in preview links.
+ function reviewFile(item){
+  const link=node('a','rz-runtime-btn rz-review-file','Review File');
+  link.href='/course-material-viewer.html?material='+encodeURIComponent(str(item.id));
+  link.target='_blank';link.rel='noopener noreferrer';
+  link.setAttribute('aria-label','Review '+str(item.title||item.file_name||'file')+' in RizSim');
+  link.title='Open the saved file in your authorized RizSim viewer';
+  return link;
+ }
  function active(){return $('view-classroom')?.classList.contains('active')&&$('authenticatedApp')?.classList.contains('show');}
  function redraw(){window.RizSimLiveClassroom?.draw();}
  function key(kind,id){return kind+':'+id;}
@@ -38,7 +48,12 @@
   return dialog;
  }
  function alertBox(title,description,returnTo){busy=false;const d=frame(title,description,returnTo);const action=btn('Close',closeDialog);d.append(action);action.focus({preventScroll:true});}
- function success(title,description){busy=false;const d=frame(title,description);const mark=node('div','rz-success-icon');mark.append(icon('check'));d.querySelector('h2').before(mark);const done=btn('Done',closeDialog,'primary');d.append(done);done.focus({preventScroll:true});}
+ function success(title,description,reviewItem=null){
+  busy=false;const d=frame(title,description),mark=node('div','rz-success-icon');mark.append(icon('check'));d.querySelector('h2').before(mark);
+  const actions=node('div','rz-dialog-actions');
+  if(reviewItem?.source_type==='file'&&reviewItem.id)actions.append(reviewFile(reviewItem));
+  const done=btn('Done',closeDialog,'primary');actions.append(done);d.append(actions);done.focus({preventScroll:true});
+ }
  function confirmPublication(scope,item){
   const started=syncIdentity();
   const published=!item.published_to_class;
@@ -51,7 +66,7 @@
    try{
     await service().publish(scope.kind,scope.id,item.id,published);
     if(started!==syncIdentity())return;
-    invalidate(scope);success(published?'Published to class':'Revoked from class',item.title+(published?' is now published to '+scopeTitle(scope)+'.':' is no longer offered to students. The saved resource has not been deleted.'));
+    invalidate(scope);success(published?'Published to class':'Revoked from class',item.title+(published?' is now published to '+scopeTitle(scope)+'.':' is no longer offered to students. The saved resource has not been deleted.'),item);
    }catch(e){if(started!==syncIdentity())return;busy=false;error.hidden=false;error.textContent=e.message;accept.disabled=false;cancel.disabled=false;d.querySelector('.rz-dialog-close').disabled=false;accept.textContent=published?'Publish to Class':'Revoke';}
   },published?'primary':'danger');actions.append(cancel,accept);d.append(actions);cancel.focus({preventScroll:true});
  }
@@ -126,7 +141,7 @@
    e.preventDefault();if(busy)return;draft.title=title.value.trim();draft.description=desc.value.trim();draft.delivery_mode=delivery?.value()||'secure_view';
    if(!window.RizSimFieldFeedback?.required(title,'a resource title')){title.focus({preventScroll:true});return;}
    busy=true;submit.disabled=true;cancel.disabled=true;d.querySelector('.rz-dialog-close').disabled=true;submit.textContent=draft.file?'Uploading and publishing...':'Publishing...';
-   try{await service().save(scope.kind,scope.id,draft);if(started!==syncIdentity())return;invalidate(scope);success('Published to class',draft.title+' is now published to '+scopeTitle(scope)+'.');}
+   try{await service().save(scope.kind,scope.id,draft);if(started!==syncIdentity())return;invalidate(scope);success('Published to class',draft.title+' is now published to '+scopeTitle(scope)+'.',draft.file?{id:draft.id,title:draft.title,source_type:'file'}:null);}
    catch(e){if(started!==syncIdentity())return;busy=false;error.hidden=false;error.textContent=e.message;submit.disabled=false;cancel.disabled=false;d.querySelector('.rz-dialog-close').disabled=false;submit.textContent='Retry publication';}
   });
   title.focus({preventScroll:true});
@@ -144,7 +159,9 @@
    const publish=btn(item.published_to_class?'Revoke':'Publish to Class',()=>confirmPublication(scope,item),item.published_to_class?'danger':'primary');
    publish.disabled=!studentType||scope.writable===false;
    if(!studentType){status.textContent='Instructor-only material';publish.title='Instructor-only materials are not published to students.';}
-   actions.append(status,publish);card.append(mark,detail,actions);list.append(card);
+   actions.append(status);
+   if(item.source_type==='file'&&item.id)actions.append(reviewFile(item));
+   actions.append(publish);card.append(mark,detail,actions);list.append(card);
   });
   if(canAdd&&scope.kind==='own'&&snapshot()?.role==='course_lead'){
    const add=node('button','rz-resource-card rz-resource-add');add.type='button';add.dataset.rzAddResource='true';const mark=node('span','rz-resource-icon');mark.append(icon('plus'));const copy=node('span');copy.append(node('strong','','Add a new resource'),node('small','','Upload a file or paste a link'));add.append(mark,copy);add.addEventListener('click',()=>sourceDialog(scope));list.append(add);
