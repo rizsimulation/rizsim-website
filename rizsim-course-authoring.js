@@ -266,13 +266,13 @@
     const zone=node('div','rz-author-drop');zone.tabIndex=0;zone.setAttribute('aria-label','Drop a learning resource or browse files');
     const mark=node('span','rz-author-upload-icon');mark.append(icon('file'));const input=node('input','rz-author-file-input');input.type='file';input.accept='.pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg';input.tabIndex=-1;
     const browse=button('Browse files',()=>input.click(),'primary');zone.append(mark,node('h3','','Drop your file here'),node('p','','PDF, PNG or JPEG \u00b7 up to 25 MB'),browse,input);
-    const caption=node('div');caption.dataset.authorFileCaption='true';caption.hidden=true;let serial=0,selected=null;
+    const caption=node('div');caption.dataset.authorFileCaption='true';caption.hidden=true;let serial=0,selected=null,selectedMime=null;
     async function choose(files){
       if(!files?.length)return;if(files.length!==1){notice('Choose one file','Choose one file at a time so each resource has its own title.');return;}
-      const seq=++serial;selected=files[0];caption.hidden=false;caption.replaceChildren(fileCaption(selected,selected.type));
-      const publish=button('Publish',()=>resourceDetails(draft,{file:selected,mime_type:selected.type,source_type:'file'},d),'primary');publish.dataset.authorFilePublish='true';publish.disabled=true;caption.firstChild.append(publish);
+      const seq=++serial;selected=files[0];selectedMime=null;caption.hidden=false;caption.replaceChildren(fileCaption(selected,selected.type));
+      const publish=button('Publish',()=>resourceDetails(draft,{file:selected,mime_type:selectedMime||selected.type,source_type:'file'},d),'primary');publish.dataset.authorFilePublish='true';publish.disabled=true;caption.firstChild.append(publish);
       try{const value=await validation().inspectFile(selected);if(seq!==serial||gen!==generation||!d.isConnected)return;
-        caption.querySelector('.rz-author-item-icon').replaceChildren(icon(value.mime.startsWith('image/')?'image':'file'));publish.disabled=false;
+        selectedMime=value.mime;caption.querySelector('.rz-author-item-icon').replaceChildren(icon(value.mime.startsWith('image/')?'image':'file'));publish.disabled=false;
       }catch(e){if(seq===serial&&gen===generation&&d.isConnected)caption.append(node('p','rz-author-error',e.message));}
     }
     input.addEventListener('change',()=>choose(input.files));zone.addEventListener('keydown',e=>{if(e.target===zone&&[' ','Enter'].includes(e.key)){e.preventDefault();input.click();}});
