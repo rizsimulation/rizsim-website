@@ -135,7 +135,7 @@ select public.sim03_assert('revealed A/B medians are based on actual two prices'
   from public.get_my_rizsim_hotel_session_records('20000000-0000-4000-8000-000000000001')));
 select set_config('request.jwt.claim.sub','00000000-0000-4000-8000-000000000015',false);
 select public.sim03_reject('closed classroom blocks a new assignment for uncommitted Student',
- $select public.get_my_rizsim_hotel_assignment('30000000-0000-4000-8000-000000000015')$);
+ $$select public.get_my_rizsim_hotel_assignment('30000000-0000-4000-8000-000000000015')$$);
 reset role;
 set role anon;
 select public.sim03_reject('anonymous cannot call assign RPC',

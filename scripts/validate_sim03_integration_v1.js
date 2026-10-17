@@ -42,7 +42,8 @@ assert(!cloud.includes("simulation_attempts').update("),'no direct progress esca
 assert(!cloud.includes("p_group:"),'browser may not choose assigned group');
 assert(cloud.includes('photos()')&&cloud.includes('genuinePhotoReady()'));
 assert(cloud.includes('check_my_rizsim_classroom_attempt_access'));
-assert(cloud.includes('if(!validReceived'));
+assert(cloud.includes('!validReceived(receipt.record)'));
+assert(cloud.includes('!validReceived(value.record)'));
 assert(faculty.includes('get_my_rizsim_hotel_session_records'));
 assert(faculty.includes('p_session_id:session'));
 assert(faculty.includes('const canReveal=feed.length>0&&feed.every(x=>x.collection_revealed===true)'));
