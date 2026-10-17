@@ -1,0 +1,35 @@
+{
+  "activity": "RizHotelJudgment.v1",
+  "source": "Four PNG images uploaded by the user on 2026-10-17",
+  "order": [
+    {
+      "position": 1,
+      "filename": "hotel_view_1.png",
+      "user_uploaded_filename": "image(20261017-115959).png",
+      "bytes": 498440,
+      "sha256": "4cec87bb098cdc7993cabdd44951394a18983dacba4c1ff4b10176e5e7473c54"
+    },
+    {
+      "position": 2,
+      "filename": "hotel_view_2.png",
+      "user_uploaded_filename": "image(20261017-120034).png",
+      "bytes": 388297,
+      "sha256": "f301fed6a995d0089d9abd2c3ce372e85ee1bd22a2e1dc11665f57ace4c21e96"
+    },
+    {
+      "position": 3,
+      "filename": "hotel_view_3.png",
+      "user_uploaded_filename": "image(20261017-120048).png",
+      "bytes": 703609,
+      "sha256": "2640ce6d0538fbab09e56f14ddd7dfa008f1d2b2e092c7b296d60136d8f6e188"
+    },
+    {
+      "position": 4,
+      "filename": "hotel_view_4.png",
+      "user_uploaded_filename": "image(20261017-120102).png",
+      "bytes": 623887,
+      "sha256": "1e7303c24f7c5e8b145566a0c1fd8138b400e082f694fcacf79aef888d047a69"
+    }
+  ],
+  "fidelity": "Copied byte-for-byte without alteration; shown in same order to A and B."
+}
