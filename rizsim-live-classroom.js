@@ -419,7 +419,7 @@
     if (!ready || drawing) return; drawing = true;
     try {
       const s = snapshot();
-      if (!s || !ROLES.includes(s.role) || !active()) { window.RizSimInsightFaculty?.draw(null,null); clearAccess(); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
+      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); window.RizSimInsightFaculty?.draw(null,null); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
       lastView = 'classroom';
       if(route.stage !== 'running')clearAccess();
       if (!dataReady()) { message('Loading your verified classroom access...'); return; }
