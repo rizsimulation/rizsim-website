@@ -177,6 +177,29 @@ def run(browser,url):
     check('Drag and drop displays the selected file','drop.pdf' in p.locator('[data-author-file-caption]').inner_text())
     p.locator('[data-author-dialog=resource] .rz-author-close').click()
     check('Closing picker does not add an unconfirmed resource',p.locator('#rzAuthorResources .rz-author-item').count()==0)
+    resource(p)
+    import struct,zlib
+    def chunk(t,payload):
+        return struct.pack('>I',len(payload))+t+payload+struct.pack('>I',zlib.crc32(t+payload)&0xffffffff)
+    png=(b'\x5cx89PNG\x5cr\x5cn\x5cx1a\x5cn'+chunk(b'IHDR',struct.pack('>IIBBBBB',1,1,8,6,0,0,0))+
+         chunk(b'IDAT',zlib.compress(b'\x5cx00\x5cxff\x5cx00\x5cx00\x5cxff'))+chunk(b'IEND',b''))
+    p.locator('.rz-author-file-input').set_input_files({'name':'small-image.png','mimeType':'image/png','buffer':png})
+    p.wait_for_selector('[data-author-file-publish]:not([disabled])')
+    p.locator('[data-author-file-publish]').click()
+    p.locator('[data-author-dialog=details] [data-author-review=details]').tap()
+    p.wait_for_function('''() => {
+      const image=document.querySelector('[data-author-dialog="draft-preview"] img.rz-author-preview-image');
+      return !!image && image.complete && image.naturalWidth===1;
+    }''')
+    check('Touch-enabled Course Builder reviews local PNG files without uploading',
+       p.locator('[data-author-dialog=draft-preview] img[src^="blob:"]').count()==1 and
+       p.evaluate('__fixture.calls.filter(x=>x.kind==="storage").length')==0)
+    check('Mobile image preview stays within page width',
+       p.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+    p.locator('[data-author-dialog=draft-preview]').get_by_role('button',name='Back to course builder').tap()
+    p.locator('[data-author-dialog=details] .rz-author-close').tap()
+    p.locator('[data-author-dialog=resource] .rz-author-close').tap()
+    check('Preview and cancellation leave course draft unchanged',p.locator('#rzAuthorResources .rz-author-item').count()==0)
     base.close(ctx)
 
     ctx,p,errors=open_courses(browser,url,role='faculty')
