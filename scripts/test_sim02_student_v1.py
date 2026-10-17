@@ -137,8 +137,7 @@ async def main():
    assert result['submits']==1
    assert result['saved']['response_data']['record']['kg']['at']
    assert await page.get_by_role('heading',name='Your learning review').count()==1
-   assert await page.get_by_text('Bystander Effect',exact=True).count()>=1
-   assert await page.get_by_text('Confirmation Bias',exact=True).count()>=1
+   assert await page.locator('#app .grid2 .panel h3').all_text_contents() == await page.evaluate('DATA.pairs.map(p=>p.concept)'), 'Use original source concept names in personal RGA'
    assert len(await page.evaluate('window.__sim02Events'))>=1
    (ROOT/'test-results').mkdir(exist_ok=True)
    await page.screenshot(path=str(ROOT/'test-results'/'sim02-student-complete-desktop.png'),full_page=True)

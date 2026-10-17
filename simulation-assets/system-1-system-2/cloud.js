@@ -125,7 +125,7 @@
    Promise.resolve().then(saveStage).then(async()=>{
      window.RizSimSim02StudentBridge?.emit(reason);
      if(record?.kg.at){submitPending=true;await finishSubmit();}
-     banner(attempt.status==='submitted'?'Submission confirmed. You can now print your learning results.':'Locked decision securely saved.',false);
+     banner(attempt.status==='submitted'?(personalRGA?'Submission confirmed and personal results verified.':'Submission confirmed. Personal scoring is pending; use Refresh verified results.'):'Locked decision securely saved.',false);
    }).catch(e=>{
      /* Preserve already-saved server state on partial failure; never mark submission successful without the RPC receipt. */
      if(submitPending){banner('Your locked responses were saved, but final submission needs verification: '+errorText(e),true)}
