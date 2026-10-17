@@ -68,14 +68,16 @@ select public.test_assert('Course Lead atomically saves a downloadable file',
     "file_size":124,"delivery_mode":"downloadable",
     "storage_path":"70000000-0000-4000-8000-0000000000a1/authoring/10000000-0000-4000-8000-000000000001/80000000-0000-4000-8000-0000000000a1/reading.pdf"}]}'
    )->'resources'->0->>'delivery_mode')='downloadable');
-select public.test_assert('Course authoring persists chosen file mode',
- (select delivery_mode='downloadable' and published_to_class=false
- from public.rizsim_course_materials where id='80000000-0000-4000-8000-0000000000a1'));
+select public.test_assert('Course authoring re-read preserves chosen file mode',
+ (select (m->>'delivery_mode')='downloadable' and (m->>'published_to_class')='false'
+ from jsonb_array_elements(public.get_my_rizsim_course_authoring('70000000-0000-4000-8000-0000000000a1')->'resources') m
+ where m->>'id'='80000000-0000-4000-8000-0000000000a1'));
 select public.test_assert('Existing secure-mode course file stayed secure',
- (select delivery_mode='secure_view' from public.rizsim_course_materials
- where id='80000000-0000-4000-8000-000000000001'));
+ (select (m->>'delivery_mode')='secure_view'
+ from jsonb_array_elements(public.get_my_rizsim_course_authoring('70000000-0000-4000-8000-000000000001')->'resources') m
+ where m->>'id'='80000000-0000-4000-8000-000000000001'));
 select public.test_assert('Runtime course data exposes only selected mode, never storage path',
- (select (m->>'delivery_mode')='downloadable' and not m ? 'storage_path'
+ (select (m->>'delivery_mode')='downloadable' and not (m ? 'storage_path')
  from jsonb_array_elements(public.get_rizsim_course_runtime('70000000-0000-4000-8000-0000000000a1','own')->'resources') m
  where m->>'id'='80000000-0000-4000-8000-0000000000a1'));
 reset role;
