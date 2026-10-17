@@ -120,12 +120,149 @@
       if(k){if(!o.has(k))o.set(k,[]);o.get(k).push(r);}}
     return o;
   }
+
+  // Classroom progress means *locked decisions*, not tentative choice clicks:
+  // six KR + two source/transfer + six KG = 14 verifiable decisions.
+  function studentProgress(row){
+    const n=row?.record&&C.validRecord(row.record)?C.committed(row.record):0;
+    const committed=Math.max(0,Math.min(14,n));
+    const phase=row?.record?C.stage(row.record):'join';
+    return {committed,percent:Math.round(committed/14*100),
+      label:({join:'Not started',kr:'Knowledge Review',source:'Source decision',
+        bridge:'Concept bridge',transfer:'Transfer decision',feedback:'Feedback',
+        kg:'Knowledge Gain',rga:'Review complete'})[phase]||'In progress'};
+  }
+  function personalBar(parent,label,count,max,shade='teal'){
+    const row=node('div','rz-i01-personal-bar');
+    row.append(named('span','rz-i01-personal-label',label));
+    const track=node('div','rz-i01-personal-track');track.setAttribute('role','img');
+    track.setAttribute('aria-label',label+': '+count+' of '+max);
+    const fill=node('span','rz-i01-personal-fill rz-i01-'+shade);
+    fill.style.width=(max?Math.min(100,Math.max(0,100*count/max)):0)+'%';
+    track.append(fill);row.append(track,named('strong','',count+' / '+max));parent.append(row);
+  }
+  // Mirrors the Student RGA content using the SAME saved record + scoring
+  // functions; Faculty never opens a Student session or mutates Student data.
+  function individualStudentResult(row){
+    const rec=row.record, progress=studentProgress(row),rga=C.rga(rec);
+    const report=node('section','rz-i01-individual');
+    report.id='rizsimInsightIndividualResult';
+    report.setAttribute('aria-label','Read-only individual Student results');
+    const banner=node('div','rz-i01-individual-banner');
+    const titles=node('div');
+    titles.append(named('span','rz-i01-eyebrow','INDIVIDUAL STUDENT · FACULTY REVIEW'),
+      named('h3','',row.name),
+      named('p','',str(rec.profile?.organization||'RizSim classroom',120)+' · '+(row.status==='submitted'?'Submitted':'In progress')));
+    const tools=node('div','rz-i01-individual-tools');
+    tools.append(named('span','rz-i01-readonly-chip','Read-only'),
+      button('Close student result',()=>{selectedAttempt='';render();},'rz-i01-btn rz-i01-secondary'));
+    banner.append(titles,tools);report.append(banner);
+    const progressPanel=node('div','rz-i01-student-progress');
+    progressPanel.append(named('strong','',progress.percent+'% complete'),
+      named('span','',progress.committed+' / 14 decisions locked · '+progress.label));
+    const track=node('div','rz-i01-progress-track');track.setAttribute('role','progressbar');
+    track.setAttribute('aria-label',row.name+' completed decisions');
+    track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','100');
+    track.setAttribute('aria-valuenow',String(progress.percent));
+    const fill=node('span','rz-i01-progress-fill');fill.style.width=progress.percent+'%';
+    track.append(fill);progressPanel.append(track);report.append(progressPanel);
+    const steps=node('div','rz-i01-journey');
+    for(const [abbr,desc,done] of [
+      ['KR','Knowledge Review',rec.locks.kr],
+      ['LT','Learning Transfer',rec.locks.transfer],
+      ['KG','Knowledge Gain',rec.locks.kg],
+      ['RGA','Personal results',!!rga]
+    ]){
+      const e=node('div','rz-i01-journey-step'+(done?' done':''));
+      e.append(named('strong','',abbr),named('small','',desc));steps.append(e);
+    }
+    report.append(steps);
+    const overview=node('div','rz-i01-individual-body');
+    const headingBlock=node('div','rz-i01-section-head');
+    headingBlock.append(named('h3','',rga?'Your learning in view':'Learning activity in progress'),
+      named('p','',rga?'Same review and transfer measures shown in the Student dashboard. This is a within-session snapshot, not durable mastery.':
+        'Only locked decisions are shown. Unanswered items are not counted as incorrect.'));
+    overview.append(headingBlock);
+    const tiles=node('div','rz-i01-student-tiles');
+    mini(tiles,'Knowledge Review',rec.locks.kr?C.score(rec,'kr')+' / 6':'—','Initial locked review');
+    mini(tiles,'Knowledge Gain',rec.locks.kg?C.score(rec,'kg')+' / 6':'—','Final locked review');
+    mini(tiles,'Review change',rga?(rga.change>0?'+':'')+rga.change+' / 6':'—',
+      rga?(rga.changePP>0?'+':'')+fixed(rga.changePP)+' percentage points':'Requires paired completed stages');
+    const flags=C.ltFlags(rec);
+    mini(tiles,'Source → Transfer',flags?(flags.source?'✓':'×')+' → '+(flags.transfer?'✓':'×'):'—',
+      flags?clusterLabel(flags.cluster):'Awaiting locked transfer');
+    overview.append(tiles);
+    if(!rga){
+      overview.append(named('p','rz-i01-empty','The completed Student Review Gain Analytics screen is available when Knowledge Gain has been locked. This preview does not infer missing answers.'));
+      report.append(overview);return report;
+    }
+    const grid=node('div','rz-i01-personal-grids');
+    const pair=node('div','rz-i01-personal-panel');
+    pair.append(named('h4','','KR versus KG'),named('p','','Matched review of the same six concepts'));
+    personalBar(pair,'KR',rga.kr,6,'gold');
+    personalBar(pair,'KG',rga.kg,6,'teal');
+    const transitions=node('div','rz-i01-personal-panel');
+    transitions.append(named('h4','','Item-by-item movement'),named('p','','Correctness transitions across six matched questions'));
+    for(const [label,key] of [
+      ['Stayed correct','stayedCorrect'],['Became correct','becameCorrect'],
+      ['Became incorrect','becameIncorrect'],['Still incorrect','stillIncorrect']
+    ])personalBar(transitions,label,rga.transitions[key],6,'teal');
+    grid.append(pair,transitions);overview.append(grid);
+    const pathTitle=node('div','rz-i01-section-head rz-i01-path-title');
+    pathTitle.append(named('h3','','Learning-transfer pathway'),
+      named('p','','Source judgment → factual knowledge → transfer'));
+    overview.append(pathTitle);
+    const cards=node('div','rz-i01-path-cards');
+    for(const [code,label] of [
+      ['CC','Both correct'],['IC','Improved at transfer'],
+      ['CI','Transfer needs review'],['II','Review both']
+    ]){
+      const selected=rga.lt.cluster===code;
+      const card=node('div','rz-i01-path-card'+(selected?' selected':''));
+      const dots=node('div','rz-i01-path-dots');
+      for(const c of code)dots.append(node('span','rz-i01-path-dot '+(c==='C'?'correct':'incorrect')));
+      card.append(named('strong','',clusterLabel(code)),dots,named('small','',label));
+      if(selected)card.append(named('span','rz-i01-path-badge','This student’s path'));
+      cards.append(card);
+    }
+    overview.append(cards);
+    const takeaway=node('div','rz-i01-student-takeaway');
+    takeaway.append(
+      named('p','','Source: '+D.source.options[rec.picks.source]),
+      named('p','','Transfer: '+D.transfer.options[rec.picks.transfer]),
+      named('p','','Next action: '+D.feedback[rga.lt.cluster].short)
+    );
+    overview.append(takeaway);
+    const keySection=node('details','rz-i01-answer-guide');
+    keySection.append(named('summary','','Faculty answer guide · six matched concepts'));
+    keySection.append(named('p','rz-i01-note','Available only within this authorized Faculty review. It does not release the key to Students.'));
+    const answerScroll=node('div','rz-i01-table-scroll');
+    const answerTable=node('table','rz-i01-table'),thead=node('thead'),head=node('tr');
+    ['Concept','KR response','KG response','Correct option'].forEach(x=>head.append(named('th','',x)));
+    thead.append(head);answerTable.append(thead);
+    const body=node('tbody');
+    for(const q of D.review){
+      const tr=node('tr');
+      [q.id+' · '+q.concept,
+        rec.picks.kr[q.id]+' · '+(C.correct(rec.picks.kr[q.id],q)?'Correct':'Incorrect'),
+        rec.picks.kg[q.id]+' · '+(C.correct(rec.picks.kg[q.id],q)?'Correct':'Incorrect'),
+        q.key].forEach(x=>tr.append(named('td','',x)));
+      body.append(tr);
+    }
+    answerTable.append(body);answerScroll.append(answerTable);keySection.append(answerScroll);
+    overview.append(keySection);
+    overview.append(named('p','rz-i01-note',row.status==='submitted'?
+      'Submission confirmed in the Student attempt. Faculty review cannot edit locked responses.':
+      'All decisions are locked, but server submission is still pending. The Student may need to retry confirmation.'));
+    report.append(overview);return report;
+  }
+
   function allRecords(parent,records){
     heading(parent,'Participant activity','Joined students and locked stages are reported from this authorized session only.');
     if(!rows.length){parent.append(named('p','rz-i01-empty','No students have joined this session yet.'));return;}
     const scroll=node('div','rz-i01-table-scroll'),table=node('table','rz-i01-table');
     const thead=node('thead'),h=node('tr');
-    ['Student','Stage','KR / 6','Source → transfer','KG / 6','Submission','Inspect'].forEach(x=>h.append(named('th','',x)));
+    ['Student','Progress','Stage','KR / 6','Source → transfer','KG / 6','Submission','Result'].forEach(x=>h.append(named('th','',x)));
     thead.append(h);table.append(thead);
     const body=node('tbody');
     for(const row of rows){
@@ -134,34 +271,37 @@
       const vals=[row.name,stage,rec?String(C.score(rec,'kr')??'—'):'—',
         flag?flag.cluster:'—',rec?String(C.score(rec,'kg')??'—'):'—',
         row.status==='submitted'?'Submitted':'In progress'];
-      vals.forEach(v=>tr.append(named('td','',v)));
+      tr.append(named('td','',vals[0]));
+      const progress=studentProgress(row),progressCell=node('td','rz-i01-progress-cell');
+      const progressLabel=node('div','rz-i01-progress-label');
+      progressLabel.append(named('strong','',progress.percent+'%'),
+        named('small','',progress.committed+' / 14 locked'));
+      const progressTrack=node('div','rz-i01-progress-track');
+      progressTrack.setAttribute('role','progressbar');
+      progressTrack.setAttribute('aria-label',row.name+' completion');
+      progressTrack.setAttribute('aria-valuemin','0');
+      progressTrack.setAttribute('aria-valuemax','100');
+      progressTrack.setAttribute('aria-valuenow',String(progress.percent));
+      const bar=node('span','rz-i01-progress-fill');bar.style.width=progress.percent+'%';
+      progressTrack.append(bar);progressCell.append(progressLabel,progressTrack);tr.append(progressCell);
+      vals.slice(1).forEach(v=>tr.append(named('td','',v)));
       const td=node('td');
-      const inspect=button('View',()=>{selectedAttempt=selectedAttempt===row.attempt?'':row.attempt;render();});
+      const inspect=button(selectedAttempt===row.attempt?'Close result':'View student result',()=>{
+        const opening=selectedAttempt!==row.attempt;
+        selectedAttempt=opening?row.attempt:'';
+        render();
+        if(opening)requestAnimationFrame(()=>{
+          const target=document.getElementById('rizsimInsightIndividualResult');
+          target?.scrollIntoView({block:'nearest',behavior:root.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+        });
+      });
       inspect.disabled=!rec;inspect.setAttribute('aria-expanded',String(selectedAttempt===row.attempt));
       td.append(inspect);tr.append(td);body.append(tr);
     }
     table.append(body);scroll.append(table);parent.append(scroll);
     const target=rows.find(x=>x.attempt===selectedAttempt);
     if(!target?.record)return;
-    const rec=target.record,stats=C.rga(rec),detail=node('div','rz-i01-inspector');
-    detail.append(named('h4','',target.name+' · Individual review'),
-      named('p','', 'Committed responses only. First Knowledge Review and final Knowledge Gain are distinct stages.'));
-    const g=node('div','rz-i01-stat-grid');
-    mini(g,'Knowledge Review',C.score(rec,'kr')==null?'—':C.score(rec,'kr')+' / 6','First locked stage');
-    mini(g,'Learning Transfer',C.ltFlags(rec)?.cluster||'—','Source/transfer outcome');
-    mini(g,'Knowledge Gain',C.score(rec,'kg')==null?'—':C.score(rec,'kg')+' / 6','Final locked stage');
-    detail.append(g);
-    if(stats){
-      detail.append(named('p','rz-i01-note','Within-session change: '+(stats.change>0?'+':'')+stats.change+' / 6 ('+fixed(stats.changePP)+' percentage points).'));
-      const list=node('ol','rz-i01-transition-list');
-      for(const item of D.review){
-        const initial=rec.picks.kr[item.id],final=rec.picks.kg[item.id];
-        const a=C.correct(initial,item),b=C.correct(final,item);
-        list.append(named('li','',item.id+' · '+item.concept+': '+(a?'Correct':'Incorrect')+' → '+(b?'Correct':'Incorrect')));
-      }
-      detail.append(list);
-    }
-    parent.append(detail);
+    parent.append(individualStudentResult(target));
   }
   function render(){
     if(!host||host.hidden||!sessionId)return;

@@ -44,7 +44,10 @@ async def main():
           joined_at:new Date().toISOString(),response_data:{record:mk('A',true)}},
         {attempt_id:'attempt-b',student_name:'<img src=x onerror=alert(1)>',
           attempt_status:'in_progress',joined_at:new Date().toISOString(),
-          response_data:{record:mk('B',false)}}
+          response_data:{record:mk('B',false)}},
+        {attempt_id:'attempt-c',student_name:'Person C — just joined',
+          attempt_status:'in_progress',joined_at:new Date().toISOString(),
+          response_data:null}
       ];
       window.__testRows={'session-a':fakeRows,'session-b':[]};
       window.__rpcArgs=[];
@@ -71,14 +74,37 @@ async def main():
     await page.wait_for_function("window.RizSimInsightFaculty.state().joined===2")
     assert await page.locator("#rzInsightFacultyAnalytics").is_visible()
     assert await page.get_by_text("Six-concept item comparison").count()==1
-    assert await page.locator(".rz-i01-table tbody tr").count()==2
+    assert await page.locator(".rz-i01-card-wide .rz-i01-table tbody tr").count()==3
+    assert await page.locator(".rz-i01-progress-cell").count()==3
+    assert await page.locator(".rz-i01-progress-cell").nth(0).get_by_text("100%").count()==1
+    assert await page.locator(".rz-i01-progress-cell").nth(1).get_by_text("43%").count()==1
+    assert await page.locator(".rz-i01-progress-cell").nth(2).get_by_text("0%").count()==1
+    assert await page.locator(".rz-i01-progress-track[role=progressbar]").count()==3
     assert await page.get_by_text("Test Class A").count()>=1
     assert await page.locator("#rzInsightFacultyAnalytics img").count()==0,"User-supplied name was injected as markup"
     assert await page.get_by_text("<img src=x onerror=alert(1)>",exact=True).count()==1
     assert await page.locator(".rz-i01-meter-row").count()>=10
     assert await page.evaluate("window.__rpcArgs.length")>=1
-    await page.locator(".rz-i01-table tbody tr").first.get_by_role("button",name="View").click()
-    assert await page.get_by_text("Individual review",exact=False).count()>=1
+    await page.locator(".rz-i01-card-wide .rz-i01-table tbody tr").first.get_by_role("button",name="View student result").click()
+    assert await page.get_by_text("Your learning in view",exact=True).count()==1
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-student-tiles .rz-i01-stat").count()==4
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-path-card").count()==4
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-personal-bar").count()==6
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-path-card.selected").count()==1
+    assert await page.get_by_text("Faculty answer guide · six matched concepts").count()==1
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-progress-track").get_attribute("aria-valuenow")=="100"
+    await page.set_viewport_size({"width":390,"height":844})
+    assert await page.evaluate("window.innerWidth>=document.documentElement.scrollWidth-6"),"Mobile individual report overflow"
+    await page.screenshot(path=str(ROOT/"test-results"/"sim01-student-result-from-faculty-mobile.png"),full_page=True)
+    await page.set_viewport_size({"width":1280,"height":850})
+    await page.locator("#rizsimInsightIndividualResult summary").click()
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-answer-guide .rz-i01-table tbody tr").count()==6
+    assert await page.locator("#rizsimInsightIndividualResult button[data-action]").count()==0
+    await page.locator("#rizsimInsightIndividualResult").screenshot(path=str(ROOT/"test-results"/"sim01-faculty-student-full-results.png"))
+    await page.locator(".rz-i01-card-wide .rz-i01-table tbody tr").nth(1).get_by_role("button",name="View student result").click()
+    assert await page.get_by_text("Learning activity in progress").count()==1
+    assert await page.locator("#rizsimInsightIndividualResult .rz-i01-progress-track").get_attribute("aria-valuenow")=="43"
+    assert await page.get_by_text("The completed Student Review Gain Analytics screen is available",exact=False).count()==1
     await page.evaluate("""() => window.RizSimInsightFaculty.draw(window.__testFaculty,
         {stage:'running',session:'session-b',mode:'simulation'})""")
     await page.wait_for_function("window.RizSimInsightFaculty.state().sessionId==='session-b' && window.RizSimInsightFaculty.state().joined===0")
