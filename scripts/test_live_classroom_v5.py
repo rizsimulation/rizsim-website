@@ -212,6 +212,23 @@ def run(browser,base):
     check('Mobile flow has no uncaught browser errors',not errors)
     close(ctx)
 
+    ctx,page,errors=page_for(browser,base,'faculty','?live=simulation-running&selection=sim-1&live_session=existing-1#classroom',mobile=True)
+    page.wait_for_selector('#rzLiveAccessFab:visible')
+    check('Existing mobile session opens with floating button, not blocking dialog',page.locator('#rzLiveAccessLayer').is_hidden())
+    page.locator('#rzLiveAccessFab').click()
+    page.wait_for_selector('#rzLiveAccessQR svg:visible')
+    bounds=page.locator('#rzLiveAccessLayer .rz-v5-access-dialog').evaluate('''n=>{
+      const r=n.getBoundingClientRect();
+      return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:innerWidth,height:innerHeight};
+    }''')
+    check('Mobile session share dialog fits viewport',bounds['left']>=0 and bounds['right']<=bounds['width']+1 and bounds['top']>=-1 and bounds['bottom']<=bounds['height']+1)
+    check('Mobile share shows exact code and join link',page.locator('#rzLiveAccessCode').is_visible() and page.locator('#rzLiveAccessLink').is_visible())
+    page.screenshot(path=str(OUT/'mobile-session-access.png'),full_page=False)
+    page.locator('#rzLiveAccessMinimize').click()
+    check('Mobile share button remains pinned and accessible',page.locator('#rzLiveAccessFab').is_visible() and page.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+    check('Mobile session access causes no browser errors',not errors)
+    close(ctx)
+
 if __name__=='__main__':
     server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler)
     base='http://127.0.0.1:'+str(server.server_port)
