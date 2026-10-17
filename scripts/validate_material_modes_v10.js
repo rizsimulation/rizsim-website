@@ -18,7 +18,7 @@ for(const [name,script] of Object.entries({
  helpers:files.helpers,runtime:files.runtime,author:files.author,services:files.services,
  authorService:files.authorService,fixture:files.fixture
 })){
- const c=cp.spawnSync(process.execPath,['--check'],{input:script,encoding:'utf8'});
+ const c=cp.spawnSync(process.execPath,name==='fixture'?['--check','--input-type=module']:['--check'],{input:script,encoding:'utf8'});
  check(name+' valid JavaScript',c.status===0||(console.error(c.stderr),false));
 }
 const moduleJs=files.viewer.match(/<script type="module">([\s\S]*?)<\/script>/)?.[1];
