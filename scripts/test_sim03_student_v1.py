@@ -140,7 +140,24 @@ async def run_arm(browser,port,arm):
  await page.locator('#wtp').fill('12000' if arm=='A' else '38000')
  await page.locator('#participant').fill('Test '+arm)
  await page.get_by_role('button',name='Submit & lock response').click()
- await page.locator('#submittedStage:not(.hidden)').wait_for(timeout=16000)
+ try:
+  await page.locator('#submittedStage:not(.hidden)').wait_for(timeout=8000)
+ except Exception:
+  print('SIM03 submission diagnostic',await page.evaluate("""() => ({
+    validation:document.getElementById('validation')?.innerText,
+    status:document.getElementById('connectionStatus')?.innerText,
+    yes:document.getElementById('yesBtn')?.getAttribute('aria-pressed'),
+    wtp:document.getElementById('wtp')?.value,
+    fakeServer:window.__hotel03FakeState?.(),
+    rpcCalls:window.__hotel03RPCs,
+    live:{enabled:window.RizHotelParticipantLive?.enabled,
+      group:window.RizHotelParticipantLive?.assignedGroup,
+      state:window.RizHotelParticipantLive?.state},
+    sourceCommitted:window.RizHotelSim03GetRecord?.(),
+    gate:document.getElementById('rizHotelAuthGate')?.innerText
+  })"""),errors)
+  await page.screenshot(path=str(ROOT/'test-results'/f'sim03-submit-failure-{arm}.png'),full_page=True)
+  raise
  assert await page.locator('#sumGroup').inner_text()=='Group '+arm
  assert await page.locator('#sumYN').inner_text()=='Yes'
  assert await page.locator('#sumWTP').inner_text()==('PKR 12,000' if arm=='A' else 'PKR 38,000')
