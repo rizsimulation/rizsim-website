@@ -18,6 +18,19 @@
  function validRecord(r){return r&&r.version==='hotel-judgment-v1'&&r.group in QUESTION&&r.condition_question===QUESTION[r.group]&&['Yes','No'].includes(r.binary_response)&&Number.isSafeInteger(r.willing_to_pay_pkr)&&r.willing_to_pay_pkr>=0&&r.willing_to_pay_pkr<=1e12&&typeof r.response_id==='string'&&r.response_id.length>5&&!r.demo_only}
  function decisionEqual(a,b){return a.group===b.group&&a.binary_response===b.binary_response&&a.willing_to_pay_pkr===b.willing_to_pay_pkr&&String(a.participant_code||'')===String(b.participant_code||'')}
  function assetReady(){const all=[...document.querySelectorAll('img[data-hotel-view]')];return !!window.RizHotelStimuli?.ready&&all.length>=4}
+ async function waitForStimuli(){
+  const all=[...document.querySelectorAll('img[data-hotel-view]')];
+  if(all.length!==4)throw Error('This simulation requires four hotel photographs.');
+  await Promise.all(all.map(img=>new Promise(resolve=>{
+   if(img.complete)return resolve();
+   const settle=()=>resolve();
+   img.addEventListener('load',settle,{once:true});
+   img.addEventListener('error',settle,{once:true});
+   setTimeout(settle,15000);
+  })));
+  if(!assetReady())throw Error('The four original Istanbul hotel photographs are unavailable or incomplete. Please notify the Course Lead.');
+ }
+
  function restoreConfirmed(r){try{localStorage.setItem('RizSimulation.HotelJudgment.Activity03.Live.'+attempt.id,JSON.stringify({group:r.group,submitted:r}));sessionStorage.setItem('hotelJudgmentResponse',JSON.stringify(r))}catch{}}
  async function loadResponse(){const rows=await request(client.from('simulation_responses').select('id,response_data').eq('attempt_id',attempt.id).eq('question_key',RESPONSE_KEY).limit(1));const r=rows?.[0]?.response_data?.record;if(r&&!validRecord(r))throw Error('Saved response format is not recognized. Contact Faculty.');return r||null}
  async function verify(){
@@ -31,7 +44,7 @@
   if(!attempt||attempt.user_id!==user.id||attempt.classroom_session_id!==qp.get('session')||attempt.classroom_access_type!==qp.get('access'))throw Error('The classroom attempt is not assigned to this account.');
   product=await request(client.from('products').select('id,slug,status,product_type,launch_path').eq('id',attempt.product_id).maybeSingle());
   if(!product||product.slug!==SLUG||product.status!=='published'||product.product_type!=='simulation'||product.launch_path!==PATH)throw Error('The matching simulation has not been authorized for this class.');
-  if(!assetReady())throw Error('The four original Istanbul hotel photographs have not been installed. The experimental stimulus must be complete before participation.');
+  await waitForStimuli();
   serverRecord=await loadResponse();
   if(attempt.status==='in_progress')await checkAccess();
   else if(attempt.status!=='submitted'||!serverRecord)throw Error('This attempt cannot be resumed.');
