@@ -25,4 +25,4 @@ jobs:
         run: node --check rizsim-shared-about.js
       - name: Validate committed PDF page count
         run: |
-          node -e "const s=require('fs').readFileSync('RizSim_Brand_Promise.pdf','ascii');const n=(s.match(/\\/Type\\s*\\/Page\\b/g)||[]).length; if(n!==4)process.exit(1); console.log('Brand Promise PDF: '+n+' pages');"
+          node -e "const s=require('fs').readFileSync('RizSim_Brand_Promise.pdf','ascii');const n=s.split('/Type /Page').length-s.split('/Type /Pages').length;if(n!==4)process.exit(1);console.log('Brand Promise PDF: '+n+' pages');"
