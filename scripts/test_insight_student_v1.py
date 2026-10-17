@@ -64,12 +64,12 @@ async def main():
           if i<5:
             await page.locator('button[data-action="next"]').click()
         await page.locator('button[data-action="lock-review"]').click()
-        await page.get_by_role('button',name='Confirm & lock').click()
+        await page.locator('button[data-action="accept-confirm"]').click()
         await page.wait_for_selector('button[data-action="choose-case"][data-phase="source"]')
         key=await page.evaluate("window.InsightData.source.key")
         await page.locator('button[data-action="choose-case"][data-phase="source"][data-letter="'+key+'"]').click()
         await page.locator('button[data-action="lock-case"]').click()
-        await page.get_by_role('button',name='Confirm & lock').click()
+        await page.locator('button[data-action="accept-confirm"]').click()
         await page.wait_for_selector('#bridge-check')
         await page.locator('#bridge-check').check()
         await page.locator('button[data-action="bridge-ack"]').click()
@@ -77,7 +77,7 @@ async def main():
         key=await page.evaluate("window.InsightData.transfer.key")
         await page.locator('button[data-action="choose-case"][data-phase="transfer"][data-letter="'+key+'"]').click()
         await page.locator('button[data-action="lock-case"]').click()
-        await page.get_by_role('button',name='Confirm & lock').click()
+        await page.locator('button[data-action="accept-confirm"]').click()
         await page.wait_for_selector('button[data-action="feedback-ack"]')
         if await page.locator('#feedback-check').count():
           await page.locator('#feedback-check').check()
@@ -92,7 +92,7 @@ async def main():
           if i<5:
             await page.locator('button[data-action="next"][data-phase="kg"]').click()
         await page.locator('button[data-action="lock-review"][data-phase="kg"]').click()
-        await page.get_by_role('button',name='Confirm & lock').click()
+        await page.locator('button[data-action="accept-confirm"]').click()
         await page.get_by_text('Your learning in view').wait_for()
         await page.get_by_text('Submission confirmed by RizSim').wait_for()
         assert await page.evaluate("window.__sim01SubmissionCount") == 1
