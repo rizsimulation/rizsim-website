@@ -87,7 +87,7 @@ if(name==='create_rizsim_runtime_resource'){
  if(args.p_kind==='purchased'||(args.p_kind==='own'&&role!=='course_lead'))return {data:null,error:{message:'Not allowed'}};
  const arr=args.p_kind==='own'?state.materials:state.sessionResources;
  if(!arr.some(x=>x.id===args.p_resource_id))arr.push({id:args.p_resource_id,...args.p_data,course_id:args.p_kind==='own'?args.p_scope_id:undefined,session_id:args.p_kind==='simulation'?args.p_scope_id:undefined,published_to_class:true,active:true,created_at:start});
- return ok({id:args.p_resource_id,published_to_class:true});
+ return ok({id:args.p_resource_id,published_to_class:true,delivery_mode:args.p_data.delivery_mode||'secure_view'});
 }
 if(name==='get_my_simulation_license_catalogue')return ok(licenses);
 if(name==='get_my_rizsim_courses')return ok(role==='course_lead'||role==='owner'?courses:[]);
