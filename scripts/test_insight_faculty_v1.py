@@ -71,7 +71,7 @@ async def main():
       window.RizSimInsightFaculty.draw(window.__testFaculty,
         {stage:'running',session:'session-a',mode:'simulation'});
     }""")
-    await page.wait_for_function("window.RizSimInsightFaculty.state().joined===2")
+    await page.wait_for_function("window.RizSimInsightFaculty.state().joined===3")
     assert await page.locator("#rzInsightFacultyAnalytics").is_visible()
     assert await page.get_by_text("Six-concept item comparison").count()==1
     assert await page.locator(".rz-i01-card-wide .rz-i01-table tbody tr").count()==3
@@ -114,7 +114,7 @@ async def main():
     assert not await page.locator("#rzInsightFacultyAnalytics").is_visible()
     await page.evaluate("""() => window.RizSimInsightFaculty.draw(window.__testFaculty,
         {stage:'running',session:'session-a',mode:'simulation'})""")
-    await page.wait_for_function("window.RizSimInsightFaculty.state().joined===2")
+    await page.wait_for_function("window.RizSimInsightFaculty.state().joined===3")
     await page.set_viewport_size({"width":390,"height":844})
     await page.screenshot(path=str(ROOT/"test-results"/"sim01-faculty-mobile.png"),full_page=True)
     assert await page.locator("#rzInsightFacultyAnalytics").is_visible()
