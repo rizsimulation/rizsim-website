@@ -23,7 +23,6 @@ jobs:
         run: node scripts/validate_about_brand_promise_v12.js
       - name: Validate loader syntax
         run: node --check rizsim-shared-about.js
-      - name: Validate PDF is readable
+      - name: Validate committed PDF page count
         run: |
-          pdfinfo RizSim_Brand_Promise.pdf | grep 'Pages:'
-          pdftotext RizSim_Brand_Promise.pdf - | grep -q 'The RizSim Learning Journey'
+          node -e "const s=require('fs').readFileSync('RizSim_Brand_Promise.pdf','ascii');const n=(s.match(/\\/Type\\s*\\/Page\\b/g)||[]).length; if(n!==4)process.exit(1); console.log('Brand Promise PDF: '+n+' pages');"
