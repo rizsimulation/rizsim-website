@@ -319,6 +319,8 @@
   }
   function draw(){
     if(!ready)return;const root=$('rzCourseAuthoring');if(!root)return;
+    // The ordinary Faculty Courses tab is an upgrade presentation, not an authoring screen.
+    if(root.hidden){closeAll();return;}
     const next=account();if(identity!==next){identity=next;generation++;busy=false;loading=false;list=null;current=null;drafts.clear();routeKey='';closeAll(true);root.replaceChildren();}
     if(!isActive()){closeAll();return;}
     if(!allowed()){if(routeKey!=='denied'){root.replaceChildren(node('p','rz-author-error','Course creation and management require active Course Lead access.'));routeKey='denied';}return;}

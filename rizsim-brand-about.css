@@ -1,0 +1,63 @@
+/* One canonical premium RizSim About presentation for public and all signed-in roles.
+   Strictly scoped to .rz-about: never changes navigation, Home or global workspace UI. */
+#view-about.rizsim-unified-about{padding:0;overflow:hidden}
+.rz-about{--ab-ink:#103544;--ab-teal:#118d8c;--ab-gold:#cb9e51;--ab-line:#d5e7e6;box-sizing:border-box;position:relative;overflow:hidden;color:var(--ab-ink);background:#fff;font-family:inherit}
+.rz-about *, .rz-about *::before,.rz-about *::after{box-sizing:border-box}
+.rz-about [hidden]{display:none!important}
+.rz-about .rz-about-container{width:min(1190px,calc(100% - 52px));margin:0 auto}
+.rz-about .rz-about-hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(58px,7.2vw,107px) 0 clamp(64px,7vw,104px);background:radial-gradient(ellipse at 93% 0%,rgba(15,147,146,.10),transparent 37%),radial-gradient(ellipse at 3% 89%,rgba(228,189,121,.14),transparent 32%),repeating-linear-gradient(90deg,rgba(17,108,110,.015) 0 1px,transparent 1px 56px),linear-gradient(128deg,#fffefa,#f4faf9 48%,#e9f3f2);border-bottom:1px solid #d8e9e8}
+.rz-about .rz-about-halo{position:absolute;pointer-events:none;border-radius:50%;z-index:-1;border:1px solid rgba(16,157,153,.16)}
+.rz-about .rz-about-halo-one{width:540px;height:540px;right:-215px;top:-235px;box-shadow:0 0 0 69px rgba(17,171,159,.025),0 0 0 132px rgba(17,171,159,.016)}
+.rz-about .rz-about-halo-two{width:380px;height:380px;left:-230px;bottom:-212px;border-color:rgba(201,165,92,.19);box-shadow:0 0 0 65px rgba(201,165,92,.022)}
+.rz-about .rz-about-hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(340px,.94fr);gap:clamp(37px,6vw,100px);align-items:center}
+.rz-about .rz-about-copy{position:relative;min-width:0;z-index:1}
+.rz-about .rz-about-kicker{display:inline-flex;align-items:center;gap:10px;padding:9px 13px;border-radius:999px;border:1px solid #bbdcda;background:rgba(255,255,255,.92);box-shadow:0 6px 18px rgba(5,74,76,.045);font-size:11px;letter-spacing:.12em;font-weight:850;color:#117e7e}
+.rz-about .rz-about-kicker-dot{width:7px;height:7px;flex:none;border-radius:50%;background:#2db6a9;box-shadow:0 0 0 4px rgba(45,182,169,.12)}
+.rz-about h1{margin:29px 0 25px;font-size:clamp(49px,5.9vw,82px);line-height:1.055;font-weight:850;letter-spacing:-.071em;color:#092c3d}
+.rz-about h1 em{font-family:Georgia,'Times New Roman',serif;font-weight:500;font-style:italic;letter-spacing:-.062em;background:linear-gradient(113deg,#0f918d 0%,#11a79b 49%,#056472 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rz-about .rz-about-lead{margin:0;max-width:575px;color:#4a6971;font-size:clamp(16px,1.43vw,19px);line-height:1.83}
+.rz-about .rz-about-belief-line{display:flex;align-items:flex-start;gap:16px;margin-top:32px;padding-top:21px;border-top:1px solid #d3e3e1;color:#4a6570;font-size:13px;line-height:1.65;letter-spacing:.001em}
+.rz-about .rz-about-belief-rule{display:block;flex:none;width:35px;height:3px;margin-top:9px;border-radius:8px;background:linear-gradient(90deg,#12a4a0,#caa261)}
+.rz-about .rz-about-belief-line strong{color:#0c8c85}
+.rz-about .rz-about-document{min-width:0}
+.rz-about .rz-about-paper-wrap{position:relative;max-width:430px;margin:0 auto 24px;padding:8px 27px 16px 5px}
+.rz-about .rz-about-paper-back{position:absolute;inset:17px 18px 4px 26px;transform:rotate(4deg);border-radius:16px;background:linear-gradient(130deg,#d9e9e7,#f7e4c5);box-shadow:0 13px 32px rgba(17,60,70,.08);border:1px solid rgba(12,114,110,.18)}
+.rz-about .rz-about-paper{position:relative;isolation:isolate;overflow:hidden;min-height:430px;padding:35px 33px 28px;background:linear-gradient(154deg,#fffefa,#fffaf0 60%,#f8f1df);border:1px solid #d9d6c9;border-radius:15px;box-shadow:0 26px 52px rgba(5,52,64,.16),inset 0 0 0 7px rgba(240,239,222,.4);transform:rotate(-1.6deg);transition:transform .28s ease,box-shadow .28s ease}
+.rz-about .rz-about-paper:hover{transform:rotate(0) translateY(-5px);box-shadow:0 32px 65px rgba(5,52,64,.20),inset 0 0 0 7px rgba(240,239,222,.4)}
+.rz-about .rz-about-paper::before{content:"";position:absolute;right:-135px;bottom:36px;width:385px;height:385px;border:1px solid rgba(8,150,143,.16);border-radius:50%;box-shadow:0 0 0 39px rgba(8,150,143,.055),0 0 0 95px rgba(8,150,143,.024);z-index:-1}
+.rz-about .rz-about-paper-mark{display:block;color:#136e72;font-size:10px;font-weight:900;letter-spacing:.17em}
+.rz-about .rz-about-paper-mark span{padding:0 5px;color:#cea867}
+.rz-about .rz-about-paper-divider{width:86px;height:3px;margin:22px 0 41px;border-radius:5px;background:linear-gradient(90deg,#14a39a,#e1bf78)}
+.rz-about .rz-about-paper h2{margin:0 0 19px;color:#0e3d48;font-size:clamp(29px,2.7vw,40px);line-height:1.17;letter-spacing:-.053em;font-weight:850}
+.rz-about .rz-about-paper p{max-width:305px;margin:0;color:#567078;font-size:13px;line-height:1.7}
+.rz-about .rz-about-paper-emblem{position:relative;width:90px;height:90px;margin:23px 0 32px 5px}
+.rz-about .rz-about-paper-emblem span{position:absolute;inset:5px;border-radius:50%;border:1.4px solid rgba(20,142,137,.35)}
+.rz-about .rz-about-paper-emblem span:nth-child(2){inset:19px;border-color:rgba(201,155,77,.52)}
+.rz-about .rz-about-paper-emblem span:nth-child(3){inset:32px;border-color:rgba(20,142,137,.58)}
+.rz-about .rz-about-paper-emblem .rz-about-emblem-core{inset:40px;background:#138e8b;border:0}
+.rz-about .rz-about-paper-bottom{display:flex;flex-wrap:wrap;gap:10px;padding-top:15px;border-top:1px solid #e3dccb;font-size:9px;letter-spacing:.07em;color:#46777a}
+.rz-about .rz-about-paper-tag{position:absolute;top:35px;right:0;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:8px;color:#fff9e9;background:linear-gradient(110deg,#0a7478,#0c9992);box-shadow:0 12px 22px rgba(4,93,87,.23);font-size:9px;font-weight:900;letter-spacing:.095em;transform:rotate(5deg)}
+.rz-about .rz-about-paper-tag span{color:#efca78;font-size:16px}
+.rz-about .rz-about-document-actions{max-width:430px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:12px}
+.rz-about .rz-about-open-pdf{display:flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:13px 16px;text-decoration:none;background:linear-gradient(105deg,#087b80,#13a7a0);border:1px solid #068584;border-radius:12px;color:white;font-weight:800;font-size:13px;line-height:1.3;box-shadow:0 12px 26px rgba(5,138,137,.18);transition:transform .2s ease,box-shadow .2s ease}
+.rz-about .rz-about-open-pdf:hover{color:white;transform:translateY(-2px);box-shadow:0 16px 30px rgba(5,138,137,.27)}
+.rz-about .rz-about-pdf-icon{display:grid;place-items:center;width:31px;height:31px;flex:none;color:#d9fff1;border-radius:8px;border:1px solid rgba(255,255,255,.33);font-size:10px;font-weight:900;letter-spacing:.045em}
+.rz-about .rz-about-action-arrow{font-size:18px;margin-left:auto;color:#e5dd9e}
+.rz-about .rz-about-download-pdf{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 15px;min-height:54px;border-radius:12px;border:1px solid #afcac7;background:rgba(255,255,255,.8);color:#1b6870;text-decoration:none;font-size:12px;font-weight:820;white-space:nowrap;transition:background .2s ease,border-color .2s ease}
+.rz-about .rz-about-download-pdf:hover{color:#05656b;background:#fff;border-color:#6cadab}
+.rz-about .rz-about-open-pdf:focus-visible,.rz-about .rz-about-download-pdf:focus-visible{outline:3px solid #cda75d;outline-offset:4px}
+.rz-about .rz-about-foundation{padding:clamp(50px,6vw,85px) 0 clamp(66px,7vw,95px);background:#fff}
+.rz-about .rz-about-foundation-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+.rz-about .rz-about-small-label{font-size:10px;font-weight:900;letter-spacing:.17em;color:#108888}
+.rz-about .rz-about-foundation h2{margin:0;color:#102e41;font-size:clamp(23px,2.6vw,33px);letter-spacing:-.045em;line-height:1.23}
+.rz-about .rz-about-foundation-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.rz-about .rz-about-foundation-card{position:relative;padding:29px 31px 33px;border:1px solid #d8e6e6;border-radius:18px;background:linear-gradient(130deg,#f7fbfa,#fff);box-shadow:0 9px 25px rgba(8,52,62,.035)}
+.rz-about .rz-about-foundation-card:last-child{background:linear-gradient(130deg,#fbfaf5,#fff);border-color:#e9e1cc}
+.rz-about .rz-about-card-index{display:block;margin-bottom:17px;color:#137f83;font-size:10px;letter-spacing:.14em;font-weight:900}
+.rz-about .rz-about-card-index span{color:#ceaa6b;padding:0 5px}
+.rz-about .rz-about-foundation-card p{max-width:490px;margin:0;color:#3c5967;font-size:clamp(15px,1.3vw,18px);line-height:1.75}
+.rz-about .rz-about-foundation-card strong{color:#078a86}
+#rizsimSharedAbout[hidden],#rizsimLegacyAbout[hidden]{display:none!important}
+@media(max-width:850px){.rz-about .rz-about-hero-grid{grid-template-columns:1fr;gap:28px}.rz-about .rz-about-copy{max-width:690px}.rz-about h1{font-size:clamp(50px,9vw,72px)}.rz-about .rz-about-paper-wrap{max-width:480px}.rz-about .rz-about-document-actions{max-width:450px}}
+@media(max-width:600px){.rz-about .rz-about-container{width:calc(100% - 34px)}.rz-about .rz-about-hero{padding:43px 0 58px}.rz-about h1{font-size:clamp(47px,10.8vw,64px);margin:24px 0 19px}.rz-about .rz-about-lead{font-size:15px;line-height:1.76}.rz-about .rz-about-paper-wrap{padding:10px 16px 12px 0}.rz-about .rz-about-paper{min-height:392px;padding:30px 24px 24px}.rz-about .rz-about-paper-tag{top:23px;right:0;font-size:8px;padding:9px}.rz-about .rz-about-paper-divider{margin:18px 0 29px}.rz-about .rz-about-document-actions{grid-template-columns:1fr}.rz-about .rz-about-download-pdf{min-height:45px}.rz-about .rz-about-foundation-grid{grid-template-columns:1fr}.rz-about .rz-about-foundation-card{padding:25px}.rz-about .rz-about-foundation-heading h2{margin-top:11px}}
+@media(prefers-reduced-motion:reduce){.rz-about .rz-about-paper,.rz-about .rz-about-open-pdf,.rz-about .rz-about-download-pdf{transition:none!important}.rz-about .rz-about-paper:hover,.rz-about .rz-about-open-pdf:hover{transform:none!important}}
