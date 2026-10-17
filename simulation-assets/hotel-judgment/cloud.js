@@ -40,6 +40,12 @@
      img.addEventListener('error',finish,{once:true});
      setTimeout(finish,15000);
    })));
+   // The image load event and the source-integrity banner may settle on
+   // adjacent browser tasks. Wait briefly for the independent integrity check;
+   // never substitute placeholder imagery or grant access if it stays invalid.
+   for(let n=0;n<60&&!genuinePhotoReady();n++){
+     await new Promise(resolve=>setTimeout(resolve,50));
+   }
    if(!genuinePhotoReady())throw Error('An original hotel image is missing or out of order. Contact Faculty before starting.');
  }
  async function access(){
