@@ -133,8 +133,8 @@ def run(browser,base):
     page.keyboard.press('Escape')
     page.wait_for_selector('#rzLiveAccessFab:visible')
     check('Escape minimizes access panel without ending session',page.evaluate('__fixture.sessions.some(s=>s.session_id==="existing-1")'))
-    page.locator('#rzLiveJumpResults').click();page.wait_for_timeout(150)
-    check('View Results explicitly scrolls to results',page.evaluate('scrollY')>0)
+    page.locator('#rzLiveJumpResults').click();page.wait_for_selector('#rzV13Panestudents:not([hidden])')
+    check('Results shortcut opens the separate Student Results workspace without scrolling',page.locator('#rzV13Tabstudents[aria-selected=true]').count()==1 and page.locator('#classroomRosterPanel').is_visible())
     check('Simulation flow has no uncaught browser errors',not errors)
     close(ctx)
 
@@ -192,6 +192,7 @@ def run(browser,base):
     page.locator('.rz-v5-resume-row').filter(has_text='Existing Seminar').get_by_role('button').click()
     page.wait_for_selector('#rzLiveRunning:not([hidden])')
     check('Owner supervision does not expose creation form',page.locator('#classroomCreateForm').is_hidden())
+    page.locator('#rzV13Tabstudents').click()
     page.wait_for_selector('#resultRows:visible')
     check('Results controls moved once, not cloned',page.locator('#resultRows').count()==1)
     page.locator('#resultRows [data-attempt-id]').first.click();page.wait_for_selector('#responseModal.show')

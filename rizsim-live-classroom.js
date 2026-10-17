@@ -169,7 +169,7 @@
   function mountCommon() {
     move(createPanel, $('rzLiveSetupMount'));
     move(accessPanel, $('rzLiveRunningMount'));
-    move($('classroomRosterPanel'), $('rzLiveResultsAnchor'));
+    move($('classroomRosterPanel'), $('rzLiveStudentRosterMount') || $('rzLiveResultsAnchor'));
     move(sessionsPanel, $('rzLiveSessionHistory'));
   }
   function setup(s) {
@@ -350,12 +350,15 @@
   }
   function scopeResults(s, session) {
     const own = route.mode === 'own', panel = own ? $('courseResultsPanel') : resultsPanel;
-    restore(own ? resultsPanel : $('courseResultsPanel')); move(panel,$('rzLiveResultsAnchor'));
+    restore(own ? resultsPanel : $('courseResultsPanel'));
+    move(panel,own ? $('rzLiveResultsAnchor') : ($('rzLiveStudentRecordsMount') || $('rzLiveResultsAnchor')));
     const prefix = own ? 'courseResult' : 'result';
     const hasResults = (s.submissions || []).some(x => text(x.classroom_session_id) === text(session.session_id));
     const filter = $(prefix + 'SessionFilter'), available = Array.from(filter?.options || []).some(o => o.value === text(session.session_id));
     panel.classList.toggle('rz-v5-hidden',!available);
-    const empty = $('rzLiveNoResults'); if (empty.parentNode.lastElementChild !== empty) empty.parentNode.append(empty);
+    const empty = $('rzLiveNoResults');
+    const emptyTarget = own ? $('rzLiveResultsAnchor') : ($('rzLiveStudentRecordsMount') || $('rzLiveResultsAnchor'));
+    if (empty.parentNode !== emptyTarget || emptyTarget.lastElementChild !== empty) emptyTarget.append(empty);
     $('rzLiveNoResults').hidden = available;
     $('rzLiveNoResults').textContent = hasResults && !available ? 'Results for this session are not loaded yet. Refresh the page to retrieve the latest authorized submissions.' : 'No submitted responses are available for this session yet. Student progress is shown above.';
     const key = route.mode + ':' + session.session_id;
@@ -419,7 +422,7 @@
     if (!ready || drawing) return; drawing = true;
     try {
       const s = snapshot();
-      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
+      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); window.RizSimLiveWorkspace?.draw(null,null); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
       lastView = 'classroom';
       if(route.stage !== 'running')clearAccess();
       if (!dataReady()) { message('Loading your verified classroom access...'); return; }
@@ -448,6 +451,7 @@
       }
       window.RizSimCourseEnvironment?.render(route,s,navigate);
       resume(s); checkCreated(s);
+      window.RizSimLiveWorkspace?.draw(s,route);
     } finally { drawing = false; }
   }
   function scheduleDraw() {
@@ -478,7 +482,11 @@
     resultsHeading.append(el('h3','','Session results'),refresh);
     $('rzLiveResultsAnchor').before(resultsHeading);
 
-    $('rzLiveJumpResults').addEventListener('click',() => $('rzLiveResultsAnchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'}));
+    $('rzLiveJumpResults').textContent='Student Results';
+    $('rzLiveJumpResults').addEventListener('click',() => {
+      if (!window.RizSimLiveWorkspace?.select('students'))
+        $('rzLiveResultsAnchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'});
+    });
     for (const [id,mode] of [['createClassroomSessionButton','simulation'],['createCourseClassroomSessionButton','own']]) {
       $(id)?.addEventListener('click',() => {
         const s = snapshot(); if (!s || !active() || route.stage !== 'setup' || route.mode !== mode || $(id).disabled) return;
@@ -507,7 +515,22 @@
       const s = snapshot(), item = s?.sessions.find(x => text(x.session_id) === id);
       if(item&&id!==route.session){const kind=route.mode==='own'||route.mode==='purchased'?route.mode:'simulation';navigate(kind,'running',kind==='simulation'?item.product_id:route.selection,id);}
     });
-    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw,navigate});
+    // Presentation-only view of credentials ALREADY verified by V12 against the
+    // original authenticated session card and protected share_token.
+    function verifiedShare() {
+      if (!active() || route.stage !== 'running' || !route.session ||
+          !accessKey.startsWith(text(route.session)+'\u001f')) return null;
+      const source=Array.from($('classroomCreatedResult').querySelectorAll('.classroom-created-card')).find(n=>
+        !n.classList.contains('rz-v5-hidden') &&
+        n.querySelector('[data-roster-session]')?.dataset.rosterSession===text(route.session));
+      if (!source) return null;
+      return Object.freeze({sessionId:text(route.session),
+        name:accessName?.textContent||'RizSim Classroom',
+        code:accessCode?.textContent||'',link:accessLink?.textContent||'',
+        qr:accessQr?.querySelector('svg')?.cloneNode(true)||null});
+    }
+    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw,navigate,
+      verifiedShare,openShare:()=>{if (verifiedShare()) {openAccess();return true;}return false;}});
     scheduleDraw();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();

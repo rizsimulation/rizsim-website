@@ -1,0 +1,65 @@
+name: Live Classroom V13 Collapsible Workspace
+on:
+  pull_request:
+    paths:
+      - "access-out.html"
+      - "rizsim-live-classroom.js"
+      - "rizsim-live-workspace.*"
+      - "scripts/test_live_workspace_v13_*"
+      - "scripts/validate_live_workspace_v13.js"
+      - "scripts/test_live_classroom_v5*"
+      - ".github/workflows/live-workspace-v13.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: live-workspace-v13-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  isolated_workspace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify unchanged RizSim contracts and V13 markup/security boundaries
+        run: |
+          node scripts/validate_live_workspace_v13.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_faculty_course_lead_upgrade.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_premium_ui_v3.js
+          node --check rizsim-live-workspace.js
+          node --check rizsim-live-classroom.js
+      - name: Install isolated Chromium and test fixtures
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Real Chromium layout test (fixture only)
+        run: |
+          mkdir -p test-results
+          python scripts/test_live_workspace_v13_dom.py
+      - name: Integrate V13 with actual RizSim Faculty, Course Lead and purchased course workflows
+        run: |
+          python scripts/test_live_workspace_v13_portal.py
+          python scripts/test_live_classroom_v5.py
+          python scripts/test_live_classroom_v5_extended.py
+          python scripts/test_course_environment_v6.py
+      - name: Record validated commit and ensure tracked sources unchanged
+        run: |
+          git rev-parse HEAD > test-results/v13-test-revision.txt
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-v13-synthetic-browser-evidence
+          path: test-results/
+          retention-days: 7
