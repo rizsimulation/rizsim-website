@@ -1,0 +1,87 @@
+name: Simulation 03 Hotel Judgment Integration
+on:
+  pull_request:
+    paths:
+      - "simulation-hotel-judgment.html"
+      - "simulation-assets/hotel-judgment/**"
+      - "rizsim-hotel-faculty.*"
+      - "access-out.html"
+      - "rizsim-live-classroom.js"
+      - "sql/sim03_*"
+      - "scripts/validate_sim03_*"
+      - "scripts/test_sim03_*"
+      - "scripts/sql/sim03_*"
+      - ".github/workflows/sim03-integration.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integrated_browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Source photo SHA-256, safe hosted group, source and Live Classroom contract checks
+        run: |
+          node scripts/validate_sim03_integration_v1.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_faculty_course_lead_upgrade.js
+      - name: Pinned Playwright Chromium
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Original four photos A/B, Student judgment, Faculty sealed-until-close and mobile tests
+        run: |
+          mkdir -p test-results
+          python scripts/test_sim03_student_v1.py
+          python scripts/test_sim03_faculty_v1.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim03-student-faculty-browser-previews
+          path: test-results/
+          retention-days: 7
+  sql_security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: sim03_ci
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Server assignment, private sealed records and role-negative checks in disposable PostgreSQL
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d sim03_ci -v ON_ERROR_STOP=1 \
+            -f scripts/sql/sim03_fixture_v1.sql \
+            -f sql/sim03_secure_hotel_experiment_v1.sql \
+            -f scripts/sql/sim03_security_assertions_v1.sql \
+            2>&1 | tee test-results/sim03-postgres-security.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim03-disposable-security-checks
+          path: test-results/
+          retention-days: 7

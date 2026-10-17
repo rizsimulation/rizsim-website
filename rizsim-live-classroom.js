@@ -419,7 +419,7 @@
     if (!ready || drawing) return; drawing = true;
     try {
       const s = snapshot();
-      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
+      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); window.RizSimHotelFaculty?.draw(null,null); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
       lastView = 'classroom';
       if(route.stage !== 'running')clearAccess();
       if (!dataReady()) { message('Loading your verified classroom access...'); return; }
@@ -448,6 +448,7 @@
       }
       window.RizSimCourseEnvironment?.render(route,s,navigate);
       resume(s); checkCreated(s);
+      window.RizSimHotelFaculty?.draw(s,route);
     } finally { drawing = false; }
   }
   function scheduleDraw() {
