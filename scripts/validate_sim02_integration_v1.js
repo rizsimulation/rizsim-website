@@ -33,6 +33,7 @@ assert(!/\breview:\[1,3,0,1,2,0\]/.test(html+cloud+bridge+faculty+sql),
  'never ship the original answer sequence in public source');
 assert(!/\bconst KEY=/.test(faculty));
 assert(html.includes('Verifying your RizSim classroom'));
+assert(html.includes('Authorized RizSim classroom · Responses saved in your verified attempt'));
 assert(html.includes('simulation-assets/system-1-system-2/cloud.js'));
 assert(html.includes('simulation-assets/system-1-system-2/bridge_student.js'));
 assert(cloud.includes('get_my_rizsim_s1s2_personal_result'));
