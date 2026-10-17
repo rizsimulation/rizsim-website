@@ -37,7 +37,11 @@ def run(browser,url):
     base.close(ctx)
 
     ctx,page,errors=base.page_for(browser,url,'faculty','?live=simulation-running&selection=sim-1&live_session=existing-1#classroom')
-    page.wait_for_selector('.rz-v5-qr svg')
+    page.wait_for_selector('#rzLiveAccessFab:visible')
+    page.locator('#rzLiveAccessFab').click()
+    page.wait_for_selector('#rzLiveAccessQR svg:visible')
+    base.check('Existing session can reopen authorized QR without auto-obscuring results')
+    page.locator('#rzLiveAccessMinimize').click()
     values=contrast(page,'.classroom-created-card:not(.rz-v5-hidden) .classroom-session-meta span,.classroom-created-card:not(.rz-v5-hidden) .classroom-session-meta strong,.classroom-created-card:not(.rz-v5-hidden) .classroom-created-actions .small-action')
     (OUT/'contrast-results.json').write_text(json.dumps(values,indent=2))
     base.check('Session metadata and buttons meet 4.5:1 contrast',len(values)>=9 and all(v['ratio']>=4.5 for v in values))
