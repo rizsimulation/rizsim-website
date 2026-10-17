@@ -70,6 +70,15 @@ def run(browser,url):
     p.locator('.rz-author-file-input').set_input_files({'name':'course-handout.pdf','mimeType':'application/pdf','buffer':b'%PDF-1.4\nFixture learning resource'})
     p.wait_for_selector('[data-author-file-publish]:not([disabled])')
     check('Browse selection immediately shows filename and type caption','course-handout.pdf' in p.locator('[data-author-file-caption]').inner_text() and 'PDF' in p.locator('[data-author-file-caption]').inner_text())
+    check('File picker enables Review File only after validating the selected PDF',
+          p.locator('[data-author-review=picker]').is_enabled())
+    p.locator('[data-author-review=picker]').click()
+    check('Instructor can inspect local selected PDF before metadata or course publication',
+          p.locator('[data-author-dialog=draft-preview] iframe[src^="blob:"]').count()==1)
+    p.locator('[data-author-dialog=draft-preview]').get_by_role('button',name='Back to course builder').click()
+    check('Returning from picker preview keeps file selection and Publish action',
+          p.locator('[data-author-dialog=resource]').is_visible() and
+          p.locator('[data-author-file-publish]').is_enabled())
     p.screenshot(path=str(base.OUT/'v7-file-selected.png'),full_page=True)
     p.locator('[data-author-file-publish]').click()
     check('File details omit redundant file input',p.locator('[data-author-dialog=details] input[type=file]').count()==0)
