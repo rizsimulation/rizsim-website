@@ -71,7 +71,12 @@ def run(browser,url):
     base.check('Own-course result opens original response modal','Course Student' in page.locator('#responseModalTitle').inner_text())
     page.locator('#responseModalClose').click()
     before=page.url
-    page.locator('#rzLiveRefreshResults').click();page.wait_for_selector('#courseResultRows:visible')
+    page.locator('#rzLiveRefreshResults').click()
+    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])')
+    base.check('Page refresh resets inner sidebar to default Session Studio',
+               page.locator('#rzV13Tabstudio').get_attribute('aria-selected')=='true')
+    page.locator('#rzV13Tabinsights').click()
+    page.wait_for_selector('#courseResultRows:visible')
     base.check('Explicit results refresh preserves exact session hyperlink',page.url==before)
     shot(page,'course-results.png')
     base.check('Course results have no uncaught browser errors',not errors)
