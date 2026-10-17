@@ -73,4 +73,64 @@ for(const role of ['faculty','course_lead','owner','admin','institution']){
 }
 assert.equal(html.match(/id="rzCourseLeadUpgrade"/g).length,1);
 assert.equal(html.match(/id="rzCourseLeadUpgradeButton"/g).length,1);
-console.log('Fix 2 Course Lead promotion: role-gating, source, markup, CTA and motion contracts passed.');
+
+// Fix 2 refinements: native Live Classroom redirect, richer graphic texture,
+// and Course Lead's original two actionable entry cards visible without hover.
+const live = read('rizsim-live-classroom.js');
+const authorStyle = read('rizsim-course-authoring.css');
+const texture = read('rizsim-course-lead-texture.svg');
+assert.match(live, /if \(s\.role === 'faculty'\) \{ openWorkspace\('courses'\); return; \}/);
+assert.match(live, /if \(locked\) \{/);
+assert.match(live, /const locked = mode === 'own' && s\.role !== 'course_lead'/);
+assert.match(authorStyle, /\.rz-author-card\.tall \{min-height:255px;padding:22px 24px;\}/);
+assert.match(authorStyle, /#rzCourseAuthoring \.rz-author-paths \.rz-author-card\.tall>\.rz-author-btn\.reveal\{[\s\S]*?opacity:1;transform:none;pointer-events:auto/);
+assert.match(css, /\.rz-clu::before\{[^}]*url\("rizsim-course-lead-texture\.svg"\)/);
+assert.match(texture, /<filter id="grain"/);
+assert.match(texture, /<pattern id="threads"/);
+assert.match(texture, /<path d="/);
+
+// Execute the actual V5 choices() callback in an isolated minimal DOM.
+// Navigation is simulated; no real account, backend calls or role mutations.
+const instrumentedLive = live.replace(/\}\)\(\);\s*$/, 'globalThis.__testV5Choices=choices;})();');
+assert.notEqual(instrumentedLive,live,'V5 callback instrumentation point must exist');
+function testLiveChoice(role){
+  const ids=new Map();
+  function elem(tag='div'){
+    return {
+      tagName:tag,children:[],handlers:{},style:{display:''},classList:{toggle(){},remove(){},add(){}},
+      hidden:false,textContent:'',append(...items){this.children.push(...items)},
+      replaceChildren(...items){this.children=[...items]},addEventListener(type,fn){this.handlers[type]=fn},
+      focus(){},setAttribute(){},removeAttribute(){}
+    };
+  }
+  const get=id=>ids.get(id)||null;
+  const menu=elem('div');ids.set('rzLiveChoices',menu);
+  const help=elem('p');ids.set('rzLiveHelp',help);
+  let opening='',pushed='';
+  const link={style:{display:''},click(){opening='courses'}};
+  const location={href:'https://rizsim.com/access-out.html#classroom',pathname:'/access-out.html',search:'',hash:'#classroom'};
+  const ctx={document:{readyState:'loading',createElement:elem,getElementById:get,
+        querySelector(sel){return sel==='#mainNav [data-auth-view="courses"]'?link:null},
+        addEventListener(){}},
+    window:{},location,history:{replaceState(a,b,url){pushed=url},pushState(a,b,url){pushed=url}},
+    URL,console,requestAnimationFrame(){}};
+  vm.runInNewContext(instrumentedLive,ctx,{timeout:1200});
+  ctx.__testV5Choices({role,licensed:[],courses:[]});
+  assert.equal(menu.children.length,3,'V5 Live Classroom must keep its three choices');
+  const own=menu.children[1],button=own.children[1];
+  assert.equal(own.children[0].children[0].textContent,'Run My Own Course');
+  assert.ok(button.handlers.click,'Course choice must have a real click handler');
+  button.handlers.click();
+  return {opening,pushed,help:help.textContent};
+}
+const facultyLive=testLiveChoice('faculty');
+assert.equal(facultyLive.opening,'courses','Faculty action must navigate to promotional Courses tab');
+assert.equal(facultyLive.pushed,'/access-out.html#classroom','Pending classroom route state must be cleared');
+const leadLive=testLiveChoice('course_lead');
+assert.equal(leadLive.opening,'','Course Lead must keep their real course-running workflow');
+assert.match(leadLive.pushed,/live=own-list/);
+const ownerLive=testLiveChoice('owner');
+assert.equal(ownerLive.opening,'','Owner must not be redirected to the Faculty advertisement');
+assert.match(ownerLive.help,/Course Lead is the premium Faculty tier/);
+
+console.log('Fix 2 Course Lead promotion: role-gating, Live Classroom redirect, texture, compact authoring cards, CTA and motion contracts passed.');
