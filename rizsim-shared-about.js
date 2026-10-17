@@ -17,10 +17,12 @@
    mount.classList.add('rz-about');
    mount.setAttribute('aria-label','About RizSim');
    mount.hidden=false;
+   mount.closest('#view-about')?.classList.add('rizsim-unified-about');
    legacy.hidden=true;
    legacy.setAttribute('aria-hidden','true');
   }catch(e){
    mount.hidden=true;
+   mount.closest('#view-about')?.classList.remove('rizsim-unified-about');
    legacy.hidden=false;
    legacy.removeAttribute('aria-hidden');
    console.warn('RizSim shared About fallback:',e?.message||e);
