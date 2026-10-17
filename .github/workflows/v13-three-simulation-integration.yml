@@ -1,0 +1,66 @@
+name: V13 Three-Simulation Combined Integration
+on:
+  pull_request:
+    paths:
+      - "access-out.html"
+      - "rizsim-live-classroom.js"
+      - "rizsim-live-workspace.*"
+      - "rizsim-insight-faculty.*"
+      - "rizsim-system-faculty.*"
+      - "rizsim-hotel-faculty.*"
+      - "simulation-*.html"
+      - "simulation-assets/**"
+      - "scripts/validate_v13_three_simulations.js"
+      - "scripts/test_*"
+      - "sql/sim0*"
+      - ".github/workflows/v13-three-simulation-integration.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  combined_contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify cross-simulation mounts, session authority and original website contracts
+        run: |
+          node scripts/validate_v13_three_simulations.js
+          node scripts/validate_live_workspace_v13.js
+          node scripts/validate_sim02_integration_v1.js
+          node scripts/validate_sim03_integration_v1.js
+          node scripts/test_insight_core_v1.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node --check rizsim-insight-faculty.js
+          node --check rizsim-system-faculty.js
+          node --check rizsim-hotel-faculty.js
+          node --check rizsim-live-workspace.js
+          node --check rizsim-live-classroom.js
+      - name: Install pinned browser testing dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Run combined portal and all three authenticated Faculty fixtures
+        run: |
+          mkdir -p test-results
+          python scripts/test_live_workspace_v13_portal.py
+          python scripts/test_insight_faculty_v1.py
+          python scripts/test_sim02_faculty_v1.py
+          python scripts/test_sim03_faculty_v1.py
+      - name: Keep repository clean
+        run: git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v13-three-simulation-combined-fixture-review
+          path: test-results/
+          retention-days: 7

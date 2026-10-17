@@ -104,56 +104,9 @@
 .rz-session-confirm button:focus-visible{outline:3px solid #98732c;outline-offset:3px}
 
 
-/* V12 live session share: original authorized session card owns the values.
-   A fixed, accessible floating quick-share panel displays the same code/link/QR. */
+/* The original authorized card supplies Studio's verified join data.
+   Presentation fields in Overview are hidden to avoid duplicating Share Access. */
 .rz-live-running .rz-v5-access-source .classroom-code-box,
 .rz-live-running .rz-v5-access-source .classroom-link-box,
 .rz-live-running .rz-v5-access-source .rz-v5-qr,
 .rz-live-running .rz-v5-access-source [data-copy-value]{display:none!important}
-#rzLiveAccessLayer[hidden],#rzLiveAccessFab[hidden]{display:none!important}
-.rz-v5-access-layer{position:fixed;inset:0;z-index:16000;display:grid;place-items:center;box-sizing:border-box;padding:16px;background:rgba(6,30,41,.56);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);overflow-y:auto;overscroll-behavior:contain}
-.rz-v5-access-dialog{box-sizing:border-box;width:min(620px,100%);max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #9ccac3;border-radius:24px;background:radial-gradient(circle at 93% 0%,rgba(63,198,181,.13),transparent 40%),linear-gradient(150deg,#fff,#f2f9f6 78%);box-shadow:0 28px 90px rgba(1,27,39,.40),0 3px 14px rgba(13,79,74,.14);color:#17434b;padding:26px 28px 28px;font-family:inherit}
-.rz-v5-access-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
-.rz-v5-access-kicker{display:block;color:#087c79;font-size:10px;font-weight:900;letter-spacing:.13em}
-.rz-v5-access-head h2{color:#153d49;font-size:clamp(21px,2.6vw,27px);margin:8px 0 5px;font-weight:850;line-height:1.2;letter-spacing:-.03em}
-.rz-v5-access-head p{color:#58737b;font-size:12px;line-height:1.55;margin:0;max-width:370px}
-.rz-v5-access-minimize{flex:0 0 auto;border:1px solid #b5d4cc;background:#fff;color:#135e63;border-radius:11px;min-height:42px;padding:10px 14px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
-.rz-v5-access-minimize:hover{background:#e7f7f1}
-.rz-v5-access-name{padding:14px 0 12px;margin:0;font-size:14px;font-weight:850;color:#194753;overflow-wrap:anywhere}
-.rz-v5-access-grid{display:grid;grid-template-columns:192px minmax(0,1fr);gap:22px;align-items:center}
-.rz-v5-access-qr{box-sizing:border-box;width:192px;min-height:192px;display:flex;align-items:center;justify-content:center;border-radius:17px;padding:9px;border:1px solid #cbded7;background:#fff;box-shadow:0 6px 17px rgba(25,76,66,.08)}
-.rz-v5-access-qr svg{width:100%;height:auto;aspect-ratio:1;display:block}
-.rz-v5-access-loading{font-size:12px;color:#54767c;text-align:center;line-height:1.5}
-.rz-v5-access-details{min-width:0;display:flex;flex-direction:column;gap:9px}
-.rz-v5-access-detail-label{color:#53747a;font-size:10px;font-weight:900;letter-spacing:.12em}
-.rz-v5-access-detail-row{border:1px solid #a9d1c3;border-radius:13px;background:#e7f5ed;padding:10px 11px;display:flex;align-items:center;gap:8px;justify-content:space-between}
-.rz-v5-access-code{font-size:clamp(17px,2.8vw,25px);letter-spacing:.11em;color:#154c58;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
-.rz-v5-access-copy{border:1px solid #93bdb1;border-radius:9px;padding:8px 10px;min-height:37px;background:#fff;color:#13616a;font:inherit;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
-.rz-v5-access-copy:hover{background:#e4f3ed}
-.rz-v5-access-link-row{background:#fff;border:1px solid #c7dad9;border-radius:10px;padding:10px 11px;min-height:46px}
-.rz-v5-access-link{font-size:11px;line-height:1.5;color:#1b5664;overflow-wrap:anywhere;word-break:break-word}
-.rz-v5-access-link-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.rz-v5-access-open-link{display:inline-flex;align-items:center;color:#0c7573;font-size:11px;font-weight:800;text-decoration:none}
-.rz-v5-access-open-link:hover{text-decoration:underline}
-.rz-v5-access-fab{position:fixed;z-index:12000;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));box-sizing:border-box;min-height:52px;padding:13px 20px;border-radius:100px;border:1.5px solid #92d9c6;background:linear-gradient(120deg,#087b7a,#0f5667);color:#fff;box-shadow:0 13px 34px rgba(3,54,63,.32),0 0 0 5px rgba(18,154,139,.11);font:inherit;font-size:13px;font-weight:850;cursor:pointer}
-.rz-v5-access-fab:hover{background:linear-gradient(120deg,#07958a,#0c6470);box-shadow:0 16px 35px rgba(3,54,63,.38),0 0 0 6px rgba(18,154,139,.15)}
-.rz-v5-access-fab:focus-visible,.rz-v5-access-layer button:focus-visible,.rz-v5-access-layer a:focus-visible{outline:3px solid #deaa51;outline-offset:3px}
-@media(max-width:620px){
- .rz-v5-access-layer{padding:12px;align-items:center}
- .rz-v5-access-dialog{max-height:calc(100dvh - 24px);border-radius:20px;padding:20px 17px 21px}
- .rz-v5-access-head{gap:10px}.rz-v5-access-head h2{font-size:20px}.rz-v5-access-head p{font-size:11px}
- .rz-v5-access-minimize{padding:9px 10px;min-height:38px}
- .rz-v5-access-name{padding:10px 0 12px}
- .rz-v5-access-grid{grid-template-columns:1fr;gap:13px}
- .rz-v5-access-qr{margin:auto;width:140px;min-height:140px;padding:7px}
- .rz-v5-access-details{gap:7px}
- .rz-v5-access-code{font-size:21px}
- .rz-v5-access-fab{right:max(13px,env(safe-area-inset-right));bottom:max(13px,env(safe-area-inset-bottom));font-size:12px}
-}
-@media(max-height:550px){
- .rz-v5-access-dialog{padding:16px 20px}
- .rz-v5-access-grid{grid-template-columns:135px minmax(0,1fr)}
- .rz-v5-access-qr{width:135px;min-height:135px}
- .rz-v5-access-name{padding:8px 0}
-}
-@media(prefers-reduced-motion:reduce){.rz-v5-access-fab,.rz-v5-access-dialog{animation:none!important;transition:none!important}}

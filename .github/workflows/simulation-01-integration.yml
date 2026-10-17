@@ -1,0 +1,96 @@
+name: Simulation 01 Three-Surface Integration
+on:
+  pull_request:
+    paths:
+      - "simulation-insight-to-implication.html"
+      - "simulation-assets/insight-to-implication/**"
+      - "rizsim-insight-faculty.*"
+      - "rizsim-live-classroom.js"
+      - "access-out.html"
+      - "sql/insight_faculty_session_v1.sql"
+      - "sql/sim01_response_policy_hardening_v1.sql"
+      - "scripts/test_insight_*"
+      - "scripts/sql/sim01_*"
+      - ".github/workflows/simulation-01-integration.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax, source-grounded analytics and portal wiring
+        run: |
+          node --check simulation-assets/insight-to-implication/questions.js
+          node --check simulation-assets/insight-to-implication/engine.js
+          node --check simulation-assets/insight-to-implication/participant.js
+          node --check simulation-assets/insight-to-implication/rizsim-cloud.js
+          node --check simulation-assets/insight-to-implication/rizsim-bridge.js
+          node --check rizsim-insight-faculty.js
+          node --check rizsim-live-classroom.js
+          node scripts/test_insight_core_v1.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_premium_ui_v3.js
+      - name: Pinned browser dependency
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Faculty session scope, partial data, XSS and mobile browser QA
+        run: |
+          mkdir -p test-results
+          python scripts/test_insight_faculty_v1.py
+          python scripts/test_insight_student_v1.py
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim01-three-surface-browser-qa
+          path: test-results/
+          retention-days: 7
+  sql_security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: insight_isolated
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Role, session and RLS negative tests in disposable PostgreSQL
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d insight_isolated -v ON_ERROR_STOP=1 \
+            -f scripts/sql/sim01_isolated_schema.sql \
+            -f sql/insight_faculty_session_v1.sql \
+            -f sql/sim01_response_policy_hardening_v1.sql \
+            -f scripts/sql/sim01_isolated_assertions.sql \
+            2>&1 | tee test-results/sim01-postgres-roles.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim01-isolated-role-tests
+          path: test-results/
+          retention-days: 7

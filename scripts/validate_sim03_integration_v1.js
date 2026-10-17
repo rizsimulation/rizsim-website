@@ -1,0 +1,82 @@
+'use strict';
+/* Hotel Judgment Lab PR #35 source fidelity + secure integration contracts. */
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm');
+const root=path.join(__dirname,'..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const html=read('simulation-hotel-judgment.html'),cloud=read('simulation-assets/hotel-judgment/cloud.js');
+const faculty=read('rizsim-hotel-faculty.js'),css=read('rizsim-hotel-faculty.css');
+const sql=read('sql/sim03_secure_hotel_experiment_v1.sql');
+const portal=read('access-out.html'),live=read('rizsim-live-classroom.js');
+const manifest=JSON.parse(read('simulation-assets/hotel-judgment/ORIGINAL_HOTEL_PHOTO_MANIFEST.json'));
+assert.equal(manifest.activity,'RizHotelJudgment.v1');
+assert.equal(manifest.order.length,4);
+let sizes=[];
+for(let i=1;i<=4;i++){
+ const file='simulation-assets/hotel-judgment/hotel_view_'+i+'.png';
+ const buf=fs.readFileSync(path.join(root,file));const m=manifest.order[i-1];
+ assert.equal(m.position,i);assert.equal(m.filename,'hotel_view_'+i+'.png');
+ assert.equal(buf.length,m.bytes,'source photograph byte count '+i);
+ assert.equal(crypto.createHash('sha256').update(buf).digest('hex'),m.sha256,'source photograph SHA-256 '+i);
+ assert.equal(buf.subarray(1,4).toString(),'PNG');
+ const w=buf.readUInt32BE(16),h=buf.readUInt32BE(20);assert(w>=200&&h>=200);
+ sizes.push(w+'x'+h);
+ assert(html.includes('data-hotel-view="'+i+'" src="/'+file+'"'),'original photo '+i+' in exact order');
+}
+assert.equal((html.match(/<img[^>]*data-hotel-view="[1-4]"/g)||[]).length,4);
+assert(!html.includes('Does this hotel cost Less than PKR 1000'));
+assert(!html.includes('Does this hotel cost More than PKR 80,000'));
+assert(html.includes('const GROUP_QUESTIONS=Object.create(null)'));
+assert(html.includes('const authenticated=await live.init()'));
+assert(html.includes('if(hosted&&!authenticated)return'));
+assert(html.includes('state.group=live.assignedGroup'));
+assert(html.includes('GROUP_QUESTIONS[state.group]=live.assignedQuestion'));
+assert(html.includes('state.submitted=live.enabled?receipt.record:record'));
+assert(html.includes('window.dispatchEvent(new CustomEvent(\'rizsim:hotel-committed\''));
+assert(!/\/api\/(?:record|state|key)\b/.test(html+cloud));
+assert(cloud.includes('get_my_rizsim_hotel_assignment'));
+assert(cloud.includes('get_my_rizsim_hotel_personal_result'));
+assert(cloud.includes('submit_my_rizsim_hotel_judgment'));
+assert(cloud.includes("p_attempt_id:attempt.id"));
+assert(!cloud.includes("from('simulation_responses')"),'no direct writes/read of raw submissions');
+assert(!cloud.includes("simulation_attempts').update("),'no direct progress escalation');
+assert(!cloud.includes("p_group:"),'browser may not choose assigned group');
+assert(cloud.includes('photos()')&&cloud.includes('genuinePhotoReady()'));
+assert(cloud.includes('check_my_rizsim_classroom_attempt_access'));
+assert(cloud.includes('!validReceived(receipt.record)'));
+assert(cloud.includes('!validReceived(value.record)'));
+assert(faculty.includes('get_my_rizsim_hotel_session_records'));
+assert(faculty.includes('p_session_id:session'));
+assert(faculty.includes('const canReveal=feed.length>0&&feed.every(x=>x.collection_revealed===true)'));
+assert(faculty.includes('r=canReveal?canonical(x.record):null'));
+assert(faculty.includes('median(')&&faculty.includes('createElementNS'));
+assert(faculty.includes('View student result')&&faculty.includes('progressbar'));
+assert(faculty.includes('Notice → Locate → Infer'));
+assert(faculty.includes('No learning-gain')||faculty.includes('No learning-gain or causal effect'));
+assert(!faculty.includes('PREVIEW_ONLY_SYNTHETIC_RECORDS'));
+assert(!/rightAnswers|correctAnswer|learning_gain|knowledge_gain|answer_key/i.test(cloud));
+assert(sql.includes('private.rizsim_hotel_assignments'));
+assert(sql.includes('private.rizsim_hotel_judgments'));
+assert(sql.includes("'willing_to_pay_pkr',j.willingness_to_pay_pkr"),'canonical server JSON must use original Student response field');
+assert(sql.includes('private.rizsim_hotel_protect_public_response'));
+assert(sql.includes('private.rizsim_hotel_protect_attempt'));
+assert(sql.includes('pg_catalog.pg_advisory_xact_lock'));
+assert(sql.includes('pg_catalog.random()<0.5'));
+assert(sql.includes('jsonb_build_object('));
+assert(sql.includes('v_reveal:=s.closed_at is not null'));
+assert(sql.includes('then private.rizsim_hotel_canonical_record(a.id)'));
+assert(sql.includes("else null::jsonb end"));
+assert(sql.includes("where x.id=p_attempt_id and x.user_id=v_uid"));
+assert(sql.includes('public.submit_my_rizsim_classroom_attempt(p_attempt_id)'));
+assert(sql.includes('revoke all on private.rizsim_hotel_judgments from public,anon,authenticated'));
+assert(portal.includes('rizsim-hotel-faculty.js')&&portal.includes('rizsim-hotel-faculty.css'));
+assert(portal.includes('rizsim-support.js')&&portal.includes('rizsim-shared-about.js'));
+assert(portal.includes('rizsim-course-lead-upgrade.css')&&portal.includes('id="rzLiveResultsAnchor"'));
+assert(live.includes('window.RizSimHotelFaculty?.draw(s,route)'));
+assert(live.includes('window.RizSimHotelFaculty?.draw(null,null)'));
+for(const [label,script] of [['cloud',cloud],['faculty',faculty],['live',live]]){
+ new vm.Script(script,{filename:label+'.js'});
+}
+for(const [i,script] of [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].entries()){
+ if(script[1].trim())new vm.Script(script[1],{filename:'hotel-inline-'+i+'.js'});
+}
+console.log('SIM03 source/four original PNG SHA256/hosted auth/locked experiment/Faculty portal integration: PASS '+sizes.join(' '));

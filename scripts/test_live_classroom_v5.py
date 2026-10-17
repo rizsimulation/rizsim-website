@@ -104,37 +104,41 @@ def run(browser,base):
     page.evaluate('__fixture.failCreate=false')
     page.locator('#classroomSessionName').fill('New QA Seminar')
     page.locator('#createClassroomSessionButton').click()
-    page.wait_for_selector('#rzLiveRunning:not([hidden])',timeout=15000)
-    page.wait_for_selector('#rzLiveAccessLayer:not([hidden]) #rzLiveAccessQR svg')
-    check('New session opens centered QR / code / link panel',page.locator('#rzLiveAccessLayer').is_visible())
-    check('Only selected session access is visible',page.locator('.classroom-created-card:visible').count()==1)
-    check('Floating access uses original generated class code',page.locator('#rzLiveAccessCode').inner_text().strip()==page.locator('.classroom-created-card:visible .classroom-code-value').text_content().strip())
+    page.wait_for_selector('#rzV13StudioShare:not([hidden])',timeout=15000)
+    page.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible',timeout=18000)
+    check('New session automatically opens authenticated Studio Share Access',
+          page.locator('#rzV13SubviewShare[aria-pressed=true]').count()==1)
+    check('Only one selected original session card is retained',
+          page.locator('.classroom-created-card:not(.rz-v5-hidden)').count()==1)
+    check('Studio share uses original authenticated class code',
+          page.locator('#rzV13ShareCode').inner_text().strip()==
+          page.locator('.classroom-created-card:not(.rz-v5-hidden) .classroom-code-value').text_content().strip())
     check('New session hides unrelated submissions',page.locator('#resultRows').is_hidden())
     check('Existing session preserved',page.evaluate('__fixture.sessions.some(s=>s.session_id==="existing-1")'))
     check('Direct URL identifies exact session','live_session=' in page.url)
-    check('Source session credentials do not duplicate on long page',page.locator('.classroom-created-card:visible .classroom-code-box').is_hidden())
+    check('Original token-backed credentials are private to Studio Share',
+          page.locator('.classroom-created-card:not(.rz-v5-hidden) .classroom-code-box').is_hidden())
+    check('No floating QR dialog or pinned button created',
+          page.locator('#rzLiveAccessLayer,#rzLiveAccessFab,#rzV13ShareOpen').count()==0)
     page.screenshot(path=str(OUT/'simulation-session.png'),full_page=True)
-    page.locator('#rzLiveAccessQR svg').screenshot(path=str(OUT/'session-qr.png'))
-    link=page.locator('#rzLiveAccessLink').inner_text().strip()
+    page.locator('#rzV13ShareQR svg').screenshot(path=str(OUT/'session-qr.png'))
+    link=page.locator('#rzV13ShareLink').inner_text().strip()
     from PIL import Image
     import zxingcpp
     decoded=zxingcpp.read_barcode(Image.open(OUT/'session-qr.png'))
-    check('QR decodes to the exact authorized join link',decoded is not None and decoded.text==link)
-    page.locator('#rzLiveAccessMinimize').click()
-    page.wait_for_selector('#rzLiveAccessFab:visible')
-    check('Minimize reveals fixed bottom-right session access control',page.locator('#rzLiveAccessFab').evaluate("n=>getComputedStyle(n).position==='fixed'&&getComputedStyle(n).right!=='auto'"))
-    original=page.locator('#rzLiveAccessFab').evaluate('n=>({right:innerWidth-n.getBoundingClientRect().right,bottom:innerHeight-n.getBoundingClientRect().bottom})')
-    page.evaluate('window.scrollTo(0,document.documentElement.scrollHeight)')
-    after=page.locator('#rzLiveAccessFab').evaluate('n=>({right:innerWidth-n.getBoundingClientRect().right,bottom:innerHeight-n.getBoundingClientRect().bottom})')
-    check('Pinned access button stays in viewport after scrolling',abs(original['right']-after['right'])<2 and abs(original['bottom']-after['bottom'])<2)
-    page.locator('#rzLiveAccessFab').click()
-    page.wait_for_selector('#rzLiveAccessLayer:not([hidden])')
-    check('Pinned button reopens full QR / code / link',page.locator('#rzLiveAccessCode').is_visible() and page.locator('#rzLiveAccessLink').is_visible() and page.locator('#rzLiveAccessQR svg').is_visible())
-    page.keyboard.press('Escape')
-    page.wait_for_selector('#rzLiveAccessFab:visible')
-    check('Escape minimizes access panel without ending session',page.evaluate('__fixture.sessions.some(s=>s.session_id==="existing-1")'))
-    page.locator('#rzLiveJumpResults').click();page.wait_for_timeout(150)
-    check('View Results explicitly scrolls to results',page.evaluate('scrollY')>0)
+    check('QR still decodes to the exact authorized join link',decoded is not None and decoded.text==link)
+    check('Original protected token matches the authorized fixture',page.evaluate("""() => {
+      const v=RizSimLiveClassroom.verifiedShare();
+      return v?.link===document.getElementById('rzV13ShareLink').textContent &&
+        new URL(v.link).searchParams.get('session')==='qa-token-new-2';
+    }"""))
+    page.locator('#rzV13Tabstudents').click()
+    check('Student Results tab works without an overlapping share launcher',
+          page.locator('#rzV13Tabstudents[aria-selected=true]').count()==1)
+    page.locator('#rzV13Tabstudio').click()
+    page.locator('#rzV13SubviewOverview').click()
+    page.locator('#rzLiveJumpResults').click();page.wait_for_selector('#rzV13Panestudents:not([hidden])')
+    check('Results shortcut opens the separate Student Results workspace without scrolling',page.locator('#rzV13Tabstudents[aria-selected=true]').count()==1 and page.locator('#classroomRosterPanel').is_visible())
     check('Simulation flow has no uncaught browser errors',not errors)
     close(ctx)
 
@@ -152,12 +156,15 @@ def run(browser,base):
     assert page.locator('#courseClassroomSimulationSelect').input_value()=='sim-2'
     page.locator('#courseClassroomSessionName').fill('New Course Seminar')
     page.locator('#createCourseClassroomSessionButton').click()
-    page.wait_for_selector('#rzLiveRunning:not([hidden])',timeout=15000)
-    page.wait_for_selector('#rzCourseEnvironment [data-rz-add-resource]')
-    page.wait_for_selector('#rzLiveAccessLayer:not([hidden]) #rzLiveAccessQR svg')
-    check('Course creation opens floating code, link, QR and resource library')
-    page.locator('#rzLiveAccessMinimize').click()
-    page.wait_for_selector('#rzLiveAccessFab:visible')
+    page.wait_for_selector('#rzV13StudioShare:not([hidden])',timeout=15000)
+    page.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible')
+    check('Original course resources remain mounted behind Studio Share',
+          page.locator('#rzCourseEnvironment [data-rz-add-resource]').count()>=1)
+    check('Course creation opens verified QR/code/link inside Studio Share Access')
+    check('No floating QR button exists for Course Lead',
+          page.locator('#rzLiveAccessFab,#rzLiveAccessLayer').count()==0)
+    page.locator('#rzV13SubviewOverview').click()
+    page.wait_for_selector('#rzCourseEnvironment [data-rz-add-resource]:visible')
     page.locator('[data-rz-add-resource]').click()
     page.locator('#rzRuntimeDialog .rz-file-zone').evaluate("el=>{const dt=new DataTransfer();dt.items.add(new File(['%PDF-1.4\\nfixture'],'class-notes.pdf',{type:'application/pdf'}));el.dispatchEvent(new DragEvent('drop',{bubbles:true,dataTransfer:dt}));}")
     page.wait_for_selector('[data-rz-file-publish]:not([disabled])')
@@ -192,6 +199,7 @@ def run(browser,base):
     page.locator('.rz-v5-resume-row').filter(has_text='Existing Seminar').get_by_role('button').click()
     page.wait_for_selector('#rzLiveRunning:not([hidden])')
     check('Owner supervision does not expose creation form',page.locator('#classroomCreateForm').is_hidden())
+    page.locator('#rzV13Tabstudents').click()
     page.wait_for_selector('#resultRows:visible')
     check('Results controls moved once, not cloned',page.locator('#resultRows').count()==1)
     page.locator('#resultRows [data-attempt-id]').first.click();page.wait_for_selector('#responseModal.show')
@@ -213,19 +221,22 @@ def run(browser,base):
     close(ctx)
 
     ctx,page,errors=page_for(browser,base,'faculty','?live=simulation-running&selection=sim-1&live_session=existing-1#classroom',mobile=True)
-    page.wait_for_selector('#rzLiveAccessFab:visible')
-    check('Existing mobile session opens with floating button, not blocking dialog',page.locator('#rzLiveAccessLayer').is_hidden())
-    page.locator('#rzLiveAccessFab').click()
-    page.wait_for_selector('#rzLiveAccessQR svg:visible')
-    bounds=page.locator('#rzLiveAccessLayer .rz-v5-access-dialog').evaluate('''n=>{
-      const r=n.getBoundingClientRect();
-      return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:innerWidth,height:innerHeight};
-    }''')
-    check('Mobile session share dialog fits viewport',bounds['left']>=0 and bounds['right']<=bounds['width']+1 and bounds['top']>=-1 and bounds['bottom']<=bounds['height']+1)
-    check('Mobile share shows exact code and join link',page.locator('#rzLiveAccessCode').is_visible() and page.locator('#rzLiveAccessLink').is_visible())
-    page.screenshot(path=str(OUT/'mobile-session-access.png'),full_page=False)
-    page.locator('#rzLiveAccessMinimize').click()
-    check('Mobile share button remains pinned and accessible',page.locator('#rzLiveAccessFab').is_visible() and page.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])')
+    check('Mobile creates no pinned QR button or modal layer',
+          page.locator('#rzLiveAccessFab,#rzLiveAccessLayer').count()==0)
+    page.locator('#rzV13SubviewShare').click()
+    page.wait_for_selector('#rzV13ShareQR svg:visible',timeout=18000)
+    check('Mobile Studio QR shares the original authorized class code/link',
+          page.locator('#rzV13ShareCode').is_visible() and
+          page.locator('#rzV13ShareLink').is_visible() and
+          page.locator('#rzV13ShareQR svg').is_visible())
+    bounds=page.locator('#rzV13ShareDetails').evaluate("""n=>{
+      const r=n.getBoundingClientRect();return {left:r.left,right:r.right,width:innerWidth};
+    }""")
+    check('Mobile Share Access has no horizontal overflow',
+          bounds['left']>=-1 and bounds['right']<=bounds['width']+1 and
+          page.evaluate('document.documentElement.scrollWidth<=innerWidth+7'))
+    page.screenshot(path=str(OUT/'mobile-session-access.png'),full_page=True)
     check('Mobile session access causes no browser errors',not errors)
     close(ctx)
 

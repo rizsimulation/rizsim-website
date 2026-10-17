@@ -38,12 +38,25 @@ def run(browser,url):
     base.check('Faculty cannot use Course Lead confirmation path',page.evaluate('RizSimSessionConfirmation.ask("existing-course",true)') is False)
     base.close(ctx)
     ctx,page,errors=base.page_for(browser,url,'course_lead','?live=own-running&selection=course-1&live_session=existing-course#classroom')
+    # V13 deliberately opens Studio first; authorized aggregate results live in the Insights tab.
+    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])')
+    page.locator('#rzV13Tabinsights').click()
     page.wait_for_selector('#courseResultRows:visible')
+    base.check('Existing Course Lead results only appear in their authorized Class Insights section',
+               page.locator('#courseResultRows').evaluate('n=>!!n.closest("#rzV13Paneinsights")'))
+    # V13: authorized End Session action remains in Session Studio, not Insights.
+    page.locator('#rzV13Tabstudio').click()
+    page.wait_for_selector('.classroom-created-card:visible [data-close-classroom-session]')
+    base.check('Course Lead End Session remains available in Session Studio',
+               page.locator('.classroom-created-card:visible [data-close-classroom-session]').count() == 1)
     page.locator('.classroom-created-card:visible [data-close-classroom-session]').click()
     page.wait_for_selector('#rzEndSessionDialog[open]')
     page.locator('#rzEndSessionConfirm').click()
     page.wait_for_function('__fixture.sessions.find(s=>s.session_id==="existing-course").active===false')
     base.check('Course session closes through original authorized handler')
+    # Reopen the dedicated results tab; closed-session records are preserved.
+    page.locator('#rzV13Tabinsights').click()
+    page.wait_for_selector('#courseResultRows:visible')
     base.check('Course results stay visible after closure',page.locator('#courseResultRows').is_visible())
     base.check('Course closure has no browser errors',not errors)
     base.close(ctx)

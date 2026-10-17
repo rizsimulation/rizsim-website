@@ -1,0 +1,81 @@
+'use strict';
+/* Simulation 01: source-scoring and secure integration contract tests.
+   Fixture participants exist only in this test process, never in production. */
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const read=name=>fs.readFileSync(path.join(__dirname,'..',name),'utf8');
+const D=require('../simulation-assets/insight-to-implication/questions.js');
+const C=require('../simulation-assets/insight-to-implication/engine.js');
+function wrong(x){return ['A','B','C','D'].find(k=>k!==x);}
+function record(name,complete){
+  const r=C.createRecord(name,'Test Section');
+  for(const q of D.review)r.picks.kr[q.id]=wrong(q.key);
+  r.locks.kr=true;r.lockedAt.kr=C.now();
+  if(complete){
+    r.picks.source=D.source.key;r.locks.source=true;
+    r.locks.bridge=true;r.picks.transfer=D.transfer.key;
+    r.locks.transfer=true;r.locks.feedback=true;
+    for(const q of D.review)r.picks.kg[q.id]=q.key;
+    r.locks.kg=true;r.lockedAt.kg=C.now();
+  }
+  assert(C.validRecord(r),'fixture must pass real record validation');
+  return r;
+}
+assert.equal(D.id,'rizsimulation.insight-to-implication.bystander.v1');
+assert.equal(D.review.length,6);
+assert.equal(C.analyse([]).joined,0);
+assert.equal(C.analyse([]).krAvg,null);
+const krOnly=record('Fixture KR only',false);
+const completed=record('Fixture completed',true);
+let all=C.analyse([krOnly,completed]);
+assert.equal(all.joined,2);
+assert.equal(all.krCompleted,2);
+assert.equal(all.ltCompleted,1);
+assert.equal(all.kgCompleted,1);
+assert.equal(all.pairedN,1);
+assert.equal(all.krAvg,0,'paired KR must not include KR-only participant');
+assert.equal(all.kgAvg,6);
+assert.equal(all.changePP,100);
+assert.equal(all.transitions.becameCorrect,6);
+assert.equal(all.clusters.CC,1);
+assert.equal(all.sourceCorrect,1);
+assert.equal(all.transferCorrect,1);
+assert(all.items.every(x=>x.krTotal===2&&x.kgTotal===1));
+assert.equal(C.rga(krOnly),null);
+assert.equal(C.score(krOnly,'kg'),null);
+assert.equal(C.committed(krOnly),6);
+assert.equal(C.committed(completed),14);
+assert.equal(C.validRecord({...completed,instrumentId:'other-module'}),false);
+assert.equal(C.compareLocked(completed,{...completed,picks:{...completed.picks,source:wrong(D.source.key)}}),false);
+const html=read('access-out.html');
+const live=read('rizsim-live-classroom.js');
+const faculty=read('rizsim-insight-faculty.js');
+const cloud=read('simulation-assets/insight-to-implication/rizsim-cloud.js');
+const sql=read('sql/insight_faculty_session_v1.sql');
+const policy=read('sql/sim01_response_policy_hardening_v1.sql');
+assert(html.includes('<script src="rizsim-insight-faculty.js" defer></script>'));
+assert(html.includes('href="rizsim-insight-faculty.css"'));
+assert(live.includes('window.RizSimInsightFaculty?.draw(s,route);'));
+assert(live.includes('window.RizSimInsightFaculty?.draw(null,null);'));
+assert(faculty.includes("get_my_rizsim_insight_session_records"));
+assert(faculty.includes("p_session_id:thisSession"));
+assert(faculty.includes('C.analyse(records)'));
+assert(faculty.includes('rows=result.data.map'));
+assert(faculty.includes('role'));
+assert(!faculty.includes('PREVIEW_ONLY_SYNTHETIC_RECORDS'));
+assert(!faculty.includes('file://'));
+assert(cloud.includes("submit_my_rizsim_classroom_attempt"));
+assert(cloud.includes("check_my_rizsim_classroom_attempt_access"));
+assert(sql.includes('security definer'));
+assert(sql.includes('member.role in (')&&sql.includes("'faculty','course_lead'"));
+assert(sql.includes('v_session.created_by=v_user'));
+assert(sql.includes("im.member_type='institution_admin'"));
+assert(sql.includes('sa.classroom_session_id=p_session_id'));
+assert(sql.includes("sr.question_key='insight-bystander-v1-record'"));
+assert(sql.includes('revoke all on function'));
+assert(policy.includes('attempt.classroom_session_id is null'));
+assert(policy.includes('public.check_my_rizsim_classroom_attempt_access'));
+assert(policy.includes("attempt.status='in_progress'"));
+assert(!read('simulation-insight-to-implication.html').includes('service_role'));
+console.log('SIM01 source and integration tests: PASS (no production writes)');
