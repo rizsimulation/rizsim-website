@@ -30,7 +30,8 @@ def resource(p):
 
 def run(browser,url):
     ctx,p,errors=open_courses(browser,url)
-    check('Courses opens with two tall authoring paths',p.locator('.rz-author-paths .tall').count()==2 and p.locator('.rz-author-paths .tall').first.evaluate('e=>e.getBoundingClientRect().height>e.getBoundingClientRect().width'))
+    check('Courses has two compact authoring cards',p.locator('.rz-author-paths .tall').count()==2 and p.locator('.rz-author-paths .tall').first.evaluate('e=>e.getBoundingClientRect().height<=315'))
+    check('Both Course Lead entry actions visible without scrolling or hover',p.locator('.rz-author-paths .tall .rz-author-btn').evaluate_all("es=>es.length===2&&es.every(e=>e.getBoundingClientRect().bottom<innerHeight&&getComputedStyle(e).opacity==='1')"))
     check('No session creation, controls or results appear in Courses',p.locator('#view-courses #createCourseClassroomSessionButton').is_hidden() and p.locator('#view-courses #courseResultsPanel').is_hidden())
     check('Courses entry has no visible legacy workspace',p.locator('#rzCourseLegacy').is_hidden())
     p.screenshot(path=str(base.OUT/'v7-courses-home.png'),full_page=True)
