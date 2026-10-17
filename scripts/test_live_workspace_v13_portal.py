@@ -43,7 +43,7 @@ def run(browser, base):
            'original authenticated session runs inside Studio, not copied')
     verify(page.locator('#rzLiveAccessFab,#rzLiveAccessLayer').count()==0,
            'No duplicated floating QR layer or pinned button exists')
-    page.locator('.classroom-created-card:visible .rz-v5-qr svg').wait_for(state='attached',timeout=18000)
+    page.locator('.classroom-created-card:not(.rz-v5-hidden) .rz-v5-qr svg').wait_for(state='attached',timeout=18000)
     page.locator('#rzV13SubviewShare').click()
     wait_ui(page, '#rzV13ShareDetails:not([hidden])')
     wait_ui(page, '#rzV13ShareQR svg:visible')
@@ -100,7 +100,7 @@ def run(browser, base):
     page.locator('#rzV13SubviewShare').click()
     wait_ui(page, '#rzV13ShareDetails:not([hidden])')
     verify(page.locator('#rzV13ShareCode').inner_text().strip() ==
-           page.locator('.classroom-created-card:visible .classroom-code-value').text_content().strip(),
+           page.locator('.classroom-created-card:not(.rz-v5-hidden) .classroom-code-value').text_content().strip(),
            'owned course uses existing V12 code with dedicated Share Access view')
     verify(not errors, 'no JS errors for Course Lead course flow')
     v5.close(ctx)

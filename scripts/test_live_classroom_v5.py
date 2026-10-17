@@ -109,15 +109,15 @@ def run(browser,base):
     check('New session automatically opens authenticated Studio Share Access',
           page.locator('#rzV13SubviewShare[aria-pressed=true]').count()==1)
     check('Only one selected original session card is retained',
-          page.locator('.classroom-created-card:visible').count()==1)
+          page.locator('.classroom-created-card:not(.rz-v5-hidden)').count()==1)
     check('Studio share uses original authenticated class code',
           page.locator('#rzV13ShareCode').inner_text().strip()==
-          page.locator('.classroom-created-card:visible .classroom-code-value').text_content().strip())
+          page.locator('.classroom-created-card:not(.rz-v5-hidden) .classroom-code-value').text_content().strip())
     check('New session hides unrelated submissions',page.locator('#resultRows').is_hidden())
     check('Existing session preserved',page.evaluate('__fixture.sessions.some(s=>s.session_id==="existing-1")'))
     check('Direct URL identifies exact session','live_session=' in page.url)
     check('Original token-backed credentials are private to Studio Share',
-          page.locator('.classroom-created-card:visible .classroom-code-box').is_hidden())
+          page.locator('.classroom-created-card:not(.rz-v5-hidden) .classroom-code-box').is_hidden())
     check('No floating QR dialog or pinned button created',
           page.locator('#rzLiveAccessLayer,#rzLiveAccessFab,#rzV13ShareOpen').count()==0)
     page.screenshot(path=str(OUT/'simulation-session.png'),full_page=True)

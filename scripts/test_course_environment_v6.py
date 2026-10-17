@@ -83,7 +83,7 @@ def run(browser,base):
  p.wait_for_selector('#rzV13StudioShare:not([hidden]) #rzV13ShareQR svg:visible',timeout=18000)
  check('New course session uses original verified code in Studio Share',
    p.locator('#rzV13ShareCode').text_content().strip()==
-   p.locator('.classroom-created-card:visible .classroom-code-value').text_content().strip())
+   p.locator('.classroom-created-card:not(.rz-v5-hidden) .classroom-code-value').text_content().strip())
  check('Course Lead Studio has no floating QR launcher',
    p.locator('#rzLiveAccessLayer,#rzLiveAccessFab').count()==0)
  p.locator('#rzV13SubviewOverview').click()
