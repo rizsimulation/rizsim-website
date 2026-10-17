@@ -1,0 +1,37 @@
+name: Student Completion V9 Production Verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'simulation-test.html'
+      - 'access-in.html'
+      - 'rizsim-student-workspace.js'
+      - 'rizsim-student-workspace.css'
+      - 'scripts/verify_student_completion_v9_release.py'
+      - '.github/workflows/student-completion-v9-production.yml'
+permissions:
+  contents: read
+concurrency:
+  group: student-v9-production
+  cancel-in-progress: true
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify 22 public assets match the exact submitted release
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_student_completion_v9_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: student-v9-production-verification
+          path: test-results/
+          retention-days: 3

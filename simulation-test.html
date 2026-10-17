@@ -501,6 +501,51 @@ h1 {
 
 }
 
+
+/* V9 completed-state view: existing RizSim colour system, no new public result URLs. */
+.results-panel[hidden],.submission-dialog:not([open]){display:none!important}
+.results-panel{margin-top:24px;outline:0}
+.results-hero{position:relative;display:flex;gap:19px;align-items:flex-start;padding:25px;border-radius:20px;border:1px solid #b9dcca;background:linear-gradient(130deg,#e5f7ee,#f5fcf9 72%,#f5f1fd)}
+.results-emblem{flex-shrink:0;width:56px;height:56px;display:flex;align-items:center;justify-content:center;border:1px solid #afd8c6;border-radius:19px;background:#fff;color:#11776a;font-size:30px;font-weight:900}
+.results-hero .kicker{margin-top:2px}
+.results-hero h2{font-size:clamp(24px,4.8vw,36px);letter-spacing:-1px;color:#173c48;line-height:1.2;margin:8px 0 7px}
+.results-hero p{margin:0;color:#4b6870;line-height:1.65;font-size:13px}
+.results-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 23px}
+.results-metric{border:1px solid #d0e3dc;background:#f3f9f5;border-radius:15px;padding:18px 15px;min-width:0}
+.results-metric:nth-child(2){background:#f7f5fb;border-color:#ded8ec}
+.results-metric:nth-child(3){background:#fdf9ee;border-color:#e8dcc0}
+.results-metric span{display:block;font-size:10px;font-weight:850;letter-spacing:.075em;color:#5d747d;text-transform:uppercase}
+.results-metric strong{display:block;font-size:18px;line-height:1.4;margin-top:7px;color:#194452;overflow-wrap:anywhere}
+.results-review-heading{font-size:19px;font-weight:850;letter-spacing:-.35px;color:#193e4a;margin:0 0 7px}
+.results-explainer{color:#637c84;line-height:1.55;font-size:12px;margin:0 0 15px}
+.results-review{display:grid;gap:11px}
+.results-answer{border:1px solid #d7e7e1;border-radius:15px;background:#fbfefe;padding:17px 19px}
+.results-answer .results-number{font-size:10px;text-transform:uppercase;letter-spacing:.075em;font-weight:900;color:#3b867f}
+.results-answer h3{font-size:14px;font-weight:800;color:#244858;line-height:1.5;margin:6px 0}
+.results-answer p{display:flex;gap:9px;align-items:flex-start;color:#2e5f51;font-size:13px;line-height:1.55;margin:0}
+.results-answer p:before{content:"✓";font-weight:900;color:#13856e}
+.results-answer.unsaved p{color:#8b604c}
+.results-answer.unsaved p:before{content:"—";color:#8b604c}
+.results-share-config{display:flex;align-items:flex-start;gap:9px;margin-top:21px;color:#4d6672;font-size:12px;line-height:1.5}
+.results-share-config input{accent-color:var(--teal);margin-top:3px}
+.results-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.results-actions .button{min-height:46px}
+.results-actions .button.secondary{background:#fff;color:#285560;border:1px solid #bcd7d0}
+.results-actions a.button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.results-feedback{font-size:12px;color:var(--success);min-height:18px;margin-top:14px}
+.submission-dialog{width:min(470px,calc(100vw - 30px));border:1px solid #bad8cf;border-radius:23px;background:linear-gradient(142deg,#f7fcf8,#fff 75%);padding:29px;box-shadow:0 25px 80px #102d414f;color:#214754;box-sizing:border-box}
+.submission-dialog::backdrop{background:#0e304575;backdrop-filter:blur(4px)}
+.submission-dialog h2{font-size:23px;margin:14px 0 10px;color:#153d4a}
+.submission-dialog p{font-size:13px;line-height:1.6;color:#506a73}
+.submission-icon{width:52px;height:52px;border-radius:17px;display:flex;align-items:center;justify-content:center;background:#e4f5ed;color:#277563;font-size:28px;border:1px solid #c4e0d1}
+.submission-dialog .action-row{justify-content:flex-end;flex-wrap:wrap}
+.submission-dialog .button.secondary{color:#365963;background:#fff;border:1px solid #bad2d0}
+.submission-close{position:absolute;right:15px;top:14px;width:34px;height:34px;border:1px solid #c5d8d3;background:#fff;color:#45636d;border-radius:50%;cursor:pointer;font-size:20px}
+:where(.button,.submission-close):focus-visible,.results-panel a:focus-visible{outline:3px solid #008d9a;outline-offset:3px}
+@media(max-width:650px){.results-hero{padding:18px;gap:12px}.results-emblem{width:43px;height:43px;font-size:24px}.results-metrics{grid-template-columns:1fr;gap:9px}.results-actions{flex-direction:column}.results-actions .button{width:100%}.submission-dialog{padding:24px}}
+@media(prefers-reduced-motion:reduce){.results-panel *{transition:none!important;animation:none!important}}
+@media print{header,.security-grid,#googleLogin,#statusBox,.results-actions,.results-share-config,.results-feedback{display:none!important}body{background:white}main{margin:0;width:100%}.card{padding:0;border:0;box-shadow:none}.results-panel{display:block!important}.results-review{break-inside:avoid}.results-answer{break-inside:avoid}}
+
 </style>
 
 </head>
@@ -886,12 +931,51 @@ h1 {
     </div>
 
 
+
+  </section>
+
+  <section id="resultsPanel" class="results-panel" hidden aria-labelledby="resultsHeading">
+    <div class="results-hero">
+      <div class="results-emblem" aria-hidden="true">✓</div>
+      <div>
+        <div class="kicker">YOUR SIMULATION RESULTS</div>
+        <h2 id="resultsHeading" tabindex="-1">Successfully submitted</h2>
+        <p>Your responses are securely saved and locked. Review what you submitted, then choose how to share your results.</p>
+      </div>
+    </div>
+    <div class="results-metrics">
+      <div class="results-metric"><span>Responses submitted</span><strong id="resultsCount">—</strong></div>
+      <div class="results-metric"><span>Saved completion</span><strong id="resultsProgress">—</strong></div>
+      <div class="results-metric"><span>Submitted on</span><strong id="resultsDate">—</strong></div>
+    </div>
+    <h3 class="results-review-heading">Review your responses</h3>
+    <p class="results-explainer">These are your selected responses, not a graded score. Sharing is your choice.</p>
+    <div id="resultsReview" class="results-review"></div>
+    <label class="results-share-config"><input type="checkbox" id="shareIncludeAnswers"> Include my selected answers when sharing. Off by default for privacy.</label>
+    <div class="results-actions">
+      <button type="button" class="button" id="shareResultsButton">Share results</button>
+      <button type="button" class="button secondary" id="copyResultsButton">Copy summary</button>
+      <button type="button" class="button secondary" id="printResultsButton">Print / Save PDF</button>
+      <a class="button secondary" href="access-in.html#learning">My Learning</a>
+    </div>
+    <p id="resultsFeedback" class="results-feedback" role="status" aria-live="polite"></p>
   </section>
 
 
 </section>
 
 </main>
+
+<dialog id="submissionConfirmDialog" class="submission-dialog" aria-labelledby="submissionConfirmTitle">
+  <button id="dismissSubmitButton" class="submission-close" type="button" aria-label="Close submission confirmation">×</button>
+  <div class="submission-icon" aria-hidden="true">✓</div>
+  <h2 id="submissionConfirmTitle">Submit your simulation?</h2>
+  <p>Your responses will be locked after successful submission. You will then see a results screen and can review or share your response summary.</p>
+  <div class="action-row">
+    <button id="cancelSubmitButton" type="button" class="button secondary">Review answers</button>
+    <button id="confirmSubmitButton" type="button" class="button">Submit &amp; view results</button>
+  </div>
+</dialog>
 
 
 
@@ -996,6 +1080,11 @@ const submitButton =
   document.getElementById(
     "submitButton"
   );
+
+const resultsPanel=document.getElementById("resultsPanel");
+const submissionConfirmDialog=document.getElementById("submissionConfirmDialog");
+const savedResponses=new Map();
+let submissionBusy=false;
 
 
 
@@ -1556,11 +1645,13 @@ async function loadResponses() {
   }
 
 
+  savedResponses.clear();
   for(
     const response
     of
     data
   ) {
+    if(response.question_key && response.response_data) savedResponses.set(response.question_key,response.response_data);
 
 
     const value =
@@ -1795,6 +1886,7 @@ async function saveResponse(
   }
 
 
+  savedResponses.set(questionKey,responsePayload);
   await updateProgress();
 
 
@@ -1938,14 +2030,9 @@ async function updateProgress() {
 
 
   submitButton.disabled =
-
-    currentAttempt.status ===
-    "submitted"
-
-    ||
-
-    answered !==
-    totalQuestions;
+    submissionBusy ||
+    currentAttempt.status === "submitted" ||
+    answered !== totalQuestions;
 
 }
 
@@ -1955,278 +2042,122 @@ async function updateProgress() {
    SUBMIT
    ============================================================ */
 
-async function submitSimulation() {
 
-
-  if(!currentAttempt) {
-
-    return;
-
-  }
-
-
-  const confirmed =
-    window.confirm(
-
-      "Submit this simulation?\n\nAfter submission, your responses will be locked."
-
-    );
-
-
-  if(!confirmed) {
-
-    return;
-
-  }
-
-
-  submitButton.disabled =
-    true;
-
-
-  setStatus(
-    "Securely submitting simulation…"
-  );
-
-
-  const isClassroomAttempt =
-    Boolean(
-      currentAttempt.classroom_session_id
-    );
-
-
-  const rpcName =
-    isClassroomAttempt
-
-      ? "submit_my_rizsim_classroom_attempt"
-
-      : "submit_simulation_attempt";
-
-
-  const {
-    data,
-    error
-  } =
-    await supabase
-
-      .rpc(
-        rpcName,
-        {
-
-          p_attempt_id:
-            currentAttempt.id
-
-        }
-      );
-
-
-  if(error) {
-
-
-    setStatus(
-
-      "Submission failed: "
-      +
-      error.message,
-
-      "error"
-
-    );
-
-
-    submitButton.disabled =
-      false;
-
-
-    return;
-
-  }
-
-
-  const submittedAttempt =
-    Array.isArray(
-      data
-    )
-
-      ? (
-          data[0]
-          ||
-          null
-        )
-
-      : data;
-
-
-  if(!submittedAttempt) {
-
-
-    setStatus(
-
-      "Submission failed: RizSim did not return the submitted attempt.",
-
-      "error"
-
-    );
-
-
-    submitButton.disabled =
-      false;
-
-
-    return;
-
-  }
-
-
-  currentAttempt = {
-
-    ...currentAttempt,
-
-    id:
-      submittedAttempt.attempt_id
-      ||
-      submittedAttempt.id
-      ||
-      currentAttempt.id,
-
-    status:
-      submittedAttempt.status
-      ||
-      "submitted",
-
-    progress_percent:
-      submittedAttempt.progress_percent
-      ??
-      100,
-
-    submitted_at:
-      submittedAttempt.submitted_at
-      ||
-      currentAttempt.submitted_at
-      ||
-      new Date().toISOString()
-
-  };
-
-
-  document.getElementById(
-    "attemptStatus"
-  ).textContent =
-    currentAttempt.status;
-
-
-  document.getElementById(
-    "progressBar"
-  ).style.width =
-    "100%";
-
-
-  document.getElementById(
-    "progressText"
-  ).textContent =
-    "Progress: 100% — Submitted";
-
-
-  document
-    .querySelectorAll(
-      'input[type="radio"]'
-    )
-    .forEach(
-
-      function(input) {
-
-        input.disabled =
-          true;
-
-      }
-
-    );
-
-
-  setStatus(
-
-    "✓ Simulation submitted securely. Responses are now locked.",
-
-    "success"
-
-  );
-
+function reviewedResponses() {
+  return Array.from(document.querySelectorAll('.question')).map((question,index)=>{
+    const key=question.dataset.question||'q'+(index+1);
+    const stored=savedResponses.get(key);
+    const chosen=question.querySelector('input:checked');
+    const label=chosen?.closest('.option')?.querySelector('.option-text');
+    return {
+      question:String(stored?.question_text||question.querySelector('h3')?.textContent||'Question '+(index+1)).trim(),
+      answer:String(stored?.answer_text||label?.textContent||'Response unavailable').trim(),
+      answered:!!stored||!!chosen
+    };
+  });
 }
 
+function renderSubmittedResults(){
+  const rows=reviewedResponses(),answered=rows.filter(r=>r.answered).length;
+  simulation.classList.remove('show');
+  resultsPanel.hidden=false;
+  document.getElementById('resultsCount').textContent=answered+' of '+totalQuestions;
+  document.getElementById('resultsProgress').textContent=Math.round(Number(currentAttempt?.progress_percent)||0)+'% saved';
+  const when=Date.parse(currentAttempt?.submitted_at||'');
+  document.getElementById('resultsDate').textContent=Number.isFinite(when)
+    ?new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(when):'Confirmed submitted';
+  const review=document.getElementById('resultsReview');review.replaceChildren();
+  for(const [i,entry] of rows.entries()){
+    const item=document.createElement('article');item.className='results-answer'+(entry.answered?'':' unsaved');
+    const number=document.createElement('span');number.className='results-number';number.textContent='QUESTION '+(i+1);
+    const prompt=document.createElement('h3');prompt.textContent=entry.question;
+    const answer=document.createElement('p');answer.textContent=entry.answer;
+    item.append(number,prompt,answer);review.append(item);
+  }
+  document.getElementById('attemptStatus').textContent='submitted';
+  document.getElementById('resultsHeading').focus({preventScroll:true});
+  resultsPanel.scrollIntoView({block:'start',behavior:'instant'});
+}
 
+function shareableSummary(){
+  const rows=reviewedResponses(),answered=rows.filter(r=>r.answered).length;
+  const heading='RizSim - '+(currentProduct?.title||'Simulation')+' - Submitted Results';
+  const when=document.getElementById('resultsDate').textContent;
+  const lines=[heading,'Status: Submitted','Responses saved: '+answered+' of '+totalQuestions,'Completion: '+Math.round(Number(currentAttempt?.progress_percent)||0)+'%','Submitted: '+when];
+  if(document.getElementById('shareIncludeAnswers').checked){
+    lines.push('','My selected responses:');
+    rows.forEach((r,i)=>lines.push((i+1)+'. '+r.question+'\n   '+r.answer));
+  }
+  return lines.join('\n');
+}
+async function copyResultSummary(){
+  const text=shareableSummary();
+  if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return;}
+  const input=document.createElement('textarea');input.value=text;input.style.position='fixed';input.style.opacity='0';document.body.append(input);input.select();
+  const copied=document.execCommand('copy');input.remove();
+  if(!copied)throw new Error('Clipboard permission was not available.');
+}
+function resultFeedback(message){document.getElementById('resultsFeedback').textContent=message;}
+async function shareResultSummary(){
+  resultFeedback('');
+  const text=shareableSummary();
+  if(typeof navigator.share==='function'){
+    try{await navigator.share({title:'RizSim results',text});resultFeedback('Sharing options opened.');}
+    catch(error){if(error?.name!=='AbortError')resultFeedback('Sharing was not completed: '+(error?.message||'Try copying your summary.'));}
+    return;
+  }
+  try{await copyResultSummary();resultFeedback('Results copied. You can paste them into your preferred app.');}
+  catch(error){resultFeedback('Could not copy results: '+(error?.message||'Clipboard unavailable.'));}
+}
+
+async function submitSimulation() {
+  if(!currentAttempt||currentAttempt.status==='submitted'||submissionBusy||submitButton.disabled)return;
+  submissionBusy=true;submitButton.disabled=true;
+  document.querySelectorAll('.question input[type="radio"]').forEach(n=>n.disabled=true);
+  setStatus('Securely submitting simulation…');
+  try{
+    const rpcName=currentAttempt.classroom_session_id
+      ?'submit_my_rizsim_classroom_attempt':'submit_simulation_attempt';
+    const {data,error}=await supabase.rpc(rpcName,{p_attempt_id:currentAttempt.id});
+    if(error)throw new Error(error.message);
+    const submitted=Array.isArray(data)?data[0]:data;
+    if(!submitted||submitted.status!=='submitted')throw new Error('The server has not confirmed submission. Refresh to check your saved status.');
+    currentAttempt={
+      ...currentAttempt,
+      id:submitted.attempt_id||submitted.id||currentAttempt.id,
+      status:'submitted',
+      progress_percent:submitted.progress_percent??100,
+      submitted_at:submitted.submitted_at||currentAttempt.submitted_at||null
+    };
+    await loadResponses();
+    renderSubmittedResults();
+    setStatus('Simulation submitted securely. Your responses are locked and your results are ready.','success');
+  }catch(error){
+    setStatus('Submission not confirmed: '+(error?.message||'Please try again.')+' Your saved answers have not been cleared.','error');
+    if(currentAttempt?.status!=='submitted'){
+      submitButton.disabled=false;
+      document.querySelectorAll('.question input[type="radio"]').forEach(n=>n.disabled=false);
+    }
+  }finally{submissionBusy=false;}
+}
 
 /* ============================================================
    DISPLAY ATTEMPT
    ============================================================ */
 
 function showAttempt() {
-
-
-  document.getElementById(
-    "attemptUUID"
-  ).textContent =
-    currentAttempt.id;
-
-
-  document.getElementById(
-    "attemptStatus"
-  ).textContent =
-    currentAttempt.status;
-
-
-  document.getElementById(
-    "accessStatus"
-  ).textContent =
-    "Authorized";
-
-
-  simulation.classList.add(
-    "show"
-  );
-
-
-  if(
-    currentAttempt.status ===
-    "submitted"
-  ) {
-
-
-    document.getElementById(
-      "progressBar"
-    ).style.width =
-      "100%";
-
-
-    document.getElementById(
-      "progressText"
-    ).textContent =
-      "Progress: 100% — Submitted";
-
-
-    submitButton.disabled =
-      true;
-
-
-    document
-      .querySelectorAll(
-        'input[type="radio"]'
-      )
-      .forEach(
-
-        function(input) {
-
-          input.disabled =
-            true;
-
-        }
-
-      );
-
+  document.getElementById('attemptUUID').textContent=currentAttempt.id;
+  document.getElementById('attemptStatus').textContent=currentAttempt.status;
+  document.getElementById('accessStatus').textContent='Authorized';
+  if(currentAttempt.status==='submitted'){
+    submitButton.disabled=true;
+    document.querySelectorAll('.question input[type="radio"]').forEach(n=>n.disabled=true);
+    renderSubmittedResults();
+    return;
   }
-
+  resultsPanel.hidden=true;
+  simulation.classList.add('show');
 }
-
-
 
 /* ============================================================
    INITIALIZE
@@ -2289,10 +2220,8 @@ async function initialize() {
   }
 
 
-  showAttempt();
-
-
   await loadResponses();
+  showAttempt();
 
 
   if(
@@ -2411,13 +2340,23 @@ loginButton.addEventListener(
 );
 
 
-submitButton.addEventListener(
-
-  "click",
-
-  submitSimulation
-
-);
+submitButton.addEventListener('click',()=>{
+  if(submitButton.disabled||submissionBusy||currentAttempt?.status==='submitted')return;
+  submissionConfirmDialog.showModal();
+  document.getElementById('confirmSubmitButton').focus({preventScroll:true});
+});
+document.getElementById('cancelSubmitButton').addEventListener('click',()=>submissionConfirmDialog.close());
+document.getElementById('dismissSubmitButton').addEventListener('click',()=>submissionConfirmDialog.close());
+document.getElementById('confirmSubmitButton').addEventListener('click',()=>{
+  submissionConfirmDialog.close();
+  submitSimulation();
+});
+document.getElementById('shareResultsButton').addEventListener('click',shareResultSummary);
+document.getElementById('copyResultsButton').addEventListener('click',async()=>{
+  try{await copyResultSummary();resultFeedback('Results copied to your clipboard.');}
+  catch(error){resultFeedback('Could not copy the summary: '+(error?.message||'Clipboard unavailable.'));}
+});
+document.getElementById('printResultsButton').addEventListener('click',()=>window.print());
 
 
 document

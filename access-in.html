@@ -7836,6 +7836,27 @@ window.RizSimStudentBridge = Object.freeze({
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
  async practice(attemptId){const result=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attemptId});if(result.error)throw new Error(result.error.message);await reloadAttempts();return result.data;},
+ async launchPractice(attemptId){
+  const actor=currentUser?.id,generation=studentResolveGeneration;
+  if(!actor)throw new Error('Sign in again before launching Practice.');
+  const own=attempts.find(a=>a.id===attemptId&&a.user_id===actor&&a.classroom_session_id);
+  if(!own||own.status==='submitted'||own.submitted_at||own.classroom_access_type!=='practice')throw new Error('This saved practice attempt is not available.');
+  const product=getProduct(own.product_id),route=getLaunchURL(product);
+  if(!route)throw new Error('The simulation runner is not yet connected to this licensed class.');
+  const {data,error}=await supabase.rpc('check_my_rizsim_classroom_attempt_access',{p_attempt_id:own.id});
+  if(currentUser?.id!==actor||studentResolveGeneration!==generation)throw new Error('The account or classroom changed before launch.');
+  if(error)throw new Error(error.message);
+  const access=Array.isArray(data)?data[0]:data;
+  const stillOwned=attempts.find(a=>a.id===own.id&&a.user_id===actor&&a.classroom_session_id===own.classroom_session_id);
+  if(!stillOwned||stillOwned.status==='submitted'||stillOwned.submitted_at||stillOwned.classroom_access_type!=='practice'
+    ||!access||access.allowed!==true||access.attempt_status==='submitted'||access.submitted_at)
+   throw new Error('Practice is no longer open or this response was already submitted.');
+  const destination=new URL(route,window.location.origin);
+  destination.searchParams.set('attempt',own.id);
+  destination.searchParams.set('session',own.classroom_session_id);
+  destination.searchParams.set('access','practice');
+  window.location.href=destination.href;
+ },
  async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
 });
 window.addEventListener('popstate',()=>{navigateStudent(location.hash.slice(1)||'home',false);});

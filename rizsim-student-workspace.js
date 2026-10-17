@@ -110,13 +110,77 @@
   if(done.length&&active.length)target.append(el('p','rz-st-support',done.length+' submitted practice '+(done.length===1?'session':'sessions')+' saved in My Learning.'));
   if(unavailable.length){const details=el('details','rz-st-archive');details.append(el('summary','',unavailable.length+' unavailable or ended practice '+(unavailable.length===1?'session':'sessions')));unavailable.forEach(a=>{const row=el('div','rz-st-archive-row');row.append(el('span','',a.title+' · '+(a.class_name||'Class')),statusBadge(phase(a)==='expired'?'Window ended':'Access unavailable','closed'));details.append(row);});target.append(details);}
  }
+ function showPracticeLaunchDialog(attempt){
+  const id=attempt.id, owner=identity,previousFocus=document.activeElement;
+  const n=el('dialog','rz-st-dialog rz-st-launch-dialog');
+  const titleId='rzStudentPracticeLaunch'+(++dialogSerial);
+  n.setAttribute('aria-labelledby',titleId);
+  const close=btn('',()=>n.close(),'rz-st-close','x');
+  close.setAttribute('aria-label','Close launch confirmation');
+  const header=el('div','rz-st-launch-header');
+  const marker=icon('join');marker.classList.add('rz-st-launch-mark');
+  const copy=el('div');copy.append(statusBadge('PRACTICE READY','open'));
+  const title=el('h2','', 'Ready to launch your simulation?');title.id=titleId;
+  copy.append(title,el('p','', 'Your saved work stays with you. You can continue where you left off.'));
+  header.append(marker,copy);
+  const details=el('div','rz-st-launch-details');
+  const addDetail=(caption,value)=>{const cell=el('div');cell.append(el('span','',caption),el('strong','',value));details.append(cell);};
+  addDetail('SIMULATION',attempt.title||'RizSim Simulation');
+  addDetail('CLASS',attempt.class_name||'Your Faculty classroom');
+  addDetail('SAVED PROGRESS',progress(attempt.progress_percent)+'%');
+  addDetail('PRACTICE CLOSES',date(attempt.practice_access_ends_at));
+  const timing=el('p','rz-st-launch-countdown');
+  timing.append(icon('clock'),el('span','', 'Time remaining: '));
+  const countdown=el('strong');countdown.dataset.practiceCountdown=attempt.practice_access_ends_at;
+  countdown.textContent=remaining((time(attempt.practice_access_ends_at)||now())-now());timing.append(countdown);
+  const note=el('p','rz-st-launch-note','Your Faculty controls the practice deadline. Launching does not reset answers or create another attempt.');
+  const feedback=el('p','rz-st-launch-feedback');
+  feedback.setAttribute('role','alert');feedback.hidden=true;
+  const actions=el('div','rz-st-launch-actions');
+  const cancel=btn('Not now',()=>n.close(),'rz-st-button quiet');
+  const launch=btn('Launch simulation',null,'rz-st-button','arrow');
+  actions.append(cancel,launch);
+  n.append(close,header,details,timing,note,feedback,actions);
+  document.body.append(n);
+  n.addEventListener('cancel',e=>{if(actionBusy)e.preventDefault();});
+  n.addEventListener('close',()=>{n.remove();if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});},{once:true});
+  n.showModal();launch.focus({preventScroll:true});
+  launch.addEventListener('click',async()=>{
+   if(actionBusy||!n.open)return;
+   actionBusy=true;launch.disabled=true;cancel.disabled=true;close.disabled=true;renderPractice();
+   feedback.hidden=true;
+   launch.querySelector('span:last-child').textContent='Verifying access…';
+   try{
+    await refresh(true);
+    if(identity!==owner||!n.open)throw new Error('Your account changed. Open Practice again.');
+    if(error)throw new Error('Practice access could not be checked. Please retry.');
+    const current=data?.attempts.find(x=>x.id===id);
+    if(!current||phase(current)!=='open')throw new Error('This practice session is no longer available for launch.');
+    const result=await bridge().practice(id);
+    if(String(result?.attempt_id)!==String(id))throw new Error('The server did not confirm this saved attempt.');
+    await refresh(true);
+    if(identity!==owner||!n.open||error)throw new Error('Practice could not be verified after resuming.');
+    const fresh=data?.attempts.find(x=>x.id===id);
+    if(!fresh||phase(fresh)!=='open'||complete(fresh))throw new Error('This practice session is no longer open.');
+    await bridge().launchPractice(id);
+   }catch(e){
+    if(n.open){feedback.textContent=e?.message||'Unable to launch practice. Please retry.';feedback.hidden=false;}
+   }finally{
+    actionBusy=false;launch.disabled=false;cancel.disabled=false;close.disabled=false;
+    if(n.open)launch.querySelector('span:last-child').textContent='Launch simulation';
+    renderPractice();
+   }
+  });
+ }
  async function openPractice(id){
   if(actionBusy)return;actionBusy=true;renderPractice();
   try{
    await refresh(true);if(error)throw new Error('Practice could not be verified. Please retry.');
-   const a=data?.attempts.find(x=>x.id===id);if(!a||phase(a)!=='open')throw new Error('This practice session is no longer open or has already been submitted.');
-   await bridge().practice(id);await refresh(true);const fresh=data?.attempts.find(x=>x.id===id);if(!fresh)throw new Error('The classroom record could not be refreshed.');await bridge().openAttempt(fresh);
-  }catch(e){dialog('Practice is not available',e.message);}finally{actionBusy=false;renderPractice();}
+   const a=data?.attempts.find(x=>x.id===id);
+   if(!a||phase(a)!=='open')throw new Error('This practice session is no longer open or has already been submitted.');
+   showPracticeLaunchDialog(a);
+  }catch(e){dialog('Practice is not available',e.message);}
+  finally{actionBusy=false;renderPractice();}
  }
  async function openRecord(id){
   if(actionBusy)return;actionBusy=true;

@@ -1,0 +1,83 @@
+name: Student Completion V9 Verification
+on:
+  push:
+    branches: ['feat/student-completion-v9-20261017']
+  pull_request:
+    paths:
+      - 'simulation-test.html'
+      - 'access-in.html'
+      - 'rizsim-student-workspace.js'
+      - 'rizsim-student-workspace.css'
+      - 'scripts/**'
+      - '.github/workflows/student-completion-v9.yml'
+permissions:
+  contents: read
+concurrency:
+  group: student-completion-v9-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: student_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and original V5-V8 permission boundaries
+        run: |
+          node scripts/validate_student_completion_v9.js
+          node scripts/validate_student_workspace_v8.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_premium_ui_v3.js
+          python scripts/validate_category_release.py
+          node scripts/test_resource_stream_v6.js
+      - name: Isolated PostgreSQL roles, practice, and publishing regression
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d student_test -v ON_ERROR_STOP=1 -f scripts/sql/runtime_test_schema.sql -f sql/course_runtime_v6.sql -f scripts/sql/student_test_schema.sql -f sql/student_workspace_v8.sql -f scripts/sql/student_assertions.sql 2>&1 | tee test-results/v9-sql.txt
+      - name: Install pinned no-TinyFish browser dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Verify submission success, failure, sharing and direct practice launch
+        run: |
+          python scripts/test_student_completion_v9.py
+          python scripts/test_student_workspace_v8.py
+          python scripts/test_live_classroom_v5.py
+          python scripts/test_live_classroom_v5_extended.py
+          python scripts/test_session_confirmation_v5.py
+          python scripts/test_course_environment_v6.py
+          python scripts/test_course_authoring_v7.py
+          python scripts/test_authoring_touch_v7.py
+          git diff --exit-code
+          git rev-parse HEAD > test-results/verified-revision.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: student-v9-browser-evidence
+          path: test-results/
+          retention-days: 3
