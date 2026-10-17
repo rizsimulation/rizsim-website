@@ -137,7 +137,7 @@ def run(browser,base):
  end.fill(start.input_value())
  p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
  check('Wrong practice end auto-scrolls to the precise invalid time',
-  p.evaluate('document.activeElement?.type==="datetime-local" && document.activeElement?.value===document.querySelectorAll("#rzPurchasedSetup input[type=datetime-local]")[3].value') and
+  p.evaluate('document.activeElement===document.querySelectorAll("#rzPurchasedSetup input[type=datetime-local]")[3]') and
   end.get_attribute('aria-invalid')=='true')
  end.fill(prior_end)
  p.locator('#rzPurchasedSetup').get_by_role('button',name='Create Session').click()
