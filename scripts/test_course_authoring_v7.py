@@ -213,7 +213,11 @@ def run(browser,url):
     base.close(ctx)
 
     ctx,p,errors=open_courses(browser,url,role='faculty')
-    check('Ordinary Faculty has no Courses navigation',not p.locator('#mainNav [data-auth-view=courses]').is_visible())
+    check('Ordinary Faculty has promotional Courses navigation',p.locator('#mainNav [data-auth-view=courses]').is_visible())
+    p.locator('#mainNav [data-auth-view=courses]').click()
+    p.wait_for_selector('#view-courses.active')
+    check('Faculty sees upgrade page, not authenticated Course Builder',
+       p.locator('#rzCourseLeadUpgrade').is_visible() and p.locator('#rzCourseAuthoring').is_hidden())
     denied=p.evaluate('async()=>{try{await RizSimFacultyBridge.authoring.list();return false}catch(e){return /Course Lead/.test(e.message)}}')
     check('Authoring adapter denies ordinary Faculty without backend request',denied and p.evaluate('__fixture.calls.filter(x=>x.name==="get_my_rizsim_course_authoring").length')==0)
     base.close(ctx)
