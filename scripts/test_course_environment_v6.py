@@ -57,7 +57,7 @@ def run(browser,base):
  check('Runtime file selection provides both modes',p.locator('#rzRuntimeDialog .rz-delivery-choices label').count()==2)
  p.locator('#rzRuntimeDialog input[value=downloadable]').check()
  p.locator('#rzResourceTitle').fill('')
- p.evaluate('window.__invalidScrolls=[];Element.prototype.__scrollOriginal=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(o){window.__invalidScrolls.push({id:this.id,block:o?.block});return Element.prototype.__scrollOriginal.call(this,o)}')
+ p.evaluate("() => { window.__invalidScrolls=[];const field=document.getElementById('rzResourceTitle');const original=field.scrollIntoView.bind(field);field.scrollIntoView=function(o){__invalidScrolls.push({id:field.id,block:o?.block});return original(o)}; }")
  p.locator('#rzResourceFinalPublish').click()
  check('Blank resource title scrolls to and focuses its exact red field',p.evaluate('document.activeElement?.id==="rzResourceTitle"&&__invalidScrolls.some(s=>s.id==="rzResourceTitle"&&s.block==="center")') and p.locator('#rzResourceTitle[aria-invalid="true"] + .rz-inline-error').is_visible())
  p.locator('#rzResourceTitle').fill('Lecture file')
