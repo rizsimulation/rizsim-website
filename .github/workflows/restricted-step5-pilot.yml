@@ -1,0 +1,31 @@
+name: Restricted RizSim Pilot Acceptance
+on:
+  pull_request:
+    paths:
+      - "access-out.html"
+      - "simulation-assets/insight-to-implication/**"
+      - "scripts/validate_restricted_step5_pilot.js"
+      - ".github/workflows/restricted-step5-pilot.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  invited_pilot_contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify restricted catalogue and preserved Student workings
+        run: |
+          node scripts/validate_restricted_step5_pilot.js
+          node scripts/test_insight_core_v1.js
+          node scripts/validate_v13_three_simulations.js
+          node scripts/validate_live_workspace_v13.js
+          node scripts/validate_live_classroom_v5.js
+      - name: Keep repository clean
+        run: git diff --exit-code
