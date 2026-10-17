@@ -6,7 +6,7 @@
  'use strict';
  const D=root.InsightData,C=root.InsightCore;
  const SUPABASE_URL='https://rvmumpvtvjvvuyimeybc.supabase.co';
- const SUPABASE_PUBLIC_KEY='__RIZSIM_PUBLIC_KEY__';
+ const SUPABASE_PUBLIC_KEY='sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf';
  const PRODUCT_SLUG='insight-to-implication-bystander';
  const RESPONSE_KEY='insight-bystander-v1-record';
  const expectedPath='/simulation-insight-to-implication.html';
