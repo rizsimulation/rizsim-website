@@ -124,7 +124,8 @@ def run(browser,base):
    page.evaluate(SETUP)
    page.evaluate("window['"+mod+"'].refresh()")
    try:
-    page.wait_for_function("window['"+mod+"'].state().joined=="+str(n),timeout=14000)
+    counter='students' if code=='02' else 'joined'
+    page.wait_for_function("window['"+mod+"'].state()."+counter+"=="+str(n),timeout=14000)
    except Exception:
     diag=page.evaluate("""({moduleName}) => ({
       href:location.href,
