@@ -10,6 +10,7 @@ on:
       - "sql/insight_faculty_session_v1.sql"
       - "sql/sim01_response_policy_hardening_v1.sql"
       - "scripts/test_insight_*"
+      - "scripts/sql/sim01_*"
       - ".github/workflows/simulation-01-integration.yml"
   workflow_dispatch:
 permissions:
@@ -54,5 +55,41 @@ jobs:
         if: always()
         with:
           name: sim01-three-surface-browser-qa
+          path: test-results/
+          retention-days: 7
+  sql_security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: insight_isolated
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Role, session and RLS negative tests in disposable PostgreSQL
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d insight_isolated -v ON_ERROR_STOP=1 \
+            -f scripts/sql/sim01_isolated_schema.sql \
+            -f sql/insight_faculty_session_v1.sql \
+            -f sql/sim01_response_policy_hardening_v1.sql \
+            -f scripts/sql/sim01_isolated_assertions.sql \
+            2>&1 | tee test-results/sim01-postgres-roles.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim01-isolated-role-tests
           path: test-results/
           retention-days: 7
