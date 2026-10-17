@@ -16,9 +16,10 @@ OUT.mkdir(exist_ok=True)
 PRODUCTS="""{id:'review-01',slug:'insight-to-implication-bystander',launch_path:'/simulation-insight-to-implication.html',title:'Insight to Implication',product_type:'simulation',status:'published',category_id:'cat-1'},
 {id:'review-02',slug:'system-1-system-2-thinking',launch_path:'/simulation-system-1-system-2.html',title:'System 1 & System 2 Thinking',product_type:'simulation',status:'published',category_id:'cat-1'},
 {id:'review-03',slug:'hotel-judgment-lab',launch_path:'/simulation-hotel-judgment.html',title:'Hotel Judgment Lab',product_type:'simulation',status:'published',category_id:'cat-1'},"""
-added=("state.sessions.unshift(session('review-01','review-01',null,'Review Classroom 01'),"
-       "session('review-02','review-02',null,'Review Classroom 02'),"
-       "session('review-03','review-03',null,'Review Classroom 03'));")
+added=("const key=new URLSearchParams(window.location.search).get('selection');"
+       "if(['review-01','review-02','review-03'].includes(key)){"
+       "state.sessions[0]=session(key,key,null,'Owner Review '+key.slice(-2));"
+       "}")
 rpc="""if(name==='get_my_rizsim_insight_session_records')return ok(window.__step4?.sim01||[]);
 if(name==='get_my_rizsim_s1s2_session_records')return ok(window.__step4?.sim02||[]);
 if(name==='get_my_rizsim_hotel_session_records')return ok((window.__step4?.sim03||[]).map(x=>({
