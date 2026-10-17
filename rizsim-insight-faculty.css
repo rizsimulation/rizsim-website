@@ -1,0 +1,60 @@
+/* Native RizSim Live Classroom · Insight to Implication Faculty analytics.
+   Purposefully scoped: existing site branding, navigation and overlays unchanged. */
+.rz-i01-root{--rz-i01-ink:#1e4149;--rz-i01-teal:#218e82;--rz-i01-gold:#d69d49;--rz-i01-violet:#7664aa;--rz-i01-rose:#c77d8e;box-sizing:border-box;margin:24px 0 14px;padding:clamp(16px,2.8vw,28px);border:1px solid #c8ddd8;border-radius:24px;background:linear-gradient(145deg,#f3faf8 0%,#fff 45%,#f7f8fc);box-shadow:0 18px 55px #21495713;color:var(--rz-i01-ink);font-size:14px}
+.rz-i01-root[hidden]{display:none!important}
+.rz-i01-root *{box-sizing:border-box}.rz-i01-root button,.rz-i01-root select{font-family:inherit}
+.rz-i01-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;border-bottom:1px solid #dce9e5;padding-bottom:22px;margin-bottom:21px}
+.rz-i01-eyebrow{display:block;font-size:10px;letter-spacing:.12em;color:#167b75;font-weight:800}
+.rz-i01-head h2{margin:7px 0;color:#1a4552;font-size:clamp(22px,3.6vw,32px);letter-spacing:-.025em}
+.rz-i01-head p{margin:0;color:#667e82}
+.rz-i01-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.rz-i01-btn{background:#197f76;color:#fff;border:1px solid #197f76;border-radius:12px;padding:11px 15px;min-height:44px;cursor:pointer;font-weight:750}
+.rz-i01-btn.rz-i01-secondary{background:#fff;color:#246d6a;border-color:#b7d5ce}
+.rz-i01-btn:hover:not(:disabled){filter:brightness(1.07)}
+.rz-i01-btn:focus-visible,.rz-i01-select:focus-visible{outline:3px solid #64c7b7;outline-offset:2px}
+.rz-i01-btn:disabled{opacity:.58;cursor:wait}
+.rz-i01-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.rz-i01-stat{min-width:0;border:1px solid #d6e5e1;border-radius:16px;background:#fff;padding:16px;box-shadow:0 5px 17px #1d56500a}
+.rz-i01-stat-name{display:block;text-transform:uppercase;letter-spacing:.08em;color:#607f85;font-size:10px;font-weight:800}
+.rz-i01-stat-value{display:block;color:#1e5457;font-size:25px;margin:7px 0 5px;line-height:1.2}
+.rz-i01-stat small{font-size:11px;color:#617982;line-height:1.35;display:block}
+.rz-i01-sections{margin-top:15px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.rz-i01-card{background:#fff;border:1px solid #dae7e4;padding:clamp(16px,2.4vw,24px);border-radius:20px;min-width:0}
+.rz-i01-card-wide{grid-column:1/-1}
+.rz-i01-section-head{margin:0 0 17px}
+.rz-i01-section-head h3{margin:0 0 7px;color:#245560;font-size:18px;letter-spacing:-.02em}
+.rz-i01-section-head p{margin:0;line-height:1.5;color:#687e87;font-size:12px}
+.rz-i01-meter-row{margin:0 0 13px}
+.rz-i01-meter-label{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:7px}
+.rz-i01-meter-label span{overflow-wrap:anywhere;color:#3f6069}.rz-i01-meter-label strong{flex-shrink:0;color:#28595d}
+.rz-i01-meter-track{width:100%;height:11px;border-radius:40px;background:#eaf1ef;overflow:hidden}
+.rz-i01-meter-fill{display:block;height:100%;min-width:0;border-radius:inherit;transition:width .2s}
+.rz-i01-meter-fill.rz-i01-teal{background:linear-gradient(90deg,#3eae99,#1e827a)}
+.rz-i01-meter-fill.rz-i01-gold{background:linear-gradient(90deg,#f4d79c,#cf9e52)}
+.rz-i01-meter-fill.rz-i01-violet{background:linear-gradient(90deg,#afa4db,#7562ae)}
+.rz-i01-meter-fill.rz-i01-rose{background:linear-gradient(90deg,#e7b4bd,#bf7385)}
+.rz-i01-note{font-size:12px;color:#617982;line-height:1.55;margin:12px 0 4px}
+.rz-i01-quartet{margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.rz-i01-quartet .rz-i01-stat{padding:12px}.rz-i01-quartet .rz-i01-stat-value{font-size:20px}
+.rz-i01-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;border-top:1px solid #e5efec;margin-top:18px;padding-top:12px}
+.rz-i01-choice-grid h4{margin:0 0 12px;color:#365867}
+.rz-i01-item{border-top:1px solid #edf2f1;padding:13px 0 1px}.rz-i01-item strong{display:block;margin-bottom:10px;color:#395b64;font-size:12px}
+.rz-i01-filter{display:flex;align-items:center;gap:12px;color:#496b71;font-weight:700;margin-bottom:11px}
+.rz-i01-select-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:15px 0}
+.rz-i01-select{min-width:0;max-width:230px;width:100%;border:1px solid #bfd5cf;border-radius:10px;background:#fff;padding:10px;color:#264d56;min-height:44px}
+.rz-i01-table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rz-i01-table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;min-width:480px}
+.rz-i01-table th{background:#eef7f4;color:#2c6261;font-weight:800;border-bottom:1px solid #cfdfd9}
+.rz-i01-table td,.rz-i01-table th{padding:12px 10px;vertical-align:top;border-bottom:1px solid #e5eeeb}
+.rz-i01-table tr:hover td{background:#fbfefc}
+.rz-i01-table .rz-i01-btn{padding:7px 12px;min-height:38px;font-size:12px}
+.rz-i01-inspector{border:1px solid #c8ded6;background:#f7fbf9;border-radius:16px;margin-top:17px;padding:16px}
+.rz-i01-inspector h4{margin:0 0 7px;color:#235b56}.rz-i01-inspector p{color:#5a727c;font-size:12px;line-height:1.5}
+.rz-i01-inspector .rz-i01-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rz-i01-transition-list{list-style-position:inside;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0;font-size:12px;color:#356268}
+.rz-i01-empty,.rz-i01-error{border-radius:12px;padding:15px;color:#647b86;background:#f4f8f7;font-size:13px;line-height:1.6}
+.rz-i01-error{background:#fff3f1;color:#914c47;border:1px solid #f0d0c9}
+@media(max-width:900px){.rz-i01-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rz-i01-sections{grid-template-columns:1fr}}
+@media(max-width:540px){.rz-i01-root{padding:14px;border-radius:18px}.rz-i01-stat-grid,.rz-i01-choice-grid,.rz-i01-quartet,.rz-i01-inspector .rz-i01-stat-grid,.rz-i01-transition-list{grid-template-columns:1fr}.rz-i01-actions{width:100%}.rz-i01-actions .rz-i01-btn{flex:1}.rz-i01-select{max-width:100%}.rz-i01-select-row{display:grid;grid-template-columns:1fr}.rz-i01-stat-value{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.rz-i01-meter-fill{transition:none}}
+@media print{body *{visibility:hidden!important}.rz-i01-root,.rz-i01-root *{visibility:visible!important}.rz-i01-root{position:absolute;left:0;top:0;width:100%;margin:0;padding:0;border:0;box-shadow:none}.rz-i01-actions,.rz-i01-btn{display:none!important}.rz-i01-card{break-inside:avoid}.rz-i01-sections{display:block}.rz-i01-card{margin:0 0 14px}}
