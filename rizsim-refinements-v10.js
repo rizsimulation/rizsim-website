@@ -4,10 +4,10 @@
  let counter=0;
  function fieldError(input,message){
   if(!input||!input.isConnected)return false;
-  const parent=input.closest('label')||input;
+  const parent=input;
   let el=parent.nextElementSibling;
   if(!el||!el.classList?.contains('rz-inline-error')){
-   el=document.createElement('p');el.className='rz-inline-error';
+   el=document.createElement('span');el.className='rz-inline-error';
    el.id='rzInlineError'+(++counter);parent.insertAdjacentElement('afterend',el);
   }
   const msg=String(message||'').trim();
