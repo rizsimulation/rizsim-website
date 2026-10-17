@@ -115,10 +115,9 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
  */
 (function(){'use strict';
   const $=(selector)=>document.querySelector(selector);
-  const GROUP_QUESTIONS={
-    A:'Does this hotel cost Less than PKR 1000 per night?',
-    B:'Does this hotel cost More than PKR 80,000 per night?'
-  };
+  // Hosted condition text comes exclusively from the signed-in RizSim assignment RPC.
+  // The alternate arm is not shipped in the public hosted Student bundle.
+  const GROUP_QUESTIONS=Object.create(null);
   const offlineKey='RizSimulation.HotelJudgment.Activity03.Offline.v1';
   const live=window.RizHotelParticipantLive||{enabled:false,init:async()=>false};
   const state={group:null,yn:null,pending:null,submitted:null,submitting:false};
@@ -185,6 +184,7 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
   }
   $('#cancelGroup').addEventListener('click',()=>{state.pending=null;confirmModal.classList.add('hidden')});
   $('#confirmGroupBtn').addEventListener('click',()=>{
+    if(document.documentElement.hasAttribute('data-rizsim-hosted'))return;
     const group=state.pending;
     confirmModal.classList.add('hidden');
     if(group!=='A'&&group!=='B')return;
@@ -219,8 +219,8 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
       return;
     }
     const x=live.state||{};
-    const word=x.closed?'Collection stopped':x.paused?'Collection paused':x.started?'Collection open':'Waiting for faculty to start';
-    banner.textContent='Live classroom · '+word+' · '+(x.total||0)+' response(s) received'+(x.revealed?' · Faculty pattern revealed':'');
+    const word=x.closed?'Response submitted':x.paused?'Collection paused':x.started?'Collection open':'Waiting for Faculty';
+    banner.textContent='RizSim classroom · '+word+' · Your private judgment is not shown to other participants.';
     submit.disabled=state.submitting||!!state.submitted||!x.started||x.paused||x.closed;
     if(!state.submitted && state.group){
       const status=validation.textContent;
@@ -238,9 +238,10 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
     if(record.error){validation.textContent=record.error;return}
     state.submitting=true;submit.disabled=true;submit.textContent='Saving response…';
     try{
-      if(live.enabled)await live.submit(record);
-      state.submitted=record;save();window.dispatchEvent(new CustomEvent('rizsim:hotel-committed',{detail:record}));
-      try{sessionStorage.setItem('hotelJudgmentResponse',JSON.stringify(record))}catch{}
+      const receipt=live.enabled?await live.submit(record):null;
+      state.submitted=live.enabled?receipt.record:record;
+      save();window.dispatchEvent(new CustomEvent('rizsim:hotel-committed',{detail:state.submitted}));
+      try{sessionStorage.setItem('hotelJudgmentResponse',JSON.stringify(state.submitted))}catch{}
       revealCompletion();
     }catch(error){
       validation.textContent=error.message||'The response could not be saved. Please try again.';
@@ -256,9 +257,17 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
   });
   $('#printBtn').addEventListener('click',()=>window.print());
   async function initialize(){
-    await live.init();
-    if(live.enabled)key=`RizSimulation.HotelJudgment.Activity03.Live.${live.runId}`;
-    restore();
+    const hosted=document.documentElement.hasAttribute('data-rizsim-hosted');
+    const authenticated=await live.init();
+    if(hosted&&!authenticated)return; // fail closed: never switch to offline self-selection.
+    if(live.enabled){
+      key=`RizSimulation.HotelJudgment.Activity03.Live.${live.runId}`;
+      // Ignore unverified browser storage and never accept group choice from the client.
+      state.group=live.assignedGroup;
+      GROUP_QUESTIONS[state.group]=live.assignedQuestion;
+      state.submitted=live.savedRecord||null;
+      state.yn=null;
+    }else restore();
     // Compatibility with the original September 2026 standalone participant HTML.
     if(!state.submitted&&!state.group&&!live.enabled){
       try{

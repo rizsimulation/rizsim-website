@@ -1,0 +1,77 @@
+/* Simulation 03: Hotel Judgment Lab Faculty-only Live Classroom panel.
+   Scoped; official RizSim site nav, teal actions, floating QR and sidebar intact. */
+.rz-h03-root{--h03-teal:#197d74;--h03-gold:#d0a329;--h03-ink:#234d50;min-width:0;margin:22px 0;padding:clamp(15px,2.3vw,28px);background:linear-gradient(125deg,#f4f9f5,#fff 65%,#fffbeb);border:1px solid #cee1d7;border-radius:23px;color:var(--h03-ink);box-shadow:0 14px 32px #1d524f15;font-size:13px}
+.rz-h03-root *{box-sizing:border-box}.rz-h03-root[hidden]{display:none!important}.rz-h03-root button{font:inherit}
+.rz-h03-head{display:flex;align-items:start;justify-content:space-between;gap:13px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1px solid #e1ebe6;padding-bottom:18px}
+.rz-h03-kicker{color:#247a72;font-size:10px;letter-spacing:.12em;font-weight:900}
+.rz-h03-head h2{font-size:clamp(22px,3.2vw,32px);color:#214f50;margin:7px 0;letter-spacing:-.035em}
+.rz-h03-head p,.rz-h03-title p{color:#6f8781;line-height:1.5;margin:0}
+.rz-h03-actions{display:flex;align-items:start;flex-wrap:wrap;gap:9px}
+.rz-h03-btn{background:#1b8076;border:1px solid #1b8076;border-radius:11px;padding:10px 14px;min-height:42px;color:white;font-weight:800;text-align:center;cursor:pointer}
+.rz-h03-btn.rz-h03-secondary{background:#fff;color:#256e69;border-color:#bfd9d0}
+.rz-h03-btn:focus-visible{outline:3px solid #65c1af;outline-offset:3px}.rz-h03-btn:disabled{opacity:.5;cursor:not-allowed}
+.rz-h03-collection-status{padding:18px 20px;border:1px solid #e9d9a2;background:#fff9e9;border-radius:14px;margin-bottom:16px;color:#6b5c31}
+.rz-h03-collection-status.complete{background:#e9f7f2;border-color:#bfe4d7;color:#226c65}
+.rz-h03-collection-status strong{font-size:14px}
+.rz-h03-collection-status p{font-size:12px;margin:7px 0 0;line-height:1.6}
+.rz-h03-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 17px}
+.rz-h03-metric{padding:15px;background:#fff;border:1px solid #d8e8df;border-radius:15px;min-width:0}
+.rz-h03-metric.group-a{border-top:4px solid #d6ab31}.rz-h03-metric.group-b{border-top:4px solid #1d9786}
+.rz-h03-metric small{font-size:10px;display:block;color:#648078;font-weight:850;letter-spacing:.04em;text-transform:uppercase}
+.rz-h03-metric strong{display:block;color:#244f50;font-size:clamp(20px,2vw,27px);line-height:1.16;overflow-wrap:anywhere;margin:9px 0 6px}
+.rz-h03-metric span{font-size:11px;color:#79918a;line-height:1.45;display:block}
+.rz-h03-card,.rz-h03-individual{background:#fff;border:1px solid #d7e7df;border-radius:18px;padding:clamp(15px,2vw,24px);margin:15px 0;min-width:0}
+.rz-h03-title{margin:0 0 17px}
+.rz-h03-title h3{font-size:19px;letter-spacing:-.02em;color:#24534f;margin:0 0 6px}
+.rz-h03-title p{font-size:12px}
+.rz-h03-table-scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rz-h03-table{min-width:680px;width:100%;border-collapse:collapse;font-size:12px;text-align:left}
+.rz-h03-table th,.rz-h03-table td{padding:11px 10px;border-bottom:1px solid #e4eee7;vertical-align:top}
+.rz-h03-table th{background:#f0f7f2;color:#39736a;font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+.rz-h03-table .rz-h03-btn{min-height:34px;padding:7px 10px;font-size:11px}
+.rz-h03-name{font-weight:850;color:#265c56;overflow-wrap:anywhere}
+.rz-h03-progress-cell{min-width:140px}
+.rz-h03-progress-line{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin-bottom:7px}
+.rz-h03-progress-line strong{font-size:13px;color:#208378}
+.rz-h03-progress-line small{font-size:10px;color:#75938a}
+.rz-h03-progress{height:9px;background:#e5f0e8;border-radius:99px;overflow:hidden}
+.rz-h03-progress-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,#198d80,#6fd0b5);border-radius:inherit}
+.rz-h03-individual{padding:0;overflow:hidden;border-color:#bcded2;box-shadow:0 13px 25px #22534813;scroll-margin-top:105px}
+.rz-h03-individual-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:22px;background:linear-gradient(110deg,#20464e,#1c736a);color:#fff}
+.rz-h03-individual-head small{color:#bfe2d9;font-weight:850;letter-spacing:.09em}
+.rz-h03-individual-head h3{color:#fff;font-size:23px;margin:8px 0 6px}
+.rz-h03-individual-head p{color:#d7efea;margin:0}
+.rz-h03-individual-head .rz-h03-btn{background:#f9fffc;color:#2b7169;border-color:#b0dcd0}
+.rz-h03-individual>.rz-h03-metrics,.rz-h03-individual>.rz-h03-personal-details{margin:18px 20px}
+.rz-h03-personal-details{padding:17px;background:#f6faf7;border:1px solid #deede5;border-radius:13px}
+.rz-h03-personal-details .rz-h03-title{margin-bottom:12px}
+.rz-h03-condition{background:#fff9e9;border-left:4px solid #d1ad3c;border-radius:8px;padding:12px 15px;font-size:15px;font-weight:850;color:#4f5443}
+.rz-h03-note,.rz-h03-footer{font-size:11px;color:#6b857e;line-height:1.65}
+.rz-h03-chart{background:#f9fcf9;border:1px solid #e0ebe3;border-radius:14px;padding:16px;overflow:hidden}
+.rz-h03-chart svg{display:block;width:100%;height:auto;max-height:360px}
+.rz-h03-chart .rz-h03-note{margin:7px 0 0}
+.rz-h03-contrast{padding:17px 20px;background:#eaf7f2;border:1px solid #c5e6d9;border-radius:13px;margin:16px 0;color:#2d6a64}
+.rz-h03-contrast strong{font-size:16px}
+.rz-h03-contrast p{line-height:1.6;margin:8px 0 0}
+.rz-h03-teaching{padding:18px;border:1px solid #e1e9de;background:#f9fbf6;border-radius:13px;margin:18px 0}
+.rz-h03-teaching .rz-h03-title{margin-bottom:15px}
+.rz-h03-teaching-step{border-top:1px solid #e0eae1;padding:12px 0}
+.rz-h03-teaching-step:first-of-type{border:0;padding-top:0}
+.rz-h03-teaching-step h4{margin:0 0 5px;color:#236f65;font-size:14px}
+.rz-h03-teaching-step p{margin:0;color:#607e75;line-height:1.65}
+.rz-h03-records{padding-top:13px}
+.rz-h03-empty,.rz-h03-error,.rz-h03-sealed-note{padding:15px;border-radius:13px;background:#f6fbf8;border:1px solid #e2eee6;color:#648076;line-height:1.6}
+.rz-h03-error{background:#fff3ef;border-color:#efd3c6;color:#9e5549}
+.rz-h03-sealed-note{font-size:12px}
+.rz-h03-footer{margin:15px 0 0}
+@media(max-width:1020px){.rz-h03-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.rz-h03-root{padding:12px;border-radius:15px}.rz-h03-head{gap:14px}.rz-h03-head h2{font-size:23px}
+.rz-h03-actions{width:100%}.rz-h03-actions .rz-h03-btn{flex:1 1 auto}
+.rz-h03-card{padding:14px}.rz-h03-individual-head{padding:16px}
+.rz-h03-individual>.rz-h03-metrics,.rz-h03-individual>.rz-h03-personal-details{margin:12px}
+.rz-h03-metric{padding:12px}.rz-h03-metric strong{font-size:19px}.rz-h03-chart{padding:5px}
+.rz-h03-progress-cell{min-width:122px}}
+@media print{body *{visibility:hidden!important}.rz-h03-root,.rz-h03-root *{visibility:visible!important}
+.rz-h03-root{position:absolute;inset:0 auto auto 0;width:100%;border:0;box-shadow:none;background:#fff;padding:0}
+.rz-h03-actions,.rz-h03-btn{display:none!important}.rz-h03-card{break-inside:avoid}
+.rz-h03-individual{break-inside:avoid}.rz-h03-teaching-step{break-inside:avoid}}
