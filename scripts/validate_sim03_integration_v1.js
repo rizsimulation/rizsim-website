@@ -56,6 +56,7 @@ assert(!faculty.includes('PREVIEW_ONLY_SYNTHETIC_RECORDS'));
 assert(!/rightAnswers|correctAnswer|learning_gain|knowledge_gain|answer_key/i.test(cloud));
 assert(sql.includes('private.rizsim_hotel_assignments'));
 assert(sql.includes('private.rizsim_hotel_judgments'));
+assert(sql.includes("'willing_to_pay_pkr',j.willingness_to_pay_pkr"),'canonical server JSON must use original Student response field');
 assert(sql.includes('private.rizsim_hotel_protect_public_response'));
 assert(sql.includes('private.rizsim_hotel_protect_attempt'));
 assert(sql.includes('pg_catalog.pg_advisory_xact_lock'));

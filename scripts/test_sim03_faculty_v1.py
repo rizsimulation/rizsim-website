@@ -12,7 +12,7 @@ JS=r"""() => {
  function person(id,name,g,wtp,yes,code){
   const record={version:'hotel-judgment-v1',response_id:'HJ-'+id,
     group:g,condition_question:prompt[g],binary_response:yes,
-    willingness_to_pay_pkr:wtp,participant_code:code,
+    willing_to_pay_pkr:wtp,participant_code:code,
     submitted_at:ts,attempt_id:id,session_id:'session-hotel-1',demo_only:false};
   return {attempt_id:id,student_name:name,attempt_status:'submitted',
     progress_percent:100,assignment_stage:'Submitted',joined_at:ts,submitted_at:ts,

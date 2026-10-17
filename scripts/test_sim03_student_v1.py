@@ -64,7 +64,7 @@ FAKE_JS=r"""
       state.status='submitted';state.submits++;
       state.record={version:'hotel-judgment-v1',response_id:'HJ-12345678-1234-4234-8234-123456789abc',
         group,condition_question:q[group],binary_response:args.p_binary_response,
-        willingness_to_pay_pkr:args.p_willingness_to_pay_pkr,
+        willing_to_pay_pkr:args.p_willingness_to_pay_pkr,
         participant_code:args.p_participant_code,submitted_at:new Date().toISOString(),
         attempt_id:ATTEMPT,session_id:SESSION,demo_only:false};
       save(state);
