@@ -46,10 +46,10 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
 </section>
 <section class="stage hidden" id="stimulusStage">
 <div class="topline"><div><h2 style="margin:0">2. View the hotel</h2><p class="sub" style="margin:5px 0 0;font-weight:900;color:var(--ink)">Look at all four pictures before answering.</p></div><span class="badge" id="groupBadge"></span></div>
-<div class="gallery"><figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 1" src="/simulation-assets/hotel-judgment/hotel_view_1.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
-<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 2" src="/simulation-assets/hotel-judgment/hotel_view_2.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
-<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 3" src="/simulation-assets/hotel-judgment/hotel_view_3.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
-<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 4" src="/simulation-assets/hotel-judgment/hotel_view_4.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure></div>
+<div class="gallery"><figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 1" data-hotel-view="1" src="/simulation-assets/hotel-judgment/hotel_view_1.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
+<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 2" data-hotel-view="2" src="/simulation-assets/hotel-judgment/hotel_view_2.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
+<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 3" data-hotel-view="3" src="/simulation-assets/hotel-judgment/hotel_view_3.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure>
+<figure class="hotel-card"><img alt="Istanbul Hotel: City Center — view 4" data-hotel-view="4" src="/simulation-assets/hotel-judgment/hotel_view_4.png"/><figcaption>Istanbul Hotel: City Center.</figcaption></figure></div>
 <form class="question-card" id="responseForm" novalidate="">
 <h3>Your judgment</h3>
 <p class="exact" id="comparisonQuestion"></p>
@@ -88,7 +88,7 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
 </div>
 </div>
 <script>/* This asset gate never substitutes a different hotel's photos for the original four.
-   The uploaded source references assets/hotel_view_1..4.png but did not contain them.
+   All four original hotel stimulus photos have now been supplied. Keep the asset check for incomplete installations.
    Explicit ?preview=1 permits interface tests only; exports are flagged demo_only. */
 (function(){'use strict';
  const qp=new URLSearchParams(location.search);
@@ -98,11 +98,12 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
  function fallback(n){const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480"><rect width="800" height="480" fill="#fbf4e5"/><rect x="40" y="40" width="720" height="400" rx="22" fill="#fffaf0" stroke="#d9c899" stroke-width="4" stroke-dasharray="14 10"/><path d="M275 285h250M400 180v210" stroke="#d7c48e" stroke-width="13" stroke-linecap="round"/><text x="400" y="115" fill="#6a5b32" font-size="34" font-family="sans-serif" font-weight="700" text-anchor="middle">SOURCE HOTEL IMAGE ${n}</text><text x="400" y="160" fill="#8b7950" font-size="27" font-family="sans-serif" text-anchor="middle">NOT PROVIDED</text><text x="400" y="430" fill="#8c7952" font-size="21" font-family="sans-serif" text-anchor="middle">Technical preview only, not the study stimulus</text></svg>`;return 'data:image/svg+xml;charset=utf-8,'+escapeSvg(svg)}
  function refresh(){const all=[...document.querySelectorAll('img[data-hotel-view]')];info.missing=[...new Set(all.filter(i=>i.dataset.missing==='yes'||(!i.dataset.missing && i.complete && !i.naturalWidth)).map(i=>Number(i.dataset.hotelView)))];info.ready=all.length>=4&&info.missing.length===0&&all.every(i=>i.complete&&i.naturalWidth>0);
   const banner=document.getElementById('stimulusIntegrityBanner');if(!banner)return;
-  if(info.ready){banner.className='notice';banner.textContent='The four local photo files are available. Check that they are the same original Istanbul hotel pictures before collecting participant responses.'}
-  else{banner.className='notice missing-stimuli';banner.textContent=info.preview?'PREVIEW ONLY: Original four Istanbul hotel photographs were not uploaded. Placeholder cards let you test the interface. Preview exports are excluded from genuine experimental analysis.':'Original Istanbul hotel photographs are missing. Supply hotel_view_1.png through hotel_view_4.png in the assets folder. Genuine responses are disabled until all four images load. Use ?preview=1 for an explicitly marked interface test.';}
+  if(info.preview){banner.className='notice missing-stimuli';banner.textContent='PREVIEW ONLY: experimental responses made in preview mode are excluded from genuine analyses, even when all four photographs are installed.'}
+  else if(info.ready){banner.className='notice';banner.textContent='All four supplied Istanbul hotel photographs loaded. Both groups see identical hotel pictures; make your judgment independently.'}
+  else{banner.className='notice missing-stimuli';banner.textContent='The four Istanbul hotel photographs are missing or have not finished loading. Genuine responses are disabled until all four images load. For local interface tests only, use ?preview=1.';}
  }
  function init(){const app=document.querySelector('main.app');if(app&&!document.getElementById('stimulusIntegrityBanner')){const banner=document.createElement('aside');banner.id='stimulusIntegrityBanner';banner.setAttribute('role','status');banner.setAttribute('aria-live','polite');banner.className='notice missing-stimuli';app.querySelector('.hero')?.insertAdjacentElement('afterend',banner)}
-  for(const img of document.querySelectorAll('img[src*="hotel_view_"]')){const m=/hotel_view_([1-4])\.png/.exec(img.getAttribute('src'));if(!m)continue;img.dataset.hotelView=m[1];const fail=()=>{if(img.dataset.missing==='yes')return;img.dataset.missing='yes';img.closest('figure')?.classList.add('is-placeholder');img.src=fallback(m[1]);refresh()};img.addEventListener('error',fail,{once:true});img.addEventListener('load',refresh);if(img.complete&&!img.naturalWidth)fail()}
+  for(const img of document.querySelectorAll('img[data-hotel-view],img[src*="hotel_view_"]')){const m=img.dataset.hotelView || /hotel_view_([1-4])\.png/.exec(img.getAttribute('src'))?.[1];if(!m)continue;img.dataset.hotelView=m;const fail=()=>{if(img.dataset.missing==='yes')return;img.dataset.missing='yes';img.closest('figure')?.classList.add('is-placeholder');img.src=fallback(m[1]);refresh()};img.addEventListener('error',fail,{once:true});img.addEventListener('load',refresh);if(img.complete&&!img.naturalWidth)fail()}
   refresh();
   document.addEventListener('submit',function(e){if(e.target?.id==='responseForm'&&!info.ready&&!info.preview){e.preventDefault();e.stopImmediatePropagation();const out=document.getElementById('validation');if(out)out.textContent='Cannot submit without the four source hotel photographs. Use preview mode only for technical testing.';}},true);
  }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -207,7 +208,7 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
     return {version:'hotel-judgment-v1',response_id:generateId(),
       group:state.group,condition_question:GROUP_QUESTIONS[state.group],binary_response:state.yn,
       willing_to_pay_pkr:amount,participant_code:$('#participant').value.trim().slice(0,40),
-       demo_only:!!(window.RizHotelStimuli&&!window.RizHotelStimuli.ready),
+       demo_only:!!(window.RizHotelStimuli&&(!window.RizHotelStimuli.ready||window.RizHotelStimuli.preview)),
       submitted_at:new Date().toISOString()};
   }
   function refreshStatus(){
