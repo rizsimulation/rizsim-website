@@ -110,7 +110,13 @@
       const locked = mode === 'own' && s.role !== 'course_lead';
       const r = {mode, stage:'list'};
       grid.append(card(MODES[mode], descriptions[mode], locked ? 'Become a Course Lead' : 'Explore', () => {
-        if (locked) { message('Course Lead is the premium Faculty tier. Contact RizSim to request an authorized upgrade. This action does not change your access.'); return; }
+        if (locked) {
+          // Ordinary Faculty: show the approved Course Lead advertisement in Courses.
+          // This is navigation only; authoring and server permissions remain restricted.
+          if (s.role === 'faculty') { openWorkspace('courses'); return; }
+          message('Course Lead is the premium Faculty tier. Contact RizSim to request an authorized upgrade. This action does not change your access.');
+          return;
+        }
         navigate(mode, 'list');
       }, i, locked, locked ? '' : urlFor(r)));
     });
