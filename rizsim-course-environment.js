@@ -69,7 +69,9 @@
   let lastInvalid='',seq=0;
   input.addEventListener('input',()=>{draft.url=input.value;publishLink.disabled=!service().validURL(input.value);input.setAttribute('aria-invalid',str(!!input.value&&!service().validURL(input.value)));});
   const validateLink=()=>{
-   const v=input.value.trim();if(v&&!service().validURL(v)&&v!==lastInvalid){lastInvalid=v;alertBox('Check the link','Paste a complete web address beginning with https:// or http://. Spaces, credentials and invalid formats are not accepted.',dialogSourceReturn(scope,draft));}
+   const v=input.value.trim(),valid=!!service().validURL(v);
+   window.RizSimFieldFeedback?.show(input,v&&!valid?'Enter a complete http:// or https:// link without spaces or embedded credentials.':'');
+   return valid;
   };
   input.addEventListener('blur',validateLink);
   input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!publishLink.disabled)publishLink.click();else validateLink();}});
@@ -82,7 +84,7 @@
   async function selected(files){
    if(!files?.length)return;
    if(files.length!==1){alertBox('Choose one file','Publish one file at a time so its title and resource type remain clear.',dialogSourceReturn(scope,draft));return;}
-   const token=++seq;draft.file=files[0];draft.url='';input.value='';publishLink.disabled=true;
+   const token=++seq;draft.file=files[0];draft.url='';draft.delivery_mode='secure_view';input.value='';publishLink.disabled=true;
    delete draft.id;delete draft.path;draft.uploaded=false;draft.saved=false;
    caption.hidden=false;caption.replaceChildren(fileCaption(draft.file));
    const publish=btn('Publish',()=>details(scope,draft),'primary');publish.disabled=true;publish.dataset.rzFilePublish='true';caption.firstChild.append(publish);
@@ -111,6 +113,8 @@
   d.dataset.source='false';
   const form=node('form');form.noValidate=true;
   const source=draft.file?fileCaption(draft.file,draft.mime):node('p','rz-composer-note',draft.url);form.append(source);
+  const delivery=draft.file?window.RizSimFileDelivery?.picker(draft.delivery_mode||'secure_view'):null;
+  if(delivery)form.append(delivery.element);
   const titleLabel=node('label','','Resource title'),title=node('input');title.type='text';title.id='rzResourceTitle';titleLabel.htmlFor=title.id;title.maxLength=200;title.required=true;title.value=draft.title;
   const fieldset=node('fieldset'),legend=node('legend','','Resource type'),choices=node('div','rz-selectable-options');
   fieldset.append(legend,choices);types.forEach(([value,name])=>{const label=node('label'),radio=node('input');radio.type='radio';radio.name='resource-type';radio.value=value;radio.checked=draft.type===value;radio.addEventListener('change',()=>{draft.type=value;});label.append(radio,document.createTextNode(name));choices.append(label);});
@@ -119,8 +123,8 @@
   const actions=node('div','rz-dialog-actions'),cancel=btn('Cancel',closeDialog),submit=node('button','rz-runtime-btn primary','Publish to Class');submit.type='submit';submit.id='rzResourceFinalPublish';
   actions.append(cancel,submit);form.append(titleLabel,title,fieldset,descLabel,desc,error,actions);d.append(form);
   form.addEventListener('submit',async e=>{
-   e.preventDefault();if(busy)return;draft.title=title.value.trim();draft.description=desc.value.trim();
-   if(!draft.title){error.hidden=false;error.textContent='Enter a resource title.';title.focus({preventScroll:true});return;}
+   e.preventDefault();if(busy)return;draft.title=title.value.trim();draft.description=desc.value.trim();draft.delivery_mode=delivery?.value()||'secure_view';
+   if(!window.RizSimFieldFeedback?.required(title,'a resource title')){title.focus({preventScroll:true});return;}
    busy=true;submit.disabled=true;cancel.disabled=true;d.querySelector('.rz-dialog-close').disabled=true;submit.textContent=draft.file?'Uploading and publishing...':'Publishing...';
    try{await service().save(scope.kind,scope.id,draft);if(started!==syncIdentity())return;invalidate(scope);success('Published to class',draft.title+' is now published to '+scopeTitle(scope)+'.');}
    catch(e){if(started!==syncIdentity())return;busy=false;error.hidden=false;error.textContent=e.message;submit.disabled=false;cancel.disabled=false;d.querySelector('.rz-dialog-close').disabled=false;submit.textContent='Retry publication';}
@@ -134,6 +138,7 @@
    const card=node('article','rz-resource-card'+(item.published_to_class?' is-published':''));card.dataset.resourceId=str(item.id);
    const mark=node('span','rz-resource-icon');mark.append(icon(item.source_type==='link'?'link':str(item.mime_type).startsWith('image/')?'image':'file'));
    const detail=node('div');detail.append(node('h4','',item.title),node('p','',item.description||item.file_name||'Web resource'));
+   if(item.source_type==='file')detail.append(node('span','rz-delivery-chip'+(item.delivery_mode==='downloadable'?' is-downloadable':''),item.delivery_mode==='downloadable'?'Downloadable':'Secure View'));
    const actions=node('div','rz-resource-actions'),status=node('span','rz-resource-status',item.published_to_class?'Published to class':'Saved · not published');
    const studentType=types.some(([t])=>t===item.material_type);
    const publish=btn(item.published_to_class?'Revoke':'Publish to Class',()=>confirmPublication(scope,item),item.published_to_class?'danger':'primary');
@@ -227,7 +232,9 @@
   options.addEventListener('change',modeChange);modeChange();
   const error=node('p','rz-runtime-error');error.hidden=true;const submit=node('button','rz-runtime-btn primary','Create Session');submit.type='submit';form.append(error,submit);panel.append(form);
   form.addEventListener('submit',async e=>{
-   e.preventDefault();if(submit.disabled)return;const mode=form.querySelector('input[name="access-mode"]:checked').value,fields={p_class_name:name.value.trim(),p_access_mode:mode};
+   e.preventDefault();if(submit.disabled)return;
+    if(!window.RizSimFieldFeedback?.required(name,'a class / session name')){name.focus({preventScroll:true});return;}
+    const mode=form.querySelector('input[name="access-mode"]:checked').value,fields={p_class_name:name.value.trim(),p_access_mode:mode};
    for(const [id,{input}] of Object.entries(inputs)){const included=mode==='both'||id.startsWith(mode);fields['p_'+id]=included&&input.value?new Date(input.value).toISOString():null;}
    submit.disabled=true;error.hidden=true;
    try{const result=await service().createPurchased(route.selection,product.product_id,fields);cache.delete(key('purchased',route.selection));nav('purchased','running',route.selection,result.session_id);}
