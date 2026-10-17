@@ -20,9 +20,9 @@ body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(
   font-weight:700;
   letter-spacing:-.022em;
   line-height:1.25;
-  color:#163a4a;
+  /* Keep each card/hero's original ink color, including headings on dark teal. */
 }
-body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(p,small,.rz-panel-caption,.rz-author-caption,.rz-st-support){
+body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(.rz-panel-caption,.rz-author-caption,.rz-st-support,.rz-dialog-description){
   color:#42616c;
 }
 body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(.rz-course-panel,.rz-author-list-panel,.rz-st-resource-card,.rz-records-panel){
