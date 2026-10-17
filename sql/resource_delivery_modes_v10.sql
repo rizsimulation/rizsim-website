@@ -98,23 +98,23 @@ AS $function$
  -- Idempotent retry: a resource UUID is reused by the composer, never duplicated.
  if p_kind='own' then
   if exists(select 1 from public.rizsim_course_materials where id=p_resource_id) then
-   select jsonb_build_object('id',id,'published_to_class',published_to_class) into result from public.rizsim_course_materials where id=p_resource_id and course_id=p_scope_id and created_by=auth.uid() and active and title=title_text and source_type=st and storage_path is not distinct from path and external_url is not distinct from link and delivery_mode=delivery;
+   select jsonb_build_object('id',id,'published_to_class',published_to_class,'delivery_mode',delivery_mode) into result from public.rizsim_course_materials where id=p_resource_id and course_id=p_scope_id and created_by=auth.uid() and active and title=title_text and source_type=st and storage_path is not distinct from path and external_url is not distinct from link and delivery_mode=delivery;
    if result is null then raise exception 'Resource identifier is not available.'; end if;
    return result;
   end if;
   insert into public.rizsim_course_materials(id,course_id,created_by,title,description,material_type,source_type,storage_path,external_url,file_name,mime_type,file_size,sort_order,published_to_class,delivery_mode)
   values(p_resource_id,p_scope_id,auth.uid(),title_text,nullif(descr,''),mt,st,path,link,fname,mime,bytes,
   coalesce((select max(sort_order)+1 from public.rizsim_course_materials where course_id=p_scope_id),0),true,delivery)
-  returning jsonb_build_object('id',id,'published_to_class',published_to_class) into result;
+  returning jsonb_build_object('id',id,'published_to_class',published_to_class,'delivery_mode',delivery_mode) into result;
  else
   if exists(select 1 from public.rizsim_session_resources where id=p_resource_id) then
-   select jsonb_build_object('id',id,'published_to_class',published_to_class) into result from public.rizsim_session_resources where id=p_resource_id and session_id=p_scope_id and created_by=auth.uid() and title=title_text and source_type=st and storage_path is not distinct from path and external_url is not distinct from link and delivery_mode=delivery;
+   select jsonb_build_object('id',id,'published_to_class',published_to_class,'delivery_mode',delivery_mode) into result from public.rizsim_session_resources where id=p_resource_id and session_id=p_scope_id and created_by=auth.uid() and title=title_text and source_type=st and storage_path is not distinct from path and external_url is not distinct from link and delivery_mode=delivery;
    if result is null then raise exception 'Resource identifier is not available.'; end if;
    return result;
   end if;
   insert into public.rizsim_session_resources(id,session_id,created_by,title,description,material_type,source_type,storage_path,external_url,file_name,mime_type,file_size,delivery_mode)
   values(p_resource_id,p_scope_id,auth.uid(),title_text,nullif(descr,''),mt,st,path,link,fname,mime,bytes,delivery)
-  returning jsonb_build_object('id',id,'published_to_class',published_to_class) into result;
+  returning jsonb_build_object('id',id,'published_to_class',published_to_class,'delivery_mode',delivery_mode) into result;
  end if;
  return result;
  end;
