@@ -147,7 +147,7 @@ assert.match(live, /function initialiseFloatingAccess\(\)/);
 assert.match(live, /function syncFloatingAccess\(session\)/);
 assert.match(live, /accessAutoOpen=text\(item\.session_id\)/,'Only just-created sessions should open automatically');
 assert.match(live, /card\.classList\.add\('rz-v5-access-source'\)/,'Keep legacy controls without duplicate credentials');
-assert.match(live, /if\(!s \|\| !ROLES\.includes\(s\.role\) \|\| !active\(\)\) \{ clearAccess\(\)/);
+assert.match(live, /if\s*\(!s \|\| !ROLES\.includes\(s\.role\) \|\| !active\(\)\) \{ clearAccess\(\)/);
 const accessStyles=read('rizsim-live-classroom.css');
 assert.match(accessStyles, /\.rz-v5-access-layer\{position:fixed/);
 assert.match(accessStyles, /\.rz-v5-access-fab\{position:fixed/);
