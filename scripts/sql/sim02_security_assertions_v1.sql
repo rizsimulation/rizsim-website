@@ -173,3 +173,18 @@ select public.sim02_reject('Sim01 incomplete student cannot force submit',
 select public.sim02_assert('Sim01 progress/records still unchanged',
  (select response_data #>> '{record,picks,kr,K1}'='A' from public.simulation_responses
  where attempt_id='30000000-0000-4000-8000-000000000004'));
+
+
+select public.sim02_reject('Simulation 02 attempt cannot be reclassified to bypass submission lock',
+ $$update public.simulation_attempts
+     set product_id='10000000-0000-4000-8000-000000000002'
+   where id='30000000-0000-4000-8000-000000000002'$$);
+select public.sim02_reject('Simulation 02 Student cannot steal another classroom session',
+ $$update public.simulation_attempts
+     set classroom_session_id='20000000-0000-4000-8000-000000000001'
+   where id='30000000-0000-4000-8000-000000000002'$$);
+select public.sim02_assert('guarded original simulated attempt identity remains intact',
+ (select product_id='10000000-0000-4000-8000-000000000001'::uuid
+     and classroom_session_id='20000000-0000-4000-8000-000000000002'::uuid
+  from public.simulation_attempts
+ where id='30000000-0000-4000-8000-000000000002'));
