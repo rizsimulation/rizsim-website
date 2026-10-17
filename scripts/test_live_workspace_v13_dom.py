@@ -42,6 +42,8 @@ def desktop(browser):
  layout(page)
  assert page.locator('#rzV13Tabstudio[aria-selected="true"]').is_visible()
  assert page.locator('#rzLiveRunningMount').is_visible()
+ assert page.locator('#rzLiveRunning').evaluate('n=>!!n.closest("#rzV13StudioOverview")')
+ assert page.locator('#rzLiveResultsAnchor').evaluate('n=>!!n.closest("#rzV13Paneinsights")')
  assert page.locator('#rzV13Tabstudents').is_enabled()
  assert page.locator('#rzV13Tabinsights').is_enabled()
  assert page.locator('#rzV13SidePanel').evaluate('(e)=>getComputedStyle(e).position')=='sticky'

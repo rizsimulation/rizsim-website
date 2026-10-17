@@ -9,6 +9,7 @@ assert(html.indexOf('rizsim-live-classroom.js')<html.indexOf('rizsim-live-worksp
 assert(html.includes('id="rzLiveResultsAnchor"')&&html.includes('id="rzLiveRunningMount"'));
 assert(v13.includes('Session Studio')&&v13.includes('Student Results')&&v13.includes('Class Insights'));
 assert(v13.includes('Share Access')&&v13.includes('rzV13StudioOverview')&&v13.includes('rzV13StudioShare'));
+assert(v13.includes("student=$('rzLiveStudentRosterMount')"),'V13 must mount using ACTUAL roster placeholder ID');
 assert(v13.includes("rail.setAttribute('aria-labelledby'")&&v13.includes('aria-orientation'));
 assert(v13.includes('aria-selected')&&v13.includes('aria-expanded')&&v13.includes('aria-pressed'));
 assert(v13.includes("for(const name of ['students','insights'])")&&v13.includes('tabs[name].disabled=!available'));

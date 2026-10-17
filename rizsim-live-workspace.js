@@ -132,7 +132,7 @@
       target.insertBefore(course,target.firstChild);
   }
   function mountContent(){
-    const studio=$('rzV13StudioOverview'),student=$('rzV13StudentRosterMount'),insights=$('rzV13InsightsContent');
+    const studio=$('rzV13StudioOverview'),student=$('rzLiveStudentRosterMount'),insights=$('rzV13InsightsContent');
     if(!studio||!student||!insights)return;
     for(const key of ['rzLiveSetup','rzLiveRunning']){
       const n=$(key);if(n&&n.parentNode!==studio)studio.append(n);
