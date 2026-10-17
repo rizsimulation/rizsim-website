@@ -240,7 +240,7 @@
     const codeLabel=el('span','rz-v5-access-detail-label','CLASS CODE');
     const codeRow=el('div','rz-v5-access-detail-row');
     accessCode=el('strong','rz-v5-access-code');accessCode.id='rzLiveAccessCode';
-    const copyCode=button('Copy code','rz-v5-access-copy',()=>{});
+    const copyCode=el('button','rz-v5-access-copy','Copy code');copyCode.type='button';
     copyCode.id='rzLiveAccessCopyCode';copyCode.setAttribute('aria-label','Copy class code');
     codeRow.append(accessCode,copyCode);
     const linkLabel=el('span','rz-v5-access-detail-label','STUDENT LINK');
@@ -248,7 +248,7 @@
     accessLink=el('span','rz-v5-access-link');accessLink.id='rzLiveAccessLink';
     linkRow.append(accessLink);
     const linkActions=el('div','rz-v5-access-link-actions');
-    const copyLink=button('Copy link','rz-v5-access-copy',()=>{});copyLink.id='rzLiveAccessCopyLink';
+    const copyLink=el('button','rz-v5-access-copy','Copy link');copyLink.type='button';copyLink.id='rzLiveAccessCopyLink';
     accessOpenLink=el('a','rz-v5-access-open-link','Open link ↗');
     accessOpenLink.target='_blank';accessOpenLink.rel='noopener noreferrer';
     linkActions.append(copyLink,accessOpenLink);
@@ -263,7 +263,6 @@
     document.body.append(accessLayer,accessFab);
     // Existing delegated [data-copy-value] handling provides browser clipboard
     // fallback and copy feedback; buttons are filled only from authorized cards.
-    for(const btn of [copyCode,copyLink])btn.removeEventListener('click',()=>{});
     accessLayer.addEventListener('click',event=>{if(event.target===accessLayer)minimizeAccess(true);});
     document.addEventListener('keydown',event=>{
       if(!accessExpanded)return;
