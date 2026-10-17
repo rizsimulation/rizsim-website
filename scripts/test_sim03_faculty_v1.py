@@ -86,7 +86,7 @@ async def main():
   assert await page.get_by_text('PKR 12,000').count()>=1
   assert await page.get_by_text('PKR 38,000').count()>=1
   assert await page.get_by_text('Notice → Locate → Infer',exact=False).count()>=1
-  assert await page.locator('#rizsimHotelFacultyResults .rz-h03-table tbody tr').count()>=6
+  assert await page.locator('#rizsimHotelFacultyResults .rz-h03-table tbody tr').count()==5, 'Three classroom roster rows plus two submitted results'
   assert await page.locator('#rizsimHotelFacultyResults img').count()==0
   await page.locator('#rizsimHotelFacultyResults').screenshot(path=str(ROOT/'test-results'/'sim03-faculty-class-insights.png'))
   await page.locator('.rz-h03-card .rz-h03-table tbody tr').first.get_by_role('button',name='View student result').click()
