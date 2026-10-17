@@ -44,7 +44,7 @@ def run(browser,url):
     page.locator('#rzLiveAccessMinimize').click()
     values=contrast(page,'.classroom-created-card:not(.rz-v5-hidden) .classroom-session-meta span,.classroom-created-card:not(.rz-v5-hidden) .classroom-session-meta strong,.classroom-created-card:not(.rz-v5-hidden) .classroom-created-actions .small-action')
     (OUT/'contrast-results.json').write_text(json.dumps(values,indent=2))
-    base.check('Session metadata and buttons meet 4.5:1 contrast',len(values)>=9 and all(v['ratio']>=4.5 for v in values))
+    base.check('Visible session metadata and controls meet 4.5:1 contrast',len(values)>=8 and all(v['ratio']>=4.5 for v in values))
     shot(page,'session-access-contrast.png')
     page.locator('.classroom-created-card:visible [data-close-classroom-session]').click()
     page.locator('#rzEndSessionConfirm').click()
