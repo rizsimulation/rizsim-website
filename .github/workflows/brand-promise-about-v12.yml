@@ -1,0 +1,29 @@
+name: RizSim Brand Promise About V12
+on:
+  pull_request:
+    paths:
+      - 'about.html'
+      - 'access-in.html'
+      - 'access-out.html'
+      - 'rizsim-brand-about.css'
+      - 'rizsim-shared-about.js'
+      - 'RizSim_Brand_Promise.pdf'
+      - 'scripts/validate_about_brand_promise_v12.js'
+      - '.github/workflows/brand-promise-about-v12.yml'
+  workflow_dispatch:
+jobs:
+  about-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate shared About and source-grounded PDF
+        run: node scripts/validate_about_brand_promise_v12.js
+      - name: Validate loader syntax
+        run: node --check rizsim-shared-about.js
+      - name: Validate PDF is readable
+        run: |
+          pdfinfo RizSim_Brand_Promise.pdf | grep 'Pages:'
+          pdftotext RizSim_Brand_Promise.pdf - | grep -q 'The RizSim Learning Journey'
