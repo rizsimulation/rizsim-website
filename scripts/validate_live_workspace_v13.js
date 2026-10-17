@@ -35,7 +35,8 @@ assert(v13.includes("if(!visible){root.hidden=true;root.inert=true"),'unauthoriz
 assert(v13.includes('mark.src=\'/rizsim-r.png\''),'Official existing logo reused');
 assert(html.includes('rizsim-support.js')&&html.includes('rizsim-shared-about.js'));
 assert(html.includes('rizsim-course-lead-upgrade.css')&&html.includes('rizsim-faculty-workspaces.js'));
-assert(!html.includes('rizsim-insight-faculty.js'),'All 3 simulation PRs remain separate until Step 2');
+for(const asset of ['rizsim-insight-faculty.js','rizsim-system-faculty.js','rizsim-hotel-faculty.js'])assert(html.includes(asset),'All three modules loaded: '+asset);
+assert(v13.includes('rzV13SimulationStudentResults'),'Individual results have a V13 Student Results mount');
 assert(html.includes('id="view-classroom"')&&html.includes('id="courseResultsPanel"'));
-assert(!v5.includes('RizSimInsightFaculty')&&!v5.includes('RizSimHotelFaculty'),'no Simulation draft merged');
+assert(v5.includes('RizSimInsightFaculty?.draw(s,route)')&&v5.includes('RizSimSystemFaculty?.draw(s,route)')&&v5.includes('RizSimHotelFaculty?.draw(s,route)'),'Combined modules route-aware');
 console.log('PASS V13 official theme, accessible inner tabs, authorization-derived Share Access, original roster/results, no backend writes, and separate simulation-draft boundaries');

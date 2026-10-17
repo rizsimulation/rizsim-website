@@ -135,3 +135,6 @@
   .rz-v13-region-heading,.rz-v13-share-actions{display:none!important}
   .rz-v13-workspace,.rz-v13-workspace.rz-v13-collapsed{display:block;box-shadow:none;border:0}
   .rz-v13-region{padding:0;border:0;box-shadow:none}}
+
+#rzLiveV13Workspace.rz-v13-sim-specialized-roster #rzLiveStudentRosterMount #classroomRosterPanel{display:none!important}
+.rz-v13-simulation-students{min-width:0;max-width:100%}

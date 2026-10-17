@@ -143,6 +143,17 @@
     if(anchor&&anchor.parentNode!==insights)insights.append(anchor);
     insertCourseContents();
   }
+  function specializedSession(s,r){
+    if(r?.mode!=='simulation'||r?.stage!=='running'||!r.session)return false;
+    const session=(s.sessions||[]).find(x=>String(x.session_id)===String(r.session));
+    if(!session?.product_id)return false;
+    const modules={'insight-to-implication-bystander':'RizSimInsightFaculty',
+      'system-1-system-2-thinking':'RizSimSystemFaculty',
+      'hotel-judgment-lab':'RizSimHotelFaculty'};
+    return [...(s.licensed||[]),...(s.products||[]),...(s.simulations||[])].some(p=>
+      String(p.id||p.product_id)===String(session.product_id)&&
+      Boolean(modules[p.slug]&&window[modules[p.slug]]));
+  }
   function draw(s,r){
     if(!ready)return;
     const visible=!!s&&['faculty','course_lead','owner'].includes(s.role)&&
@@ -158,6 +169,7 @@
       for(const el of [shareCode,shareLink])el.textContent='';
     }
     mountContent();
+    root.classList.toggle('rz-v13-sim-specialized-roster',specializedSession(s,r));
     root.hidden=false;root.inert=false;
     caption.textContent=stage==='environment'?'Course environment':stage==='setup'?'Session preparation':
       mode==='simulation'?'Licensed simulation':mode==='purchased'?'Purchased course':'Course Lead · own course';
@@ -260,7 +272,7 @@
     students.append(top);
     const rosterMount=node('div','rz-v13-record-slot');rosterMount.id='rzLiveStudentRosterMount';
     const tableMount=node('div','rz-v13-record-slot');tableMount.id='rzLiveStudentRecordsMount';
-    students.append(rosterMount,tableMount);
+    const simStudents=node('div','rz-v13-simulation-students');simStudents.id='rzV13SimulationStudentResults';students.append(rosterMount,tableMount,simStudents);
     const insights=panels.insights;
     const intro=node('div','rz-v13-pane-note');intro.append(node('h3','','Combined learning insights'),
       node('p','','Only observations and summaries authorized for this selected classroom are shown. Simulation-specific charts appear here when their draft integrations are combined.'));

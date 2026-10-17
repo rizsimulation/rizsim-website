@@ -422,10 +422,10 @@
     if (!ready || drawing) return; drawing = true;
     try {
       const s = snapshot();
-      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); window.RizSimLiveWorkspace?.draw(null,null); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
+      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); window.RizSimLiveWorkspace?.draw(null,null); window.RizSimInsightFaculty?.draw(null,null); window.RizSimSystemFaculty?.draw(null,null); window.RizSimHotelFaculty?.draw(null,null); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
       lastView = 'classroom';
       if(route.stage !== 'running')clearAccess();
-      if (!dataReady()) { message('Loading your verified classroom access...'); return; }
+      if (!dataReady()) { for(const k of ['RizSimInsightFaculty','RizSimSystemFaculty','RizSimHotelFaculty'])window[k]?.draw(null,null); message('Loading your verified classroom access...'); return; }
       if (route.mode === 'own' && s.role !== 'course_lead') { route = {mode:'',stage:'menu',selection:'',session:''}; history.replaceState(null,'',urlFor(route)); }
       window.RizSimCourseEnvironment?.render(route,s,navigate);
       if (route.mode === 'purchased' && !['menu','list'].includes(route.stage) && window.RizSimCourseEnvironment?.catalogueState()==='ready' && !currentCourse(s)) { route.stage = 'list'; route.selection = ''; route.session = ''; history.replaceState(null,'',urlFor(route)); }
@@ -452,6 +452,9 @@
       window.RizSimCourseEnvironment?.render(route,s,navigate);
       resume(s); checkCreated(s);
       window.RizSimLiveWorkspace?.draw(s,route);
+      window.RizSimInsightFaculty?.draw(s,route);
+      window.RizSimSystemFaculty?.draw(s,route);
+      window.RizSimHotelFaculty?.draw(s,route);
     } finally { drawing = false; }
   }
   function scheduleDraw() {

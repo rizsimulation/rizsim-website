@@ -1,0 +1,87 @@
+name: Simulation 02 Three-Surface Integration
+on:
+  pull_request:
+    paths:
+      - "simulation-system-1-system-2.html"
+      - "simulation-assets/system-1-system-2/**"
+      - "rizsim-system-faculty.*"
+      - "access-out.html"
+      - "rizsim-live-classroom.js"
+      - "sql/sim02_*"
+      - "scripts/validate_sim02_*"
+      - "scripts/test_sim02_*"
+      - "scripts/sql/sim02_*"
+      - ".github/workflows/sim02-integration.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Exact instrument, public-key boundary, syntactic and website contract checks
+        run: |
+          node scripts/validate_sim02_integration_v1.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_faculty_course_lead_upgrade.js
+      - name: Install pinned browser test version
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Authorized Faculty class analytics, Student result and mobile browser checks
+        run: |
+          mkdir -p test-results
+          python scripts/test_sim02_faculty_v1.py
+          python scripts/test_sim02_student_v1.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim02-browser-review
+          path: test-results/
+          retention-days: 7
+  sql_security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: sim02_ci
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Disposable PostgreSQL, private synthetic test key and authenticated negative roles
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          psql -h 127.0.0.1 -U postgres -d sim02_ci -v ON_ERROR_STOP=1 \
+            -f scripts/sql/sim02_fixture_v1.sql \
+            -f sql/sim02_secure_results_v1.sql \
+            -f scripts/sql/sim02_security_assertions_v1.sql \
+            2>&1 | tee test-results/sim02-postgres-isolated.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sim02-isolated-security
+          path: test-results/
+          retention-days: 7
