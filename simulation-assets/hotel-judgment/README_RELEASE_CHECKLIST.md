@@ -30,3 +30,7 @@ The two original CSS files were not supplied; responsive CSS has been reconstruc
 Before merge, require Owner product publication/licence, pilot via a signed-in Student and authorized Faculty account, negative permissions tests, actual `simulation_responses` persistence and submission receipt, and live class reveal. No production records, licences, courses, or student access are created by this draft.
 
 Saving an owned Course Lead course is a separate action from publishing it to a live classroom. Preserve the approved public RizSim nav, logo, sea-glass theme, teal action design, roles and sidebar unchanged.
+
+## Reusable display names (approved October 17, 2026)
+
+The public Student title is **Hotel Judgment Lab** with **My Hotel Choice** as neutral subtitle and **RizSimulation Learning Transfer Framework** label. Faculty may display **Anchoring Bias and Willingness to Pay** as subtitle within authorized private teaching materials. Never pre-expose the term *anchoring bias* on the Student judgment screen. The original `AI in Pedagogy` event-specific heading is not part of the reusable simulation UI. No product slug, route, response schema, or authorization semantics changed.
