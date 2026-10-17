@@ -18023,6 +18023,19 @@ product.description
 
 ${
 product.product_type ===
+"simulation" && product.access_type === "restricted"
+
+? `
+
+<div class="license-detail-block" role="note" data-rz-restricted-invitation="true">
+<div class="license-detail-title">Restricted Faculty Access</div>
+<p>Invitation only &middot; Not for sale. Access is assigned directly by RizSim to authorized accounts.</p>
+${currentLicenseHTML}
+</div>
+
+`
+
+: product.product_type ===
 "simulation"
 
 ? `
