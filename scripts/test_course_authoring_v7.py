@@ -77,13 +77,42 @@ def run(browser,url):
     check('Course file defaults to Secure View',p.locator('[data-author-dialog=details] input[value=secure_view]').is_checked())
     check('Course builder shows two file delivery choices',p.locator('[data-author-dialog=details] .rz-delivery-choices label').count()==2)
     p.locator('[data-author-dialog=details] input[value=downloadable]').check()
+    before_preview=p.evaluate('__fixture.calls.filter(c=>c.kind==="storage"||c.name==="save_my_rizsim_course_authoring").length')
+    p.locator('[data-author-dialog=details] [data-author-review=details]').click()
+    preview=p.locator('[data-author-dialog=draft-preview]')
+    check('Course Builder reviews a selected PDF before adding it to the draft',
+        preview.is_visible() and preview.locator('iframe.rz-author-preview-frame[src^="blob:"]').count()==1 and
+        'not yet saved' in preview.inner_text())
+    check('Local PDF preview retains intended student delivery setting',
+        preview.get_attribute('data-delivery-mode')=='downloadable' and 'Student access after saving: Downloadable' in preview.inner_text())
+    check('Review preview never uploads or saves a file',
+        p.evaluate('__fixture.calls.filter(c=>c.kind==="storage"||c.name==="save_my_rizsim_course_authoring").length')==before_preview)
+    p.screenshot(path=str(base.OUT/'v7-course-draft-pdf-preview.png'),full_page=True)
+    preview.get_by_role('button',name='Back to course builder').click()
+    check('Review closes back to metadata without resetting the file choice',
+        p.locator('[data-author-dialog=details]').is_visible() and
+        p.locator('[data-author-dialog=details] input[value=downloadable]').is_checked())
     p.evaluate("() => { const field=document.getElementById('rzAuthorResourceTitle');const original=field.scrollIntoView.bind(field);field.scrollIntoView=function(o){__v11InvalidScrolls.push({id:field.id,block:o?.block});return original(o)}; }")
     p.locator('#rzAuthorResourceTitle').fill('')
     p.locator('#rzAuthorResourcePublish').click()
     check('Missing file title auto-scrolls and focuses its error',p.evaluate('document.activeElement?.id==="rzAuthorResourceTitle"&&__v11InvalidScrolls.some(s=>s.id==="rzAuthorResourceTitle"&&s.block==="center")') and p.locator('#rzAuthorResourceTitle[aria-invalid="true"] + .rz-inline-error').is_visible())
     p.locator('#rzAuthorResourceTitle').fill('Course handout')
-    p.locator('#rzAuthorResourcePublish').click();p.locator('.rz-author-modal').get_by_role('button',name='Done').click()
-    check('A staged unsaved file has no working Review File link',p.locator('#rzAuthorResources a.rz-review-file').count()==0)
+    p.locator('#rzAuthorResourcePublish').click()
+    success_review=p.locator('[data-author-review=staged-success]')
+    check('Newly added draft file offers an immediate Review File action',success_review.count()==1)
+    success_review.click()
+    check('Success-dialog Review File opens the local PDF rather than a saved material URL',
+        p.locator('[data-author-dialog=draft-preview] iframe[src^="blob:"]').count()==1)
+    p.locator('[data-author-dialog=draft-preview]').get_by_role('button',name='Back to course builder').click()
+    p.locator('.rz-author-modal').get_by_role('button',name='Done').click()
+    draft_review=p.locator('#rzAuthorResources [data-author-review=staged]')
+    check('Staged document has a Review File control directly in Course Builder',
+        draft_review.count()==1 and p.locator('#rzAuthorResources a.rz-review-file').count()==0)
+    draft_review.click()
+    check('Staged Course Builder review displays the draft PDF without saving the course',
+        p.locator('[data-author-dialog=draft-preview] iframe[src^="blob:"]').count()==1 and
+        'Local draft' in p.locator('[data-author-dialog=draft-preview]').inner_text())
+    p.locator('[data-author-dialog=draft-preview]').get_by_role('button',name='Back to course builder').click()
     check('No resource uploaded before final course save',p.evaluate('__fixture.calls.filter(x=>x.kind==="storage").length')==0)
     p.screenshot(path=str(base.OUT/'v7-course-editor.png'),full_page=True)
     p.locator('#rzAuthorSave').click();p.wait_for_selector('.rz-author-modal h2:text("Course published")')
@@ -93,6 +122,8 @@ def run(browser,url):
     check('Course authoring persisted downloadable setting',p.evaluate('__fixture.materials.find(m=>m.source_type==="file").delivery_mode')=='downloadable')
     check('Saved resource renders mode badge',p.locator('#rzAuthorResources .rz-delivery-chip.is-downloadable').count()==1)
     review=p.locator('#rzAuthorResources a.rz-review-file')
+    check('After save, local draft review switches to authorized server viewer',
+        p.locator('#rzAuthorResources [data-author-review=staged]').count()==0)
     check('Saved Course Lead file has a reusable authorized Review File link',review.count()==1 and review.get_attribute('target')=='_blank' and 'noopener' in review.get_attribute('rel') and review.get_attribute('href').startswith('/course-material-viewer.html?material='))
     check('Upload uses reserved own-course authoring prefix','/authoring/user-fixture/' in p.evaluate('__fixture.calls.find(x=>x.kind==="storage").path'))
     p.locator('.rz-author-modal').get_by_role('button',name='Done').click()
