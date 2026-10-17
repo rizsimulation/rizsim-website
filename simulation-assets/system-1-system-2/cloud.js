@@ -31,6 +31,23 @@
   if(rec){const checked=validateRecord(rec);if(String(checked.profile.session)!=='RIZSIM-'+attempt.classroom_session_id)throw Error('Saved session does not match this classroom.');return checked}
   return null;
  }
+
+ async function loadPersonal(){
+  if(!attempt||!record?.kg.at||attempt.status!=='submitted')
+    throw Error('The attempt must be submitted before personal results are available.');
+  const raw=await call(client.rpc('get_my_rizsim_s1s2_personal_result',{p_attempt_id:attempt.id}));
+  const result=Array.isArray(raw)?raw[0]:raw;
+  if(!result||result.receipt!=='submitted'||String(result.attempt_id)!==attempt.id
+     ||result.simulation_id!==DATA.meta.id||result.schema_version!==DATA.meta.version
+     ||!result.metrics)
+    throw Error('RizSim returned an invalid personal-result receipt.');
+  const proof={schema:'RizSimulation.RGA.v1',
+    assessment:DATA.meta.id,recordId:record.id,fingerprint:fingerprint(record),
+    issuedAt:new Date().toISOString(),metrics:result.metrics};
+  personalRGA=validRGA(proof);
+  persist();render();
+  return personalRGA;
+ }
  async function init(){
   if(location.pathname!==EXPECTED_PATH)throw Error('Open the simulation through its official RizSim classroom link.');
   if(SUPABASE_PUBLISHABLE_KEY.includes('__RIZSIM_'))throw Error('The application publisher has not completed this simulation configuration.');
@@ -53,15 +70,27 @@
   else if(attempt.status!=='submitted'||!latest?.kg.at)throw Error('This attempt is not currently available for completion.');
   /* Server-committed data is authoritative after a page reload. Locally drafted, uncommitted
      choices may be discarded, but no locked response is changed by an unverified local copy. */
+  personalRGA=null;
   if(latest)record=clone(latest);
   else if(record){try{const local=validateRecord(record);if(local.profile.session!=='RIZSIM-'+sessionId)record=null}
     catch(e){record=null}}
   verified=true;
-  render();if(!record){const u=document.getElementById('pname');if(u&&!u.value)u.value=user.user_metadata?.full_name||''} if(attempt.status==='submitted')banner('Successfully submitted to RizSim. Your saved decisions are read only.',false);
+  if(attempt.status==='submitted'){
+    try{await loadPersonal()}catch(e){banner('Submission verified, but personal scoring is unavailable: '+errorText(e),true);}
+  }
+  render();if(!record){const u=document.getElementById('pname');if(u&&!u.value)u.value=user.user_metadata?.full_name||''}
+  if(attempt.status==='submitted')banner(personalRGA?'Submitted and scored by RizSim. This attempt is read only.':'Submission verified. Personal scoring is pending.',!personalRGA);
   else banner('Authenticated classroom attempt. Choices remain drafts until a stage is locked and securely saved.',false);
  }
  function banner(message,isError){let b=document.getElementById('rzSim02HostedStatus');if(!b){b=document.createElement('section');b.id='rzSim02HostedStatus';b.className='notice';document.getElementById('app')?.prepend(b)}
   b.className='notice'+(isError?' red':'');b.textContent=message;
+  if(attempt?.status==='submitted'&&!personalRGA){
+    const retry=document.createElement('button');retry.type='button';retry.className='btn secondary compact';
+    retry.textContent='Refresh verified results';retry.onclick=async()=>{
+      try{await loadPersonal();banner('Verified results ready. This attempt is read only.',false)}
+      catch(err){banner('Personal results unavailable: '+errorText(err),true)}
+    };b.append(retry);
+  }
   if(submitPending){const button=document.createElement('button');button.type='button';button.className='btn compact';button.textContent='Retry secure submission';button.style.marginLeft='10px';button.onclick=async()=>{try{await finishSubmit();banner('Submission confirmed by RizSim.',false)}catch(e){banner(errorText(e),true)}};b.append(button)}
  }
  async function saveStage(){
@@ -85,6 +114,8 @@
   if(!outcome||outcome.status!=='submitted'||String(outcome.attempt_id||outcome.id)!==attempt.id)
     throw Error('Submission has not been confirmed. Saved answers remain in your attempt.');
   attempt.status='submitted';attempt.submitted_at=outcome.submitted_at;submitPending=false;
+  try{await loadPersonal();}
+  catch(err){banner('Final submission is confirmed. Personal scoring is temporarily unavailable: '+errorText(err),true);}
  }
  function saving(on){busy=on;let b=document.getElementById('rzSim02PendingOverlay');if(!b){b=document.createElement('div');b.id='rzSim02PendingOverlay';b.style.cssText='position:fixed;inset:0;background:#12263b99;display:grid;place-items:center;z-index:199;color:#fff;font-size:22px;font-weight:700;';b.textContent='Securing your locked decision…';document.body.appendChild(b)}b.style.display=on?'grid':'none';b.hidden=!on}
  function commitWrapped(oldFn,valid,reason){return function(...args){if(!verified||busy||attempt?.status!=='in_progress')return;
@@ -111,7 +142,8 @@
    if(attempt.status==='submitted')document.querySelectorAll('#app input[name=decision],#app button[onclick^=\"lock\"]').forEach(n=>n.disabled=true);
    if(submitPending)banner('Your answers are locked. RizSim final submission is awaiting confirmation.',true);
  };
- resumeFile=async function(){toast('RizSim classroom responses must be resumed through your secure saved attempt.');};
+ resumeFile=async function(){toast('RizSim classroom responses resume from the verified saved attempt.');};
+ importRGA=async function(){toast('Hosted personal results come only from RizSim after server-confirmed submission.');};
  resetParticipant=function(){toast('A RizSim classroom attempt cannot be erased from this device. Contact Faculty for assistance.');};
  init().catch(e=>{verified=false;gate(errorText(e))});
 })();
