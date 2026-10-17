@@ -39,6 +39,10 @@
     u.hash = 'classroom'; return u.pathname + u.search + u.hash;
   }
   function navigate(mode = '', stage = 'menu', selection = '', session = '', replace = false, simulation = '') {
+    // All creation flows (including purchased courses) transition setup -> running.
+    // Open the access panel once for that fresh session, not on history/resume.
+    if(stage==='running' && route.stage==='setup' && route.mode===mode &&
+        route.selection===text(selection) && session) accessAutoOpen=text(session);
     route = {mode, stage, selection: text(selection), session: text(session), simulation:text(simulation)};
     const url = urlFor(route);
     if (location.pathname + location.search + location.hash !== url) history[replace ? 'replaceState' : 'pushState'](null, '', url);
