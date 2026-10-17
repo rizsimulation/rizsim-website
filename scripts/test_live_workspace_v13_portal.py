@@ -41,10 +41,9 @@ def run(browser, base):
         raise
     verify(page.locator('#rzLiveRunning').evaluate('n=>!!n.closest("#rzV13StudioOverview")'),
            'original authenticated session runs inside Studio, not copied')
-    verify(page.locator('#rzLiveAccessFab').is_visible(),
-           'original V12 minimized/reopen QR access remains accessible')
-    # V12 floating QR is intentionally hidden while its panel is minimized.
-    page.locator('#rzLiveAccessQR svg').wait_for(state='attached',timeout=18000)
+    verify(page.locator('#rzLiveAccessFab,#rzLiveAccessLayer').count()==0,
+           'No duplicated floating QR layer or pinned button exists')
+    page.locator('.classroom-created-card:visible .rz-v5-qr svg').wait_for(state='attached',timeout=18000)
     page.locator('#rzV13SubviewShare').click()
     wait_ui(page, '#rzV13ShareDetails:not([hidden])')
     wait_ui(page, '#rzV13ShareQR svg:visible')
@@ -53,12 +52,12 @@ def run(browser, base):
        studioCode:document.getElementById('rzV13ShareCode').textContent,
        studioLink:document.getElementById('rzV13ShareLink').textContent,
        studioQr:!!document.querySelector('#rzV13ShareQR svg'),
-       count:document.querySelectorAll('#rzLiveAccessLayer').length
+       count:document.querySelectorAll('#rzLiveAccessLayer,#rzLiveAccessFab').length
     })''')
     verify(bool(creds['verified']) and creds['studioCode'] == creds['verified']['code']
            and creds['studioLink'] == creds['verified']['link']
-           and creds['studioQr'] and creds['count'] == 1,
-           'Share Access uses exactly one existing verified QR, code, link')
+           and creds['studioQr'] and creds['count'] == 0,
+           'Studio Share Access uses the sole verified QR, code and token-backed join link')
     verify(creds['studioLink'].startswith(base + '/access-in.html?'),
            'Student join link is same-origin and points only to Student workspace')
     page.locator('#rzV13SubviewOverview').click()
@@ -101,7 +100,7 @@ def run(browser, base):
     page.locator('#rzV13SubviewShare').click()
     wait_ui(page, '#rzV13ShareDetails:not([hidden])')
     verify(page.locator('#rzV13ShareCode').inner_text().strip() ==
-           page.locator('#rzLiveAccessCode').inner_text().strip(),
+           page.locator('.classroom-created-card:visible .classroom-code-value').text_content().strip(),
            'owned course uses existing V12 code with dedicated Share Access view')
     verify(not errors, 'no JS errors for Course Lead course flow')
     v5.close(ctx)

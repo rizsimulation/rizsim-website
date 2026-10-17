@@ -102,7 +102,6 @@
     if(!ready||!canResults())return;
     const v=syncShareData();
     const isAvailable=!!v;
-    const open=$('rzV13ShareOpen');if(open)open.disabled=!isAvailable;
     const msg=$('rzV13ShareEmpty');if(msg)msg.hidden=isAvailable;
     const details=$('rzV13ShareDetails');if(details)details.hidden=!isAvailable;
     if(!isAvailable){shareKey='';shareCode.textContent='';shareLink.textContent='';shareQR.replaceChildren();
@@ -114,7 +113,7 @@
     if(shareKey!==k){shareKey=k;shareCode.textContent=v.code;shareLink.textContent=v.link;
       const a=$('rzV13StudentJoin');a.href=v.link;}
     if(v.qr){shareQR.replaceChildren(v.qr);shareStatus.hidden=true;}
-    else{shareQR.replaceChildren();shareStatus.hidden=false;shareStatus.textContent='Preparing the same authorized QR code used by the floating session panel…';}
+    else{shareQR.replaceChildren();shareStatus.hidden=false;shareStatus.textContent='Preparing the QR code from this authorized classroom session…';}
   }
   function copyValue(value,label){
     if(!value)return;
@@ -260,8 +259,7 @@
     const linkLine=node('div','rz-v13-copy-line rz-v13-copy-link');linkLine.append(shareLink,copyLink);
     const actions=node('div','rz-v13-share-actions');
     const join=node('a','rz-v13-join-link','Open Student link');join.id='rzV13StudentJoin';join.target='_blank';join.rel='noopener noreferrer';
-    const open=button('Open floating QR panel',()=>window.RizSimLiveClassroom?.openShare?.(),'rz-v13-share-action');
-    open.id='rzV13ShareOpen';actions.append(join,open);
+    actions.append(join);
     fields.append(codeLabel,codeLine,linkLabel,linkLine,actions);
     details.append(shareQR,fields);share.append(details);
     shareStatus=node('p','rz-v13-share-status');shareStatus.id='rzV13ShareStatus';shareStatus.hidden=true;
@@ -275,7 +273,7 @@
     const simStudents=node('div','rz-v13-simulation-students');simStudents.id='rzV13SimulationStudentResults';students.append(rosterMount,tableMount,simStudents);
     const insights=panels.insights;
     const intro=node('div','rz-v13-pane-note');intro.append(node('h3','','Combined learning insights'),
-      node('p','','Only observations and summaries authorized for this selected classroom are shown. Simulation-specific charts appear here when their draft integrations are combined.'));
+      node('p','','Only authenticated, session-scoped observations and permitted class summaries appear here. Simulation analytics are displayed when verified records are available.'));
     insights.append(intro);
     const inside=node('div','rz-v13-insights-content');inside.id='rzV13InsightsContent';insights.append(inside);
     root.append(mobileToggle,scrim,rail,region);
@@ -289,9 +287,10 @@
       if(!matchMedia('(max-width: 760px)').matches&&mobileOpen)drawer(false);
       if(rail)rail.inert=matchMedia('(max-width: 760px)').matches&&!mobileOpen;
     });
-    const originalQR=$('rzLiveAccessQR');if(originalQR){
+    const originalSessionCards=$('classroomCreatedResult');if(originalSessionCards){
+      // Observe the original card's asynchronous QR generation; no new credentials.
       const update=new MutationObserver(()=>{if(!root.hidden&&active==='studio'&&subview==='share')renderShare();});
-      update.observe(originalQR,{childList:true});
+      update.observe(originalSessionCards,{childList:true,subtree:true});
     }
     window.RizSimLiveWorkspace=Object.freeze({draw,select:changeTab,
       collapse:compact,selectStudio:studioSubview,

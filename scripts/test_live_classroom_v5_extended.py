@@ -37,11 +37,11 @@ def run(browser,url):
     base.close(ctx)
 
     ctx,page,errors=base.page_for(browser,url,'faculty','?live=simulation-running&selection=sim-1&live_session=existing-1#classroom')
-    page.wait_for_selector('#rzLiveAccessFab:visible')
-    page.locator('#rzLiveAccessFab').click()
-    page.wait_for_selector('#rzLiveAccessQR svg:visible')
-    base.check('Existing session can reopen authorized QR without auto-obscuring results')
-    page.locator('#rzLiveAccessMinimize').click()
+    page.locator('#rzV13SubviewShare').click()
+    page.wait_for_selector('#rzV13ShareQR svg:visible',timeout=18000)
+    base.check('Existing session has token-backed Studio QR without an obscuring pinned control',
+               page.locator('#rzLiveAccessFab,#rzLiveAccessLayer').count()==0)
+    page.locator('#rzV13SubviewOverview').click()
     values=contrast(page,'.classroom-created-card:not(.rz-v5-hidden) .classroom-session-meta span,.classroom-created-card:not(.rz-v5-hidden) .classroom-session-meta strong,.classroom-created-card:not(.rz-v5-hidden) .classroom-created-actions .small-action')
     (OUT/'contrast-results.json').write_text(json.dumps(values,indent=2))
     base.check('Visible session metadata and controls meet 4.5:1 contrast',len(values)>=8 and all(v['ratio']>=4.5 for v in values))

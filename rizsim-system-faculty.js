@@ -285,7 +285,14 @@
      });b.disabled=!m||!r.record;b.setAttribute('aria-expanded',String(selected===r.attempt));
      inspect.append(b);tr.append(inspect);body.append(tr);
    }
-   tab.append(body);box(card,'rz-s02-table-scroller',tab);parent.append(card);
+   tab.append(body);
+   const hint=elem('p','rz-s02-scroll-hint','Scroll horizontally to view all Student results and report actions ↔');
+   hint.id='rzS02RosterScrollHint';card.append(hint);
+   const scroll=box(card,'rz-s02-table-scroller',tab);
+   scroll.tabIndex=0;scroll.setAttribute('role','region');
+   scroll.setAttribute('aria-label','Student progress and results table');
+   scroll.setAttribute('aria-describedby','rzS02RosterScrollHint');
+   parent.append(card);
    detail(parent);
  }
  function grouped(rows){

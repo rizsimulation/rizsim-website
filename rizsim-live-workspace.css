@@ -23,8 +23,8 @@
   text-align:left;border:1px solid transparent;border-radius:13px;background:transparent;
   color:#2e6867;font-size:13px;font-weight:800;font-family:inherit;cursor:pointer;transition:background .16s,border .16s,box-shadow .16s}
 .rz-v13-tab svg{flex:0 0 21px}
-.rz-v13-tab:hover:not(:disabled){background:rgba(255,255,255,.75);border-color:#c4e3d8}
-.rz-v13-tab.is-active{color:#fff;border-color:#0a6971;background:linear-gradient(120deg,#098278,#135b68);
+.rz-v13-tab:hover:not(:disabled):not(.is-active){background:rgba(255,255,255,.75);border-color:#c4e3d8}
+.rz-v13-tab.is-active,.rz-v13-tab.is-active:hover:not(:disabled){color:#fff;border-color:#0a6971;background:linear-gradient(120deg,#098278,#135b68);
   box-shadow:0 9px 20px rgba(7,96,100,.22)}
 .rz-v13-tab:disabled{opacity:.47;cursor:not-allowed}
 .rz-v13-tab-label{white-space:normal;line-height:1.25}
@@ -138,3 +138,6 @@
 
 #rzLiveV13Workspace.rz-v13-sim-specialized-roster #rzLiveStudentRosterMount #classroomRosterPanel{display:none!important}
 .rz-v13-simulation-students{min-width:0;max-width:100%}
+
+/* Specialized verified Student reports replace contradictory generic empty copy. */
+#rzLiveV13Workspace.rz-v13-sim-specialized-roster #rzLiveNoResults{display:none!important}

@@ -51,7 +51,9 @@
 .rz-s02-empty,.rz-s02-error{background:#f4f9f7;border:1px solid #e0ede8;border-radius:12px;padding:15px;color:#698189;line-height:1.5;font-size:12px}
 .rz-s02-error{background:#fff3f0;border-color:#edd1c7;color:#9d564b}
 .rz-s02-result-section{margin-top:0}
-.rz-s02-table-scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%}
+.rz-s02-table-scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;scrollbar-width:thin;scrollbar-color:#8dbdb1 #eaf5f1}
+.rz-s02-table-scroller:focus-visible{outline:3px solid #cc9b3a;outline-offset:2px;border-radius:8px}
+.rz-s02-scroll-hint{margin:4px 0 10px;font-size:11px;color:#416d72;line-height:1.5;letter-spacing:.01em}
 .rz-s02-table{border-collapse:collapse;width:100%;min-width:790px;text-align:left;font-size:12px}
 .rz-s02-table td,.rz-s02-table th{padding:10px;border-bottom:1px solid #e5eeea;vertical-align:top}
 .rz-s02-table th{color:#2f6b68;background:#ecf7f4;font-weight:850;white-space:nowrap}

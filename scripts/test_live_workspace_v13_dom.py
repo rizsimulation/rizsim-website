@@ -28,7 +28,7 @@ def layout(page):
  # The real V5 module already owns signed-in data, codes and QR. Use a narrow
  # in-memory presentation fixture only for this DOM-level panel test.
  page.evaluate('''() => {
-   window.RizSimLiveClassroom={draw(){},verifiedShare(){return null},openShare(){return false}};
+   window.RizSimLiveClassroom={draw(){},verifiedShare(){return null}};
  }''')
  page.add_script_tag(content=(ROOT/'rizsim-live-workspace.js').read_text())
  page.wait_for_function("!!window.RizSimLiveWorkspace")
@@ -59,7 +59,7 @@ def desktop(browser):
  page.locator('#rzV13SubviewShare').click()
  assert page.locator('#rzV13StudioShare').is_visible()
  assert page.get_by_text('There is no active authorized join link',exact=False).count()==1
- assert page.locator('#rzV13ShareOpen').is_disabled()
+ assert page.locator('#rzV13ShareOpen').count()==0
  page.locator('#rzV13SubviewOverview').click()
  page.locator('#rzV13Collapse').click()
  assert page.locator('#rzLiveV13Workspace.rz-v13-collapsed').count()==1

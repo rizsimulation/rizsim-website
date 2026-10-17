@@ -121,6 +121,20 @@ def run(browser,base):
    '&live_session=review-'+code+'#classroom')
   try:
    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])',timeout=20000)
+   # Studio Share is now the only QR surface. The original session card is
+   # still the sole source of the verified code, protected token and QR.
+   assert page.locator('#rzLiveAccessFab,#rzLiveAccessLayer,#rzV13ShareOpen').count()==0
+   page.locator('#rzV13SubviewShare').click()
+   page.locator('#rzV13ShareQR svg:visible').wait_for(timeout=18000)
+   shared=page.evaluate("""() => ({
+     verified:RizSimLiveClassroom.verifiedShare(),
+     studioCode:document.getElementById('rzV13ShareCode').textContent,
+     studioLink:document.getElementById('rzV13ShareLink').textContent
+   })""")
+   assert shared['verified'] and shared['studioCode']==shared['verified']['code']
+   assert shared['studioLink']==shared['verified']['link']
+   capture(page,'step4-integrated-sim'+code+'-studio-share-desktop.png')
+   page.locator('#rzV13SubviewOverview').click()
    page.evaluate(SETUP)
    page.evaluate("window['"+mod+"'].refresh()")
    try:
@@ -146,10 +160,20 @@ def run(browser,base):
     raise
    assert page.locator('#rzV13Tabstudio[aria-selected=true]').count()==1,'Studio first'
    page.locator('#rzV13Tabstudents').click()
+   page.locator('#rzV13Tabstudents').hover()
+   colors=page.locator('#rzV13Tabstudents').evaluate("""n=>({
+     color:getComputedStyle(n).color,
+     gradient:getComputedStyle(n).backgroundImage
+   })""")
+   assert colors['color']=='rgb(255, 255, 255)' and 'gradient' in colors['gradient'], 'Active selected tab contrast'
    page.locator('#'+student_id).wait_for(state='visible')
+   assert page.locator('#rzLiveNoResults').is_hidden(), 'No misleading generic no-submission banner'
    assert page.locator('#'+insight_id).is_hidden(), 'Class Insights concealed in Student Results'
    assert page.locator('#'+student_id+' [role=progressbar]').count()>=n,'Per-student progress retained'
    assert page.locator('#rzLiveStudentRosterMount #classroomRosterPanel').is_hidden(), 'No duplicate V5 roster'
+   if code=='02':
+    assert page.locator('#rzS02RosterScrollHint').is_visible(), 'Sim02 horizontal-scroll hint'
+    assert page.locator('#rizsimSystemStudentResults .rz-s02-table-scroller[role="region"][tabindex="0"]').count()==1
    if code=='03':
     assert 'PKR 12,000' not in page.locator('#rzV13Panestudents').inner_text()
     assert 'Group A' not in page.locator('#rzV13Panestudents').inner_text()

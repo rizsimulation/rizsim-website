@@ -1,14 +1,14 @@
 # RizSim Live Classroom V13 — Collapsible workspace (implementation draft)
 
-**Release status:** Separate draft PR, **not published**. Built on production `main` without incorporating Simulation 01/02/03 draft commits. Step 2 will integrate all three modules on a separate combined staging branch after this sidebar is reviewed.
+**Release status:** Original V13 feature from draft PR #36, now integrated with Simulations 01/02/03 in combined **draft PR #37 (not published)**. The 18 October 2026 Owner-approved Step 4 refinement removes the obsolete floating/pinned QR panel. No production or release approval is implied.
 
 ## Approved internal navigation
 
 **Expanded by default; icon-only collapsed state** (user preference persists locally). Desktop has a sticky sea-glass left rail; mobile has a labeled drawer with keyboard/Escape dismiss. All navigation occurs **inside** the existing authenticated Live Classroom screen. Public Home / Simulations / About / Contact and sidebar/swipe mechanics remain locked.
 
-1. **Session Studio** — original authorized course environment, Live Classroom session setup, drag/drop course/session resources and existing form controls. Separate **Overview** and **Share Access** subviews. Share Access only enables after an authorized session exists. Its QR/code/link are copied from the **same V12 verified session card**, not generated, minted, or accepted from a URL parameter. Floating V12 session panel and minimize/reopen button remain intact.
-2. **Student Results** — authorized Student roster and progress with existing read-only response modal, no second roster. Source panels retain original secure listener state. Simulation 01/02's full individual results modules will join here in Step 2.
-3. **Class Insights** — authorized course-level aggregate results and the existing filtered course results viewer. The reserved `#rzLiveResultsAnchor` is deliberately placed here to host simulation-specific collective analytics when Simulation 01/02/03 PRs are combined in Step 2. No invented sample student data or placeholder charts.
+1. **Session Studio** — original authorized course environment, Live Classroom session setup, drag/drop course/session resources and existing form controls. Separate **Overview** and **Share Access** subviews. Share Access only enables after an authorized session exists. Its QR/code/link are copied from the **same verified authenticated session card**, not minted or accepted from a URL parameter. The former floating panel, pinned button, minimize/reopen and secondary modal controls have been removed: **Share Access in Session Studio is the sole QR display.**
+2. **Student Results** — authorized Student roster and progress with existing read-only response modal, no second roster. Source panels retain original secure listener state. Simulation 01/02/03's full authorized individual results modules are present here in the combined draft.
+3. **Class Insights** — authorized course-level aggregate results and the existing filtered course results viewer. The scoped `#rzLiveResultsAnchor` hosts each of the three simulation-specific collective analytics modules in the combined draft. No invented sample student data or placeholder charts.
 
 ## Role and course distinctions
 
@@ -30,8 +30,8 @@ V13 respects keyboard tab semantics, a sticky/collapsible desktop rail, accessib
 - `python scripts/test_live_workspace_v13_dom.py` for responsive layout, tab controls, accessible collapse/drawer, preserved input state and denied roles; saves **synthetic** screenshots in test-results/.
 - `python scripts/test_live_workspace_v13_portal.py` for real assembled RizSim portal with **synthetic mocked** Faculty, Course Lead and purchased-course backend, authorized session link, class data/QR, original modal and role isolation.
 - Original `scripts/test_live_classroom_v5.py`, `scripts/test_live_classroom_v5_extended.py`, `scripts/test_course_environment_v6.py` (only assertions for intentionally moved panels updated).
-- All existing V5–V12 regression workflows must pass on this branch prior to Step 2.
+- All existing V5–V12, V13, Sim01–Sim03, Step4 Owner and combined integration regression workflows must pass before academic review acceptance. The floating-QR assertions are replaced by stronger Studio QR/token/no-pinned-element checks.
 
 ## Release gates remain explicit
 
-Step 1 approval authorizes **isolated draft code and testing**, not production changes. Step 2: combine V13 with the three simulations, resolve conflicting `access-out.html` and `rizsim-live-classroom.js` hooks, route each simulation's individual results under Student Results and class analytics under Class Insights. Step 3: run all combined and real-role acceptance tests, including private scoring/Hotel Judgment experiments and policies. Only after separate Owner approval can migration, code merge, licensing and product publishing proceed.
+Steps 2 and 3 assembled and CI-validated the three simulation drafts without a production change. Step 4 implements Owner-approved UI refinements, including Studio-only QR sharing, and regenerates assembled synthetic browser evidence. Real authorized accounts, private scoring and live RLS negative acceptance still need separate approval and testing. Code merges, deployment, migrations, licensing and product publishing remain prohibited without independent Owner authorization.
