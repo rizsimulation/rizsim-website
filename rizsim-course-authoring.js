@@ -124,7 +124,7 @@
       });
     }catch(e){if(gen===generation)notice('Unable to delete course',e.message);}
   }
-  function saveEnabled(){const b=$('rzAuthorSave');if(b&&current)b.disabled=busy||!current.can_edit||!current.title.trim()||(!current.isNew&&!current.dirty);}
+  function saveEnabled(){const b=$('rzAuthorSave');if(b&&current)b.disabled=busy||!current.can_edit||(!current.isNew&&!current.dirty);}
   function listItems(draft){
     const sims=$('rzAuthorSimulations'),resources=$('rzAuthorResources');if(!sims||!resources)return;sims.replaceChildren();resources.replaceChildren();
     function row(item,isSim){
@@ -132,6 +132,7 @@
       const mark=node('span','rz-author-item-icon');mark.append(icon(isSim?'grid':item.source_type==='link'||item.external_url?'link':item.mime_type?.startsWith('image/')?'image':'file'));
       const body=node('div','rz-author-item-copy');body.append(node('h3','',item.title),node('p','',isSim?(item.description||'Included simulation.'):(item.file?.name||item.file_name||item.external_url||item.description||'Learning resource')));
       if(!isSim)body.append(node('small','rz-author-status',item.isNew?'Staged \u00b7 saved with the course':item.published_to_class?'Published to class \u00b7 managed in Live Classroom':'Saved resource \u00b7 not published to class'));
+       if(!isSim&&item.source_type==='file')body.append(node('span','rz-delivery-chip'+(item.delivery_mode==='downloadable'?' is-downloadable':''),item.delivery_mode==='downloadable'?'Downloadable':'Secure View'));
       n.append(mark,body);
       if(draft.can_edit){const del=button('Delete',()=>confirm('Remove "'+item.title+'"?','The item will be removed from this draft. The removal takes effect only when you '+(draft.isNew?'publish the course.':'save changes. Existing files and student submissions are retained.'),()=>{
         if(isSim)draft.simulations=draft.simulations.filter(s=>s.product_id!==item.product_id);else draft.resources=draft.resources.filter(r=>r.id!==item.id);dirty(draft);listItems(draft);
@@ -163,7 +164,9 @@
     copy.append(status,node('p','','Saving a course does not start a session or publish resources to students.'));
     const b=node('button','rz-author-btn primary',draft.isNew?'PUBLISH COURSE':'SAVE CHANGES');b.id='rzAuthorSave';b.type='submit';footer.append(copy,b);form.append(footer);root.append(form);
     if(readOnly){fields.before(node('p','rz-author-readonly','This ended or publisher-listed course is read-only here. Session execution and results remain in Live Classroom.'));}
-    form.addEventListener('submit',async e=>{e.preventDefault();if(busy||readOnly||!draft.title.trim())return;const gen=generation;busy=true;fields.disabled=true;b.disabled=true;error.hidden=true;
+    form.addEventListener('submit',async e=>{e.preventDefault();if(busy||readOnly)return;
+      if(!window.RizSimFieldFeedback?.required(title,'a course title')){title.focus({preventScroll:true});return;}
+      const gen=generation;busy=true;fields.disabled=true;b.disabled=true;error.hidden=true;
       const wasNew=draft.isNew;try{
         const data=await service().save(draft,validation(),message=>{if(gen===generation)status.textContent=message;});
         if(gen!==generation)return;const saved=fromServer(data);drafts.delete(draft.key);drafts.set(saved.key,saved);current=saved;list=null;
@@ -215,8 +218,12 @@
     const divider=node('div','rz-author-divider','or add a web link');const linkRow=node('div','rz-author-linkrow'),label=node('label','','Paste a valid web link'),link=node('input');link.type='text';link.inputMode='url';link.placeholder='https://example.com/learning-resource';link.autocomplete='off';link.id='rzAuthorLink';label.htmlFor=link.id;label.append(link);
     const publish=button('Publish',()=>{const url=validation().validURL(link.value);if(url)resourceDetails(draft,{external_url:url,source_type:'link'},d);},'primary');publish.dataset.authorLinkPublish='true';publish.disabled=true;let lastInvalid='';
     const validate=()=>{const value=link.value.trim();const valid=validation().validURL(value);publish.disabled=!valid;link.setAttribute('aria-invalid',text(!!value&&!valid));return valid;};
-    const explain=()=>{if(link.value.trim()&&!validate()&&lastInvalid!==link.value){lastInvalid=link.value;notice('Check the link','Use a complete http:// or https:// address. Spaces, embedded login details and invalid link formats are not accepted.');}};
-    link.addEventListener('input',()=>{lastInvalid='';validate();});link.addEventListener('blur',e=>{if(!e.relatedTarget?.closest('.rz-author-close'))explain();});
+    const explain=()=>{
+       const v=link.value.trim(),valid=validate();
+       window.RizSimFieldFeedback?.show(link,v&&!valid?'Enter a valid http:// or https:// link without spaces or embedded credentials.':'');
+       return valid;
+     };
+    link.addEventListener('input',()=>{lastInvalid='';validate();if(validation().validURL(link.value))window.RizSimFieldFeedback?.show(link,'');});link.addEventListener('blur',e=>{if(!e.relatedTarget?.closest('.rz-author-close'))explain();});
     link.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(validate())publish.click();else explain();}});linkRow.append(label,publish);content.append(zone,caption,divider,linkRow);browse.focus({preventScroll:true});
   }
   function resourceDetails(draft,resource,parent){
@@ -224,13 +231,14 @@
     const form=node('form');form.noValidate=true;
     if(resource.file)form.append(fileCaption(resource.file,resource.mime_type));else form.append(node('p','rz-author-source-caption',resource.external_url));
     const label=node('label','','Resource title'),title=node('input');title.type='text';title.maxLength=200;title.id='rzAuthorResourceTitle';title.required=true;title.value=resource.file?resource.file.name.replace(/\.[^.]+$/,''):'';label.htmlFor=title.id;label.append(title);
+     const delivery=resource.file?window.RizSimFileDelivery?.picker('secure_view'):null;
     const group=node('fieldset','rz-author-types'),legend=node('legend','','Resource type'),choices=node('div');group.append(legend,choices);
     types.forEach(([value,name])=>{const wrap=node('label'),radio=node('input');radio.type='radio';radio.name='author-resource-type';radio.value=value;radio.checked=value===(resource.file?'reading':'external_link');wrap.append(radio,document.createTextNode(name));choices.append(wrap);});
     const dl=node('label','','Description (optional)'),desc=node('textarea');desc.maxLength=2000;desc.rows=3;desc.id='rzAuthorResourceDescription';dl.htmlFor=desc.id;dl.append(desc);
-    const error=node('p','rz-author-error');error.hidden=true;error.setAttribute('role','alert');const actions=node('div','rz-author-actions'),submit=node('button','rz-author-btn primary','Publish');submit.type='submit';submit.id='rzAuthorResourcePublish';actions.append(button('Back',()=>closeModal(d)),submit);form.append(label,group,dl,error,actions);content.append(form);
-    form.addEventListener('submit',e=>{e.preventDefault();if(!title.value.trim()){error.hidden=false;error.textContent='Enter a resource title.';title.focus({preventScroll:true});return;}
+    const error=node('p','rz-author-error');error.hidden=true;error.setAttribute('role','alert');const actions=node('div','rz-author-actions'),submit=node('button','rz-author-btn primary','Publish');submit.type='submit';submit.id='rzAuthorResourcePublish';actions.append(button('Back',()=>closeModal(d)),submit);form.append(label);if(delivery)form.append(delivery.element);form.append(group,dl,error,actions);content.append(form);
+    form.addEventListener('submit',e=>{e.preventDefault();if(!window.RizSimFieldFeedback?.required(title,'a resource title')){title.focus({preventScroll:true});return;}
       if(!allowed()||current!==draft)return;
-      const r={...resource,id:crypto.randomUUID(),title:title.value.trim(),description:desc.value.trim(),material_type:form.querySelector('input[name="author-resource-type"]:checked').value,isNew:true,published_to_class:false};
+      const r={...resource,id:crypto.randomUUID(),title:title.value.trim(),description:desc.value.trim(),material_type:form.querySelector('input[name="author-resource-type"]:checked').value,delivery_mode:delivery?.value()||'secure_view',isNew:true,published_to_class:false};
       draft.resources.push(r);dirty(draft);listItems(draft);closeModal(parent);
       notice('Added to course draft','The resource is ready. '+(draft.isNew?'PUBLISH COURSE':'SAVE CHANGES')+' will save it to your course library. Student publication is controlled in Live Classroom.',true);
     });title.focus({preventScroll:true});

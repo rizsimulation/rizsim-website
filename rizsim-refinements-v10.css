@@ -1,0 +1,101 @@
+/* RizSim V10 refinement: applies only to authenticated non-Home tabs.
+   Preserve the public/shared Home, branding, splash, navigation, sidebar and swipe behavior. */
+body[data-rizsim-home-portal="faculty"] .auth-view:not(#view-home),
+body[data-rizsim-home-portal="student"] .student-view:not(#view-home){
+  background-color:#f8fbfa;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(24,87,92,.073) 0 .85px,transparent 1.3px),
+    radial-gradient(ellipse at 94% 4%,rgba(95,196,172,.12),transparent 38%),
+    radial-gradient(ellipse at 4% 92%,rgba(93,141,197,.085),transparent 36%),
+    linear-gradient(140deg,#fafdfc,#f6faf9 52%,#f9fbfe);
+  background-size:31px 31px,100% 100%,100% 100%,100% 100%;
+  background-attachment:scroll;
+  color:#183f4d;
+  font-family:"Aptos","Segoe UI",ui-sans-serif,system-ui,sans-serif;
+  font-kerning:normal;
+  -webkit-font-smoothing:antialiased;
+}
+body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(h1,h2,h3,h4){
+  font-family:"Aptos Display","Aptos","Segoe UI",ui-sans-serif,system-ui,sans-serif;
+  font-weight:700;
+  letter-spacing:-.022em;
+  line-height:1.25;
+  /* Keep each card/hero's original ink color, including headings on dark teal. */
+}
+body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(.rz-panel-caption,.rz-author-caption,.rz-st-support,.rz-dialog-description){
+  color:#42616c;
+}
+body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(.rz-course-panel,.rz-author-list-panel,.rz-st-resource-card,.rz-records-panel){
+  box-shadow:0 9px 26px rgba(22,61,67,.07);
+}
+body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) :is(.rz-course-panel,.rz-author-list-panel) {
+  border-color:#b9d3ce;
+}
+body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) .rz-course-panel.resources {
+  border-color:#d6c498;
+  background:#fff8e9;
+}
+/* Explicit validation: discoverable on desktop/mobile, directly under the offending field. */
+body[data-rizsim-home-portal] :is(input,select,textarea).rz-field-invalid,
+body[data-rizsim-home-portal] :is(input,select,textarea)[aria-invalid="true"],
+body[data-rizsim-home-portal] .rz-author-modal :is(input,select,textarea)[aria-invalid="true"],
+body[data-rizsim-home-portal] .rz-runtime-dialog :is(input,select,textarea)[aria-invalid="true"]{
+  border:2px solid #b83d45!important;
+  background-color:#fff2f2!important;
+  box-shadow:0 0 0 3px rgba(184,61,69,.09)!important;
+}
+.rz-inline-error{
+  display:block;
+  margin:5px 0 13px!important;
+  padding:0 2px;
+  color:#992b34!important;
+  font-family:"Aptos","Segoe UI",system-ui,sans-serif;
+  font-size:.79rem;
+  font-weight:650;
+  line-height:1.45;
+}
+.rz-inline-error[hidden]{display:none!important}
+.rz-delivery-choices{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px;
+  margin:6px 0 15px;
+}
+.rz-delivery-choices label{
+  position:relative;
+  display:flex!important;
+  flex-direction:column;
+  gap:4px;
+  padding:13px 15px!important;
+  border:1.5px solid #c0d5d1;
+  border-radius:12px;
+  background:#f8fbfa;
+  color:#234d55;
+  cursor:pointer;
+  font-weight:600!important;
+  line-height:1.4!important;
+}
+.rz-delivery-choices label:has(input:checked){border-color:#168c86;background:#e7f6f1;box-shadow:0 0 0 2px #a4d8ca55}
+.rz-delivery-choices label:focus-within{outline:2px solid #177e88;outline-offset:2px}
+.rz-delivery-choices label input{position:absolute;right:12px;top:12px;width:auto!important;margin:0!important;accent-color:#087d7c}
+.rz-delivery-choices strong{display:block;margin-right:26px;color:#174e54;font-size:.86rem}
+.rz-delivery-choices small{color:#466672;font-size:.75rem;line-height:1.5}
+.rz-delivery-title{color:#234c57!important;margin:13px 0 8px;font-weight:750!important;font-size:.84rem}
+.rz-delivery-chip{
+  display:inline-flex!important;
+  padding:4px 9px;
+  border:1px solid #a7ccc2;
+  border-radius:50px;
+  background:#eaf7f1;
+  color:#225c57!important;
+  font-size:.68rem;
+  font-weight:750;
+}
+.rz-delivery-chip.is-downloadable{background:#edf3fd;border-color:#b2c9e2;color:#274f79!important}
+@media(max-width:580px){.rz-delivery-choices{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+  body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) *, 
+  body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) *::before{
+    scroll-behavior:auto;
+  }
+}

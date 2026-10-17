@@ -59,7 +59,9 @@
     const title=String(draft.title||'').trim(),description=String(draft.description||'').trim();
     if(!title||title.length>200||description.length>2000) throw new Error('Enter a title up to 200 characters and a description up to 2000 characters.');
     if(!['student_handout','reading','slides','worksheet','external_link','other'].includes(draft.type)) throw new Error('Select a resource type.');
-    const payload={title,description,material_type:draft.type,source_type:draft.file?'file':'link'};
+    const delivery=draft.file?(draft.delivery_mode||'secure_view'):'secure_view';
+     if(!['secure_view','downloadable'].includes(delivery))throw new Error('Choose Secure View or Downloadable for the file.');
+     const payload={title,description,material_type:draft.type,source_type:draft.file?'file':'link',delivery_mode:delivery};
     draft.id ||= crypto.randomUUID();
     if(draft.file) {
      const {mime}=await inspectFile(draft.file);unchanged(who);
@@ -77,7 +79,7 @@
     }
     unchanged(who);
     const data=await rpc('create_rizsim_runtime_resource',{p_kind:kind,p_scope_id:id,p_resource_id:draft.id,p_data:payload});
-    if(String(data.id)!==draft.id||data.published_to_class!==true) throw new Error('The server did not confirm publication. Refresh before retrying.');
+    if(String(data.id)!==draft.id||data.published_to_class!==true||data.delivery_mode!==delivery) throw new Error('The server did not confirm the chosen file access. Refresh before retrying.');
     draft.saved=true;
     return data;
    },

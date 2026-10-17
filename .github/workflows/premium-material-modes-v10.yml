@@ -1,0 +1,98 @@
+name: Premium Materials V10 Verification
+on:
+  push:
+    branches: ['feat/premium-material-modes-and-ui-20261017']
+  pull_request:
+    paths:
+      - 'access-*.html'
+      - 'course-material-viewer.html'
+      - 'rizsim-refinements-v10.*'
+      - 'rizsim-course-*'
+      - 'rizsim-student-workspace.js'
+      - 'edge-functions/rizsim-course-material-stream/**'
+      - 'sql/**'
+      - 'scripts/**'
+      - '.github/workflows/premium-material-modes-v10.yml'
+permissions:
+  contents: read
+concurrency:
+  group: premium-materials-v10-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: material_modes_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Premium modes, viewer and old portal boundary assertions
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          node scripts/validate_material_modes_v10.js
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_premium_ui_v3.js
+          node scripts/validate_student_workspace_v8.js
+          node scripts/validate_student_completion_v9.js
+          python scripts/validate_category_release.py
+          node scripts/test_resource_stream_v6.js
+      - name: Transactional material modes and auth in disposable PostgreSQL
+        env:
+          PGPASSWORD: isolated-test-only
+        run: |
+          set -euo pipefail
+          psql -h 127.0.0.1 -U postgres -d material_modes_test -v ON_ERROR_STOP=1 \
+            -f scripts/sql/runtime_test_schema.sql \
+            -f sql/course_runtime_v6.sql \
+            -f scripts/sql/authoring_test_schema.sql \
+            -f sql/course_authoring_v7.sql \
+            -f scripts/sql/authoring_assertions.sql \
+            -f sql/resource_delivery_modes_v10.sql \
+            -f scripts/sql/resource_delivery_assertions_v10.sql \
+            2>&1 | tee test-results/v10-postgres.txt
+      - name: Install pinned Chromium test dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: Test premium file choices, real forms, security boundaries, mobile and students
+        run: |
+          set -euo pipefail
+          python scripts/test_live_classroom_v5.py
+          python scripts/test_live_classroom_v5_extended.py
+          python scripts/test_session_confirmation_v5.py
+          python scripts/test_course_environment_v6.py
+          python scripts/test_course_authoring_v7.py
+          python scripts/test_authoring_touch_v7.py
+          python scripts/test_student_workspace_v8.py
+          python scripts/test_student_completion_v9.py
+          python scripts/test_material_modes_v10.py
+          git diff --exit-code
+          git rev-parse HEAD > test-results/v10-verified-revision.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v10-material-modes-test-evidence
+          path: test-results/
+          retention-days: 5

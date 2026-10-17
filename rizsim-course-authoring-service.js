@@ -28,7 +28,7 @@
         // No upload is attempted until the entire draft passes client validation.
         for (const r of staged) {
           if (!r.title?.trim() || r.title.length > 200) throw new Error('Every learning resource needs a title of up to 200 characters.');
-          if (r.file) { const inspected = await validate.inspectFile(r.file); r.mime_type = inspected.mime; }
+          if (r.file) { if(!['secure_view','downloadable'].includes(r.delivery_mode||'secure_view'))throw new Error('Choose a file access mode.'); const inspected = await validate.inspectFile(r.file); r.mime_type = inspected.mime; }
           else if (!validate.validURL(r.external_url)) throw new Error('A resource has an invalid web link. Correct it before saving.');
           guard(who);
         }
@@ -59,7 +59,7 @@
           keep_resources:draft.resources.filter(r => !r.isNew).map(r => r.id),
           new_resources:staged.map(r => ({id:r.id, title:r.title.trim(), description:r.description || '', material_type:r.material_type,
             source_type:r.file?'file':'link', external_url:r.file?null:validate.validURL(r.external_url), storage_path:r.storage_path || null,
-            file_name:r.file?.name || null, mime_type:r.file?r.mime_type:null, file_size:r.file?.size || null}))
+            file_name:r.file?.name || null, mime_type:r.file?r.mime_type:null, file_size:r.file?.size || null, delivery_mode:r.file?(r.delivery_mode||'secure_view'):'secure_view'}))
         };
         // Stable request ID for an unchanged retry; changing the draft creates a new receipt.
         const serialized = JSON.stringify(payload);
@@ -67,6 +67,11 @@
         const data = await rpc('save_my_rizsim_course_authoring', {p_course_id:draft.id, p_request_id:draft.requestId,
           p_expected_revision:draft.isNew?null:draft.revision, p_data:payload});
         if (data.course_id !== draft.id || !data.revision) throw new Error('The saved course was not confirmed. Retry without discarding this draft.');
+         for(const r of staged.filter(x=>x.file)){
+           const stored=(data.resources||[]).find(x=>String(x.id)===String(r.id));
+           if(!stored||stored.delivery_mode!==(r.delivery_mode||'secure_view'))
+             throw new Error('The course was saved but the selected file access was not confirmed. Refresh before further changes.');
+         }
         // Saving is already committed. A refresh failure must not falsely report a failed save.
         try { await refresh(); } catch (_) { /* A normal reload will retrieve the confirmed course. */ }
         guard(who); return data;
