@@ -30,7 +30,7 @@ AS $function$
  order by m.sort_order,m.created_at,m.id) from public.rizsim_course_materials m where m.course_id=c.id and m.active),'[]'::jsonb));
  return data||jsonb_build_object('revision',md5(data::text));
  end;
-$function$
+$function$;
 
 
 CREATE OR REPLACE FUNCTION public.get_rizsim_course_runtime(p_course_id uuid, p_kind text DEFAULT 'own'::text)
@@ -60,7 +60,7 @@ AS $function$
  and ((p_kind='own' and s.purchased_course_license_id is null) or (p_kind='purchased' and s.purchased_course_license_id=purchase));
  return jsonb_build_object('course_id',c.id,'title',c.title,'description',c.description,'kind',p_kind,'can_add',p_kind='own','license_id',purchase,'simulations',simulations,'resources',materials,'sessions',sessions);
  end;
-$function$
+$function$;
 
 
 CREATE OR REPLACE FUNCTION public.create_rizsim_runtime_resource(p_kind text, p_scope_id uuid, p_resource_id uuid, p_data jsonb)
@@ -118,7 +118,7 @@ AS $function$
  end if;
  return result;
  end;
-$function$
+$function$;
 
 
 CREATE OR REPLACE FUNCTION public.save_my_rizsim_course_authoring(p_course_id uuid, p_request_id uuid, p_expected_revision text, p_data jsonb)
@@ -208,7 +208,7 @@ AS $function$
  insert into public.rizsim_course_authoring_receipts(request_id,user_id,course_id,payload_hash,result) values(p_request_id,auth.uid(),p_course_id,payload_hash,result);
  return result;
  end;
-$function$
+$function$;
 
 
 -- Permission-checked mode lookup used by the viewer; no public storage URI, path or private metadata is disclosed.
