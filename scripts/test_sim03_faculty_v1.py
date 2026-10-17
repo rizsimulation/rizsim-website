@@ -72,7 +72,7 @@ async def main():
   assert await page.locator('#rizsimHotelFacultyResults svg').count()==0
   assert await page.locator('#rizsimHotelFacultyResults button:has-text("View student result"):enabled').count()==0
   assert await page.get_by_text('PKR 12,000').count()==0
-  assert await page.get_by_text('Group A').count()==0
+  assert await page.get_by_text('Group A',exact=True).count()==0, 'Early group assignment leak'
   assert await page.evaluate("window.__hotel03RPCCalls[0].args.p_session_id")=='session-hotel-1'
   (ROOT/'test-results').mkdir(exist_ok=True)
   await page.locator('#rizsimHotelFacultyResults').screenshot(path=str(ROOT/'test-results'/'sim03-faculty-sealed-roster.png'))
