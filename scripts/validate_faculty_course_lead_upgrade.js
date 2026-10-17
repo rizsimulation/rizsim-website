@@ -133,4 +133,25 @@ const ownerLive=testLiveChoice('owner');
 assert.equal(ownerLive.opening,'','Owner must not be redirected to the Faculty advertisement');
 assert.match(ownerLive.help,/Course Lead is the premium Faculty tier/);
 
-console.log('Fix 2 Course Lead promotion: role-gating, Live Classroom redirect, texture, compact authoring cards, CTA and motion contracts passed.');
+// The complete premium conversion section is no longer hidden below the feature
+// journey: it sits directly beneath the Faculty hero opening copy, once only.
+const heroCopyStart=html.indexOf('class="rz-clu-hero-copy"');
+const premiumSection=html.indexOf('<section class="rz-clu-cta"');
+const courseShowcase=html.indexOf('class="rz-clu-builder-wrap"');
+const journey=html.indexOf('class="rz-clu-journey"');
+assert.ok(heroCopyStart>=0 && heroCopyStart<premiumSection && premiumSection<courseShowcase && courseShowcase<journey,
+ 'The entire upgrade section must be early, after the opening message and before the showcase');
+assert.equal((html.match(/id="rzCourseLeadUpgradeButton"/g)||[]).length,1,'There must be one Upgrade CTA only');
+assert.match(css, /\.rz-clu-hero-copy \.rz-clu-cta\{/,'Premium block must be compact near the hero');
+assert.match(live, /function initialiseFloatingAccess\(\)/);
+assert.match(live, /function syncFloatingAccess\(session\)/);
+assert.match(live, /accessAutoOpen=text\(item\.session_id\)/,'Only just-created sessions should open automatically');
+assert.match(live, /card\.classList\.add\('rz-v5-access-source'\)/,'Keep legacy controls without duplicate credentials');
+assert.match(live, /if\(!s \|\| !ROLES\.includes\(s\.role\) \|\| !active\(\)\) \{ clearAccess\(\)/);
+const accessStyles=read('rizsim-live-classroom.css');
+assert.match(accessStyles, /\.rz-v5-access-layer\{position:fixed/);
+assert.match(accessStyles, /\.rz-v5-access-fab\{position:fixed/);
+assert.match(accessStyles, /#rzLiveAccessLayer\[hidden\],#rzLiveAccessFab\[hidden\]\{display:none!important\}/);
+assert.match(live,/accessFab=button\('▦  Session QR & code'/);
+
+console.log('Fix 2 Course Lead promotion: role-gating, Live Classroom redirect, texture, early CTA, compact cards, session access panel and motion contracts passed.');
