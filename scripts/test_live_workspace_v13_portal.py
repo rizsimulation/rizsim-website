@@ -54,9 +54,11 @@ def run(browser, base):
            'original authenticated session runs inside Studio, not copied')
     verify(page.locator('#rzLiveAccessFab').is_visible(),
            'original V12 minimized/reopen QR access remains accessible')
-    wait_ui(page, '#rzLiveAccessQR svg')
+    # V12 floating QR is intentionally hidden while its panel is minimized.
+    page.locator('#rzLiveAccessQR svg').wait_for(state='attached',timeout=18000)
     page.locator('#rzV13SubviewShare').click()
     wait_ui(page, '#rzV13ShareDetails:not([hidden])')
+    wait_ui(page, '#rzV13ShareQR svg:visible')
     creds = page.evaluate('''() => ({
        verified:RizSimLiveClassroom.verifiedShare(),
        studioCode:document.getElementById('rzV13ShareCode').textContent,
