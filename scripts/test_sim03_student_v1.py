@@ -94,6 +94,12 @@ async def run_arm(browser,port,arm):
  needle="const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/+esm');"
  assert src.count(needle)==1
  patched=src.replace(needle,"const createClient=window.__sim03CreateClient;")
+ # Only in the isolated mock-loaded JavaScript, collect every receipt criterion
+ # without altering the published cloud source or bypassing a failed check.
+ receipt_check="if(value?.status!=='submitted'||String(value.attempt_id)!==attempt.id||\n        !validReceived(value.record))"
+ instrument="window.__hotel03ReceiptCheck={value,attempt,assignedGroup,assignedQuestion,valid:validReceived(value.record),parts:{id:String(value.attempt_id)===attempt.id,group:value.record?.group===assignedGroup,question:value.record?.condition_question===assignedQuestion,session:value.record?.session_id===attempt.classroom_session_id,number:Number.isSafeInteger(Number(value.record?.willing_to_pay_pkr)),demo:value.record?.demo_only===false,version:value.record?.version}};"+receipt_check
+ assert patched.count(receipt_check)==1
+ patched=patched.replace(receipt_check,instrument)
  async def stub(route):
   await route.fulfill(status=200,content_type='application/javascript',body=patched)
  await page.route('**/simulation-assets/hotel-judgment/cloud.js',stub)
@@ -154,6 +160,7 @@ async def run_arm(browser,port,arm):
       group:window.RizHotelParticipantLive?.assignedGroup,
       state:window.RizHotelParticipantLive?.state},
     sourceCommitted:window.RizHotelSim03GetRecord?.(),
+    receiptCheck:window.__hotel03ReceiptCheck,
     gate:document.getElementById('rizHotelAuthGate')?.innerText
   })"""),errors)
   await page.screenshot(path=str(ROOT/'test-results'/f'sim03-submit-failure-{arm}.png'),full_page=True)
