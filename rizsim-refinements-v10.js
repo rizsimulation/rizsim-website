@@ -38,6 +38,15 @@
   reveal(input);
   return false;
  }
+ // Date-range validation must show the particular missing or incorrect blank,
+ // rather than placing an error only at the bottom of the setup screen.
+ function invalidWindow(start,end,message){
+  if(!start||!end)return false;
+  const startWrong=!start.value||Number.isNaN(new Date(start.value).getTime());
+  const endWrong=!end.value||Number.isNaN(new Date(end.value).getTime());
+  const first=startWrong?start:endWrong?end:/cannot begin|before the licence starts/i.test(String(message))?start:end;
+  return reject(first,message);
+ }
  function required(input,label){
   if(!input)return false;
   const v=String(input.value||'').trim();
@@ -78,6 +87,6 @@
  }
  document.addEventListener('input',clearCorrected,true);
  document.addEventListener('change',clearCorrected,true);
- window.RizSimFieldFeedback=Object.freeze({show:fieldError,required,reveal,invalid:reject});
+ window.RizSimFieldFeedback=Object.freeze({show:fieldError,required,reveal,invalid:reject,invalidWindow});
  window.RizSimFileDelivery=Object.freeze({picker});
 })();
