@@ -43,6 +43,7 @@ jobs:
         run: |
           mkdir -p test-results
           python scripts/test_sim02_faculty_v1.py
+          python scripts/test_sim02_student_v1.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
