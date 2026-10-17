@@ -25,8 +25,21 @@ def run(browser, base):
     wait_ui(page, '#rzLiveV13Workspace:not([hidden])')
     verify(page.locator('#rzV13Tabstudio[aria-selected=true]').count() == 1,
            'Session Studio opens by default')
-    verify(page.locator('#rzLiveRunning').is_visible() and
-           page.locator('#rzLiveRunning').evaluate('n=>!!n.closest("#rzV13StudioOverview")'),
+    try:
+        page.locator('#rzLiveRunning:visible').wait_for(timeout=6500)
+    except Exception:
+        print('V13 SESSION DEBUG', page.evaluate('''() => ({
+          url:location.href,workspace:RizSimLiveWorkspace?.state(),
+          runHidden:document.getElementById('rzLiveRunning')?.hidden,
+          runParent:document.getElementById('rzLiveRunning')?.parentElement?.id,
+          studioHidden:document.getElementById('rzV13PaneStudio')?.hidden,
+          route:window.RizSimLiveClassroom?.navigate?'V5 initialized':'V5 unavailable',
+          pageText:document.getElementById('rzLiveRunning')?.innerText?.slice(0,500),
+          app:document.getElementById('authenticatedApp')?.className,
+          panelRect:document.getElementById('rzLiveRunning')?.getBoundingClientRect().toJSON()
+        })'''), flush=True)
+        raise
+    verify(page.locator('#rzLiveRunning').evaluate('n=>!!n.closest("#rzV13StudioOverview")'),
            'original authenticated session runs inside Studio, not copied')
     verify(page.locator('#rzLiveAccessFab').is_visible(),
            'original V12 minimized/reopen QR access remains accessible')
