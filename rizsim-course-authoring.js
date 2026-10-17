@@ -49,9 +49,16 @@
     modals.push({dialog:d,focus:document.activeElement});document.body.append(d);d.showModal();
     x.focus({preventScroll:true});return {d,content};
   }
-  function notice(title, message, success=false) {
+  function notice(title, message, success=false, draftFile=null) {
     const {d,content}=modal(title,message);const mark=node('span','rz-author-notice-icon'+(success?' success':''));mark.append(icon(success?'check':'file'));content.append(mark);
-    const b=button(success?'Done':'Close',()=>closeModal(d),'primary');content.append(b);b.focus({preventScroll:true});return d;
+    const actions=node('div','rz-author-actions');
+    // Course resources are first staged on this device; offer Review File immediately
+    // without suggesting they have already been saved or published to students.
+    if(draftFile?.file){
+      const review=button('Review File',()=>previewDraftFile(draftFile));
+      review.classList.add('rz-review-file');review.dataset.authorReview='staged-success';actions.append(review);
+    }
+    const b=button(success?'Done':'Close',()=>closeModal(d),'primary');actions.append(b);content.append(actions);b.focus({preventScroll:true});return d;
   }
   function confirm(title, message, action, label='Delete') {
     const {d,content}=modal(title,message),error=node('p','rz-author-error');error.hidden=true;error.setAttribute('role','alert');
@@ -137,7 +144,12 @@
       const actions=node('div','rz-author-item-actions');
       // A draft file is staged privately and has no readable saved object yet.
       // Persisted files open only through the existing permission-checked viewer.
-      if(!isSim&&item.source_type==='file'&&!item.isNew&&item.id){
+      if(!isSim&&item.source_type==='file'&&item.file&&item.isNew){
+        const review=button('Review File',()=>previewDraftFile(item));
+        review.classList.add('rz-review-file');review.dataset.authorReview='staged';
+        review.setAttribute('aria-label','Review '+text(item.title||item.file.name)+' before saving the course');
+        actions.append(review);
+      }else if(!isSim&&item.source_type==='file'&&!item.isNew&&item.id){
         const review=node('a','rz-author-btn rz-review-file','Review File');
         review.href='/course-material-viewer.html?material='+encodeURIComponent(text(item.id));
         review.target='_blank';review.rel='noopener noreferrer';
@@ -211,19 +223,58 @@
     const caption=node('div','rz-author-file-caption'),mark=node('span','rz-author-item-icon');mark.append(icon(mime?.startsWith('image/')?'image':'file'));
     const copy=node('div');copy.append(node('strong','',file.name),node('small','',file.name.split('.').pop().toUpperCase()+' \u00b7 '+(file.size/1024).toFixed(1)+' KB'));caption.append(mark,copy);return caption;
   }
+  function previewDraftFile(item){
+    // A staged document is a local File, not a persisted course material ID.
+    // Never fake a saved material ID, upload it, create a signed URL or bypass RLS.
+    if(!allowed()||!isActive()||!(item?.file instanceof File))return;
+    const file=item.file, title=text(item.title||file.name);
+    const mime=text(item.mime_type||file.type).toLowerCase();
+    const pdf=mime==='application/pdf'||(!mime&&/\.pdf$/i.test(file.name));
+    const image=['image/png','image/jpeg'].includes(mime)||(!mime&&/\.(png|jpe?g)$/i.test(file.name));
+    if(!pdf&&!image){notice('Preview unavailable','Only PDF, PNG and JPEG documents can be reviewed here.');return;}
+    const {d,content}=modal('Review File — '+title,
+      'Instructor-only preview of the document on this device. It is not uploaded, saved to the course or published to students yet.',true);
+    d.dataset.authorDialog='draft-preview';
+    d.dataset.deliveryMode=item.delivery_mode||'secure_view';
+    const mode=item.delivery_mode==='downloadable'?'Downloadable':'Secure View';
+    const info=node('div','rz-author-preview-meta');
+    info.append(node('span','rz-author-preview-tag','Local draft • not yet saved'),
+      node('span','rz-delivery-chip'+(mode==='Downloadable'?' is-downloadable':''),'Student access after saving: '+mode));
+    content.append(info);
+    // Browser-native PDF display lets the author inspect all pages without
+    // sending their draft file to Supabase or any remote preview service.
+    const src=URL.createObjectURL(file);
+    d.addEventListener('close',()=>URL.revokeObjectURL(src),{once:true});
+    const area=node('div','rz-author-preview-media');
+    if(pdf){
+      const frame=node('iframe','rz-author-preview-frame');
+      frame.title='Local PDF preview: '+title;frame.src=src;
+      frame.referrerPolicy='no-referrer';area.append(frame);
+    }else{
+      const img=node('img','rz-author-preview-image');
+      img.alt='Local image preview: '+title;img.src=src;img.draggable=false;
+      area.append(img);
+    }
+    content.append(area,node('p','rz-author-preview-footnote',
+      'This is an instructor preview of your original file. The selected Secure View or Downloadable setting governs student access after you save and publish the resource.'));
+    const actions=node('div','rz-author-actions'),done=button('Back to course builder',()=>closeModal(d),'primary');
+    actions.append(done);content.append(actions);done.focus({preventScroll:true});
+  }
   function sourcePicker(draft){
     if(busy||!draft.can_edit)return;if(draft.resources.length>=100){notice('Course limit','Use up to 100 learning resources in one course.');return;}
     const gen=generation,{d,content}=modal('Add a learning resource','Choose a file or a valid web link. Resources are staged in this draft and saved when you publish the course or save changes.',true);d.dataset.authorDialog='resource';
     const zone=node('div','rz-author-drop');zone.tabIndex=0;zone.setAttribute('aria-label','Drop a learning resource or browse files');
     const mark=node('span','rz-author-upload-icon');mark.append(icon('file'));const input=node('input','rz-author-file-input');input.type='file';input.accept='.pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg';input.tabIndex=-1;
     const browse=button('Browse files',()=>input.click(),'primary');zone.append(mark,node('h3','','Drop your file here'),node('p','','PDF, PNG or JPEG \u00b7 up to 25 MB'),browse,input);
-    const caption=node('div');caption.dataset.authorFileCaption='true';caption.hidden=true;let serial=0,selected=null;
+    const caption=node('div');caption.dataset.authorFileCaption='true';caption.hidden=true;let serial=0,selected=null,selectedMime=null;
     async function choose(files){
       if(!files?.length)return;if(files.length!==1){notice('Choose one file','Choose one file at a time so each resource has its own title.');return;}
-      const seq=++serial;selected=files[0];caption.hidden=false;caption.replaceChildren(fileCaption(selected,selected.type));
-      const publish=button('Publish',()=>resourceDetails(draft,{file:selected,mime_type:selected.type,source_type:'file'},d),'primary');publish.dataset.authorFilePublish='true';publish.disabled=true;caption.firstChild.append(publish);
+      const seq=++serial;selected=files[0];selectedMime=null;caption.hidden=false;caption.replaceChildren(fileCaption(selected,selected.type));
+      const publish=button('Publish',()=>resourceDetails(draft,{file:selected,mime_type:selectedMime||selected.type,source_type:'file'},d),'primary');publish.dataset.authorFilePublish='true';publish.disabled=true;
+      const review=button('Review File',()=>previewDraftFile({file:selected,title:selected.name,mime_type:selectedMime}));review.dataset.authorReview='picker';review.classList.add('rz-review-file');review.disabled=true;
+      caption.firstChild.append(review,publish);
       try{const value=await validation().inspectFile(selected);if(seq!==serial||gen!==generation||!d.isConnected)return;
-        caption.querySelector('.rz-author-item-icon').replaceChildren(icon(value.mime.startsWith('image/')?'image':'file'));publish.disabled=false;
+        selectedMime=value.mime;caption.querySelector('.rz-author-item-icon').replaceChildren(icon(value.mime.startsWith('image/')?'image':'file'));publish.disabled=false;review.disabled=false;
       }catch(e){if(seq===serial&&gen===generation&&d.isConnected)caption.append(node('p','rz-author-error',e.message));}
     }
     input.addEventListener('change',()=>choose(input.files));zone.addEventListener('keydown',e=>{if(e.target===zone&&[' ','Enter'].includes(e.key)){e.preventDefault();input.click();}});
@@ -249,12 +300,21 @@
     const group=node('fieldset','rz-author-types'),legend=node('legend','','Resource type'),choices=node('div');group.append(legend,choices);
     types.forEach(([value,name])=>{const wrap=node('label'),radio=node('input');radio.type='radio';radio.name='author-resource-type';radio.value=value;radio.checked=value===(resource.file?'reading':'external_link');wrap.append(radio,document.createTextNode(name));choices.append(wrap);});
     const dl=node('label','','Description (optional)'),desc=node('textarea');desc.maxLength=2000;desc.rows=3;desc.id='rzAuthorResourceDescription';dl.htmlFor=desc.id;dl.append(desc);
-    const error=node('p','rz-author-error');error.hidden=true;error.setAttribute('role','alert');const actions=node('div','rz-author-actions'),submit=node('button','rz-author-btn primary','Publish');submit.type='submit';submit.id='rzAuthorResourcePublish';actions.append(button('Back',()=>closeModal(d)),submit);form.append(label);if(delivery)form.append(delivery.element);form.append(group,dl,error,actions);content.append(form);
+    const error=node('p','rz-author-error');error.hidden=true;error.setAttribute('role','alert');const actions=node('div','rz-author-actions'),submit=node('button','rz-author-btn primary','Publish');submit.type='submit';submit.id='rzAuthorResourcePublish';
+    actions.append(button('Back',()=>closeModal(d)));
+    if(resource.file){
+      const review=button('Review File',()=>previewDraftFile({
+        file:resource.file,title:title.value.trim()||resource.file.name,
+        mime_type:resource.mime_type,delivery_mode:delivery?.value()||'secure_view'
+      }));
+      review.classList.add('rz-review-file');review.dataset.authorReview='details';actions.append(review);
+    }
+    actions.append(submit);form.append(label);if(delivery)form.append(delivery.element);form.append(group,dl,error,actions);content.append(form);
     form.addEventListener('submit',e=>{e.preventDefault();if(!window.RizSimFieldFeedback?.required(title,'a resource title')){title.focus({preventScroll:true});return;}
       if(!allowed()||current!==draft)return;
       const r={...resource,id:crypto.randomUUID(),title:title.value.trim(),description:desc.value.trim(),material_type:form.querySelector('input[name="author-resource-type"]:checked').value,delivery_mode:delivery?.value()||'secure_view',isNew:true,published_to_class:false};
       draft.resources.push(r);dirty(draft);listItems(draft);closeModal(parent);
-      notice('Added to course draft','The resource is ready. '+(draft.isNew?'PUBLISH COURSE':'SAVE CHANGES')+' will save it to your course library. Student publication is controlled in Live Classroom.',true);
+      notice('Added to course draft','The resource is ready. '+(draft.isNew?'PUBLISH COURSE':'SAVE CHANGES')+' will save it to your course library. Student publication is controlled in Live Classroom.',true,r.file?r:null);
     });title.focus({preventScroll:true});
   }
   function draw(){

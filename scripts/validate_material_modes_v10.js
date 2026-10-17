@@ -67,4 +67,25 @@ check('Validation scroller handles Faculty, Course Lead, administrator and sessi
  files.faculty.includes("window.RizSimFieldFeedback?.invalid(document.getElementById(\"classroomSessionName\")") &&
  files.faculty.includes("window.RizSimFieldFeedback?.invalidWindow(document.getElementById(\"courseClassroomLiveStart\")"));
 
+check('Unsaved Course Builder files have local Review File actions at all four stages',
+ files.author.includes("review.dataset.authorReview='picker'") &&
+ files.author.includes("review.dataset.authorReview='details'") &&
+ files.author.includes("review.dataset.authorReview='staged-success'") &&
+ files.author.includes("review.dataset.authorReview='staged'"));
+check('Only saved Course Builder materials use server-authorized viewer',
+ files.author.includes("item.source_type==='file'&&item.file&&item.isNew") &&
+ files.author.includes("item.source_type==='file'&&!item.isNew&&item.id") &&
+ files.author.includes("review.href='/course-material-viewer.html?material='"));
+const stagedPreview=files.author.slice(files.author.indexOf('function previewDraftFile('),files.author.indexOf('function sourcePicker('));
+check('Staged file review requires Course Lead and actual local File',
+ stagedPreview.includes('allowed()')&&stagedPreview.includes('isActive()')&&stagedPreview.includes('item?.file instanceof File'));
+check('Staged review stays local, revokes memory blob, supports PDF and image',
+ stagedPreview.includes('URL.createObjectURL(file)')&&
+ stagedPreview.includes("URL.revokeObjectURL(src)") &&
+ stagedPreview.includes("node('iframe'")&&stagedPreview.includes("node('img'")&&
+ !/\.storage\.|\.upload\(|\.rpc\(|fetch\(|createSignedUrl|getPublicUrl/.test(stagedPreview));
+check('Staged review correctly describes unpublished content to Course Leads',
+ stagedPreview.includes('not uploaded, saved to the course or published to students')&&
+ stagedPreview.includes('after you save and publish the resource'));
+
 console.log('PASS V10 integrated static assertions: '+assertions);

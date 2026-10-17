@@ -113,6 +113,78 @@
 .rz-author-notice-icon {display:flex;align-items:center;justify-content:center;margin:0 auto 23px;width:57px;height:57px;background:#fff1d0;border:1px solid #dcc492;border-radius:50%;color:#826022;}
 .rz-author-notice-icon.success {background:#e4f3e7;border-color:#a9cfb2;color:#296845;}
 .rz-author-notice-icon svg {width:31px;height:31px;}
+/* Course Lead's unpublished-file review stays on-device and uses the familiar authoring modal. */
+.rz-author-preview-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  align-items:center;
+  margin:1px 0 16px;
+}
+.rz-author-preview-tag{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:5px 11px;
+  background:#e9f5f1;
+  border:1px solid #b5d4c8;
+  border-radius:100px;
+  color:#245b59;
+  font-size:.74rem;
+  font-weight:750;
+}
+.rz-author-preview-media{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  min-height:280px;
+  border:1px solid #c3d7d2;
+  border-radius:14px;
+  background:#f3f7f6;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+}
+.rz-author-preview-frame{
+  box-sizing:border-box;
+  display:block;
+  width:100%;
+  height:min(54dvh,510px);
+  min-height:300px;
+  background:#fff;
+  border:0;
+}
+.rz-author-preview-image{
+  display:block;
+  max-width:100%;
+  max-height:min(54dvh,510px);
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+.rz-author-preview-footnote{
+  color:#4e6871;
+  font-size:.78rem;
+  line-height:1.6;
+  margin:14px 0 5px;
+}
+.rz-author-item-actions>.rz-review-file,
+.rz-author-actions>.rz-review-file{
+  border-color:#8ebdb4;
+  color:#155b62;
+  background:#eef8f5;
+}
+.rz-author-item-actions>.rz-review-file:hover,
+.rz-author-actions>.rz-review-file:hover{
+  border-color:#398f82;
+  background:#e2f2ed;
+}
+@media(max-width:760px){
+  .rz-author-preview-frame{height:min(53dvh,480px);min-height:250px}
+  .rz-author-preview-media{min-height:250px}
+  .rz-author-preview-meta{gap:7px}
+}
+
 @media(hover:none),(pointer:coarse){.rz-author-card .reveal,.rz-author-item .reveal {opacity:1;transform:none;pointer-events:auto;}}
 @media(prefers-reduced-motion:reduce){.rz-author-card,.rz-author-btn,.rz-author-card .reveal,.rz-author-item .reveal,.rz-author-drop {transition:none !important;}.rz-author-card:hover,.rz-author-card:focus-within {transform:none;}}
 @media(max-width:760px){.rz-author-paths,.rz-author-details,.rz-author-add-grid,.rz-author-columns {grid-template-columns:1fr;}.rz-author-paths{gap:18px;margin-top:15px;}.rz-author-card.tall{min-height:265px;}.rz-author-modal.is-wide{width:calc(100vw - 24px);height:calc(100dvh - 30px);}.rz-author-modal-body{padding:19px;}.rz-author-modal-head{padding:21px 61px 18px 19px;}.rz-author-savebar{align-items:stretch;flex-direction:column;}.rz-author-file-caption{flex-wrap:wrap;}.rz-author-file-caption>.rz-author-btn{margin-left:auto;}.rz-author-linkrow{gap:10px;}.rz-author-heading h1{font-size:1.45rem;}.rz-author-card .reveal,.rz-author-item .reveal{opacity:1;transform:none;pointer-events:auto;}}
