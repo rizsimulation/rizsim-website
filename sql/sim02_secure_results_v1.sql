@@ -345,6 +345,20 @@ declare
   v_record jsonb;
   v_metrics jsonb;
 begin
+  -- Prevent direct API reassignment of a hosted simulation's identity,
+  -- which would otherwise evade product-scoped completion guards.
+  if new.product_id is distinct from old.product_id
+     or new.user_id is distinct from old.user_id
+     or new.classroom_session_id is distinct from old.classroom_session_id then
+    if exists (
+      select 1 from public.products p
+      where p.id in (old.product_id,new.product_id)
+        and p.slug in ('insight-to-implication-bystander',
+                       'system-1-system-2-thinking')
+    ) then
+      raise exception 'RizSim academic attempt owner, product and session are immutable.';
+    end if;
+  end if;
   if new.status='submitted' and old.status is distinct from 'submitted' then
     select p.slug into v_slug from public.products p where p.id=new.product_id;
     if v_slug='system-1-system-2-thinking' then
