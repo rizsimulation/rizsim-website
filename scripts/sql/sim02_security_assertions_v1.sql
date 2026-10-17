@@ -102,3 +102,74 @@ set role anon;
 select public.sim02_reject('anonymous blocked from authorized scores',
  $$select public.get_my_rizsim_s1s2_personal_result('30000000-0000-4000-8000-000000000001')$$);
 reset role;
+
+
+-- STEP 5: real-database authoritative locking, independent of browser behavior.
+-- All role/attempt IDs and response values below are synthetic CI fixtures.
+select public.sim02_reject('student cannot replace locked KR option via direct UPDATE',
+ $$update public.simulation_responses
+      set response_data=jsonb_set(response_data,'{record,kr,a,0}','3'::jsonb)
+    where attempt_id='30000000-0000-4000-8000-000000000002'
+      and question_key='system-1-system-2-v1-record'$$);
+select public.sim02_reject('student cannot clear locked KR timestamp',
+ $$update public.simulation_responses
+      set response_data=jsonb_set(response_data,'{record,kr,at}','null'::jsonb)
+    where attempt_id='30000000-0000-4000-8000-000000000002'
+      and question_key='system-1-system-2-v1-record'$$);
+select public.sim02_reject('student cannot rewrite locked KG',
+ $$update public.simulation_responses
+      set response_data=jsonb_set(response_data,'{record,kg,a,0}','3'::jsonb)
+    where attempt_id='30000000-0000-4000-8000-000000000001'
+      and question_key='system-1-system-2-v1-record'$$);
+update public.simulation_responses
+ set response_data=jsonb_set(response_data,'{record,kg,a,0}','1'::jsonb)
+ where attempt_id='30000000-0000-4000-8000-000000000002'
+   and question_key='system-1-system-2-v1-record';
+select public.sim02_assert('genuine unlocked KG answer remains editable',
+ (select response_data #>> '{record,kg,a,0}'='1' from public.simulation_responses
+   where attempt_id='30000000-0000-4000-8000-000000000002'));
+select public.sim02_reject('incomplete Student cannot force a submitted attempt',
+ $$update public.simulation_attempts set status='submitted'
+    where id='30000000-0000-4000-8000-000000000002'$$);
+select public.sim02_assert('attempt remains in progress after rejected submission',
+ (select status='in_progress' from public.simulation_attempts
+  where id='30000000-0000-4000-8000-000000000002'));
+-- A new unrelated simulation cannot be accidentally locked by Sim01/Sim02 rules.
+insert into public.simulation_responses(attempt_id,question_key,response_data)
+values('30000000-0000-4000-8000-000000000003','unrelated-test','{"saved":true}'::jsonb);
+update public.simulation_responses set response_data='{"saved":false}'::jsonb
+  where attempt_id='30000000-0000-4000-8000-000000000003'
+    and question_key='unrelated-test';
+select public.sim02_assert('unrelated product remains unaffected',
+ (select response_data->>'saved'='false' from public.simulation_responses
+ where attempt_id='30000000-0000-4000-8000-000000000003'
+   and question_key='unrelated-test'));
+-- Sim01 locked Knowledge Review must be immutable without relying on JS.
+insert into public.products values
+ ('10000000-0000-4000-8000-000000000004','simulation','insight-to-implication-bystander');
+insert into public.simulation_attempts(id,user_id,product_id,classroom_session_id,status) values
+ ('30000000-0000-4000-8000-000000000004','00000000-0000-4000-8000-000000000004',
+  '10000000-0000-4000-8000-000000000004',null,'in_progress');
+insert into public.simulation_responses(attempt_id,question_key,response_data) values
+ ('30000000-0000-4000-8000-000000000004','insight-bystander-v1-record',
+ jsonb_build_object('record',jsonb_build_object(
+  'id','synthetic-locked-01',
+  'order',jsonb_build_object('kr','["K1","K2","K3","K4","K5","K6"]'::jsonb),
+  'locks','{"kr":true,"source":false,"bridge":false,"transfer":false,"feedback":false,"kg":false}'::jsonb,
+  'picks','{"kr":{"K1":"A","K2":"C","K3":"B","K4":"D","K5":"B","K6":"C"},"source":null,"transfer":null,"kg":{}}'::jsonb,
+  'lockedAt',jsonb_build_object('kr',now())
+  )));
+select public.sim02_reject('Sim01 KR cannot change after server lock',
+ $$update public.simulation_responses
+   set response_data=jsonb_set(response_data,'{record,picks,kr,K1}','"D"'::jsonb)
+   where attempt_id='30000000-0000-4000-8000-000000000004'$$);
+select public.sim02_reject('Sim01 KR cannot be unlocked',
+ $$update public.simulation_responses
+   set response_data=jsonb_set(response_data,'{record,locks,kr}','false'::jsonb)
+   where attempt_id='30000000-0000-4000-8000-000000000004'$$);
+select public.sim02_reject('Sim01 incomplete student cannot force submit',
+ $$update public.simulation_attempts set status='submitted'
+    where id='30000000-0000-4000-8000-000000000004'$$);
+select public.sim02_assert('Sim01 progress/records still unchanged',
+ (select response_data #>> '{record,picks,kr,K1}'='A' from public.simulation_responses
+ where attempt_id='30000000-0000-4000-8000-000000000004'));
