@@ -181,8 +181,8 @@ def run(browser,url):
     import struct,zlib
     def chunk(t,payload):
         return struct.pack('>I',len(payload))+t+payload+struct.pack('>I',zlib.crc32(t+payload)&0xffffffff)
-    png=(b'\x5cx89PNG\x5cr\x5cn\x5cx1a\x5cn'+chunk(b'IHDR',struct.pack('>IIBBBBB',1,1,8,6,0,0,0))+
-         chunk(b'IDAT',zlib.compress(b'\x5cx00\x5cxff\x5cx00\x5cx00\x5cxff'))+chunk(b'IEND',b''))
+    png=(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',1,1,8,6,0,0,0))+
+         chunk(b'IDAT',zlib.compress(b'\x00\xff\x00\x00\xff'))+chunk(b'IEND',b''))
     p.locator('.rz-author-file-input').set_input_files({'name':'small-image.png','mimeType':'image/png','buffer':png})
     p.wait_for_selector('[data-author-file-publish]:not([disabled])')
     p.locator('[data-author-file-publish]').click()
