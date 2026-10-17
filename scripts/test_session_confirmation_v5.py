@@ -38,7 +38,12 @@ def run(browser,url):
     base.check('Faculty cannot use Course Lead confirmation path',page.evaluate('RizSimSessionConfirmation.ask("existing-course",true)') is False)
     base.close(ctx)
     ctx,page,errors=base.page_for(browser,url,'course_lead','?live=own-running&selection=course-1&live_session=existing-course#classroom')
+    # V13 deliberately opens Studio first; authorized aggregate results live in the Insights tab.
+    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])')
+    page.locator('#rzV13Tabinsights').click()
     page.wait_for_selector('#courseResultRows:visible')
+    base.check('Existing Course Lead results only appear in their authorized Class Insights section',
+               page.locator('#courseResultRows').evaluate('n=>!!n.closest("#rzV13Paneinsights")'))
     page.locator('.classroom-created-card:visible [data-close-classroom-session]').click()
     page.wait_for_selector('#rzEndSessionDialog[open]')
     page.locator('#rzEndSessionConfirm').click()
