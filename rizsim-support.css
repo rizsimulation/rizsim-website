@@ -1,0 +1,31 @@
+/* Scoped, additive RizSim support styling: existing global brand/nav remains locked. */
+.rz-support-panel{margin-top:26px;padding:28px;border:1px solid #d7e6e3;background:#fff;border-radius:22px;box-shadow:0 9px 28px rgba(4,25,40,.045);max-width:1020px}
+.rz-support-kicker{display:block;font-size:11px;font-weight:850;letter-spacing:.11em;color:#128681;margin-bottom:8px}
+.rz-support-heading h2{margin:0 0 8px;font-size:clamp(20px,2.1vw,27px);color:#123949}
+.rz-support-heading p{color:#607987;margin:0 0 18px;line-height:1.65;font-size:14px}
+.rz-support-email{display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;border-radius:13px;padding:13px 16px;background:#edf8f6;border:1px solid #cae6df;font-size:15px;font-weight:700;color:#174a52;overflow-wrap:anywhere}
+.rz-support-email-action,.rz-support-send{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:11px;padding:12px 19px;min-height:42px;color:#fff!important;background:#12877f!important;font:inherit;font-size:13px;font-weight:800;text-decoration:none!important;cursor:pointer}
+.rz-support-email-action:hover,.rz-support-send:hover{background:#0b6e69!important}
+.rz-support-send:disabled{opacity:.55;cursor:wait}
+.rz-support-form{margin-top:24px}
+.rz-support-form label{display:block;font-size:14px;font-weight:800;color:#234958}
+.rz-support-category,.rz-support-message{display:block;width:100%;max-width:100%;box-sizing:border-box;margin-top:10px;border:1px solid #bfcfcf;border-radius:12px;background:#fff;color:#173b47;padding:12px 14px;line-height:1.5;font:inherit;font-size:14px;font-weight:450}
+.rz-support-message{min-height:125px;resize:vertical}
+.rz-support-category:focus,.rz-support-message:focus,.rz-owner-reports select:focus{outline:3px solid #8ce2d6;outline-offset:2px}
+.rz-support-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px}
+.rz-support-foot small{font-size:12px;color:#647b84}
+.rz-support-status{min-height:20px;margin:12px 0 0;color:#315e60;font-size:13px;line-height:1.6}
+.rz-owner-reports{border-top:1px solid #e0ebe9;padding:23px 8px}
+.rz-owner-reports h3{margin:0 0 8px;color:#173b47}
+.rz-owner-reports p{color:#607987;line-height:1.6}
+.rz-owner-reports-tools{display:flex;justify-content:flex-end;margin:15px 0}
+.rz-owner-reports-scroll{overflow-x:auto}
+.rz-owner-reports-table{width:100%;border-collapse:collapse;min-width:720px;table-layout:fixed}
+.rz-owner-reports-table th,.rz-owner-reports-table td{padding:12px;vertical-align:top;text-align:left;border-bottom:1px solid #dde8e7;font-size:13px;overflow-wrap:anywhere}
+.rz-owner-reports-table th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#607987}
+.rz-owner-reports-table th:nth-child(1){width:17%}.rz-owner-reports-table th:nth-child(2){width:20%}.rz-owner-reports-table th:nth-child(3){width:14%}.rz-owner-reports-table th:nth-child(4){width:35%}
+.rz-owner-reports-table td small{display:block;margin-top:4px;color:#6b8490;font-size:12px}
+.rz-owner-reports-table select{max-width:100%;border:1px solid #bfd8d6;border-radius:8px;padding:7px;font:inherit;font-size:12px}
+.rz-owner-report-message{white-space:pre-wrap}
+#rzOwnerReportsTab[hidden]{display:none!important}
+@media(max-width:650px){.rz-support-panel{padding:20px 16px}.rz-support-email{align-items:stretch}.rz-support-email-action{width:100%}}

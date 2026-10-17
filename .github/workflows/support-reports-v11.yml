@@ -1,0 +1,24 @@
+name: Support Reports V11 checks
+on:
+  pull_request:
+    paths:
+      - 'access-in.html'
+      - 'access-out.html'
+      - 'rizsim-support.js'
+      - 'rizsim-support.css'
+      - 'sql/support_reports_v11.sql'
+      - 'scripts/validate_support_reports_v11.js'
+      - '.github/workflows/support-reports-v11.yml'
+  workflow_dispatch:
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check support JavaScript syntax
+        run: node --check rizsim-support.js
+      - name: Check source and security contracts
+        run: node scripts/validate_support_reports_v11.js

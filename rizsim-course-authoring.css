@@ -16,12 +16,12 @@
 .rz-author-btn.text {border:0;background:transparent;padding:0;min-height:30px;color:#096576;}
 .rz-author-btn:disabled {opacity:.43;cursor:not-allowed;box-shadow:none;}
 #rzCourseAuthoring :focus-visible,.rz-author-modal :focus-visible {outline:3px solid #bd9854;outline-offset:4px;}
-.rz-author-paths {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;max-width:820px;margin:24px auto 0;}
+.rz-author-paths {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:850px;margin:15px auto 0;}
 .rz-author-card {position:relative;display:flex;flex-direction:column;min-width:0;border:1px solid #b9d6cc;border-radius:22px;padding:25px;overflow:hidden;box-shadow:0 10px 27px rgba(29,73,82,.055);transition:transform .24s,box-shadow .24s,border-color .24s;}
 .rz-author-card.mint,.rz-author-item.mint {background:linear-gradient(140deg,#edf7f1,#dcefe8);border-color:#b1cfc1;}
 .rz-author-card.lavender {background:linear-gradient(140deg,#f3f0fb,#e6e5f7);border-color:#c8c4e2;}
 .rz-author-card.sand,.rz-author-item.sand {background:linear-gradient(135deg,#fff8eb,#f5ebd5);border-color:#dfcba5;}
-.rz-author-card.tall {min-height:460px;padding:30px;}
+.rz-author-card.tall {min-height:255px;padding:22px 24px;}
 .rz-author-card:hover,.rz-author-card:focus-within {transform:translateY(-3px);box-shadow:0 15px 34px rgba(20,59,70,.10);border-color:#79aaa1;}
 .rz-author-card-icon {display:inline-flex;align-items:center;justify-content:center;width:57px;height:57px;background:rgba(255,255,255,.62);border:1px solid rgba(109,153,150,.25);border-radius:17px;margin-bottom:22px;color:#086574;}
 .rz-author-card-icon svg {width:30px;height:30px;}
@@ -187,4 +187,19 @@
 
 @media(hover:none),(pointer:coarse){.rz-author-card .reveal,.rz-author-item .reveal {opacity:1;transform:none;pointer-events:auto;}}
 @media(prefers-reduced-motion:reduce){.rz-author-card,.rz-author-btn,.rz-author-card .reveal,.rz-author-item .reveal,.rz-author-drop {transition:none !important;}.rz-author-card:hover,.rz-author-card:focus-within {transform:none;}}
-@media(max-width:760px){.rz-author-paths,.rz-author-details,.rz-author-add-grid,.rz-author-columns {grid-template-columns:1fr;}.rz-author-paths{gap:18px;margin-top:15px;}.rz-author-card.tall{min-height:265px;}.rz-author-modal.is-wide{width:calc(100vw - 24px);height:calc(100dvh - 30px);}.rz-author-modal-body{padding:19px;}.rz-author-modal-head{padding:21px 61px 18px 19px;}.rz-author-savebar{align-items:stretch;flex-direction:column;}.rz-author-file-caption{flex-wrap:wrap;}.rz-author-file-caption>.rz-author-btn{margin-left:auto;}.rz-author-linkrow{gap:10px;}.rz-author-heading h1{font-size:1.45rem;}.rz-author-card .reveal,.rz-author-item .reveal{opacity:1;transform:none;pointer-events:auto;}}
+@media(max-width:760px){.rz-author-paths,.rz-author-details,.rz-author-add-grid,.rz-author-columns {grid-template-columns:1fr;}.rz-author-paths{gap:18px;margin-top:15px;}.rz-author-card.tall{min-height:215px;padding:20px;}.rz-author-modal.is-wide{width:calc(100vw - 24px);height:calc(100dvh - 30px);}.rz-author-modal-body{padding:19px;}.rz-author-modal-head{padding:21px 61px 18px 19px;}.rz-author-savebar{align-items:stretch;flex-direction:column;}.rz-author-file-caption{flex-wrap:wrap;}.rz-author-file-caption>.rz-author-btn{margin-left:auto;}.rz-author-linkrow{gap:10px;}.rz-author-heading h1{font-size:1.45rem;}.rz-author-card .reveal,.rz-author-item .reveal{opacity:1;transform:none;pointer-events:auto;}}
+
+/* Compact the TWO Course Lead landing choices only; buttons always visible,
+   without altering editor pickers, resource cards or other workspaces. */
+#rzCourseAuthoring .rz-author-paths .rz-author-card.tall .rz-author-card-icon{
+ width:49px;height:49px;margin-bottom:14px;border-radius:14px;
+}
+#rzCourseAuthoring .rz-author-paths .rz-author-card.tall .rz-author-card-icon svg{width:27px;height:27px}
+#rzCourseAuthoring .rz-author-paths .rz-author-card.tall h2{font-size:1.08rem;margin-bottom:7px}
+#rzCourseAuthoring .rz-author-paths .rz-author-card.tall p{line-height:1.55;margin-bottom:16px;max-width:none}
+#rzCourseAuthoring .rz-author-paths .rz-author-card.tall>.rz-author-btn.reveal{
+ opacity:1;transform:none;pointer-events:auto;min-height:45px;visibility:visible;
+}
+@media(max-width:760px){
+ #rzCourseAuthoring .rz-author-paths .rz-author-card.tall{min-height:215px}
+}
