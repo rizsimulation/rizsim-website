@@ -134,9 +134,23 @@
       if(!isSim)body.append(node('small','rz-author-status',item.isNew?'Staged \u00b7 saved with the course':item.published_to_class?'Published to class \u00b7 managed in Live Classroom':'Saved resource \u00b7 not published to class'));
        if(!isSim&&item.source_type==='file')body.append(node('span','rz-delivery-chip'+(item.delivery_mode==='downloadable'?' is-downloadable':''),item.delivery_mode==='downloadable'?'Downloadable':'Secure View'));
       n.append(mark,body);
-      if(draft.can_edit){const del=button('Delete',()=>confirm('Remove "'+item.title+'"?','The item will be removed from this draft. The removal takes effect only when you '+(draft.isNew?'publish the course.':'save changes. Existing files and student submissions are retained.'),()=>{
-        if(isSim)draft.simulations=draft.simulations.filter(s=>s.product_id!==item.product_id);else draft.resources=draft.resources.filter(r=>r.id!==item.id);dirty(draft);listItems(draft);
-      }),'danger reveal');del.setAttribute('aria-label','Delete '+item.title);del.prepend(icon('trash'));n.append(del);}
+      const actions=node('div','rz-author-item-actions');
+      // A draft file is staged privately and has no readable saved object yet.
+      // Persisted files open only through the existing permission-checked viewer.
+      if(!isSim&&item.source_type==='file'&&!item.isNew&&item.id){
+        const review=node('a','rz-author-btn rz-review-file','Review File');
+        review.href='/course-material-viewer.html?material='+encodeURIComponent(text(item.id));
+        review.target='_blank';review.rel='noopener noreferrer';
+        review.setAttribute('aria-label','Review '+text(item.title||item.file_name||'file')+' in RizSim');
+        actions.append(review);
+      }
+      if(draft.can_edit){
+        const del=button('Delete',()=>confirm('Remove "'+item.title+'"?','The item will be removed from this draft. The removal takes effect only when you '+(draft.isNew?'publish the course.':'save changes. Existing files and student submissions are retained.'),()=>{
+          if(isSim)draft.simulations=draft.simulations.filter(s=>s.product_id!==item.product_id);else draft.resources=draft.resources.filter(r=>r.id!==item.id);dirty(draft);listItems(draft);
+        }),'danger reveal');
+        del.setAttribute('aria-label','Delete '+item.title);del.prepend(icon('trash'));actions.append(del);
+      }
+      if(actions.childElementCount)n.append(actions);
       return n;
     }
     if(!draft.simulations.length)sims.append(node('p','rz-author-empty','Your selected simulations will appear here.'));

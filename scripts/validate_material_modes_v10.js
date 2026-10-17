@@ -44,4 +44,27 @@ check('Protected stream denies download for secure files',files.stream.includes(
 check('Protected stream checks auth + revocation after fetch',files.stream.includes('uc.auth.getUser()')&&files.stream.includes('recheck.error||!recheck.data')&&files.stream.includes('fresh.data!==mode'));
 check('No public material URL or public storage bucket introduced',!files.stream.includes('createSignedUrl(')&&!files.stream.includes('getPublicUrl('));
 check('Student opens authorized material within RizSim',read('rizsim-student-workspace.js').includes('/course-material-viewer.html?material='));
+check('Review links use private in-origin viewer, never storage paths',
+ files.runtime.includes('function reviewFile(item)') &&
+ files.runtime.includes("link.href='/course-material-viewer.html?material='") &&
+ files.author.includes("review.href='/course-material-viewer.html?material='") &&
+ !files.runtime.includes('createSignedUrl(') && !files.author.includes('getPublicUrl('));
+check('Review opens a separate no-opener tab and keeps persisted-file restriction',
+ files.runtime.includes("link.rel='noopener noreferrer'") &&
+ files.author.includes("review.rel='noopener noreferrer'") &&
+ files.author.includes("item.source_type==='file'&&!item.isNew&&item.id"));
+check('Uploaded file can be reviewed after confirmed publication, as well as later',
+ files.runtime.includes("success('Published to class'") &&
+ files.runtime.includes("draft.file?{id:draft.id") &&
+ files.runtime.includes("actions.append(reviewFile(item))"));
+check('Invalid blanks auto-focus and scroll to the actual field',
+ files.helpers.includes("input.focus({preventScroll:true})") &&
+ files.helpers.includes("input.scrollIntoView({block:'center'") &&
+ files.helpers.includes("function required(input,label)") &&
+ files.helpers.includes("function invalidWindow(start,end,message)"));
+check('Validation scroller handles Faculty, Course Lead, administrator and session dates',
+ files.faculty.includes("window.RizSimFieldFeedback?.invalid(document.getElementById(\"adminSimulationTitle\")") &&
+ files.faculty.includes("window.RizSimFieldFeedback?.invalid(document.getElementById(\"classroomSessionName\")") &&
+ files.faculty.includes("window.RizSimFieldFeedback?.invalidWindow(document.getElementById(\"courseClassroomLiveStart\")"));
+
 console.log('PASS V10 integrated static assertions: '+assertions);

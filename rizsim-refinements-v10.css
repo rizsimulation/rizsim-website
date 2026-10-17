@@ -35,6 +35,49 @@ body[data-rizsim-home-portal] :is(.auth-view,.student-view):not(#view-home) .rz-
   border-color:#d6c498;
   background:#fff8e9;
 }
+/* A persistent faculty-side review link, not a direct storage download. */
+a.rz-review-file{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  white-space:nowrap;
+  min-height:38px;
+}
+a.rz-review-file:focus-visible{
+  outline:3px solid #176f76;
+  outline-offset:3px;
+}
+.rz-author-item-actions{
+  grid-column:2;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-end;
+  gap:9px;
+  min-width:0;
+}
+.rz-author-item-actions>.rz-author-btn{
+  min-height:35px;
+  padding:7px 12px;
+  font-size:.73rem;
+}
+.rz-resource-actions .rz-resource-status{
+  margin-right:auto;
+}
+body[data-rizsim-home-portal] :is(input,select,textarea).rz-field-invalid,
+body[data-rizsim-home-portal] :is(input,select,textarea)[aria-invalid="true"]{
+  scroll-margin-block:64px;
+}
+body[data-rizsim-home-portal] :is(input,select,textarea).rz-field-invalid:focus-visible{
+  outline:3px solid #b83d45;
+  outline-offset:3px;
+}
+@media(max-width:580px){
+  .rz-author-item-actions{justify-content:flex-start}
+  .rz-resource-actions .rz-resource-status{flex-basis:100%}
+}
+
 /* Explicit validation: discoverable on desktop/mobile, directly under the offending field. */
 body[data-rizsim-home-portal] :is(input,select,textarea).rz-field-invalid,
 body[data-rizsim-home-portal] :is(input,select,textarea)[aria-invalid="true"],
