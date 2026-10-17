@@ -1,5 +1,6 @@
 /* One canonical premium RizSim About presentation for public and all signed-in roles.
    Strictly scoped to .rz-about: never changes navigation, Home or global workspace UI. */
+#view-about.rizsim-unified-about{padding:0;overflow:hidden}
 .rz-about{--ab-ink:#103544;--ab-teal:#118d8c;--ab-gold:#cb9e51;--ab-line:#d5e7e6;box-sizing:border-box;position:relative;overflow:hidden;color:var(--ab-ink);background:#fff;font-family:inherit}
 .rz-about *, .rz-about *::before,.rz-about *::after{box-sizing:border-box}
 .rz-about [hidden]{display:none!important}
