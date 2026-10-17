@@ -10,6 +10,8 @@
   let courseRequest = null, loadedCourse = '', courseError = '', submitting = null;
   let lastView = '', lastCards = '', lastScope = '', qrPromise = null;
   let createPanel, accessPanel, sessionsPanel, resultsPanel;
+  let accessLayer, accessDialog, accessFab, accessQr, accessName, accessCode, accessLink, accessOpenLink;
+  let accessKey = '', accessAutoOpen = '', accessExpanded = false;
   const text = v => String(v ?? '');
   const bridge = () => window.RizSimFacultyBridge;
   function snapshot() { try { return bridge()?.getSnapshot() || null; } catch (_) { return null; } }
@@ -37,6 +39,10 @@
     u.hash = 'classroom'; return u.pathname + u.search + u.hash;
   }
   function navigate(mode = '', stage = 'menu', selection = '', session = '', replace = false, simulation = '') {
+    // All creation flows (including purchased courses) transition setup -> running.
+    // Open the access panel once for that fresh session, not on history/resume.
+    if(stage==='running' && route.stage==='setup' && route.mode===mode &&
+        route.selection===text(selection) && session) accessAutoOpen=text(session);
     route = {mode, stage, selection: text(selection), session: text(session), simulation:text(simulation)};
     const url = urlFor(route);
     if (location.pathname + location.search + location.hash !== url) history[replace ? 'replaceState' : 'pushState'](null, '', url);
@@ -110,7 +116,13 @@
       const locked = mode === 'own' && s.role !== 'course_lead';
       const r = {mode, stage:'list'};
       grid.append(card(MODES[mode], descriptions[mode], locked ? 'Become a Course Lead' : 'Explore', () => {
-        if (locked) { message('Course Lead is the premium Faculty tier. Contact RizSim to request an authorized upgrade. This action does not change your access.'); return; }
+        if (locked) {
+          // Ordinary Faculty: show the approved Course Lead advertisement in Courses.
+          // This is navigation only; authoring and server permissions remain restricted.
+          if (s.role === 'faculty') { openWorkspace('courses'); return; }
+          message('Course Lead is the premium Faculty tier. Contact RizSim to request an authorized upgrade. This action does not change your access.');
+          return;
+        }
         navigate(mode, 'list');
       }, i, locked, locked ? '' : urlFor(r)));
     });
@@ -203,6 +215,126 @@
     qrLibrary().then(qr => { if (box.isConnected) box.prepend(qr.svg(u.href, 'QR code for this classroom session')); })
       .catch(() => { caption.textContent = 'QR unavailable. Use the class code or student link above.'; });
   }
+  // V12: the existing authorized session card is the only source for credentials.
+  // This creates a floating presentation, never a second session or join URL.
+  function initialiseFloatingAccess() {
+    if (accessLayer) return;
+    accessLayer = el('div','rz-v5-access-layer');
+    accessLayer.id = 'rzLiveAccessLayer'; accessLayer.hidden = true;
+    accessDialog = el('section','rz-v5-access-dialog');
+    accessDialog.setAttribute('role','dialog');
+    accessDialog.setAttribute('aria-modal','true');
+    accessDialog.setAttribute('aria-labelledby','rzLiveAccessTitle');
+    accessDialog.setAttribute('aria-describedby','rzLiveAccessDescription');
+    const head = el('header','rz-v5-access-head');
+    const heading = el('div','');
+    heading.append(el('span','rz-v5-access-kicker','LIVE CLASSROOM · JOIN DETAILS'));
+    const title = el('h2','', 'Your session is ready'); title.id='rzLiveAccessTitle';
+    const description = el('p','', 'Share the QR code, class code, or student link to invite participants.');
+    description.id='rzLiveAccessDescription';
+    heading.append(title,description);
+    const minimize = button('Minimize  −','rz-v5-access-minimize',() => minimizeAccess(true));
+    minimize.id='rzLiveAccessMinimize';
+    head.append(heading,minimize);
+    accessName=el('h3','rz-v5-access-name',''); 
+    const layout=el('div','rz-v5-access-grid');
+    accessQr=el('div','rz-v5-access-qr');
+    accessQr.id='rzLiveAccessQR';accessQr.setAttribute('aria-label','Session QR code');
+    const details=el('div','rz-v5-access-details');
+    const codeLabel=el('span','rz-v5-access-detail-label','CLASS CODE');
+    const codeRow=el('div','rz-v5-access-detail-row');
+    accessCode=el('strong','rz-v5-access-code');accessCode.id='rzLiveAccessCode';
+    const copyCode=el('button','rz-v5-access-copy','Copy code');copyCode.type='button';
+    copyCode.id='rzLiveAccessCopyCode';copyCode.setAttribute('aria-label','Copy class code');
+    codeRow.append(accessCode,copyCode);
+    const linkLabel=el('span','rz-v5-access-detail-label','STUDENT LINK');
+    const linkRow=el('div','rz-v5-access-link-row');
+    accessLink=el('span','rz-v5-access-link');accessLink.id='rzLiveAccessLink';
+    linkRow.append(accessLink);
+    const linkActions=el('div','rz-v5-access-link-actions');
+    const copyLink=el('button','rz-v5-access-copy','Copy link');copyLink.type='button';copyLink.id='rzLiveAccessCopyLink';
+    accessOpenLink=el('a','rz-v5-access-open-link','Open link ↗');
+    accessOpenLink.target='_blank';accessOpenLink.rel='noopener noreferrer';
+    linkActions.append(copyLink,accessOpenLink);
+    details.append(codeLabel,codeRow,linkLabel,linkRow,linkActions);
+    layout.append(accessQr,details);
+    accessDialog.append(head,accessName,layout);
+    accessLayer.append(accessDialog);
+    accessFab=button('▦  Session QR & code','rz-v5-access-fab',openAccess);
+    accessFab.id='rzLiveAccessFab';accessFab.hidden=true;
+    accessFab.setAttribute('aria-label','Open session QR code, class code and student link');
+    accessFab.setAttribute('aria-controls','rzLiveAccessLayer');
+    document.body.append(accessLayer,accessFab);
+    // Existing delegated [data-copy-value] handling provides browser clipboard
+    // fallback and copy feedback; buttons are filled only from authorized cards.
+    accessLayer.addEventListener('click',event=>{if(event.target===accessLayer)minimizeAccess(true);});
+    document.addEventListener('keydown',event=>{
+      if(!accessExpanded)return;
+      if(event.key==='Escape'){event.preventDefault();minimizeAccess(true);return;}
+      if(event.key!=='Tab')return;
+      const controls=Array.from(accessDialog.querySelectorAll('button:not(:disabled),a[href]')).filter(n=>n.getClientRects().length>0);
+      if(!controls.length)return;
+      const first=controls[0],last=controls[controls.length-1];
+      if(event.shiftKey && (document.activeElement===first || !accessDialog.contains(document.activeElement))){event.preventDefault();last.focus();}
+      else if(!event.shiftKey && (document.activeElement===last || !accessDialog.contains(document.activeElement))){event.preventDefault();first.focus();}
+    });
+  }
+  function minimizeAccess(focusFab=false) {
+    if(!accessLayer)return;
+    accessExpanded=false;accessLayer.hidden=true;
+    accessFab.hidden=!accessKey;
+    if(focusFab && !accessFab.hidden) accessFab.focus({preventScroll:true});
+  }
+  function openAccess() {
+    if(!accessKey || !active())return;
+    accessExpanded=true;accessLayer.hidden=false;accessFab.hidden=true;
+    $('rzLiveAccessMinimize')?.focus({preventScroll:true});
+  }
+  function clearAccess(clearPending=true) {
+    if(accessLayer){
+      accessExpanded=false;accessLayer.hidden=true;accessFab.hidden=true;
+      if(accessKey){accessQr.replaceChildren();accessName.textContent='';accessCode.textContent='';accessLink.textContent='';}
+    }
+    accessKey='';
+    if(clearPending)accessAutoOpen='';
+  }
+  function syncFloatingAccess(session) {
+    initialiseFloatingAccess();
+    const id=text(session.session_id);
+    const card=Array.from($('classroomCreatedResult').querySelectorAll('.classroom-created-card')).find(n=>
+      !n.classList.contains('rz-v5-hidden') && n.querySelector('[data-roster-session]')?.dataset.rosterSession===id);
+    if(!card){clearAccess(false);return;}
+    const code=card.querySelector('.classroom-code-value')?.textContent.trim()||'';
+    const link=card.querySelector('.classroom-link-box')?.textContent.trim()||'';
+    let parsed;try{parsed=new URL(link)}catch(_){clearAccess(false);return;}
+    // The join URL uses a protected share token, not the internal session ID.
+    const token=parsed.searchParams.get('session');
+    if(!code||!token||parsed.origin!==location.origin||parsed.pathname!=='/access-in.html'||(session.share_token&&token!==text(session.share_token))){
+      clearAccess(false);return;
+    }
+    card.classList.add('rz-v5-access-source');
+    const key=id+'\u001f'+code+'\u001f'+link;
+    if(accessKey!==key){
+      if(accessExpanded)minimizeAccess(false);
+      accessKey=key;
+      accessName.textContent=card.querySelector('h3')?.textContent.trim()||session.class_name||'Session';
+      accessCode.textContent=code;
+      accessLink.textContent=link;
+      accessOpenLink.href=link;
+      $('rzLiveAccessCopyCode').dataset.copyValue=code;
+      $('rzLiveAccessCopyLink').dataset.copyValue=link;
+      accessQr.replaceChildren(el('span','rz-v5-access-loading','Preparing QR code…'));
+      // Identical QR generator and exact authenticated join link as the original card.
+      qrLibrary().then(qr=>{
+        if(accessKey!==key)return;
+        accessQr.replaceChildren(qr.svg(link,'QR code for this classroom session'));
+      }).catch(()=>{
+        if(accessKey===key)accessQr.replaceChildren(el('span','rz-v5-access-loading','QR unavailable. Use the class code or link.'));
+      });
+    }
+    accessFab.hidden=accessExpanded;
+    if(accessAutoOpen===id){accessAutoOpen='';openAccess();}
+  }
   function showAccess(s, session) {
     let found = false;
     for (const n of $('classroomCreatedResult').querySelectorAll('.classroom-created-card')) {
@@ -213,6 +345,7 @@
     $('rzLiveSessionNotice').hidden = found;
     if (!found) $('rzLiveSessionNotice').textContent = 'This session is closed, ended, or no longer open for entry. Existing student progress and submissions are preserved below.';
     accessPanel.classList.toggle('rz-v5-hidden',!found);
+    if(found)syncFloatingAccess(session);else clearAccess(false);
     setSelect('classroomRosterSessionSelect',text(session.session_id));
   }
   function scopeResults(s, session) {
@@ -277,14 +410,18 @@
     if (!item) return;
     const pending = submitting; submitting = null;
     if(pending.mode!=='simulation')window.RizSimCourseEnvironment?.invalidate(pending.mode,pending.selection);
-    if (route.stage === 'setup' && route.mode === pending.mode && route.selection === pending.selection) navigate(pending.mode,'running',pending.selection,item.session_id);
+    if (route.stage === 'setup' && route.mode === pending.mode && route.selection === pending.selection) {
+      accessAutoOpen=text(item.session_id);
+      navigate(pending.mode,'running',pending.selection,item.session_id);
+    }
   }
   function draw() {
     if (!ready || drawing) return; drawing = true;
     try {
       const s = snapshot();
-      if (!s || !ROLES.includes(s.role) || !active()) { if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
+      if (!s || !ROLES.includes(s.role) || !active()) { clearAccess(); if (lastView === 'classroom') restoreAll(); window.RizSimCourseEnvironment?.leave(); lastView = ''; return; }
       lastView = 'classroom';
+      if(route.stage !== 'running')clearAccess();
       if (!dataReady()) { message('Loading your verified classroom access...'); return; }
       if (route.mode === 'own' && s.role !== 'course_lead') { route = {mode:'',stage:'menu',selection:'',session:''}; history.replaceState(null,'',urlFor(route)); }
       window.RizSimCourseEnvironment?.render(route,s,navigate);
@@ -324,6 +461,7 @@
     accessPanel = $('classroomCreatedResult')?.closest('.portal-panel');
     sessionsPanel = $('classroomSessionRows')?.closest('.portal-panel');
     resultsPanel = $('resultRows')?.closest('.portal-panel');
+    initialiseFloatingAccess();
     const help = el('p','rz-v5-help'); help.id = 'rzLiveHelp'; help.hidden = true; help.setAttribute('role','status');
     $('rzLiveBreadcrumb').after(help);
     $('rzLiveBreadcrumb').setAttribute('aria-label','Live Classroom steps');

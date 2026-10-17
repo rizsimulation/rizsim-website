@@ -72,7 +72,7 @@ async function verifyRoles(){
  if(faculty && role && ["#courses","#administration","#institution"].includes(location.hash)){
    const target=location.hash.slice(1);
    const allowedByRole={
-     courses:["owner","course_lead"],
+     courses:["owner","course_lead","faculty"],
      administration:["owner","admin"],
      institution:["owner","institution"]
    };
