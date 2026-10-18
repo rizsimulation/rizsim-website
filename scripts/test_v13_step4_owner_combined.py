@@ -174,6 +174,7 @@ def run(browser,base):
    if code=='02':
     assert page.locator('#rzS02RosterScrollHint').is_hidden(), 'V15 removes unwanted horizontal-scroll hint'
     assert page.locator('#rizsimSystemStudentResults .rz-s02-table-scroller[role="region"][tabindex="0"]').count()==1
+    page.wait_for_function("!!document.querySelector('#rizsimSystemStudentResults .rz-v15-compact-table')",timeout=10000)
     assert page.locator('#rizsimSystemStudentResults .rz-v15-compact-table').count()==1, 'V15 preserves all Student fields in responsive labelled cards'
    if code=='03':
     assert 'PKR 12,000' not in page.locator('#rzV13Panestudents').inner_text()
