@@ -12,7 +12,7 @@
   const total=rows.length,completed=rows.filter(x=>x.attempt_status==='submitted'||x.submitted_at).length,inProgress=total-completed;
   const variants=name==='students'?[[total,'Students joined'],[inProgress,'In progress'],[completed,'Submitted responses']]:
     [[completed,'Completed activities'],[total,'Class participants'],[inProgress,'Awaiting completion']];
-  const signature=JSON.stringify(variants);if(parent.dataset.signature===signature)return;parent.dataset.signature=signature;parent.replaceChildren();
+  parent.hidden=false;const signature=JSON.stringify(variants);if(parent.dataset.signature===signature)return;parent.dataset.signature=signature;parent.replaceChildren();
   variants.forEach(([value,label])=>{const card=node('div','rz-v15-kpi');card.append(node('strong','',value),node('span','',label));parent.append(card);});
  }
  function compactTables(){
@@ -38,7 +38,15 @@
  }
  async function refresh(){
   const st=state(),view=authorized();if(!view||!st?.visible||st.stage!=='running'||!st.session)return;
-  if(st.session!==activeSession){activeSession=st.session;lastFetch=0;cached=null;lastKey='';}
+  if(st.session!==activeSession){
+   activeSession=st.session;lastFetch=0;cached=null;lastKey='';
+   // Never display the previous class's summary while another authorized
+   // roster is being fetched.
+   for(const name of ['students','insights']){
+    const box=$('rzV15'+name+'Metrics');
+    if(box){box.replaceChildren();box.dataset.signature='';box.hidden=true;}
+   }
+  }
   if(cached){mountCounts('students',cached);mountCounts('insights',cached);}
   compactTables();
   if(inFlight||Date.now()-lastFetch<12000)return;
