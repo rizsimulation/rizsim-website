@@ -26,14 +26,15 @@ REPORT = []
 
 
 def source_contracts():
-    """The entire HTML must match the approved main branch except two exact visual substitutions."""
+    """Compare against the now-approved login design; V14 adds a CSS link only."""
     for name in PAGES:
         baseline = subprocess.check_output(["git", "show", "origin/main:" + name], cwd=ROOT, text=True)
         actual = (ROOT / name).read_text()
         assert actual.count(NEW_CSS) == 1, f"{name}: stylesheet reference count"
         assert actual.count(NEW_ICON) == 1, f"{name}: multicolor Google icon count"
-        normalized = actual.replace(NEW_CSS, "").replace(NEW_ICON, OLD_ICON)
-        assert normalized == baseline, f"{name}: content, Javascript or page structure changed"
+        v14_link = '<link rel="stylesheet" href="rizsim-sitewide-finish-v14.css">' + chr(10)
+        assert actual.count(v14_link) == 1, f"{name}: expected one V14 CSS link"
+        assert actual.replace(v14_link, "") == baseline, f"{name}: content, Javascript or page structure changed"
         assert baseline.count('id="googleLogin"') == 1
         assert actual.count('id="googleLogin"') == 1
         assert baseline.count("Continue with Google") == actual.count("Continue with Google")
@@ -130,7 +131,7 @@ def run():
                             assert abs(a["button"]["width"] - b["button"]["width"]) < 2, "Button placement/width changed"
                             assert b["scrollWidth"] <= max(size[0] + 2, a["scrollWidth"] + 1), "New horizontal overflow introduced"
                             print(f"VISUAL WIDTH {name} {device}: viewport={size[0]}, before={a['scrollWidth']}, after={b['scrollWidth']}", flush=True)
-                            assert a["label"] != b["label"] and b["label"] == "Continue with Google", "Only decorative G is removed"
+                            assert a["label"] == b["label"] == "Continue with Google", "Approved Google login copy preserved"
                             REPORT.append({"portal": name, "device": device, "viewport": size,
                                            "before": a, "after": b})
                             print(f"PASS {name} {device} preserved layout, official G, keyboard-friendly controls", flush=True)

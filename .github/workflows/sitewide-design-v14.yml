@@ -1,0 +1,58 @@
+name: RizSim V14 Sitewide Design-Only Verification
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'simulations.html'
+      - 'about.html'
+      - 'contact.html'
+      - 'access-in.html'
+      - 'access-out.html'
+      - 'course-material-viewer.html'
+      - 'resource-viewer.html'
+      - 'simulation-*.html'
+      - 'rizsim-*-finish-v14.css'
+      - 'scripts/test_sitewide_design_v14.py'
+      - '.github/workflows/sitewide-design-v14.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visual_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing Student, Faculty, V13 and simulation contracts
+        run: |
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_live_workspace_v13.js
+          node scripts/validate_v13_three_simulations.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_student_workspace_v8.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_sim02_integration_v1.js
+          node scripts/validate_sim03_integration_v1.js
+          node scripts/test_insight_core_v1.js
+          node scripts/validate_premium_ui_v3.js
+      - name: Install isolated browser for local screenshots (no TinyFish)
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Verify source-only CSS and capture before-after desktop/mobile
+        run: python scripts/test_sitewide_design_v14.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-v14-sitewide-before-after
+          path: test-results/sitewide-v14/
+          retention-days: 7

@@ -1,0 +1,10 @@
+/* V14: existing simulation participant UI optical finish only.
+   No question displacement, score, event, class-access, or stimulus changes. */
+.panel:not(.dark),.stage,.card{box-shadow:0 11px 29px rgba(12,55,65,.07),0 2px 7px rgba(12,55,65,.026)}
+.hotel-card,.preview-card,.case-board{box-shadow:0 5px 15px rgba(12,55,65,.043)}
+.option,.choice{transition:background-color 160ms ease,border-color 160ms ease,box-shadow 160ms ease}
+.option:focus-within,.choice:focus-visible{box-shadow:0 0 0 3px rgba(24,184,176,.14)}
+.btn:focus-visible,.primary:focus-visible,.secondary:focus-visible,.danger:focus-visible{outline-offset:3px}
+.q-stem,.question-stem,.prompt{text-wrap:pretty}
+.hotel-card img,.preview-card img{image-rendering:auto}
+@media(prefers-reduced-motion:reduce){.option,.choice{transition:none}}
