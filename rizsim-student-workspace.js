@@ -251,18 +251,36 @@
   }
  }
  function renderLibrary(){
-  const target=$('rzStudentSimulationLibrary');if(!target)return;target.replaceChildren();
-  if(stateGate(target))return;
-  const groups=new Map();for(const a of data.attempts||[]){if(!groups.has(a.product_id))groups.set(a.product_id,[]);groups.get(a.product_id).push(a);}
-  if(!groups.size){empty(target,'Your library is ready to grow','Simulations from classes you join will appear here. Available reading materials are kept below.','library','calm',['Join a class',()=>go('player')]);}
-  const grid=el('div','rz-st-library-grid');target.append(grid);
-  for(const group of groups.values()){
-   const a=group[0],card=el('article','rz-st-library-card');card.append(icon('library'),el('h2','',a.title||'RizSim Simulation'),el('p','',a.class_name||'Your learning record'));
-   const done=group.filter(complete).length;card.append(el('span','rz-st-meta',group.length+' saved '+(group.length===1?'interaction':'interactions')+' · '+done+' submitted'));
-   const available=group.find(x=>!complete(x)&&x.class_code);
-   card.append(btn(available?'Open class':'View learning history',()=>available?openRecord(available.id):go('learning'),'rz-st-button secondary','arrow'));grid.append(card);
+  // V15.3: this is a forthcoming *independent* learning collection.
+  // Joined classroom simulations belong to Player / Practice / My Learning;
+  // no authenticated attempt, class resource or licensed item is promoted here.
+  const target=$('rzStudentSimulationLibrary');if(!target)return;
+  if(target.dataset.rzV153Advert==='ready')return;
+  target.dataset.rzV153Advert='ready';
+  target.replaceChildren();target.className='rz-v153-library-advert';
+  const lead=el('div','rz-v153-library-lead');
+  lead.append(el('span','rz-v153-library-badge','A NEW WORLD OF INDEPENDENT LEARNING'),
+    el('h2','','Learn independently. Discover what comes next.'),
+    el('p','','Explore a new collection designed for learners who want to discover, practice and apply ideas at their own pace — no Faculty classroom invitation required.'));
+  target.append(lead);
+  const categories=el('div','rz-v153-library-categories');
+  for(const [glyph,label,title,description] of [
+    ['spark','01 · LEARN BY DOING','Independent Simulations','Play, choose and reflect in self-paced simulations created for individual learners.'],
+    ['book','02 · READ AND EXPLORE','eBooks','Read thoughtfully curated digital titles whenever you want to deepen your understanding.'],
+    ['file','03 · PRACTICE AND APPLY','Learning Resources','Discover guides, activities and practical materials for your own learning journey.'],
+    ['library','04 · LEARN YOUR WAY','Self-Paced Courses','Follow structured learning experiences independently, at a rhythm that works for you.']
+  ]){
+    const card=el('article','rz-v153-library-category');
+    card.append(icon(glyph),el('span','rz-v153-library-label',label),
+      el('h3','',title),el('p','',description),el('span','rz-v153-library-soon','COMING SOON'));
+    categories.append(card);
   }
-  renderMaterials();
+  target.append(categories);
+  const info=el('aside','rz-v153-library-classroom');
+  const text=el('div');text.append(el('strong','','Joining a Faculty class?'),
+    el('p','','Classroom simulations remain available through your Faculty QR invitation or class code in RizSimulation Player. Practice assignments remain in Practice; saved results remain in My Learning.'));
+  info.append(icon('join'),text,btn('Open RizSimulation Player',()=>go('player'),'rz-st-button secondary','join'));
+  target.append(info);
  }
  function decoratePlayer(){
   const target=$('view-player');if(!target||target.dataset.studentV8)return;target.dataset.studentV8='true';
@@ -294,10 +312,19 @@
  function init(){
   if(ready)return;ready=true;setupSidebar();decoratePlayer();
   const learning=$('view-learning').querySelector('.content-shell'),legacy=el('div');legacy.id='rzStudentLegacyLearning';legacy.hidden=true;legacy.inert=true;while(learning.firstChild)legacy.append(learning.firstChild);learning.append(legacy);const history=el('div');history.id='rzStudentHistory';learning.append(history);
-  const lib=$('view-resources').querySelector('.content-shell');lib.querySelector('.rz-library-hero')?.remove();const title=el('div');heading(title,'SIMULATION LIBRARY','Your learning, within reach.','Return to simulations you have joined and resources available to your account.','library');lib.prepend(title);
-  const simulations=el('div');simulations.id='rzStudentSimulationLibrary';title.after(simulations);
-  const materials=el('section','rz-st-materials');materials.id='rzStudentLibraryMaterials';simulations.after(materials);
-  const readings=el('details','rz-st-readings');readings.append(el('summary','','eBooks & reading resources'),$('rzLibraryGrid'));lib.append(readings);
+  const lib=$('view-resources').querySelector('.content-shell');
+  // Preserve the legacy Library data target for existing authenticated modules
+  // without showing classroom attempts, class materials, or the old eBook list
+  // inside the independent-publication advertisement.
+  const librarySource=el('div','rz-v153-library-data-source');
+  librarySource.hidden=true;librarySource.inert=true;librarySource.setAttribute('aria-hidden','true');
+  const legacyLibraryGrid=$('rzLibraryGrid');
+  if(legacyLibraryGrid)librarySource.append(legacyLibraryGrid);
+  const title=el('div','rz-v153-library-header');
+  heading(title,'RIZSIM INDEPENDENT LIBRARY','Something new is on its way.',
+    'Independent simulations, eBooks, learning resources and self-paced courses — designed to explore beyond the classroom.','library');
+  const simulations=el('div');simulations.id='rzStudentSimulationLibrary';
+  lib.replaceChildren(title,simulations,librarySource);
   // Keep original mounted data targets for legacy renderers, never as public tabs.
   $('view-simulations').setAttribute('inert','');$('view-account').setAttribute('inert','');
   document.addEventListener('click',e=>{if(e.target.closest?.('#siteSidebar [data-rz-account]')){e.preventDefault();e.stopImmediatePropagation();openAccount();}},true);
