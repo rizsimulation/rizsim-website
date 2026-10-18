@@ -24,6 +24,7 @@
 
 
 /* V15 compact live manager and modality dialog */
+body.rz-v15-direct-invite #studentApp{visibility:hidden;pointer-events:none}
 .rz-v15-manager{position:fixed;right:18px;bottom:18px;z-index:99997;width:min(352px,calc(100vw - 24px));color:#173f49}
 .rz-v15-manager[hidden],.rz-v15-manager-pane[hidden],.rz-v15-pill[hidden]{display:none!important}
 .rz-v15-manager.is-minimized{width:max-content;max-width:calc(100vw - 24px)}
