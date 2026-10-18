@@ -29,4 +29,6 @@ jobs:
           python -m pip install playwright==1.56.0
           python -m playwright install --with-deps chromium
       - name: Test V15 classroom with synthetic backend
-        run: python scripts/test_v15_classroom.py
+        run: |
+          python scripts/test_v15_classroom.py
+          python scripts/test_v15_1_polish.py
