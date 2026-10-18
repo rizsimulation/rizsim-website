@@ -70,12 +70,17 @@ def contract():
    assert 'RizSimulation Team' in current and 'copyEmailButton' in current
   elif path in PLAYERS:
    # Only the V15 welcome and paused-state assets are added to the runners.
-   restored=current
-   for extra in ('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">',
-                 '<script src="/rizsim-v15-welcome.js" defer></script>',
-                 '<script src="/rizsim-v15-runner-state.js" defer></script>'):
-    restored=restored.replace(extra+chr(10),'')
-   assert restored==before,(path,'original academic simulation body has changed')
+   extras=('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">',
+           '<script src="/rizsim-v15-welcome.js" defer></script>',
+           '<script src="/rizsim-v15-runner-state.js" defer></script>')
+   if all(extra in before for extra in extras):
+    # Already published V15 on origin/main; ensure original academic runner
+    # body remains byte-for-byte identical in this later launch PR.
+    assert current==before,(path,'published academic simulation body changed')
+   else:
+    restored=current
+    for extra in extras:restored=restored.replace(extra+chr(10),'')
+    assert restored==before,(path,'original academic simulation body has changed')
   else:
    assert current==before,(path,"existing V14 HTML and functionality must stay identical")
   assert "<script" in before or path in ("about.html",),path
