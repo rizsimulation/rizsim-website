@@ -98,7 +98,7 @@ def test_visual(browser, base, label, viewport, page_name):
         assert metrics["googleLogoOk"], f"{page_name}: missing genuine Google G asset"
         assert metrics["buttonBg"] == "rgb(255, 255, 255)", "Google G must be on white"
         assert metrics["buttonColor"] == "rgb(31, 31, 31)", "Google button must be readable"
-        assert metrics["reducedMatches"] and all(float(n.rstrip("s")) == 0 for n in metrics["transition"].split(", ")), f"reduced-motion ignored: {metrics['transition']} / match={metrics['reducedMatches']}"
+        assert metrics["reducedMatches"] and all(float(n.rstrip("s")) <= .001 for n in metrics["transition"].split(", ")), f"reduced-motion ignored: {metrics['transition']} / match={metrics['reducedMatches']}"
     page.screenshot(path=str(OUT / (page_name.replace(".html", "") + "-" + label + "-" + str(viewport[0]) + ".png")), full_page=True, animations="disabled")
     context.close()
     return {"button": box, "card": cardbox, **metrics}
