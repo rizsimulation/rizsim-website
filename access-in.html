@@ -7856,6 +7856,20 @@ window.RizSimStudentBridge = Object.freeze({
   joinedAttempt={attempt_id:own.id,session_id:own.classroom_session_id,product_id:own.product_id,classroom_access_type:own.classroom_access_type,attempt_status:own.status,submitted_at:own.submitted_at,is_existing_attempt:true};
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
+ async joinPracticeCode(code){
+  const actor=currentUser?.id;if(!actor)throw new Error('Sign in before joining a Practice class.');
+  const clean=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
+  if(!clean)throw new Error('Enter your Faculty class code.');
+  await resolveSession('code',clean);
+  if(currentUser?.id!==actor||!resolvedSession||resolvedSourceType!=='code'||resolvedSession.class_code!==clean)
+    throw new Error('This Practice class could not be verified. Check the code and try again.');
+  if(!resolvedSession.practice_open)throw new Error('Practice is not currently available for this class.');
+  await joinSession('practice',false);
+  if(!joinedAttempt?.attempt_id||joinedAttempt.classroom_access_type!=='practice')
+    throw new Error('RizSim could not confirm this Practice assignment.');
+  window.dispatchEvent(new Event('rizsim:student-data'));
+  return {...joinedAttempt};
+ },
  async practice(attemptId){const result=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attemptId});if(result.error)throw new Error(result.error.message);await reloadAttempts();return result.data;},
  async launchPractice(attemptId){
   const actor=currentUser?.id,generation=studentResolveGeneration;
