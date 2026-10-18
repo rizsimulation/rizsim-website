@@ -15,7 +15,7 @@
  function closeModal(){if(modal){const old=modal;modal=null;old.close();old.remove();}}
  function choose(args){
   const s=bridge()?.getSnapshot();if(!s||!['faculty','course_lead'].includes(s.role))return false;
-  const blocked=liveRoom(s);if(blocked){open();window.RizSimLiveClassroom?.navigate?.(blocked.course_id?'own':'simulation','running',blocked.course_id||blocked.product_id,blocked.session_id);return true;}
+  const blocked=liveRoom(s);if(blocked){open();return true;}
   if(modal)closeModal();
   const mode=args.mode,productId=mode==='simulation'?args.selection:args.simulation;
   const licensed=(s.licensed||[]).find(x=>String(x.id)===String(productId)) || (mode==='purchased' ? window.RizSimCourseEnvironment?.runtime?.('purchased',args.selection)?.simulations?.find(x=>String(x.product_id)===String(productId)) : null);
@@ -45,6 +45,7 @@
     if(bridge()?.getSnapshot()?.userId!==owner)throw Error('Your account changed. Reopen the course.');
     if(!result?.session_id)throw Error('The server did not confirm the new session.');
     await bridge().runtime.refresh();
+    await bridge().selectSession?.(result.session_id);
     if(mode!=='simulation')window.RizSimCourseEnvironment?.invalidate(mode,args.selection);
     closeModal();openedFor=String(result.session_id);expanded=true;
     window.RizSimLiveClassroom?.navigate?.(mode,'running',args.selection,result.session_id,false,mode==='own'?productId:'');
