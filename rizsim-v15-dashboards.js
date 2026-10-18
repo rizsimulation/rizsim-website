@@ -16,7 +16,7 @@
   variants.forEach(([value,label])=>{const card=node('div','rz-v15-kpi');card.append(node('strong','',value),node('span','',label));parent.append(card);});
  }
  function compactTables(){
-  const host=$('rzV13PaneStudents');if(!host||host.hidden)return;
+  const host=$('rzV13Panestudents');if(!host||host.hidden)return;
   for(const table of host.querySelectorAll('table')){
     if(table.classList.contains('rz-v15-compact-table'))continue;
     const headers=[...table.querySelectorAll('thead th')].map(t=>t.textContent.trim());
