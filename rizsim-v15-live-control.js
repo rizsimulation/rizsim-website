@@ -12,13 +12,13 @@
  function tell(text){if(status)status.textContent=text||'';}
  async function copy(value,label){try{if(!value)throw Error('Not yet available');await navigator.clipboard.writeText(value);tell(label+' copied.')}catch(_){tell('Copy manually: '+value)}}
  function invitation(room){return new URL('/access-in.html?session='+encodeURIComponent(room.share_token),location.origin).href;}
- function closeModal(){if(modal){modal.close();modal.remove();modal=null;}}
+ function closeModal(){if(modal){const old=modal;modal=null;old.close();old.remove();}}
  function choose(args){
   const s=bridge()?.getSnapshot();if(!s||!['faculty','course_lead'].includes(s.role))return false;
   const blocked=liveRoom(s);if(blocked){open();window.RizSimLiveClassroom?.navigate?.(blocked.course_id?'own':'simulation','running',blocked.course_id||blocked.product_id,blocked.session_id);return true;}
   if(modal)closeModal();
   const mode=args.mode,productId=mode==='simulation'?args.selection:args.simulation;
-  const licensed=(s.licensed||[]).find(x=>String(x.id)===String(productId));
+  const licensed=(s.licensed||[]).find(x=>String(x.id)===String(productId)) || (mode==='purchased' ? window.RizSimCourseEnvironment?.runtime?.('purchased',args.selection)?.simulations?.find(x=>String(x.product_id)===String(productId)) : null);
   if(!licensed)return false;
   if(mode==='own' && (s.role!=='course_lead'||!(s.courses||[]).some(c=>String(c.course_id)===String(args.selection)&&c.active)))return false;
   if(!['simulation','own','purchased'].includes(mode))return false;
@@ -38,7 +38,7 @@
       p_live_starts_at:access==='live'?begin.toISOString():null,p_live_ends_at:access==='live'?finish.toISOString():null,
       p_practice_starts_at:access==='practice'?begin.toISOString():null,p_practice_ends_at:access==='practice'?finish.toISOString():null};
     let result;
-    if(mode==='purchased')result=await bridge().runtime.createPurchased(args.selection,productId,{...fields,p_product_id:undefined});
+    if(mode==='purchased'){const {p_product_id:_unused,...dates}=fields;result=await bridge().runtime.createPurchased(args.selection,productId,dates);}
     else{const request=mode==='own'?{p_course_id:args.selection,...fields}:fields;
       const reply=await contact().rpc(mode==='own'?'create_rizsim_course_classroom_session':'create_rizsim_classroom_session',request);
       if(reply.error)throw Error(reply.error.message);result=Array.isArray(reply.data)?reply.data[0]:reply.data;}
@@ -56,7 +56,7 @@
   options.append(action('◉  Live Class',()=>start('live'),'rz-v15-choice-option is-live'),
                  action('◇  Practice',()=>start('practice'),'rz-v15-choice-option is-practice'));
   modal.append(head,title,p,options,feedback);document.body.append(modal);
-  modal.addEventListener('close',()=>{modal?.remove();modal=null;},{once:true});
+  const thisModal=modal;modal.addEventListener('close',()=>{thisModal.remove();if(modal===thisModal)modal=null;},{once:true});
   modal.showModal();modal.querySelector('.is-live')?.focus({preventScroll:true});
   return true;
  }
@@ -126,7 +126,7 @@
   const s=bridge()?.getSnapshot(),visible=s&&['faculty','course_lead'].includes(s.role)&&$('authenticatedApp')?.classList.contains('show');
   if(!visible){if(manager)manager.hidden=true;current='';lastIdentity='';return;}
   const identity=String(s.userId),room=liveRoom(s);initManager();
-  if(identity!==lastIdentity){current='';openedFor='';lastIdentity=identity;paused=false;expanded=false;}
+  if(identity!==lastIdentity){current='';lastIdentity=identity;paused=false;if(openedFor!==String(room?.session_id||'')){openedFor='';expanded=false;}}
   if(!room){manager.hidden=true;current='';return;}
   const id=String(room.session_id),isNew=id!==current;
   if(isNew){current=id;paused=false;lastRefresh=0;expanded=openedFor===id;qrFor='';tell('');}
