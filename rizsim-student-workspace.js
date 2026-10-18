@@ -201,6 +201,11 @@
     if(!fresh||phase(fresh)!=='open'||complete(fresh))throw new Error('This practice session is no longer open.');
     await bridge().launchPractice(id);
    }catch(e){
+    // No orphaned "Verifying Practice" browser tab after a failed access
+    // check. Successful launches clear this handle inside the bridge.
+    const pending=window.__rzV154RunnerTab;
+    window.__rzV154RunnerTab=null;
+    try{if(pending&&!pending.closed)pending.close();}catch(_){}
     if(n.open){feedback.textContent=e?.message||'Unable to launch practice. Please retry.';feedback.hidden=false;}
    }finally{
     actionBusy=false;launch.disabled=false;cancel.disabled=false;close.disabled=false;
