@@ -4025,15 +4025,17 @@ if(
 incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
 ){
 
-navigateStudent(
-"player",
-false
-);
-
+// Direct shared invitations pass through authentication and server verification,
+// then launch the runner without displaying the intervening Player screen.
+document.body.classList.add('rz-v15-direct-invite');
 await resolveSession(
 "token",
 incomingShareToken
 );
+if(!joinedAttempt || joinedAttempt.attempt_status==='submitted' || joinedAttempt.submitted_at){
+  document.body.classList.remove('rz-v15-direct-invite');
+  navigateStudent("player",false);
+}
 
 }
 else if(
