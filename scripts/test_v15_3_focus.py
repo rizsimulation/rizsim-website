@@ -42,7 +42,7 @@ def verify_contact(page,selector):
     page.wait_for_function("window.__v153ReportWrites.length===1",timeout=9000)
     assert panel.get_by_text('Report received.',exact=False).count()==1
     assert page.evaluate("window.__v153ReportWrites[0].category")=='technical'
-    assert page.evaluate("window.__v153ReportWrites[0].message.startswith('QA verification')")
+    assert page.evaluate("window.__v153ReportWrites[0].message.startsWith('QA verification')")
 
 
 def student_library(browser,base):
