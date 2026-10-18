@@ -33,3 +33,4 @@ jobs:
           python scripts/test_v15_classroom.py
           python scripts/test_v15_1_polish.py
           python scripts/test_v15_2_launch.py
+          python scripts/test_v15_3_focus.py

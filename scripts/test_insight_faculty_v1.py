@@ -76,9 +76,11 @@ async def main():
     assert await page.locator("#rzInsightFacultyAnalytics").is_visible()
     assert await page.locator("#rzInsightFacultyAnalytics .rz-i01-learning-shift").count()==1
     assert await page.get_by_text("One room. A visible learning shift.").count()==1
-    assert await page.locator(".rz-i01-shift-metric").count()==4
+    assert await page.locator(".rz-i01-shift-metric").count()==3
     assert await page.locator(".rz-i01-shift-path").count()==4
-    assert await page.locator(".rz-i01-shift-metric").first.locator("strong").inner_text()=="1", "Only one matched Student may contribute learning gain"
+    assert await page.locator(".rz-v153-review-tile").count()==4
+    assert "PAIRED LEARNERS · 1" in await page.locator(".rz-v153-shift-sample").inner_text()
+    assert await page.locator(".rz-i01-shift-metric").first.locator("strong").inner_text()=="0.0 / 6", "Paired sample determines KR score"
     assert await page.get_by_text("Six-concept item comparison").count()==1
     assert await page.locator(".rz-i01-card-wide .rz-i01-table tbody tr").count()==3
     assert await page.locator(".rz-i01-progress-cell").count()==3

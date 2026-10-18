@@ -311,37 +311,71 @@
   // Premium Sim01 summary uses ONLY the same verified classroom analytics
   // shown below. A paired mean is never calculated from unmatched students.
   function learningShift(parent,a){
+    // All displayed means and matched-item transitions come from one C.analyse()
+    // of valid, committed, authorized records. Partial answers do not become 0s.
     const feature=node('section','rz-i01-learning-shift');
-    feature.setAttribute('aria-label','Verified learning shift overview');
-    feature.append(named('span','rz-i01-eyebrow','ONE ROOM · VERIFIED LEARNING'),
-      named('h3','', 'One room. A visible learning shift.'),
-      named('p','', 'A compact picture of entry knowledge, exit knowledge and transfer decisions. All values are descriptive and scoped to this class.'));
+    feature.setAttribute('aria-label','Verified paired learning shift and transfer overview');
+    const head=node('div','rz-v153-shift-heading');
+    const caption=node('div');
+    caption.append(named('span','rz-i01-eyebrow','ONE ROOM · VERIFIED LEARNING'),
+      named('h3','','One room. A visible learning shift.'),
+      named('p','','Matched Knowledge Review and Knowledge Gain, plus locked transfer decisions. Descriptive classroom evidence only.'));
+    head.append(caption,named('span','rz-v153-shift-sample','PAIRED LEARNERS · '+a.pairedN));
+    feature.append(head);
     const kpis=node('div','rz-i01-shift-kpis');
     const gain=a.pairedN?(a.changePP>0?'+':'')+fixed(a.changePP)+' pp':'—';
     for(const [value,label,note] of [
-      [String(a.pairedN),'Matched learners','Same students in both reviews'],
-      [a.pairedN?fixed(a.krAvg)+' / 6':'—','Entry review','Knowledge Review · matched'],
-      [a.pairedN?fixed(a.kgAvg)+' / 6':'—','Exit review','Knowledge Gain · matched'],
-      [gain,'Mean learning change','Percentage points · paired']
+      [a.pairedN?fixed(a.krAvg)+' / 6':'—','Mean KR','Entry · '+a.pairedN+' paired learners'],
+      [a.pairedN?fixed(a.kgAvg)+' / 6':'—','Mean KG','Exit · '+a.pairedN+' paired learners'],
+      [gain,'Mean change','KG minus KR · percentage points']
     ]){
       const card=node('article','rz-i01-shift-metric');
       card.append(named('span','',label),named('strong','',value),named('small','',note));kpis.append(card);
     }
     feature.append(kpis);
+    if(a.pairedN){
+      const bars=node('div','rz-v153-shift-bars');
+      for(const [name,score,tone] of [['Mean KR',a.krAvg,'kr'],['Mean KG',a.kgAvg,'kg']]){
+        const row=node('div','rz-v153-shift-bar-row');
+        const label=node('span','',name),value=named('strong','',fixed(score)+' / 6');
+        const track=node('div','rz-v153-shift-bar '+tone);track.setAttribute('role','meter');
+        track.setAttribute('aria-label',name+' paired score out of 6');
+        track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','6');
+        track.setAttribute('aria-valuenow',String(score));
+        const fill=node('span');fill.style.width=(100*score/6).toFixed(1)+'%';
+        track.append(fill);row.append(label,track,value);bars.append(row);
+      }
+      feature.append(bars);
+    }
+    const reviews=node('div','rz-v153-review-group');
+    const reviewHead=node('div','rz-i01-shift-path-title');
+    reviewHead.append(named('h4','','Matched review answers'),
+      named('p','','Correctness transitions across the six review items for matched learners.'));
+    reviews.append(reviewHead);
+    const reviewGrid=node('div','rz-v153-review-tiles');
+    for(const [key,label] of [
+      ['stayedCorrect','Correct → correct'],['becameCorrect','Incorrect → correct'],
+      ['becameIncorrect','Correct → incorrect'],['stillIncorrect','Incorrect → incorrect']
+    ]){
+      const card=node('div','rz-v153-review-tile');
+      card.append(named('strong','',a.pairedN?String(a.transitions[key]):'—'),
+        named('span','',label));reviewGrid.append(card);
+    }
+    reviews.append(reviewGrid);feature.append(reviews);
     const pathTitle=node('div','rz-i01-shift-path-title');
-    pathTitle.append(named('h4','','Four learning-transfer paths'),
-      named('p','','Source decision → transfer decision · verified, locked pairs (n = '+a.ltCompleted+').'));
+    pathTitle.append(named('h4','','Four paths through Learning Transfer'),
+      named('p','','Source decision → transfer decision · only locked pairs (n = '+a.ltCompleted+').'));
     feature.append(pathTitle);
     const paths=node('div','rz-i01-shift-paths');
     for(const code of ['CC','IC','CI','II']){
       const card=node('article','rz-i01-shift-path rz-i01-shift-'+code.toLowerCase());
-      card.append(named('strong','',a.ltCompleted?String(a.clusters[code]):'—'),
-        named('span','',code+' · '+clusterLabel(code)),
-        named('small','','Locked source-to-transfer decisions'));
+      card.append(named('span','rz-v153-path-eyebrow',code+' · '+clusterLabel(code)),
+        named('strong','',a.ltCompleted?String(a.clusters[code]):'—'),
+        named('small','','Locked source-to-transfer path'));
       paths.append(card);
     }
     feature.append(paths,named('p','rz-i01-shift-caveat',
-      'No score or transfer path is inferred for an incomplete response. This within-class pattern is not evidence of causal learning effects.'));
+      'Incomplete records do not create scores or paths. Classroom changes are descriptive, not proof of causal or durable learning.'));
     parent.append(feature);
   }
   function render(){

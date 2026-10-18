@@ -9,7 +9,8 @@ for(const [name,html] of [['Student',student],['Faculty/Owner',portal]]){
  assert.match(html,/id="view-contact"/,name+' contact view');
 }
 assert.match(support,/rizsimulation@gmail\.com/);
-assert.match(support,/href='mailto:'/);
+assert.ok(support.includes('mail.google.com/mail/?view=cm'),'Gmail compose is the primary support action');
+assert.match(support,/Copy Email/);
 assert.match(support,/\.from\('rizsim_support_reports'\)\.insert\(\{category:select\.value,message\}\)/);
 assert.match(support,/window\.RizSimSupport=\{/);
 assert.match(support,/showOwnerOnly\(role\)/);
