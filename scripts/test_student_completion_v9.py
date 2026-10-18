@@ -122,12 +122,12 @@ def run(browser,base):
  ctx,p,errors=open_test(browser,base,True)
  try:
   p.goto(base+'/access-in.html#practice',wait_until='networkidle');p.wait_for_selector('[data-practice-attempt="attempt-4"]')
-  p.locator('[data-practice-attempt="attempt-4"] button').click();p.wait_for_selector('.rz-st-launch-dialog[open]')
-  check('Mobile modal has no horizontal overflow',p.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
-  p.screenshot(path=str(OUT/'v9-practice-launch-mobile.png'),full_page=True)
-  p.evaluate('__studentFixture.failPractice=true');p.get_by_role('button',name='Launch simulation').click()
-  p.wait_for_selector('.rz-st-launch-feedback:visible')
-  check('Revocation during modal denies launch without navigation','revoked' in p.locator('.rz-st-launch-feedback').inner_text().lower() and '/simulation-test.html' not in p.url)
+  check('Persistent Practice code field on mobile',p.locator('.rz-v15-practice-join input').is_visible())
+  check('Mobile layout has no horizontal overflow',p.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
+  p.evaluate('__studentFixture.failPractice=true')
+  p.locator('[data-practice-attempt="attempt-4"] button').click()
+  p.wait_for_selector('.rz-st-dialog[open]')
+  check('Revocation during direct launch denies navigation','revoked' in p.locator('.rz-st-dialog[open]').inner_text().lower() and '/simulation-test.html' not in p.url)
   check('No mobile browser exceptions',not errors)
  finally:ctx.close()
 if __name__=='__main__':
