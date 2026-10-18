@@ -7,12 +7,12 @@ MOCK=(ROOT/'scripts/fixtures/student-workspace-backend.js').read_text()+r"""
 // V9 additions are isolated: there is no production fixture import.
 products[0].slug='rizsim-secure-submission-test';products[0].launch_path='/simulation-test.html';
 products[0].short_description='Three situational questions for browser QA';
-const saved=JSON.parse(sessionStorage.getItem('v9state')||'{}');
+const saved=JSON.parse(localStorage.getItem('v9state')||'{}');
 const qa=attempts.find(a=>a.id==='attempt-4');
 if(saved.attempt)Object.assign(qa,saved.attempt);
 const answers=saved.answers||{};
 state.v9Answers=answers;state.failSubmit=false;
-function persist(){sessionStorage.setItem('v9state',JSON.stringify({
+function persist(){localStorage.setItem('v9state',JSON.stringify({
  attempt:{status:qa.status,submitted_at:qa.submitted_at,progress_percent:qa.progress_percent,classroom_access_type:qa.classroom_access_type},
  answers}));}
 const rpcBefore=client.rpc.bind(client);
