@@ -10826,6 +10826,12 @@ insertResult.error
 return null;
 
 }
+// A newly created Faculty profile receives the same one-time welcome
+// as a newly created Student profile, without showing it on later logins.
+if(!error && !profile)try{
+ sessionStorage.setItem('rizsim:v15:welcome',currentUser.id);
+ sessionStorage.setItem('rizsim:v15:welcome-name',profilePayload.display_name||'');
+}catch(_){}
 
 const retry =
 
@@ -11377,6 +11383,7 @@ configureRoleNavigation();
 
 setAuthenticatedIdentity();
 window.RizSimSession.remember("faculty",currentUser.id);
+window.RizSimV15Welcome?.show?.(currentUser.id,currentProfile?.display_name);
 
 }
 
@@ -33059,6 +33066,7 @@ Complete
 <script src="rizsim-support.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
 <script src="rizsim-shared-about.js" defer></script>
+<script src="rizsim-v15-welcome.js" defer></script>
 <script src="rizsim-v15-live-control.js" defer></script>
 <script src="rizsim-v15-dashboards.js" defer></script>
 <script src="rizsim-v15-portal.js" defer></script>
