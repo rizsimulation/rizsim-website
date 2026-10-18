@@ -75,7 +75,7 @@ if(!pause.includes("Your progress is safely saved. Please wait — you'll contin
  console.error('Student pause overlay does not use approved copy');process.exitCode=1;
 }else checks++;
 const insight=fs.readFileSync('rizsim-insight-faculty.js','utf8');
-for(const key of ['One room. A visible learning shift.','Matched learners','a.pairedN','a.clusters[code]','learningShift(host,a)']){
+for(const key of ['One room. A visible learning shift.','PAIRED LEARNERS','a.pairedN','a.clusters[code]','learningShift(host,a)']){
  if(!insight.includes(key)){console.error('Sim01 premium analytics missing source-based component:',key);process.exitCode=1;}else checks++;
 }
 for(const path of ['access-in.html','access-out.html']){
@@ -88,5 +88,30 @@ const clocks=fs.readFileSync('rizsim-v15-launch-countdowns.js','utf8');
 for(const date of ['Friday, 23 October 2026','Sunday 25 October 2026']){
  if(!clocks.includes(date)){console.error('Countdown release date not clearly visible',date);process.exitCode=1;}else checks++;
 }
+
+const upcoming=fs.readFileSync('rizsim-student-workspace.js','utf8');
+const upcomingBlock=upcoming.split('function renderLibrary(){')[1]?.split('function decoratePlayer(){')[0]||'';
+if(!upcomingBlock.includes('Independent Simulations')||!upcomingBlock.includes('Self-Paced Courses')||
+ upcomingBlock.includes('data.attempts')||!upcoming.includes('rz-v153-library-data-source')){
+ console.error('Student Library still displays classroom products instead of independent release');process.exitCode=1;
+}else checks++;
+const supportV153=fs.readFileSync('rizsim-support.js','utf8');
+const publicContact=fs.readFileSync('contact.html','utf8');
+if(!supportV153.includes('Compose in Gmail')||!supportV153.includes('Copy Email')||
+ !supportV153.includes(".from('rizsim_support_reports').insert({category:select.value,message})")||
+ !publicContact.includes('RizSimulation Team')||!publicContact.includes('rizsim-v153-focus.css')){
+ console.error('V15.3 Contact must retain Gmail/Copy and authenticated Owner reports');process.exitCode=1;
+}else checks++;
+for(const target of ['access-in.html','access-out.html']){
+ const page=fs.readFileSync(target,'utf8');
+ if(!page.includes('rz-v153-contact-intro')||!page.includes('rizsim-v153-focus.css')||page.includes('Additional contact channels can be connected here')){
+  console.error('Authenticated Contact still contains obsolete placeholders:',target);process.exitCode=1;
+ }else checks++;
+}
+const premium=fs.readFileSync('rizsim-insight-faculty.js','utf8');
+if(!premium.includes('Matched review answers')||!premium.includes('Four paths through Learning Transfer')||
+ !premium.includes('rz-v153-shift-bars')||!premium.includes('a.transitions[key]')){
+ console.error('Presenter Dashboard lacks screenshot-matched, source-verified breakdowns');process.exitCode=1;
+}else checks++;
 console.log('V15 static checks:',checks,process.exitCode?'FAILED':'PASSED');
 if(process.exitCode)process.exit(1);
