@@ -118,7 +118,7 @@ def run(browser,base):
  for code,mod,student_id,insight_id,n in CASES:
   context,page,errors=v5.page_for(browser,base,'faculty',
    '?live=simulation-running&selection=review-'+code+
-   '&live_session=review-'+code+'#classroom')
+   '&live_session=review-'+code+'#classroom',v15=True)
   try:
    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])',timeout=20000)
    # Studio Share is now the only QR surface. The original session card is
