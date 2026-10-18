@@ -77,10 +77,18 @@ def run(browser,base):
  try:
   p.goto(base+'/access-in.html#practice',wait_until='networkidle');p.wait_for_selector('#studentApp.show')
   check('Practice code field stays available',p.locator('.rz-v15-practice-join input').count()==1)
-  p.locator('[data-practice-attempt="attempt-4"] button').click()
-  check('No obsolete launch confirmation',p.locator('.rz-st-launch-dialog').count()==0)
+  hub=p
+  hub.locator('[data-practice-attempt="attempt-4"] button').click()
+  hub.wait_for_selector('.rz-st-launch-dialog[open]')
+  check('Practice opens an on-site launch confirmation',hub.locator('.rz-st-launch-dialog').count()==1)
+  with ctx.expect_page() as launch:
+   hub.locator('.rz-st-launch-dialog').get_by_role('button',name='Launch simulation').click()
+  p=launch.value
+  p.on('pageerror',lambda e:errors.append(str(e)))
   p.wait_for_url('**/simulation-test.html?*',timeout=15000)
-  check('One action launches runner directly without Player redirect','attempt=attempt-4' in p.url and 'access=practice' in p.url)
+  check('Runner opens in its own tab while the resources website remains open',
+    'attempt=attempt-4' in p.url and 'access=practice' in p.url and
+    '/access-in.html' in hub.url and not hub.is_closed())
   p.wait_for_selector('#simulation.show')
   check('Questionnaire visible before submission',p.locator('.question:visible').count()==3 and p.locator('#submitButton').is_disabled())
   for name,value in [('q1','review_priorities'),('q2','provisional'),('q3','process')]:
@@ -126,8 +134,13 @@ def run(browser,base):
   check('Mobile layout has no horizontal overflow',p.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
   p.evaluate('__studentFixture.failPractice=true')
   p.locator('[data-practice-attempt="attempt-4"] button').click()
-  p.wait_for_selector('.rz-st-dialog[open]')
-  check('Revocation during direct launch denies navigation','revoked' in p.locator('.rz-st-dialog[open]').inner_text().lower() and '/simulation-test.html' not in p.url)
+  p.wait_for_selector('.rz-st-launch-dialog[open]')
+  p.locator('.rz-st-launch-dialog').get_by_role('button',name='Launch simulation').click()
+  p.wait_for_function("""()=>(document.querySelector('.rz-st-launch-feedback')?.textContent||'').toLowerCase().includes('revoked')""",timeout=12000)
+  check('Revocation during Practice launch keeps the Student on the website and closes the placeholder',
+    'revoked' in p.locator('.rz-st-launch-feedback').inner_text().lower() and
+    '/simulation-test.html' not in p.url and
+    p.evaluate('!window.__rzV154RunnerTab || window.__rzV154RunnerTab.closed'))
   check('No mobile browser exceptions',not errors)
  finally:ctx.close()
 if __name__=='__main__':
