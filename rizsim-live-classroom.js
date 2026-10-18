@@ -369,7 +369,7 @@
     resultsHeading.append(el('h3','','Session results'),refresh);
     $('rzLiveResultsAnchor').before(resultsHeading);
 
-    $('rzLiveJumpResults').textContent='Student Results';
+    $('rzLiveJumpResults').textContent='Live Responses';
     $('rzLiveJumpResults').addEventListener('click',() => {
       if (!window.RizSimLiveWorkspace?.select('students'))
         $('rzLiveResultsAnchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'});
