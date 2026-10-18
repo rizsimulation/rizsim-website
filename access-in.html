@@ -7730,8 +7730,8 @@ event.target.closest(
 if(joinButton){
 
 joinSession(
-joinButton.dataset
-.joinAccess
+joinButton.dataset.joinAccess,
+joinButton.dataset.joinAccess === 'live'
 );
 
 return;
