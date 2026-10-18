@@ -134,3 +134,34 @@
  #view-resources.student-view .rz-v153-library-category,
  #view-contact .rz-v153-support-team,#view-contact .rz-v153-support-report{transition:none}
 }
+
+/* Screenshot-guided Sim01: one strong learning shift, matched answers, 2x2 transfer paths. */
+#rzInsightFacultyAnalytics .rz-v153-shift-heading{display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:15px}
+#rzInsightFacultyAnalytics .rz-v153-shift-heading h3{font-size:clamp(20px,2.2vw,27px);line-height:1.22;color:#153c50;margin:5px 0}
+#rzInsightFacultyAnalytics .rz-v153-shift-heading p{font-size:12px;line-height:1.6;color:#617782;margin:0;max-width:720px}
+#rzInsightFacultyAnalytics .rz-v153-shift-sample{font-size:10px;font-weight:850;letter-spacing:.05em;border-radius:20px;padding:7px 11px;border:1px solid #c8e3dd;background:#fff;color:#267a70;white-space:nowrap}
+#rzInsightFacultyAnalytics .rz-i01-shift-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+#rzInsightFacultyAnalytics .rz-i01-shift-metric:nth-child(1){background:#eef6f8;border-top-color:#78abbc}
+#rzInsightFacultyAnalytics .rz-i01-shift-metric:nth-child(2){background:#e8f7f0;border-top-color:#46aa93}
+#rzInsightFacultyAnalytics .rz-i01-shift-metric:nth-child(3){background:#fff6e6;border-top-color:#d6ad5a}
+#rzInsightFacultyAnalytics .rz-v153-shift-bars{display:grid;gap:9px;margin:14px 0 12px}
+#rzInsightFacultyAnalytics .rz-v153-shift-bar-row{display:grid;grid-template-columns:68px minmax(0,1fr) 58px;align-items:center;gap:8px;font-size:10px;color:#365f6a}
+#rzInsightFacultyAnalytics .rz-v153-shift-bar-row>strong{font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+#rzInsightFacultyAnalytics .rz-v153-shift-bar{height:9px;border-radius:40px;background:#e5eff0;overflow:hidden}
+#rzInsightFacultyAnalytics .rz-v153-shift-bar>span{display:block;height:100%;border-radius:inherit;background:#387d95}
+#rzInsightFacultyAnalytics .rz-v153-shift-bar.kg>span{background:#0a9483}
+#rzInsightFacultyAnalytics .rz-v153-review-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:9px}
+#rzInsightFacultyAnalytics .rz-v153-review-tile{min-width:0;display:grid;gap:6px;padding:11px;border:1px solid #d6e5e8;border-top:3px solid #7aacc4;background:#f5f9fb;border-radius:10px}
+#rzInsightFacultyAnalytics .rz-v153-review-tile:nth-child(2){border-top-color:#45ac9c;background:#f0fbf6}
+#rzInsightFacultyAnalytics .rz-v153-review-tile:nth-child(3){border-top-color:#e0a36b;background:#fff9f1}
+#rzInsightFacultyAnalytics .rz-v153-review-tile:nth-child(4){border-top-color:#ad90cb;background:#f9f6fc}
+#rzInsightFacultyAnalytics .rz-v153-review-tile>strong{font-size:22px;color:#173e4f;font-variant-numeric:tabular-nums}
+#rzInsightFacultyAnalytics .rz-v153-review-tile>span{font-size:10px;color:#59717d;font-weight:700;overflow-wrap:anywhere}
+#rzInsightFacultyAnalytics .rz-v153-path-eyebrow{font-size:10px;letter-spacing:.015em;font-weight:850;color:#416776}
+#rzInsightFacultyAnalytics .rz-i01-shift-path{gap:6px;min-height:84px}
+#rzInsightFacultyAnalytics .rz-i01-shift-path>strong{line-height:1.1;font-size:25px}
+@media(max-width:670px){
+ #rzInsightFacultyAnalytics .rz-i01-shift-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #rzInsightFacultyAnalytics .rz-i01-shift-metric:nth-child(3){grid-column:span 2}
+ #rzInsightFacultyAnalytics .rz-v153-review-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
