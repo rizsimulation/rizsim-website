@@ -5723,6 +5723,13 @@ document.body.classList.remove(
 document.addEventListener('click',event=>{
  const pressed=event.target.closest?.('[data-join-access="live"],[data-launch-attempt]');
  if(!pressed||!pressed.closest('#view-player')||window.__rzV154RunnerTab&&!window.__rzV154RunnerTab.closed)return;
+ // Invalid name/institution must show validation in the current RizSim tab;
+ // do not spawn a blank tab before the first-party Join check can reject it.
+ if(pressed.matches('[data-join-access="live"]')){
+  const who=document.getElementById('rzV154JoinName');
+  const school=document.getElementById('rzV154JoinInstitution');
+  if((who&&!who.value.trim())||(school&&!school.value.trim()))return;
+ }
  try{
   const tab=window.open('about:blank','_blank');
   if(tab){tab.document.title='Preparing RizSim simulation…';
