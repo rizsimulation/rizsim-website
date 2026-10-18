@@ -65,10 +65,10 @@ def contract():
   elif path in PLAYERS:
    # Only the V15 welcome and paused-state assets are added to the runners.
    restored=current
-   for extra in ('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">\\n',
-                 '<script src="/rizsim-v15-welcome.js" defer></script>\\n',
-                 '<script src="/rizsim-v15-runner-state.js" defer></script>\\n'):
-    restored=restored.replace(extra.replace('\\\\n','\\n'),'')
+   for extra in ('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">',
+                 '<script src="/rizsim-v15-welcome.js" defer></script>',
+                 '<script src="/rizsim-v15-runner-state.js" defer></script>'):
+    restored=restored.replace(extra+chr(10),'')
    assert restored==before,(path,'original academic simulation body has changed')
   else:
    assert current==before,(path,"existing V14 HTML and functionality must stay identical")
