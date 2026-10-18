@@ -43,8 +43,8 @@ def contract():
   if link not in before:
    assert current.replace(link,"")==before,(path,"V14 styles may not change application markup")
   elif path=="contact.html" and "Wajid Rizvi" in before:
-   original_avatar='<div class="contact-avatar">\\n              W\\n            </div>'
-   updated_avatar='<div class="contact-avatar">\\n              R\\n            </div>'
+   original_avatar='<div class="contact-avatar">' + chr(10) + '              W' + chr(10) + '            </div>'
+   updated_avatar='<div class="contact-avatar">' + chr(10) + '              R' + chr(10) + '            </div>'
    assert before.count("Wajid Rizvi")==1 and before.count(original_avatar)==1,"Expected original contact identity once"
    expected=before.replace("Wajid Rizvi","RizSimulation Team",1).replace(original_avatar,updated_avatar,1)
    assert current==expected,"Only the contact display name and avatar initial may change"
