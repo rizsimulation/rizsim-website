@@ -25,7 +25,7 @@
  function closeModal(){if(modal){const old=modal;modal=null;old.close();old.remove();}}
  function choose(args){
   const s=bridge()?.getSnapshot();if(!s||!['faculty','course_lead'].includes(s.role))return false;
-  const blocked=liveRoom(s);if(blocked){open();return true;}
+  const blocked=s.role==='course_lead'?liveRoom(s):null;if(blocked){open();return true;}
   if(modal)closeModal();
   const mode=args.mode,productId=mode==='simulation'?args.selection:args.simulation;
   const licensed=(s.licensed||[]).find(x=>String(x.id)===String(productId)) || (mode==='purchased' ? window.RizSimCourseEnvironment?.runtime?.('purchased',args.selection)?.simulations?.find(x=>String(x.product_id)===String(productId)) : null);
