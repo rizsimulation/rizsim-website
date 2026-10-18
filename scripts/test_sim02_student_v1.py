@@ -130,6 +130,16 @@ async def main():
     await page.wait_for_function(f"window.__sim02FakeState()?.attempt.progress_percent==={expected}",timeout=10000)
     await page.wait_for_function("!document.querySelector('#rzSim02PendingOverlay') || document.querySelector('#rzSim02PendingOverlay').hidden",timeout=10000)
    await reviews('KR')
+   await page.wait_for_timeout(500)
+   debug=await page.evaluate("""() => ({
+      stage:typeof record==='undefined'?'unavailable':phase(record),
+      krLocked:typeof record!=='undefined'&&!!record?.kr?.at,
+      modal:!!document.getElementById('rzSim02CommitModal'),
+      pending:document.querySelector('#rzSim02PendingOverlay')?.hidden,
+      hostedBanner:document.querySelector('#rzSim02HostedStatus')?.textContent,
+      fake:window.__sim02FakeState()
+   })""")
+   print('SIM02_DIALOG_DEBUG',repr(debug),'page_errors',repr(errors),flush=True)
    await synced(38)
    for i in range(2):
     for kind in ('source','transfer'):
