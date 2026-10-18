@@ -3941,17 +3941,13 @@ if(
 incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
 ){
 
-// Direct shared invitations pass through authentication and server verification,
-// then launch the runner without displaying the intervening Player screen.
-document.body.classList.add('rz-v15-direct-invite');
+// V15.4: QR and link invitations stay on the authenticated website.
+// Verify the class here and show its name/institution Join panel.
+navigateStudent("player",false);
 await resolveSession(
 "token",
 incomingShareToken
 );
-if(!joinedAttempt || joinedAttempt.attempt_status==='submitted' || joinedAttempt.submitted_at){
-  document.body.classList.remove('rz-v15-direct-invite');
-  navigateStudent("player",false);
-}
 
 }
 else if(
@@ -5879,12 +5875,9 @@ setPlayerMessage(
 );
 
 renderResolvedSession();
-// Faculty QR/share-token invitations open the authorized live simulation directly.
-// Practice invitations remain in the dedicated Practice workspace.
-if(sourceType==='token' && session.live_open===true){await joinSession('live',true);}
-else if(sourceType==='token' && session.practice_open===true){
-  await joinSession('practice',false);
-  navigateStudent('practice',false);
+// An invitation must be accepted explicitly before any attempt is joined.
+if(sourceType==='token' && (session.live_open===true||session.practice_open===true)){
+  openRizSimJoinPrompt(session.live_open===true?'live':'practice');
 }
 
 }
@@ -6333,6 +6326,43 @@ renderJoinedAttempt();
 }
 
 
+/* V15.4: the actual Join UI lives in the RizSim website, not the runner.
+   Its callback uses the existing authenticated join and access-check RPCs. */
+function rememberRizSimParticipant(attempt,name,institution){
+  if(!attempt?.attempt_id||!attempt?.session_id)return;
+  try{localStorage.setItem('rizsim:v154:participant:'+attempt.attempt_id,
+    JSON.stringify({name,institution,session:attempt.session_id,user:currentUser?.id||'',at:Date.now()}));}catch(_){}
+}
+function openRizSimJoinPrompt(mode){
+  if(!resolvedSession||!['live','practice'].includes(mode))return;
+  if(mode==='live'&&resolvedSession.live_open!==true)return;
+  if(mode==='practice'&&resolvedSession.practice_open!==true)return;
+  const originalRoom=resolvedSession,originalUser=currentUser?.id,originalGeneration=studentResolveGeneration;
+  const start=()=>{
+    window.RizSimV154Join?.show({
+      room:originalRoom,mode,name:currentProfile?.display_name||'',
+      onJoin:async({name,institution,tab,session})=>{
+        if(!originalUser||currentUser?.id!==originalUser||
+            studentResolveGeneration!==originalGeneration||
+            String(resolvedSession?.session_id)!==String(session))
+          throw new Error('Your class or Student identity changed. Verify the link again.');
+        joinedAttempt=null;
+        const receipt=await joinSession(mode,false);
+        if(!receipt||String(receipt.session_id)!==String(session))
+          throw new Error('The session could not be joined. Check your class access window.');
+        rememberRizSimParticipant(receipt,name,institution);
+        const opened=await launchJoinedSimulation(tab);
+        if(!opened)throw new Error('The simulation could not be opened. Your website tab and resources are unchanged.');
+        navigateStudent(mode==='practice'?'practice':'player',false);
+        // Refresh published Faculty resources in the original website tab.
+        window.RizSimStudentBridge?.refresh?.().catch(()=>{});
+      }
+    });
+  };
+  if(window.RizSimV154Join)start();
+  else window.addEventListener('rizsim:v154-join-ready',start,{once:true});
+}
+
 /* ============================================================
    JOIN SESSION
    ============================================================ */
@@ -6341,7 +6371,7 @@ async function joinSession(
 requestedAccessType,
 autoLaunch = false
 ){
-if(studentJoinBusy)return;
+if(studentJoinBusy)return null;
 studentJoinBusy=true;
 const requestUser=currentUser?.id;
 const joiningSession=resolvedSession?.session_id;
@@ -6449,9 +6479,9 @@ joinedAttempt.is_existing_attempt
 );
 
 renderJoinedAttempt();
-if(autoLaunch && joinedAttempt && !joinedAttempt.submitted_at && joinedAttempt.attempt_status !== 'submitted'){
-  await launchJoinedSimulation();
-}
+// V15.4 never leaves this tab automatically. A verified Student click
+// reserves the separate runner tab before awaiting this async RPC.
+return joinedAttempt;
 
 } finally { studentJoinBusy=false; }
 }
@@ -6532,7 +6562,7 @@ class="join-button"
 type="button"
 data-launch-attempt
 >
-Launch Simulation
+Open Simulation in New Tab ↗
 </button>
 
 `
@@ -6559,7 +6589,7 @@ connected to a launch URL in RizSim.
    LAUNCH
    ============================================================ */
 
-async function launchJoinedSimulation(){
+async function launchJoinedSimulation(reservedTab=null){
 if(joinedAttempt?.attempt_status === "submitted" || joinedAttempt?.submitted_at){setPlayerMessage("This response has already been submitted.",true);return;}
 
 if(
@@ -6573,7 +6603,13 @@ return;
 const launchUser=currentUser?.id;
 const launchAttempt=joinedAttempt;
 const launchGeneration=studentResolveGeneration;
-if(!launchUser)return;
+if(!launchUser)return false;
+const runnerTab=reservedTab||window.RizSimV154Join?.reserve?.();
+if(!runnerTab){
+  setPlayerMessage('Allow the simulation to open in a new tab from rizsim.com.',true);
+  return false;
+}
+const failLaunch=message=>{try{runnerTab.close()}catch(_){}setPlayerMessage(message,true);return false;};
 showLoading();
 
 const {
@@ -6590,18 +6626,9 @@ joinedAttempt.attempt_id
 );
 
 hideLoading();
-if(currentUser?.id!==launchUser || joinedAttempt!==launchAttempt || studentResolveGeneration!==launchGeneration)return;
+if(currentUser?.id!==launchUser || joinedAttempt!==launchAttempt || studentResolveGeneration!==launchGeneration)return failLaunch('The Student identity changed. Reopen your class.');
 
-if(error){
-
-setPlayerMessage(
-error.message,
-true
-);
-
-return;
-
-}
+if(error){return failLaunch(error.message);}
 
 const access =
 Array.isArray(data)
@@ -6621,12 +6648,7 @@ access.allowed !==
 true
 ){
 
-setPlayerMessage(
-"Your classroom access window is no longer open.",
-true
-);
-
-return;
+return failLaunch('Your classroom access window is no longer open.');
 
 }
 
@@ -6642,12 +6664,7 @@ product
 
 if(!route){
 
-setPlayerMessage(
-"The class connection is active, but this simulation runner has not yet been connected.",
-true
-);
-
-return;
+return failLaunch('The class connection is active, but the simulation runner is not yet connected.');
 
 }
 
@@ -6672,8 +6689,10 @@ destination.searchParams.set(
 joinedAttempt.classroom_access_type
 );
 
-window.location.href =
-destination.href;
+try{runnerTab.location.replace(destination.href);}
+catch(_){return failLaunch('The simulation tab could not be opened.');}
+setPlayerMessage('The simulation opened in a new tab. Stay here to read your class resources.');
+return true;
 
 }
 
@@ -7651,10 +7670,7 @@ event.target.closest(
 
 if(joinButton){
 
-joinSession(
-joinButton.dataset.joinAccess,
-joinButton.dataset.joinAccess === 'live'
-);
+openRizSimJoinPrompt(joinButton.dataset.joinAccess);
 
 return;
 
@@ -7832,6 +7848,7 @@ initialize();
 
 </script>
 
+<script src="rizsim-v154-join.js" defer></script>
 <script src="rizsim-student-workspace.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
