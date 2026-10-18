@@ -7856,7 +7856,10 @@ window.RizSimStudentBridge = Object.freeze({
   destination.searchParams.set('attempt',own.id);
   destination.searchParams.set('session',own.classroom_session_id);
   destination.searchParams.set('access','practice');
-  window.location.href=destination.href;
+  const popup=window.__rzV154RunnerTab;window.__rzV154RunnerTab=null;
+  if(popup&&!popup.closed){popup.location.replace(destination.href);popup.focus();}
+  else{const tab=window.open(destination.href,'_blank');if(tab)tab.opener=null;
+   else throw new Error('Please allow RizSim pop-ups to open your Practice simulation in a separate tab.');}
  },
  async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
 });
