@@ -55,7 +55,14 @@ def contract():
     assert locked in current,(path,'locked theme/auth asset missing: '+locked)
    assert 'rizsim-v15-launch-countdowns.js' in current,(path,'launch announcement missing')
    assert ('RizSimStudentBridge' if path=="access-in.html" else 'RizSimFacultyBridge') in current,(path,'original authenticated bridge missing')
-   assert len(current)>len(before),(path,'authorized V15 additive work not present')
+   if 'rizsim-v153-focus.css' in current:
+    # The user explicitly removed redundant Contact panels from these portals;
+    # deletion shrinks the file. Verify identity, role gates and new scoped
+    # support mount instead of imposing an obsolete byte-length requirement.
+    assert 'rz-v153-contact-intro' in current and 'id="view-contact"' in current,(path,'V15.3 clean Contact missing')
+    assert 'rizsim-support.js' in current and 'rizsim-v15-welcome.js' in current,(path,'protected auth/support workflow missing')
+   else:
+    assert len(current)>len(before),(path,'authorized V15 additive work not present')
   elif path=="contact.html" and 'rizsim-v153-focus.css' in current:
    # User-requested V15.3 design explicitly replaces ONLY public Contact main;
    # preserve official header/footer/nav and their page transitions exactly.
