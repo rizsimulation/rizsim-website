@@ -285,12 +285,23 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
     if(state.submitted)revealCompletion(false);
     else if(state.group)revealExperiment(state.group,false);
     save();refreshStatus();
-    if(live.enabled)setInterval(async()=>{
-      try{await live.refresh();refreshStatus()}catch{
-        $('#connectionStatus').textContent='Local classroom connection lost. Keep this page open and reconnect.';
-        submit.disabled=true;
+    if(live.enabled){
+      // V15.4: a hidden runner tab must not repeatedly download/verify the
+      // four original photos or overlap network requests while the Student
+      // consults Faculty-shared resources in the website tab.
+      let checking=false;
+      async function refreshVisible(){
+        if(checking||document.hidden||state.submitted)return;
+        checking=true;
+        try{await live.refresh();refreshStatus()}catch{
+          $('#connectionStatus').textContent='Classroom connection interrupted. Keep the tab open to reconnect.';
+          submit.disabled=true;
+        }finally{checking=false;}
       }
-    },3000);
+      setInterval(refreshVisible,6500);
+      document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshVisible();});
+      window.addEventListener('pageshow',refreshVisible);
+    }
   }
   initialize();
 })();
