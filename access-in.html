@@ -6321,11 +6321,21 @@ session.access_status ===
 }
 
 
-<div class="session-actions">
-
-${actions}
-
-</div>
+<section class="rz-v154-join-profile" aria-label="Classroom entry details">
+ <span class="rz-v154-kicker">BEFORE YOU JOIN</span>
+ <h3>Confirm your classroom identity</h3>
+ <p>Your name and institution stay on the RizSim website. Your simulation will open in a separate tab while class resources remain here.</p>
+ <div class="rz-v154-join-fields">
+  <label>Name<input id="rzV154JoinName" type="text" maxlength="100" autocomplete="name" value="${escapeHTML(currentProfile?.display_name||'')}" required></label>
+  <label>Institution<input id="rzV154JoinInstitution" type="text" maxlength="120" autocomplete="organization" value="${escapeHTML(session.institution_name && session.institution_name !== 'Independent Faculty' ? session.institution_name : '')}" required placeholder="Enter your institution"></label>
+ </div>
+ <div class="rz-v154-join-help" id="rzV154JoinHelp" role="status"></div>
+</section>
+<div class="session-actions">${actions}</div>
+<section class="rz-v154-session-resources" id="rzV154SessionResources" aria-label="Faculty shared class resources">
+ <h3>Resources shared by your presenter</h3><p>After joining, keep this RizSim tab open to review your class resources while the simulation runs separately.</p>
+ <div id="rzV154SessionResourceList"></div>
+</section>
 
 
 <div
@@ -6357,6 +6367,12 @@ requestedAccessType,
 autoLaunch = false
 ){
 if(studentJoinBusy)return;
+const who=document.getElementById('rzV154JoinName'),school=document.getElementById('rzV154JoinInstitution');
+if(who&&school){
+ const name=who.value.trim(),institution=school.value.trim();
+ if(!name||!institution){const n=document.getElementById('rzV154JoinHelp');if(n)n.textContent='Enter both your name and institution before joining.';(!name?who:school).focus();return;}
+ try{sessionStorage.setItem('rizsim:v154:join-identity',JSON.stringify({name,institution,session:resolvedSession?.session_id}));}catch(_){}
+}
 studentJoinBusy=true;
 const requestUser=currentUser?.id;
 const joiningSession=resolvedSession?.session_id;
@@ -6464,11 +6480,18 @@ joinedAttempt.is_existing_attempt
 );
 
 renderJoinedAttempt();
+window.RizSimStudentWorkspace?.refresh?.();
+window.dispatchEvent(new Event('rizsim:student-data'));
 if(autoLaunch && joinedAttempt && !joinedAttempt.submitted_at && joinedAttempt.attempt_status !== 'submitted'){
   await launchJoinedSimulation();
 }
 
-} finally { studentJoinBusy=false; }
+} finally {studentJoinBusy=false;
+ if(window.__rzV154RunnerTab && !window.__rzV154RunnerTab.closed){
+  // Successful launches clear this handle. Any failed join closes the placeholder.
+  window.__rzV154RunnerTab.close();window.__rzV154RunnerTab=null;
+ }
+}
 }
 
 
