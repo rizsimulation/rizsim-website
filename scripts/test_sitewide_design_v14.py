@@ -97,8 +97,8 @@ def contract():
     assert stripped==before,(path,'original Sim01 academic runner changed')
    elif path=="simulation-system-1-system-2.html":
     def normalise_fast_choices(src):
-     src=re.sub(r'function selectReview\\(v\\)\\{.*?(?=function moveQuestion\\()', 'function selectReview(v){V154_FAST_SELECTION}\\n',src,flags=re.S)
-     src=re.sub(r'function selectLT\\(v\\)\\{.*?(?=function lockLT\\()', 'function selectLT(v){V154_FAST_SELECTION}\\n',src,flags=re.S)
+     src=re.sub(r'function selectReview\(v\)\{.*?(?=function moveQuestion\()', 'function selectReview(v){V154_FAST_SELECTION}\n',src,flags=re.S)
+     src=re.sub(r'function selectLT\(v\)\{.*?(?=function lockLT\()', 'function selectLT(v){V154_FAST_SELECTION}\n',src,flags=re.S)
      return src
     assert normalise_fast_choices(stripped)==normalise_fast_choices(before),(path,'Sim02 academic content or locked outcomes changed')
    else:
@@ -106,7 +106,7 @@ def contract():
     # protected assignment, photographs and submission code must remain intact.
     stripped=stripped.replace('src="/RizSim%20finalized%20logo.png"','src="https://rizsim.com/rizsim-r.png"')
     def normalise_hotel_refresh(src):
-     return re.sub(r'if\\(live\\.enabled\\)(?:setInterval|\\{).*?(?=\\n  \\}\\n  initialize\\(\\);)', 'V154_HOTEL_BACKGROUND_REFRESH;',src,flags=re.S)
+     return re.sub(r'if\(live\.enabled\)(?:setInterval|\{).*?(?=\n  \}\n  initialize\(\);)', 'V154_HOTEL_BACKGROUND_REFRESH;',src,flags=re.S)
     assert normalise_hotel_refresh(stripped)==normalise_hotel_refresh(before),(path,'Hotel protected classroom logic changed outside refresh')
   else:
    assert current==before,(path,"existing V14 HTML and functionality must stay identical")
