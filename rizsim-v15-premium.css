@@ -1,0 +1,23 @@
+/* RizSim V15: compact, accessible presentation enhancements. No account or response state changes. */
+.rz-v13-subtab#rzV13SubviewOverview:not([data-rz-visited="true"]):not(.is-active){animation:rz-v15-invite 2.6s ease-in-out infinite;box-shadow:0 0 0 1px #5db8a9}
+@keyframes rz-v15-invite{0%,100%{box-shadow:0 0 0 1px #88cabf}50%{box-shadow:0 0 0 5px rgba(18,154,141,.15)}}
+.rz-v13-region,.rz-v13-pane,.rz-v13-insights-content,.rz-v13-record-slot,.rz-v13-workspace{min-width:0}
+.rz-v13-pane-note{border:1px solid #d8e9e7;border-radius:15px;padding:12px 16px;background:linear-gradient(110deg,#ecf7f3,#f8fbff);margin-bottom:12px}
+.rz-v13-pane-note h3{margin:0 0 4px;color:#123f4c}.rz-v13-pane-note p{margin:0;color:#536d76}
+.rz-v13-pane .rz-i01-card,.rz-v13-pane .rz-s02-panel,.rz-v13-pane .rz-h03-card{border-radius:15px;box-shadow:0 7px 18px rgba(7,61,70,.045)}
+.rz-v13-pane .rz-i01-card:nth-of-type(3n+1),.rz-v13-pane .rz-s02-panel:nth-of-type(3n+1),.rz-v13-pane .rz-h03-card:nth-of-type(3n+1){border-top:3px solid #56ada8}
+.rz-v13-pane .rz-i01-card:nth-of-type(3n+2),.rz-v13-pane .rz-s02-panel:nth-of-type(3n+2),.rz-v13-pane .rz-h03-card:nth-of-type(3n+2){border-top:3px solid #a58ac8}
+.rz-v13-pane .rz-i01-card:nth-of-type(3n),.rz-v13-pane .rz-s02-panel:nth-of-type(3n),.rz-v13-pane .rz-h03-card:nth-of-type(3n){border-top:3px solid #e5b668}
+.rz-v13-pane table{width:100%;table-layout:auto;white-space:normal}
+.rz-v13-pane th,.rz-v13-pane td{overflow-wrap:anywhere}
+.rz-v13-pane .rz-i01-table-scroll,.rz-v13-pane .rz-s02-table-scroller,.rz-v13-pane .rz-h03-table-wrap{max-width:100%;min-width:0}
+.rz-v13-pane .rz-s02-scroll-hint{display:none}
+.rz-v15-support{display:grid;gap:8px;align-content:start}
+.rz-v15-support strong{font-size:1.08rem;color:#164b50}
+.rz-v15-support p{margin:0;color:#506a72;line-height:1.5}
+.rz-v15-support button{justify-self:start;min-height:42px}
+.rz-v15-status{font-size:.81rem;color:#19766e}
+.rz-v15-library-countdown{border:1px solid #d6e8e6;background:linear-gradient(120deg,#eff8f6,#f6f4fd);padding:12px 15px;border-radius:15px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rz-v15-library-countdown strong{font-size:1.06rem;font-variant-numeric:tabular-nums;color:#125b60}
+@media(max-width:800px){.rz-v13-pane table{font-size:.79rem}.rz-v13-pane th,.rz-v13-pane td{padding:8px 6px}}
+@media(prefers-reduced-motion:reduce){.rz-v13-subtab#rzV13SubviewOverview{animation:none!important}}
