@@ -34,10 +34,12 @@ def page_for(browser, base, role='faculty', path='', mobile=False, delay=0):
         if url == 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm':
             route.fulfill(status=200, content_type='text/javascript', body=MOCK)
         elif url == base + '/rizsim-v15-live-control.js':
-            # This suite verifies the unchanged V5 secure form/QR and historical
-            # Back/Forward behavior. The new V15 one-click flow is tested
-            # independently by scripts/test_v15_classroom.py.
+            # Legacy V5 workflows stay under test independent of the V15 overlay.
             route.fulfill(status=200, content_type='text/javascript', body='/* V5 compatibility regression */')
+        elif url == base + '/rizsim-v15-premium.css':
+            # The V15 session manager deliberately replaces the old full-width
+            # session card; preserve the V5 visual contract in this legacy suite.
+            route.fulfill(status=200, content_type='text/css', body='/* V5 baseline styles */')
         elif url.startswith(base + '/'):
             route.continue_()
         elif 'fonts.googleapis.com' in url:
