@@ -111,16 +111,9 @@
    },'rz-v15-button rz-v15-end');controls.append(pauseButton,end);pane.append(controls);
    status=node('p','rz-v15-manager-status');status.setAttribute('role','status');pane.append(status);
    manager.append(pill,pane);document.body.append(manager);
-   let start=null;
-   pill.addEventListener('pointerdown',e=>{if(e.button!==0)return;pill.setPointerCapture?.(e.pointerId);start={x:e.clientX,y:e.clientY,left:pill.getBoundingClientRect().left,top:pill.getBoundingClientRect().top};});
-   pill.addEventListener('pointerup',e=>{if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>7)dragged=true;start=null;});
-   pill.addEventListener('pointermove',e=>{if(!start||!(e.buttons&1))return;
-      const dx=e.clientX-start.x,dy=e.clientY-start.y;
-      if(Math.hypot(dx,dy)<7)return;dragged=true;
-      manager.style.right='auto';manager.style.bottom='auto';
-      manager.style.left=Math.max(8,Math.min(innerWidth-manager.offsetWidth-8,start.left+dx))+'px';
-      manager.style.top=Math.max(8,Math.min(innerHeight-manager.offsetHeight-8,start.top+dy))+'px';
-   });
+   // V15.4: neither Live nor Practice management is draggable.
+   // The compact Practice access button sits in its own stationary row
+   // beneath the classroom session panel, without a floating overlay.
  }
  async function togglePause(){
    if(changing||!current)return;
