@@ -205,7 +205,7 @@
   data.simulations.forEach((sim,index)=>{
    const card=node('article','rz-v5-card rz-v5-card-'+index%4),copy=node('div','rz-v5-card-copy');copy.append(node('h3','',sim.title),node('p','',sim.description||'Included in this course.'));
    const hasLicence=(s.licensed||[]).some(x=>str(x.id)===str(sim.product_id));
-   const run=btn(hasLicence?'Run Simulation':'Active simulation licence required',()=>nav(route.mode,'setup',route.selection,'',false,sim.product_id));run.className='rz-v5-card-action';run.disabled=!hasLicence;run.dataset.rzRunProduct=str(sim.product_id);card.append(copy,run);sims.append(card);
+   const alreadyLive=window.RizSimV15?.liveRoom?.(s);const run=btn(hasLicence?'Run Simulation':'Active simulation licence required',()=>nav(route.mode,'setup',route.selection,'',false,sim.product_id));run.className='rz-v5-card-action';run.disabled=!hasLicence||!!alreadyLive;run.title=alreadyLive?'End the currently active Live Class before starting another.':'';run.dataset.rzRunProduct=str(sim.product_id);card.append(copy,run);sims.append(card);
   });left.append(sims);
   const sessions=node('div','rz-course-sessions');
   data.sessions.forEach(original=>{
