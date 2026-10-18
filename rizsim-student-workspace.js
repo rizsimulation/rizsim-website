@@ -306,7 +306,7 @@
    if(selected&&!a){target.hidden=true;continue;}target.hidden=false;
    const title=el('div','rz-st-section-title');title.append(icon('file'),el('h2','','Class resources'));target.append(title);
    if(snap.errors.materials){empty(target,'Resources could not be refreshed','Your access has not changed. Refresh to try again.','warning','warning',['Refresh resources',()=>bridge().refresh().then(renderMaterials)]);continue;}
-   const materials=selected?snap.materials.filter(m=>m.course_id===a.course_id||m.course_id===a.classroom_session_id):snap.materials;
+   const materials=selected?(snap.materials||[]).filter(m=>materialBelongsToAttempt(m,a)):(snap.materials||[]);
    if(!materials.length){target.append(el('p','rz-st-support','No published class resources are available in your current access window.'));continue;}
    const grid=el('div','rz-st-resource-grid');materials.forEach(m=>grid.append(materialCard(m)));target.append(grid);
   }
