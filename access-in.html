@@ -4019,7 +4019,7 @@ await loadPlatformData();
 renderAll();
 
 hideLoading();
-if(!incomingShareToken)window.RizSimV15Welcome?.show?.();
+if(!incomingShareToken)window.RizSimV15Welcome?.show?.(currentUser.id);
 
 if(
 incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
