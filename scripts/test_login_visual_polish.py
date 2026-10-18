@@ -88,15 +88,17 @@ def test_visual(browser, base, label, viewport, page_name):
         buttonBg: getComputedStyle(document.querySelector('#googleLogin')).backgroundColor,
         buttonColor: getComputedStyle(document.querySelector('#googleLogin')).color,
         transition: getComputedStyle(document.querySelector('#googleLogin')).transitionDuration,
+        reducedMatches: matchMedia('(prefers-reduced-motion: reduce)').matches,
         logoOk: !!document.querySelector('#authGate img.gate-logo')?.naturalWidth,
         googleLogoOk: !!document.querySelector('#authGate img.google-mark')?.naturalWidth,
     })""")
     assert metrics["logoOk"], "Approved RizSim brand logo failed to load"
+    print(f"STYLE METRICS {page_name} {label}: reduced={metrics['reducedMatches']}, transition={metrics['transition']}", flush=True)
     if label == "after":
         assert metrics["googleLogoOk"], f"{page_name}: missing genuine Google G asset"
         assert metrics["buttonBg"] == "rgb(255, 255, 255)", "Google G must be on white"
         assert metrics["buttonColor"] == "rgb(31, 31, 31)", "Google button must be readable"
-        assert all(float(n.rstrip("s")) == 0 for n in metrics["transition"].split(", ")), "reduced-motion ignored"
+        assert metrics["reducedMatches"] and all(float(n.rstrip("s")) == 0 for n in metrics["transition"].split(", ")), f"reduced-motion ignored: {metrics['transition']} / match={metrics['reducedMatches']}"
     page.screenshot(path=str(OUT / (page_name.replace(".html", "") + "-" + label + "-" + str(viewport[0]) + ".png")), full_page=True, animations="disabled")
     context.close()
     return {"button": box, "card": cardbox, **metrics}
