@@ -45,7 +45,7 @@
    const strip=node('section','rz-v15-library-countdown');strip.id='rzV15LibraryLaunch';
    strip.setAttribute('aria-label','RizSimulation Library publication countdown');
    const copy=node('div');copy.append(node('strong','','RizSim Library · Coming Soon'),
-     node('p','','New resources, courses and eBooks are scheduled for publication.'));
+     node('p','','A new independent collection of simulations, eBooks, learning resources and self-paced courses is coming. No classroom code required.'));
    const time=node('strong','rz-v15-library-timer');time.id='rzV15LibraryTime';
    time.setAttribute('role','timer');time.setAttribute('aria-label','Time remaining before the Library publication date');
    strip.append(copy,time);anchor.before(strip);
@@ -53,13 +53,13 @@
      if(ended(LIBRARY)){
        time.textContent='Launch date reached';
        copy.querySelector('strong').textContent='RizSim Library · Publication Update';
-       copy.querySelector('p').textContent='Courses, resources and eBooks will appear when the RizSimulation Team publishes them.';
+       copy.querySelector('p').textContent='Independent simulations, eBooks, learning resources and courses will appear when the RizSimulation Team publishes them.';
      }else{
        time.textContent=parts(LIBRARY).join(' : ');
        copy.querySelector('strong').textContent='RizSim Library · Coming Soon';
        copy.querySelector('p').textContent=before()?
-         '6-day countdown begins Monday 19 October at 6:00 AM PKT. Scheduled publication: Sunday 25 October 2026 at 6:00 AM PKT.':
-         'Resources, courses and eBooks are scheduled for Sunday 25 October at 6:00 AM PKT.';
+         '6-day countdown begins Monday 19 October at 6:00 AM PKT. Planned independent Library publication: Sunday 25 October 2026 at 6:00 AM PKT.':
+         'Independent simulations, eBooks, resources and courses are scheduled for Sunday 25 October 2026 at 6:00 AM PKT.';
      }
    }
    tick();
