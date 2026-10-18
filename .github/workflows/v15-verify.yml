@@ -1,0 +1,32 @@
+name: RizSim V15 Quality Gate
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  static-regression:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check V15 JavaScript and required assets
+        run: node scripts/v15-check.mjs
+  synthetic-browser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install offline browser-test dependencies
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Test V15 classroom with synthetic backend
+        run: python scripts/test_v15_classroom.py

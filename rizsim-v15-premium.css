@@ -1,0 +1,113 @@
+/* RizSim V15: compact, accessible presentation enhancements. No account or response state changes. */
+.rz-v13-subtab#rzV13SubviewOverview:not([data-rz-visited="true"]){animation:rz-v15-invite 2.6s ease-in-out infinite;box-shadow:0 0 0 1px #5db8a9}
+@keyframes rz-v15-invite{0%,100%{box-shadow:0 0 0 1px #88cabf}50%{box-shadow:0 0 0 5px rgba(18,154,141,.15)}}
+.rz-v13-region,.rz-v13-pane,.rz-v13-insights-content,.rz-v13-record-slot,.rz-v13-workspace{min-width:0}
+.rz-v13-pane-note{border:1px solid #d8e9e7;border-radius:15px;padding:12px 16px;background:linear-gradient(110deg,#ecf7f3,#f8fbff);margin-bottom:12px}
+.rz-v13-pane-note h3{margin:0 0 4px;color:#123f4c}.rz-v13-pane-note p{margin:0;color:#536d76}
+.rz-v13-pane .rz-i01-card,.rz-v13-pane .rz-s02-panel,.rz-v13-pane .rz-h03-card{border-radius:15px;box-shadow:0 7px 18px rgba(7,61,70,.045)}
+.rz-v13-pane .rz-i01-card:nth-of-type(3n+1),.rz-v13-pane .rz-s02-panel:nth-of-type(3n+1),.rz-v13-pane .rz-h03-card:nth-of-type(3n+1){border-top:3px solid #56ada8}
+.rz-v13-pane .rz-i01-card:nth-of-type(3n+2),.rz-v13-pane .rz-s02-panel:nth-of-type(3n+2),.rz-v13-pane .rz-h03-card:nth-of-type(3n+2){border-top:3px solid #a58ac8}
+.rz-v13-pane .rz-i01-card:nth-of-type(3n),.rz-v13-pane .rz-s02-panel:nth-of-type(3n),.rz-v13-pane .rz-h03-card:nth-of-type(3n){border-top:3px solid #e5b668}
+.rz-v13-pane table{width:100%;table-layout:auto;white-space:normal}
+.rz-v13-pane th,.rz-v13-pane td{overflow-wrap:anywhere}
+.rz-v13-pane .rz-i01-table-scroll,.rz-v13-pane .rz-s02-table-scroller,.rz-v13-pane .rz-h03-table-wrap{max-width:100%;min-width:0}
+.rz-v13-pane .rz-s02-scroll-hint{display:none}
+.rz-v15-support{display:grid;gap:8px;align-content:start}
+.rz-v15-support strong{font-size:1.08rem;color:#164b50}
+.rz-v15-support p{margin:0;color:#506a72;line-height:1.5}
+.rz-v15-support button{justify-self:start;min-height:42px}
+.rz-v15-status{font-size:.81rem;color:#19766e}
+.rz-v15-library-countdown{border:1px solid #d6e8e6;background:linear-gradient(120deg,#eff8f6,#f6f4fd);padding:12px 15px;border-radius:15px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rz-v15-library-countdown strong{font-size:1.06rem;font-variant-numeric:tabular-nums;color:#125b60}
+@media(max-width:800px){.rz-v13-pane table{font-size:.79rem}.rz-v13-pane th,.rz-v13-pane td{padding:8px 6px}}
+@media(prefers-reduced-motion:reduce){.rz-v13-subtab#rzV13SubviewOverview{animation:none!important}}
+
+
+/* V15 compact live manager and modality dialog */
+body.rz-v15-direct-invite #studentApp{visibility:hidden;pointer-events:none}
+.rz-v15-manager{position:fixed;right:18px;bottom:18px;z-index:99997;width:min(352px,calc(100vw - 24px));color:#173f49}
+.rz-v15-manager[hidden],.rz-v15-manager-pane[hidden],.rz-v15-pill[hidden]{display:none!important}
+.rz-v15-manager.is-minimized{width:max-content;max-width:calc(100vw - 24px)}
+.rz-v15-pill{display:inline-flex;gap:9px;align-items:center;min-height:43px;padding:9px 15px;border:1px solid #5abfb5;background:linear-gradient(115deg,#087e82,#0b646b);color:#fff;border-radius:999px;box-shadow:0 9px 24px #08414c33;cursor:grab;font-size:13px;font-weight:750;touch-action:none}
+.rz-v15-live-dot{width:9px;height:9px;border-radius:50%;background:#92f1bd;animation:rz-v15-livebeat 2s ease-in-out infinite;box-shadow:0 0 0 3px #92f1bd33}
+.rz-v15-manager.is-paused .rz-v15-live-dot{background:#f5c86c;animation:none}
+@keyframes rz-v15-livebeat{50%{box-shadow:0 0 0 7px #92f1bd12}}
+.rz-v15-manager-pane{max-height:80vh;overflow:auto;background:linear-gradient(155deg,#fff,#f7fbfa);border:1px solid #b9d7d2;border-radius:18px;box-shadow:0 20px 50px #032f3a33;padding:13px}
+.rz-v15-manager-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;border-bottom:1px solid #e0ece8;padding-bottom:9px}
+.rz-v15-manager-head strong{display:block;margin-top:1px;color:#123f4a;font-size:14px}
+.rz-v15-kicker{display:block;color:#087f83;font-size:10px;letter-spacing:.09em;font-weight:850}
+.rz-v15-minimize,.rz-v15-close{flex:none;width:30px;height:30px;border:1px solid #d3e5e0;background:#eff7f4;border-radius:9px;color:#225761;font-size:20px}
+.rz-v15-session-label{margin:9px 0;font-weight:750;font-size:12px;color:#3d6370;overflow-wrap:anywhere}
+.rz-v15-manager-body{display:grid;grid-template-columns:112px minmax(0,1fr);gap:11px;align-items:center}
+.rz-v15-manager-qr{border:1px solid #d7e5df;border-radius:10px;background:#fff;padding:6px;text-align:center}
+.rz-v15-qr svg{width:100%;height:auto;display:block}
+.rz-v15-manager-qr small{font-size:9px;color:#5c717a}
+.rz-v15-manager-share{display:grid;gap:7px;min-width:0}
+.rz-v15-share-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 5px;align-items:center;padding:7px;border:1px solid #dbe9e6;border-radius:9px;background:#eff8f5}
+.rz-v15-share-line>span:first-child{grid-column:1/-1;color:#4e6973;font-size:10px;font-weight:750}
+.rz-v15-share-text{font-size:15px;letter-spacing:.03em;overflow-wrap:anywhere}
+.rz-v15-share-link{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rz-v15-copy{background:#fff;color:#126b70;border:1px solid #b5d3cc;border-radius:8px;font-size:10px;font-weight:750;padding:5px 8px}
+.rz-v15-manager-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.rz-v15-button{border-radius:10px;min-height:39px;padding:7px 8px;font-size:11px;font-weight:800;border:1px solid #bdd8d3;background:#eaf7f3;color:#175a5b}
+.rz-v15-end{background:#fff1ec;border-color:#eac6be;color:#9b3f35}
+.rz-v15-manager-status{margin:5px 0 0;font-size:10px;line-height:1.4;color:#436670}
+body:has(.rz-v15-manager:not([hidden]).is-minimized) #authenticatedApp{padding-bottom:48px}
+.rz-v15-choice,.rz-v15-launch-dialog{width:min(390px,calc(100vw - 26px));padding:20px;color:#133e4b;background:linear-gradient(160deg,#fff,#f1faf7);border:1px solid #bcdad4;border-radius:19px;box-shadow:0 28px 72px #0528354a;max-height:85vh}
+.rz-v15-choice::backdrop,.rz-v15-launch-dialog::backdrop{background:#081f2d77;backdrop-filter:blur(3px)}
+.rz-v15-choice-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rz-v15-choice h2,.rz-v15-launch-dialog h2{font-size:21px;line-height:1.2;margin:12px 0 7px;color:#0e4a56}
+.rz-v15-choice>p,.rz-v15-launch-dialog p{color:#5a727b;font-size:13px;line-height:1.5;margin:0 0 14px}
+.rz-v15-choices{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.rz-v15-choice-option{min-height:88px;border:1px solid #b2d5cf;border-radius:13px;font-size:14px;font-weight:800;background:#e4f5ef;color:#145a61}
+.rz-v15-choice-option.is-live{background:linear-gradient(135deg,#0b8483,#0d5d68);color:white}
+.rz-v15-choice-option.is-practice{background:linear-gradient(135deg,#f0e9fb,#ecf5f5);border-color:#c6b9d9;color:#50406b}
+.rz-v15-choice-option:disabled{opacity:.55;cursor:wait}
+.rz-v15-inline-status{min-height:1px;margin:11px 0 0;color:#92483d;font-size:12px}
+.rz-v15-practice-join{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0 18px;border:1px solid #cbdeda;background:linear-gradient(110deg,#eff8f5,#faf8fd);border-radius:15px;padding:11px 13px}
+.rz-v15-practice-join label{flex:1 1 100%;font-size:11px;font-weight:750;color:#285e65}
+.rz-v15-practice-join input{min-height:41px;flex:1 1 155px;min-width:0;border:1px solid #bdd7d0;border-radius:9px;padding:8px 11px;background:#fff;text-transform:uppercase}
+.rz-v15-practice-join button{min-height:41px}
+.rz-v15-practice-message{flex:1 1 100%;font-size:11px;color:#456973;margin:0}
+.rz-v15-welcome{position:fixed;right:22px;top:min(115px,15vh);width:min(325px,calc(100vw - 24px));z-index:100100;background:linear-gradient(160deg,#fff,#ecf9f4);color:#173e46;border:1px solid #b8dad1;border-radius:20px;box-shadow:0 16px 48px #12394235;padding:18px;line-height:1.55}
+.rz-v15-welcome h2{margin:0 0 7px;font-size:20px;color:#0b5863}.rz-v15-welcome p{margin:0 0 11px;font-size:13px;color:#44646e}
+.rz-v15-welcome button{background:#0d787c;color:#fff;padding:9px 16px;border:0;border-radius:10px;font-weight:750}
+.rz-v15-launch-dialog{background:linear-gradient(145deg,#fff,#f8f2ff);border-color:#d9c4e4;color:#322d4f}
+.rz-v15-launch-dialog a{display:inline-block;padding:10px 14px;background:#644789;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:13px}
+.rz-v15-countgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:15px 0}
+.rz-v15-countgrid>div{border:1px solid #dfd2ed;background:#fff;border-radius:12px;text-align:center;padding:12px 4px}
+.rz-v15-countgrid strong{display:block;font-size:23px;line-height:1.1;color:#584276;font-variant-numeric:tabular-nums}
+.rz-v15-countgrid span{font-size:10px;font-weight:700;color:#6d627b}
+.rz-v15-library-countdown{margin:10px 0 14px}
+.rz-v15-compact-table{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important}
+.rz-v15-responsive-container{max-width:100%!important;min-width:0!important;overflow-x:visible!important}
+.rz-v15-compact-table thead{position:absolute!important;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}
+.rz-v15-compact-table tbody{display:grid!important;gap:8px}
+.rz-v15-compact-table tr{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px!important;padding:10px!important;background:#f8fbfd;border:1px solid #d9e8e8;border-left:3px solid #5bafb0;border-radius:13px;min-width:0}
+.rz-v15-compact-table tr:nth-child(3n+2){border-left-color:#9d88c8;background:#f9f7fd}
+.rz-v15-compact-table tr:nth-child(3n){border-left-color:#e0b770;background:#fcfaf5}
+.rz-v15-compact-table td{display:block!important;min-width:0!important;overflow-wrap:anywhere!important;white-space:normal!important;border:0!important;padding:3px 5px!important;text-align:left!important}
+.rz-v15-compact-table td:before{content:attr(data-rz-label);display:block;font-size:9px;text-transform:uppercase;color:#637982;font-weight:780;margin-bottom:2px}
+.rz-v15-compact-table td button{font-size:11px;max-width:100%;white-space:normal}
+.rz-v15-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:12px}
+.rz-v15-kpi{display:grid;gap:4px;padding:11px 13px;border:1px solid #cde2df;border-top:3px solid #4ca9a6;border-radius:13px;background:#ecf8f4;min-width:0}
+.rz-v15-kpi:nth-child(2){background:#f4effb;border-color:#d9cee9;border-top-color:#a58ac8}
+.rz-v15-kpi:nth-child(3){background:#fff8e9;border-color:#f0dfbc;border-top-color:#deb268}
+.rz-v15-kpi strong{font-size:25px;line-height:1.1;color:#173d4d;font-variant-numeric:tabular-nums}
+.rz-v15-kpi span{font-size:11px;color:#55717a;font-weight:700}
+@media(max-width:620px){.rz-v15-manager{right:9px;bottom:12px}.rz-v15-compact-table tr{grid-template-columns:repeat(2,minmax(0,1fr))}.rz-v15-kpis{gap:6px}.rz-v15-kpi{padding:9px 7px}.rz-v15-kpi strong{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.rz-v15-live-dot{animation:none!important}}
+
+/* Obsolete full-width Active Session Access and its Schedule/Created/Expiry
+   fields are not shown. V15 still reads the original protected values. */
+.rz-v13-studio-overview #rzLiveRunningMount > .portal-panel{display:none!important}
+.rz-v15-manager.is-practice .rz-v15-live-dot{background:#bb9deb;animation:none}
+.rz-v15-manager.is-practice .rz-v15-pill{background:linear-gradient(120deg,#69578b,#366f83);border-color:#c8b8e1}
+.rz-v15-manager.is-practice .rz-v15-manager-actions{grid-template-columns:1fr}
+.rz-v15-manager .rz-v15-pause[hidden]{display:none!important}
+
+/* Replace the obsolete horizontal-scroll instruction after responsive card conversion. */
+#rzS02RosterScrollHint{display:none!important}
+#rzV13Panestudents .rz-s02-table-scroller,
+#rzV13Panestudents .rz-i01-table-scroll,
+#rzV13Panestudents .rz-h03-table-scroll{overflow-x:visible!important;max-width:100%!important;min-width:0!important}

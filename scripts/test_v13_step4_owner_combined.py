@@ -118,7 +118,7 @@ def run(browser,base):
  for code,mod,student_id,insight_id,n in CASES:
   context,page,errors=v5.page_for(browser,base,'faculty',
    '?live=simulation-running&selection=review-'+code+
-   '&live_session=review-'+code+'#classroom')
+   '&live_session=review-'+code+'#classroom',v15=True)
   try:
    page.wait_for_selector('#rzLiveV13Workspace:not([hidden])',timeout=20000)
    # Studio Share is now the only QR surface. The original session card is
@@ -172,8 +172,10 @@ def run(browser,base):
    assert page.locator('#'+student_id+' [role=progressbar]').count()>=n,'Per-student progress retained'
    assert page.locator('#rzLiveStudentRosterMount #classroomRosterPanel').is_hidden(), 'No duplicate V5 roster'
    if code=='02':
-    assert page.locator('#rzS02RosterScrollHint').is_visible(), 'Sim02 horizontal-scroll hint'
+    assert page.locator('#rzS02RosterScrollHint').is_hidden(), 'V15 removes unwanted horizontal-scroll hint'
     assert page.locator('#rizsimSystemStudentResults .rz-s02-table-scroller[role="region"][tabindex="0"]').count()==1
+    page.wait_for_function("!!document.querySelector('#rizsimSystemStudentResults .rz-v15-compact-table')",timeout=10000)
+    assert page.locator('#rizsimSystemStudentResults .rz-v15-compact-table').count()==1, 'V15 preserves all Student fields in responsive labelled cards'
    if code=='03':
     assert 'PKR 12,000' not in page.locator('#rzV13Panestudents').inner_text()
     assert 'Group A' not in page.locator('#rzV13Panestudents').inner_text()

@@ -38,6 +38,8 @@
     u.hash = 'classroom'; return u.pathname + u.search + u.hash;
   }
   function navigate(mode = '', stage = 'menu', selection = '', session = '', replace = false, simulation = '') {
+    // The V15 modality chooser preserves verified session creation and hides obsolete forms.
+    if(stage==='setup' && window.RizSimV15?.choose?.({mode,selection,simulation}))return;
     // All creation flows (including purchased courses) transition setup -> running.
     // Open Studio Share Access once for that fresh session, not on history/resume.
     if(stage==='running' && route.stage==='setup' && route.mode===mode &&
@@ -369,7 +371,7 @@
     resultsHeading.append(el('h3','','Session results'),refresh);
     $('rzLiveResultsAnchor').before(resultsHeading);
 
-    $('rzLiveJumpResults').textContent='Student Results';
+    $('rzLiveJumpResults').textContent='Live Responses';
     $('rzLiveJumpResults').addEventListener('click',() => {
       if (!window.RizSimLiveWorkspace?.select('students'))
         $('rzLiveResultsAnchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'});

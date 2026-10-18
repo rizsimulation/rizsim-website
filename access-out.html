@@ -3639,6 +3639,7 @@ border-color:#315b92;
 <link rel="stylesheet" href="rizsim-brand-about.css">
 <link rel="stylesheet" href="rizsim-login-polish.css">
 <link rel="stylesheet" href="rizsim-sitewide-finish-v14.css">
+<link rel="stylesheet" href="rizsim-v15-premium.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -32910,6 +32911,19 @@ verifyAccess();
 window.RizSimFacultyBridge={
  getSnapshot:()=>({userId:currentUser?.id||null,role:currentMembership?.role||null,products:products.slice(),licences:myLicenseCatalogue.slice(),submissions:submissions.slice(),sessions:classroomSessions.slice(),courses:courses.slice(),selectedCourseId,courseMaterials:courseMaterials.slice(),courseSimulations:selectedCourseSimulations.slice(),courseSessions:courseClassroomSessions.slice(),licensed:getActiveLicensedSimulations()}),
  viewResponses:id=>openResponses(id),
+ selectSession:async id=>{
+   const item=classroomSessions.find(s=>String(s.session_id)===String(id));
+   if(!item)return false;
+   selectedClassroomSessionId=item.session_id;
+   if(currentMembership?.role==='course_lead' && selectedCourseId){
+     await loadSelectedCourseClassroomSessions(selectedCourseId);
+     renderCourses();
+   }
+   ensureClassroomRosterSessionSelection();
+   await loadClassroomStudents(item.session_id,true);
+   renderClassroom();
+   return true;
+ },
  selectCourse:async id=>{await openCourseManager(id);return getSelectedCourse()},
  refresh:()=>{renderClassroom();renderResults();window.RizSimFacultyWorkspace?.render()}
 };
@@ -33026,6 +33040,10 @@ Complete
 <script src="rizsim-support.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
 <script src="rizsim-shared-about.js" defer></script>
+<script src="rizsim-v15-live-control.js" defer></script>
+<script src="rizsim-v15-dashboards.js" defer></script>
+<script src="rizsim-v15-portal.js" defer></script>
+<script src="rizsim-v15-launch-countdowns.js" defer></script>
 </body>
 
 </html>

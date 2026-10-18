@@ -48,6 +48,28 @@ def contract():
    assert before.count("Wajid Rizvi")==1 and before.count(original_avatar)==1,"Expected original contact identity once"
    expected=before.replace("Wajid Rizvi","RizSimulation Team",1).replace(original_avatar,updated_avatar,1)
    assert current==expected,"Only the contact display name and avatar initial may change"
+  elif path in ("access-in.html","access-out.html"):
+   # V15 intentionally changes these authenticated flows. Keep the original
+   # branding, Google identity, session authorization and V14 CSS in place.
+   for locked in ('rizsim-sitewide-finish-v14.css','rizsim-session-continuity.js','rizsim-v15-premium.css'):
+    assert locked in current,(path,'locked theme/auth asset missing: '+locked)
+   assert 'rizsim-v15-launch-countdowns.js' in current,(path,'launch announcement missing')
+   assert ('RizSimStudentBridge' if path=="access-in.html" else 'RizSimFacultyBridge') in current,(path,'original authenticated bridge missing')
+   assert len(current)>len(before),(path,'authorized V15 additive work not present')
+  elif path=="contact.html":
+   # The Gmail-compose actions replace only the old mailto destinations.
+   gmail='href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=rizsimulation%40gmail.com" target="_blank" rel="noopener noreferrer"'
+   restored=current.replace(gmail,'href="mailto:rizsimulation@gmail.com"')
+   assert restored==before,(path,'Contact change exceeded authorized Gmail action replacement')
+   assert 'RizSimulation Team' in current and 'copyEmailButton' in current
+  elif path in PLAYERS:
+   # Only the V15 welcome and paused-state assets are added to the runners.
+   restored=current
+   for extra in ('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">',
+                 '<script src="/rizsim-v15-welcome.js" defer></script>',
+                 '<script src="/rizsim-v15-runner-state.js" defer></script>'):
+    restored=restored.replace(extra+chr(10),'')
+   assert restored==before,(path,'original academic simulation body has changed')
   else:
    assert current==before,(path,"existing V14 HTML and functionality must stay identical")
   assert "<script" in before or path in ("about.html",),path

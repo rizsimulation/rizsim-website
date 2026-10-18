@@ -118,7 +118,7 @@
  }
  function roster(parent){
    const card=dom('article','rz-h03-card rz-h03-wide');
-   labelBlock(card,'Student Results','Per-student progress and locked response status; individual details unlock only after collection closes.');
+   labelBlock(card,'Live Responses','Per-student progress and locked response status; individual details unlock only after collection closes.');
    if(!rows.length){card.append(dom('p','rz-h03-empty','No students have joined this classroom yet.'));parent.append(card);return;}
    const table=dom('table','rz-h03-table'),th=dom('tr');
    ['Student','Progress','Submission','Group','Individual result'].forEach(x=>th.append(dom('th','',x)));
@@ -213,7 +213,7 @@
  function summary(parent){
    const a=groupRows('A'),b=groupRows('B'),aW=a.map(x=>x.record.willing_to_pay_pkr),bW=b.map(x=>x.record.willing_to_pay_pkr);
    const overview=dom('article','rz-h03-card rz-h03-wide');
-   labelBlock(overview,'Class Insights · A/B price judgment','Actual responses from this closed classroom only. Conditions were assigned once by RizSim.');
+   labelBlock(overview,'A/B price judgment · Presenter Dashboard','Actual responses from this closed classroom only. Conditions were assigned once by RizSim.');
    const metrics=dom('div','rz-h03-metrics');
    metric(metrics,'Group A',String(a.length),'Valid submitted responses','group-a');
    metric(metrics,'Group B',String(b.length),'Valid submitted responses','group-b');
@@ -297,7 +297,7 @@
    metric(high,'Submissions',String(rows.filter(x=>x.status==='submitted').length),'Submitted, sealed decisions');
    metric(high,'Completion rate',rows.length?(rows.filter(x=>x.status==='submitted').length/rows.length*100).toFixed(1)+'%':'—','Based on submitted attempts');
    content.append(high);
-   if(studentHost){studentHost.append(dom('h2','','Hotel Judgment Lab · Student Results'));roster(studentHost);}
+   if(studentHost){studentHost.append(dom('h2','','Hotel Judgment Lab · Live Responses'));roster(studentHost);}
    else roster(content);
    if(revealed)summary(content);
    else content.append(dom('p','rz-h03-sealed-note','The original hotel-judgment experiment reveals group medians, distributions and explanations after collection closes—not while students are still making independent price judgments.'));

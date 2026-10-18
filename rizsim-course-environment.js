@@ -199,13 +199,13 @@
   const top=node('div','rz-course-top'),head=node('div');head.append(node('h2','',data.title),node('p','',route.mode==='purchased'?'Publisher-prepared course · run its simulations and control classroom resource visibility.':'Choose a simulation to run. Publish or revoke saved resources without uploading them again.'));
   top.append(head,btn('Refresh course',()=>invalidate(scope)));root.append(top);
   const columns=node('div','rz-course-columns'),left=node('section','rz-course-panel'),right=node('section','rz-course-panel resources');
-  left.append(node('h3','','Course simulations'),node('p','rz-panel-caption','Run and end sessions independently. Ending a simulation preserves its results.'));
+  left.append(node('h3','','Launch a Simulation'),node('p','rz-panel-caption','Run one live simulation at a time. Ending a session preserves its results.'));
   const sims=node('div','rz-course-sims');
   if(!data.simulations.length)sims.append(node('p','rz-panel-caption','No simulations are included yet.'));
   data.simulations.forEach((sim,index)=>{
    const card=node('article','rz-v5-card rz-v5-card-'+index%4),copy=node('div','rz-v5-card-copy');copy.append(node('h3','',sim.title),node('p','',sim.description||'Included in this course.'));
    const hasLicence=(s.licensed||[]).some(x=>str(x.id)===str(sim.product_id));
-   const run=btn(hasLicence?'Run Simulation':'Active simulation licence required',()=>nav(route.mode,'setup',route.selection,'',false,sim.product_id));run.className='rz-v5-card-action';run.disabled=!hasLicence;run.dataset.rzRunProduct=str(sim.product_id);card.append(copy,run);sims.append(card);
+   const alreadyLive=window.RizSimV15?.liveRoom?.(s);const run=btn(hasLicence?'Run Simulation':'Active simulation licence required',()=>nav(route.mode,'setup',route.selection,'',false,sim.product_id));run.className='rz-v5-card-action';run.disabled=!hasLicence||!!alreadyLive;run.title=alreadyLive?'End the currently active Live Class before starting another.':'';run.dataset.rzRunProduct=str(sim.product_id);card.append(copy,run);sims.append(card);
   });left.append(sims);
   const sessions=node('div','rz-course-sessions');
   data.sessions.forEach(original=>{
@@ -215,7 +215,7 @@
    if(item.active)actions.append(btn('End',async()=>{await service().close(item.session_id);invalidate(scope);},'danger'));
    row.append(info,actions);sessions.append(row);
   });left.append(sessions);
-  right.append(node('h3','','Class resources'),node('p','rz-panel-caption',route.mode==='purchased'?'Publisher content is read-only. Publishing and revoking affects your classes only.':'Your saved library. Publish to this course\'s eligible classes, or revoke without deleting the resource.'));
+  right.append(node('h3','','Share Class Resources'),node('p','rz-panel-caption',route.mode==='purchased'?'Publisher content is read-only. Publishing and revoking affects your classes only.':'Your saved library. Publish to this course\'s eligible classes, or revoke without deleting the resource.'));
   right.append(resourceList(scope,data.resources,data.can_add===true));columns.append(left,right);root.append(columns);
  }
  function renderStandalone(route,s){

@@ -1,0 +1,5 @@
+.rz-v15-student-paused{position:fixed;inset:0;z-index:2147483646;background:#09232dbb;backdrop-filter:blur(9px);display:grid;place-items:center;padding:16px;color:#194a4f;font-family:inherit}
+.rz-v15-student-paused[hidden]{display:none!important}.rz-v15-student-paused-card{width:min(490px,100%);background:linear-gradient(150deg,#fff,#ebf8f4);padding:clamp(21px,5vw,34px);border-radius:23px;border:1px solid #b5dcd2;box-shadow:0 28px 70px #071d2c55;text-align:center}
+.rz-v15-student-paused-card img{width:48px;height:48px;display:block;margin:0 auto 10px;object-fit:contain}.rz-v15-pause-chip{display:inline-block;border-radius:999px;background:#fff0d8;color:#876118;font-size:10px;letter-spacing:.11em;font-weight:800;padding:6px 10px}
+.rz-v15-student-paused-card h2{margin:14px 0;font-size:clamp(20px,3vw,27px);line-height:1.2;color:#145863}
+.rz-v15-student-paused-card p{font-size:15px;line-height:1.6;color:#4a6670}.rz-v15-student-paused-card small{display:block;color:#688088;font-size:12px}

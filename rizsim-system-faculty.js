@@ -265,7 +265,7 @@
  }
  function roster(parent){
    const card=elem('article','rz-s02-panel rz-s02-wide');
-   headline(card,'Student results & progress','Inspect any verified Student in this authorized classroom; personal reports are read-only.');
+   headline(card,'Live responses & progress','Inspect any verified Student in this authorized classroom; personal reports are read-only.');
    if(!rows.length){card.append(elem('p','rz-s02-empty','No Students have joined this session yet.'));parent.append(card);return;}
    const tab=elem('table','rz-s02-table'),head=elem('tr');
    ['Student','Progress','Stage','KR / 6','LT source / 2','LT transfer / 2','KG / 6','Status','Student result'].forEach(x=>head.append(elem('th','',x)));
@@ -382,7 +382,7 @@
    const main=elem('div','rz-s02-content');
    overview(main);
    const recordSection=elem('div','rz-s02-result-section');roster(recordSection);
-   if(studentHost)studentHost.append(elem('h2','','System 1 & System 2 · Student Results'),recordSection);
+   if(studentHost)studentHost.append(elem('h2','','System 1 & System 2 · Live Responses'),recordSection);
    else main.append(recordSection);
    items(main);groups(main);
    host.append(main,elem('p','rz-s02-footer','All scores computed by restricted RizSim server functions from actual locked Student choices. No public answer keys or sample class records. Last updated: '+(loadedAt?new Date(loadedAt).toLocaleString():'waiting')));

@@ -404,7 +404,7 @@
     }
     wrap.append(groups);
     const activity=node('article','rz-i01-card rz-i01-card-wide');allRecords(activity,records);
-    if(studentHost)studentHost.append(named('h2','','Insight to Implication · Student Results'),activity);
+    if(studentHost)studentHost.append(named('h2','','Insight to Implication · Live Responses'),activity);
     else wrap.append(activity);
     host.append(wrap,named('p','rz-i01-note','Source: committed responses saved in the current authorized RizSim classroom. No sample records or unpublished cohort statistics are displayed. Last refreshed: '+(fetchedAt?date(fetchedAt):'not yet loaded')+'.'));
   }

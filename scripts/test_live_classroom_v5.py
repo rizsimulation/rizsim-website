@@ -24,7 +24,7 @@ def check(name, value=True):
     checks.append(name)
     print('PASS ' + name, flush=True)
 
-def page_for(browser, base, role='faculty', path='', mobile=False, delay=0):
+def page_for(browser, base, role='faculty', path='', mobile=False, delay=0, v15=False):
     context = browser.new_context(viewport={'width':390 if mobile else 1366,'height':844 if mobile else 900}, has_touch=mobile, is_mobile=mobile, device_scale_factor=1, reduced_motion='reduce')
     contexts.append(context)
     context.tracing.start(screenshots=True, snapshots=True)
@@ -33,6 +33,13 @@ def page_for(browser, base, role='faculty', path='', mobile=False, delay=0):
         url = route.request.url
         if url == 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm':
             route.fulfill(status=200, content_type='text/javascript', body=MOCK)
+        elif url == base + '/rizsim-v15-live-control.js' and not v15:
+            # Legacy V5 workflows stay under test independent of the V15 overlay.
+            route.fulfill(status=200, content_type='text/javascript', body='/* V5 compatibility regression */')
+        elif url == base + '/rizsim-v15-premium.css' and not v15:
+            # The V15 session manager deliberately replaces the old full-width
+            # session card; preserve the V5 visual contract in this legacy suite.
+            route.fulfill(status=200, content_type='text/css', body='/* V5 baseline styles */')
         elif url.startswith(base + '/'):
             route.continue_()
         elif 'fonts.googleapis.com' in url:

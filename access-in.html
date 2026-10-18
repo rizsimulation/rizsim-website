@@ -1954,6 +1954,7 @@ animation:none!important;
 <link rel="stylesheet" href="rizsim-brand-about.css">
 <link rel="stylesheet" href="rizsim-login-polish.css">
 <link rel="stylesheet" href="rizsim-sitewide-finish-v14.css">
+<link rel="stylesheet" href="rizsim-v15-premium.css">
 </head>
 
 
@@ -3848,6 +3849,8 @@ upsertResult.error
 return null;
 
 }
+// New profile only: carry a one-time welcome across the direct simulation redirect.
+if(!error && !data)try{sessionStorage.setItem("rizsim:v15:welcome",currentUser.id)}catch(_){}
 
 const retry =
 
@@ -4016,20 +4019,23 @@ await loadPlatformData();
 renderAll();
 
 hideLoading();
+if(!incomingShareToken)window.RizSimV15Welcome?.show?.(currentUser.id);
 
 if(
 incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
 ){
 
-navigateStudent(
-"player",
-false
-);
-
+// Direct shared invitations pass through authentication and server verification,
+// then launch the runner without displaying the intervening Player screen.
+document.body.classList.add('rz-v15-direct-invite');
 await resolveSession(
 "token",
 incomingShareToken
 );
+if(!joinedAttempt || joinedAttempt.attempt_status==='submitted' || joinedAttempt.submitted_at){
+  document.body.classList.remove('rz-v15-direct-invite');
+  navigateStudent("player",false);
+}
 
 }
 else if(
@@ -5957,6 +5963,13 @@ setPlayerMessage(
 );
 
 renderResolvedSession();
+// Faculty QR/share-token invitations open the authorized live simulation directly.
+// Practice invitations remain in the dedicated Practice workspace.
+if(sourceType==='token' && session.live_open===true){await joinSession('live',true);}
+else if(sourceType==='token' && session.practice_open===true){
+  await joinSession('practice',false);
+  navigateStudent('practice',false);
+}
 
 }
 
@@ -6409,7 +6422,8 @@ renderJoinedAttempt();
    ============================================================ */
 
 async function joinSession(
-requestedAccessType
+requestedAccessType,
+autoLaunch = false
 ){
 if(studentJoinBusy)return;
 studentJoinBusy=true;
@@ -6519,6 +6533,9 @@ joinedAttempt.is_existing_attempt
 );
 
 renderJoinedAttempt();
+if(autoLaunch && joinedAttempt && !joinedAttempt.submitted_at && joinedAttempt.attempt_status !== 'submitted'){
+  await launchJoinedSimulation();
+}
 
 } finally { studentJoinBusy=false; }
 }
@@ -7719,8 +7736,8 @@ event.target.closest(
 if(joinButton){
 
 joinSession(
-joinButton.dataset
-.joinAccess
+joinButton.dataset.joinAccess,
+joinButton.dataset.joinAccess === 'live'
 );
 
 return;
@@ -7841,6 +7858,20 @@ window.RizSimStudentBridge = Object.freeze({
   joinedAttempt={attempt_id:own.id,session_id:own.classroom_session_id,product_id:own.product_id,classroom_access_type:own.classroom_access_type,attempt_status:own.status,submitted_at:own.submitted_at,is_existing_attempt:true};
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
+ async joinPracticeCode(code){
+  const actor=currentUser?.id;if(!actor)throw new Error('Sign in before joining a Practice class.');
+  const clean=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
+  if(!clean)throw new Error('Enter your Faculty class code.');
+  await resolveSession('code',clean);
+  if(currentUser?.id!==actor||!resolvedSession||resolvedSourceType!=='code'||resolvedSession.class_code!==clean)
+    throw new Error('This Practice class could not be verified. Check the code and try again.');
+  if(!resolvedSession.practice_open)throw new Error('Practice is not currently available for this class.');
+  await joinSession('practice',false);
+  if(!joinedAttempt?.attempt_id||joinedAttempt.classroom_access_type!=='practice')
+    throw new Error('RizSim could not confirm this Practice assignment.');
+  window.dispatchEvent(new Event('rizsim:student-data'));
+  return {...joinedAttempt};
+ },
  async practice(attemptId){const result=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attemptId});if(result.error)throw new Error(result.error.message);await reloadAttempts();return result.data;},
  async launchPractice(attemptId){
   const actor=currentUser?.id,generation=studentResolveGeneration;
@@ -7891,6 +7922,9 @@ initialize();
 <script src="rizsim-support.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
 <script src="rizsim-shared-about.js" defer></script>
+<script src="rizsim-v15-welcome.js" defer></script>
+<script src="rizsim-v15-portal.js" defer></script>
+<script src="rizsim-v15-launch-countdowns.js" defer></script>
 </body>
 
 </html>
