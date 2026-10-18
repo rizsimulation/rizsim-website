@@ -266,14 +266,14 @@
     shareStatus.setAttribute('role','status');share.append(shareStatus);studio.append(share);
     const students=panels.students;
     const top=node('div','rz-v13-pane-note');
-    top.append(node('h3','','Individual Student progress'),node('p','','Verified classroom roster and read-only personal response access.'));
+    top.append(node('h3','','Student activity'),node('p','','Joined learners, progress and authorized individual responses at a glance.'));
     students.append(top);
     const rosterMount=node('div','rz-v13-record-slot');rosterMount.id='rzLiveStudentRosterMount';
     const tableMount=node('div','rz-v13-record-slot');tableMount.id='rzLiveStudentRecordsMount';
     const simStudents=node('div','rz-v13-simulation-students');simStudents.id='rzV13SimulationStudentResults';students.append(rosterMount,tableMount,simStudents);
     const insights=panels.insights;
-    const intro=node('div','rz-v13-pane-note');intro.append(node('h3','','Combined learning insights'),
-      node('p','','Only authenticated, session-scoped observations and permitted class summaries appear here. Simulation analytics are displayed when verified records are available.'));
+    const intro=node('div','rz-v13-pane-note');intro.append(node('h3','','Learning overview'),
+      node('p','','Verified class participation and simulation-specific insight, with private student responses protected.'));
     insights.append(intro);
     const inside=node('div','rz-v13-insights-content');inside.id='rzV13InsightsContent';insights.append(inside);
     root.append(mobileToggle,scrim,rail,region);

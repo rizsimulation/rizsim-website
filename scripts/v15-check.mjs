@@ -44,5 +44,23 @@ const sql=fs.readFileSync('migrations/20261018_rizsim_v15_presenter_control.sql'
 for(const key of ['rizsim_v15_one_live_session','set_rizsim_presenter_paused','get_rizsim_presenter_state','rizsim_v15_pause_responses']){
  if(!sql.includes(key)){console.error('Essential backend requirement missing',key);process.exitCode=1;}else checks++;
 }
+const v151=fs.readFileSync('migrations/20261018_rizsim_v15_1_course_lead_session_guard.sql','utf8');
+for(const key of ["s.access_mode in ('live','practice','both')","before insert or update of","pg_advisory_xact_lock"]){
+ if(!v151.includes(key)){console.error('V15.1 concurrent-session safeguard absent:',key);process.exitCode=1;}else checks++;
+}
+const controller=fs.readFileSync('rizsim-v15-live-control.js','utf8');
+for(const key of ['activeRoom:managedRoom','rz-v151-legacy-access-source']){
+ if(!controller.includes(key)){console.error('Missing V15.1 classroom correction:',key);process.exitCode=1;}else checks++;
+}
+const clockFix=fs.readFileSync('rizsim-v15-launch-countdowns.js','utf8');
+if(!clockFix.includes('new MutationObserver')||!clockFix.includes('rizsim-v15-launch-countdowns')){
+ // The observer is mandatory; retain the fixed PKT launch dates separately.
+ if(!clockFix.includes('new MutationObserver')){console.error('Delayed Library mounting not protected');process.exitCode=1;}
+}
+checks++;
+const dashboard=fs.readFileSync('rizsim-v15-dashboards.js','utf8');
+if(!dashboard.includes('presenterProgress')||!dashboard.includes('data')||!dashboard.includes('rz-v15-compact-table')){
+ console.error('Verified responsive dashboard layer missing');process.exitCode=1;
+}else checks++;
 console.log('V15 static checks:',checks,process.exitCode?'FAILED':'PASSED');
 if(process.exitCode)process.exit(1);

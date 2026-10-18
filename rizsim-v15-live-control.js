@@ -25,7 +25,7 @@
  function closeModal(){if(modal){const old=modal;modal=null;old.close();old.remove();}}
  function choose(args){
   const s=bridge()?.getSnapshot();if(!s||!['faculty','course_lead'].includes(s.role))return false;
-  const blocked=s.role==='course_lead'?liveRoom(s):null;if(blocked){open();return true;}
+  const blocked=s.role==='course_lead'?managedRoom(s):null;if(blocked){open();return true;}
   if(modal)closeModal();
   const mode=args.mode,productId=mode==='simulation'?args.selection:args.simulation;
   const licensed=(s.licensed||[]).find(x=>String(x.id)===String(productId)) || (mode==='purchased' ? window.RizSimCourseEnvironment?.runtime?.('purchased',args.selection)?.simulations?.find(x=>String(x.product_id)===String(productId)) : null);
@@ -41,8 +41,8 @@
    const owner=bridge()?.getSnapshot()?.userId;
    try{
     const currentScope=bridge()?.getSnapshot();
-    const active=currentScope?.role==='course_lead'?liveRoom(currentScope):null;
-    if(active)throw Error('An active Live Class already exists. End that session first.');
+    const active=currentScope?.role==='course_lead'?managedRoom(currentScope):null;
+    if(active)throw Error('End your existing Live Class or Practice assignment before starting another.');
     const begin=new Date();
     const license=(bridge()?.getSnapshot()?.licences||[]).find(l=>String(l.product_id)===String(productId));
     const expiry=Date.parse(license?.expires_at||'');
@@ -151,6 +151,7 @@
   manager.hidden=false;
   const practice=room.access_mode==='practice'||(room.access_mode==='both'&&!isLive(room));
   manager.classList.toggle('is-practice',practice);
+  manager.setAttribute('aria-label',practice?'Practice assignment controls':'Live Class controls');
   manager.querySelector('.rz-v15-manager-head .rz-v15-kicker').textContent=practice?'PRACTICE ASSIGNMENT':'LIVE CLASSROOM';
   manager.querySelector('.rz-v15-manager-head strong').textContent=practice?'Manage Practice':'Manage Live Session';
   pill.querySelector('span:last-child').textContent=practice?'Manage Practice':'Manage Live Session';
@@ -163,7 +164,13 @@
   else{codeNode.textContent='Loading…';linkNode.dataset.url='';qrNode?.replaceChildren();}
   setPausedUI();if(!practice)readState(id);
  }
- function init(){initManager();window.setInterval(()=>draw(false),2200);draw(true);}
- window.RizSimV15=Object.freeze({choose,open,draw,liveRoom});
+ function hideLegacyAccess(){
+   // The authenticated source remains mounted for QR provenance, history and
+   // protected results. Only the superseded visual card is removed.
+   const panel=$('classroomCreatedResult')?.closest('.portal-panel');
+   if(panel){panel.classList.add('rz-v151-legacy-access-source');panel.setAttribute('aria-hidden','true');}
+  }
+  function init(){initManager();hideLegacyAccess();window.setInterval(()=>{hideLegacyAccess();draw(false);},2200);draw(true);}
+ window.RizSimV15=Object.freeze({choose,open,draw,liveRoom,activeRoom:managedRoom});
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

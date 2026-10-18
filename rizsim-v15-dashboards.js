@@ -1,80 +1,142 @@
-/* RizSim V15: compact, responsive Live Responses and Presenter Dashboard.
-   Counts come solely from the existing authorized classroom-roster RPC. */
+/* RizSim V15.1: compact Live Responses and Presenter Dashboard.
+   All summaries use the existing authenticated, session-scoped classroom roster.
+   This layer does not infer grades, reveal protected content or change responses. */
 (()=>{'use strict';
- const $=id=>document.getElementById(id),node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;};
- let activeSession='',lastFetch=0,inFlight=false,lastKey='',cached=null;
- function state(){return window.RizSimLiveWorkspace?.state?.()||null;}
- function authorized(){const s=window.RizSimFacultyBridge?.getSnapshot?.();return s&&['faculty','course_lead','owner'].includes(s.role)&&$('authenticatedApp')?.classList.contains('show');}
+ const $=id=>document.getElementById(id);
+ const node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;};
+ let activeSession='',lastFetch=0,inFlight=false,cached=null,observed=null;
+ const state=()=>window.RizSimLiveWorkspace?.state?.()||null;
+ const authorized=()=>{
+   const s=window.RizSimFacultyBridge?.getSnapshot?.();
+   return s&&['faculty','course_lead','owner'].includes(s.role)&&$('authenticatedApp')?.classList.contains('show');
+ };
+ function counts(rows){
+   const total=rows.length;
+   const submitted=rows.filter(r=>r.attempt_status==='submitted'||r.submitted_at).length;
+   return {total,submitted,working:total-submitted};
+ }
+ function presenterProgress(pane,rows){
+   const {total,submitted,working}=counts(rows);
+   let section=$('rzV151PresenterProgress');
+   if(!section){
+     section=node('section','rz-v151-progress');section.id='rzV151PresenterProgress';
+     section.setAttribute('aria-label','Verified classroom submission progress');
+     const kpis=$('rzV15insightsMetrics');
+     if(kpis)kpis.after(section);else pane.prepend(section);
+   }
+   section.hidden=false;
+   const signature=total+'|'+submitted;
+   if(section.dataset.signature===signature)return;
+   section.dataset.signature=signature;
+   const heading=node('div','rz-v151-progress-head'),labels=node('div');
+   labels.append(node('strong','','Session participation'),
+     node('span','','Submission status from the authorized class roster'));
+   heading.append(labels,node('strong','rz-v151-progress-rate',
+     total?Math.round(submitted*100/total)+'% submitted':'Awaiting students'));
+   const track=node('div','rz-v151-progress-track');
+   track.setAttribute('role','img');
+   track.setAttribute('aria-label',submitted+' submitted and '+working+' in progress out of '+total+' joined students');
+   const completed=node('span','rz-v151-track-complete'),pending=node('span','rz-v151-track-working');
+   completed.style.width=(total?submitted*100/total:0)+'%';
+   pending.style.width=(total?working*100/total:0)+'%';
+   track.append(completed,pending);
+   const legend=node('div','rz-v151-progress-legend');
+   legend.append(node('span','rz-v151-legend-submitted','● '+submitted+' submitted'),
+     node('span','rz-v151-legend-working','● '+working+' in progress'));
+   section.replaceChildren(heading,track,legend);
+ }
  function mountCounts(name,rows){
-  const pane=$('rzV13Pane'+name);if(!pane)return;
-  const id='rzV15'+name+'Metrics';let parent=$(id);
-  if(!parent){parent=node('div','rz-v15-kpis');parent.id=id;pane.insertBefore(parent,pane.firstChild);}
-  const total=rows.length,completed=rows.filter(x=>x.attempt_status==='submitted'||x.submitted_at).length,inProgress=total-completed;
-  const variants=name==='students'?[[total,'Students joined'],[inProgress,'In progress'],[completed,'Submitted responses']]:
-    [[completed,'Completed activities'],[total,'Class participants'],[inProgress,'Awaiting completion']];
-  parent.hidden=false;const signature=JSON.stringify(variants);if(parent.dataset.signature===signature)return;parent.dataset.signature=signature;parent.replaceChildren();
-  variants.forEach(([value,label])=>{const card=node('div','rz-v15-kpi');card.append(node('strong','',value),node('span','',label));parent.append(card);});
+   const pane=$('rzV13Pane'+name);if(!pane)return;
+   const id='rzV15'+name+'Metrics';
+   let parent=$(id);
+   if(!parent){parent=node('div','rz-v15-kpis');parent.id=id;pane.insertBefore(parent,pane.firstChild);}
+   const {total,submitted,working}=counts(rows);
+   const values=name==='students'?
+     [[total,'Students joined'],[working,'In progress'],[submitted,'Submitted responses']]:
+     [[submitted,'Completed activities'],[total,'Class participants'],[working,'Awaiting completion']];
+   parent.hidden=false;
+   if(name==='insights')presenterProgress(pane,rows);
+   const signature=JSON.stringify(values);
+   if(parent.dataset.signature===signature)return;
+   parent.dataset.signature=signature;
+   parent.replaceChildren();
+   values.forEach(([value,label])=>{
+     const card=node('div','rz-v15-kpi');
+     card.append(node('strong','',value),node('span','',label));
+     parent.append(card);
+   });
  }
  function compactTables(){
-  const host=$('rzV13Panestudents');if(!host||host.hidden)return;
-  for(const table of host.querySelectorAll('table')){
-    if(table.classList.contains('rz-v15-compact-table'))continue;
-    const headers=[...table.querySelectorAll('thead th')].map(t=>t.textContent.trim());
-    if(headers.length<3)continue;
-    table.classList.add('rz-v15-compact-table');
-    for(const row of table.querySelectorAll('tbody tr')){
-      row.querySelectorAll('td').forEach((td,i)=>{td.dataset.rzLabel=headers[i]||'Details';});
-    }
-    // Old wrappers reserve a horizontal scrollbar for the legacy wide table.
-    const wrapper=table.parentElement;if(wrapper)wrapper.classList.add('rz-v15-responsive-container');
-  }
-  // New records can be inserted into an existing table by the live-data renderer.
-  for(const table of host.querySelectorAll('table.rz-v15-compact-table')){
-    const headers=[...table.querySelectorAll('thead th')].map(t=>t.textContent.trim());
-    for(const row of table.querySelectorAll('tbody tr'))row.querySelectorAll('td').forEach((td,i)=>{
-      const label=headers[i]||'Details';if(td.dataset.rzLabel!==label)td.dataset.rzLabel=label;
-    });
-  }
+   const pane=$('rzV13Panestudents');if(!pane||pane.hidden)return;
+   for(const table of pane.querySelectorAll('table')){
+     const headings=[...table.querySelectorAll('thead th')].map(t=>t.textContent.trim());
+     if(headings.length<3)continue;
+     table.classList.add('rz-v15-compact-table');
+     table.parentElement?.classList.add('rz-v15-responsive-container');
+     for(const row of table.querySelectorAll('tbody tr')){
+       row.querySelectorAll('td').forEach((cell,index)=>{
+         const heading=headings[index]||'Details';
+         cell.dataset.rzLabel=heading;
+         if(/submission|status|stage/i.test(heading)){
+           const val=cell.textContent.trim().toLowerCase();
+           const tone=/submitted|completed|finished/.test(val)?'complete':
+             /in progress|working|started|active/.test(val)?'working':
+             /not started|waiting|pending/.test(val)?'waiting':'';
+           if(tone)cell.dataset.rzTone=tone;else delete cell.dataset.rzTone;
+         }
+       });
+     }
+   }
+ }
+ function clearForSession(){
+   for(const name of ['students','insights']){
+     const box=$('rzV15'+name+'Metrics');
+     if(box){box.replaceChildren();box.dataset.signature='';box.hidden=true;}
+   }
+   const progress=$('rzV151PresenterProgress');
+   if(progress){progress.replaceChildren();progress.dataset.signature='';progress.hidden=true;}
  }
  async function refresh(){
-  const st=state(),view=authorized();if(!view||!st?.visible||st.stage!=='running'||!st.session)return;
-  if(st.session!==activeSession){
-   activeSession=st.session;lastFetch=0;cached=null;lastKey='';
-   // Never display the previous class's summary while another authorized
-   // roster is being fetched.
-   for(const name of ['students','insights']){
-    const box=$('rzV15'+name+'Metrics');
-    if(box){box.replaceChildren();box.dataset.signature='';box.hidden=true;}
+   const view=state();
+   if(!authorized()||!view?.visible||view.stage!=='running'||!view.session)return;
+   if(view.session!==activeSession){
+     activeSession=view.session;lastFetch=0;cached=null;clearForSession();
    }
-  }
-  if(cached){mountCounts('students',cached);mountCounts('insights',cached);}
-  compactTables();
-  if(inFlight||Date.now()-lastFetch<12000)return;
-  const client=window.rizsimSharedAuth;if(!client)return;
-  lastFetch=Date.now();inFlight=true;const asked=activeSession;
-  try{const res=await client.rpc('get_my_classroom_session_students',{p_session_id:asked});
-    if(res.error)throw Error(res.error.message);
-    if(asked!==activeSession)return;
-    const rows=Array.isArray(res.data)?res.data:[];
-    cached=rows;mountCounts('students',rows);mountCounts('insights',rows);
-  }catch(_){/* Existing reporting RPCs remain authoritative; do not guess data. */}
-  finally{inFlight=false;}
- }
- function init(){
-  let observed=null;
-  function attach(){
-   const pane=$('rzV13Panestudents');
-   if(pane&&pane!==observed){
-    observed=pane;
-    new MutationObserver(()=>requestAnimationFrame(compactTables)).observe(pane,{childList:true,subtree:true});
+   if(cached){
+     mountCounts('students',cached);
+     mountCounts('insights',cached);
    }
    compactTables();
-  }
-  attach();
-  window.setInterval(()=>{attach();refresh()},1800);
-  window.addEventListener('focus',()=>{attach();refresh()});
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden){attach();refresh()}});
-  refresh();
+   if(inFlight||Date.now()-lastFetch<12000)return;
+   const client=window.rizsimSharedAuth;
+   if(!client)return;
+   lastFetch=Date.now();inFlight=true;
+   const asked=activeSession;
+   try{
+     const res=await client.rpc('get_my_classroom_session_students',{p_session_id:asked});
+     if(res.error)throw Error(res.error.message);
+     if(asked!==activeSession)return;
+     cached=Array.isArray(res.data)?res.data:[];
+     mountCounts('students',cached);
+     mountCounts('insights',cached);
+   }catch(_){/* Keep verified previous data; never display made-up metrics. */}
+   finally{inFlight=false;}
+ }
+ function attach(){
+   const pane=$('rzV13Panestudents');
+   if(pane&&pane!==observed){
+     observed=pane;
+     new MutationObserver(()=>requestAnimationFrame(compactTables))
+       .observe(pane,{childList:true,subtree:true});
+   }
+   compactTables();
+ }
+ function init(){
+   attach();
+   window.setInterval(()=>{attach();refresh();},1800);
+   window.addEventListener('focus',()=>{attach();refresh();});
+   document.addEventListener('visibilitychange',()=>{if(!document.hidden){attach();refresh();}});
+   refresh();
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
