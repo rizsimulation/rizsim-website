@@ -6356,7 +6356,8 @@ function openRizSimJoinPrompt(mode){
         if(!opened)throw new Error('The simulation could not be opened. Your website tab and resources are unchanged.');
         navigateStudent(mode==='practice'?'practice':'player',false);
         // Refresh published Faculty resources in the original website tab.
-        window.RizSimStudentBridge?.refresh?.().catch(()=>{});
+        const refreshed=window.RizSimStudentBridge?.refresh?.();
+        if(refreshed&&typeof refreshed.catch==='function')refreshed.catch(()=>{});
       }
     });
   };
@@ -6529,6 +6530,7 @@ target.innerHTML = `
 <strong>
 Access confirmed
 </strong>
+<p class="rz-v154-resources-hint">Keep this website tab open to view resources shared by your presenter. Your simulation opens separately.</p>
 
 ${
 joinedAttempt.is_existing_attempt
