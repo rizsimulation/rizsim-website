@@ -3850,7 +3850,7 @@ return null;
 
 }
 // New profile only: carry a one-time welcome across the direct simulation redirect.
-if(!error && !data)try{sessionStorage.setItem("rizsim:v15:welcome",currentUser.id)}catch(_){}
+if(!error && !data)try{sessionStorage.setItem("rizsim:v15:welcome",currentUser.id);sessionStorage.setItem("rizsim:v15:welcome-name",payload.display_name||"")}catch(_){}
 
 const retry =
 
@@ -4019,7 +4019,7 @@ await loadPlatformData();
 renderAll();
 
 hideLoading();
-if(!incomingShareToken)window.RizSimV15Welcome?.show?.(currentUser.id);
+if(!incomingShareToken)window.RizSimV15Welcome?.show?.(currentUser.id,currentProfile?.display_name);
 
 if(
 incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
