@@ -215,9 +215,11 @@
    await refresh(true);if(error)throw new Error('Practice could not be verified. Please retry.');
    const a=data?.attempts.find(x=>x.id===id);
    if(!a||phase(a)!=='open'||complete(a))throw new Error('This Practice is no longer available.');
-   const receipt=await bridge().practice(id);
-   if(String(receipt?.attempt_id)!==String(id))throw new Error('RizSim did not confirm your saved attempt.');
-   await bridge().launchPractice(id);
+   // The Practice card must first open its existing on-website confirmation.
+   // Only a real click on "Launch simulation" may synchronously reserve the
+   // new browser tab; otherwise async RPC checks trigger popup blocking and
+   // remove the Student from the website/resources view.
+   showPracticeLaunchDialog(a);
   }catch(e){dialog('Practice is not available',e.message);}
   finally{actionBusy=false;renderPractice();}
  }
