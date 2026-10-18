@@ -9,6 +9,16 @@
  let lastIdentity='',current='',paused=false,expanded=false,changing=false,openedFor='',lastRefresh=0,qrFor='',qrTask=null,dragged=false;
  const isLive=s=>s?.active===true&&['live','both'].includes(s.access_mode)&&(!s.live_ends_at||Date.parse(s.live_ends_at)>Date.now())&&s.session_status!=='closed'&&s.session_status!=='ended';
  const liveRoom=s=>(s?.sessions||[]).filter(isLive).sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')))[0]||null;
+ const practiceRoom=s=>(s?.sessions||[]).filter(x=>x.active===true&&
+   (x.access_mode==='practice'||(x.access_mode==='both'&&!isLive(x)))&&
+   (!x.practice_ends_at||Date.parse(x.practice_ends_at)>Date.now()))
+  .sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')))[0]||null;
+ const managedRoom=s=>{
+   const live=liveRoom(s);if(live)return live;
+   const available=(s?.sessions||[]).find(x=>String(x.session_id)===String(openedFor)&&x.active===true&&
+     x.access_mode==='practice'&&(!x.practice_ends_at||Date.parse(x.practice_ends_at)>Date.now()));
+   return available||practiceRoom(s);
+ };
  function tell(text){if(status)status.textContent=text||'';}
  async function copy(value,label){try{if(!value)throw Error('Not yet available');await navigator.clipboard.writeText(value);tell(label+' copied.')}catch(_){tell('Copy manually: '+value)}}
  function invitation(room){return new URL('/access-in.html?session='+encodeURIComponent(room.share_token),location.origin).href;}
@@ -132,18 +142,25 @@
  function draw(force=false){
   const s=bridge()?.getSnapshot(),visible=s&&['faculty','course_lead'].includes(s.role)&&$('authenticatedApp')?.classList.contains('show');
   if(!visible){if(manager)manager.hidden=true;current='';lastIdentity='';return;}
-  const identity=String(s.userId),room=liveRoom(s);initManager();
+  const identity=String(s.userId),room=managedRoom(s);initManager();
   if(identity!==lastIdentity){current='';lastIdentity=identity;paused=false;if(openedFor!==String(room?.session_id||'')){openedFor='';expanded=false;}}
   if(!room){manager.hidden=true;current='';return;}
   const id=String(room.session_id),isNew=id!==current;
   if(isNew){current=id;paused=false;lastRefresh=0;expanded=openedFor===id;qrFor='';tell('');}
   manager.hidden=false;
+  const practice=room.access_mode==='practice'||(room.access_mode==='both'&&!isLive(room));
+  manager.classList.toggle('is-practice',practice);
+  manager.querySelector('.rz-v15-manager-head .rz-v15-kicker').textContent=practice?'PRACTICE ASSIGNMENT':'LIVE CLASSROOM';
+  manager.querySelector('.rz-v15-manager-head strong').textContent=practice?'Manage Practice':'Manage Live Session';
+  pill.querySelector('span:last-child').textContent=practice?'Manage Practice':'Manage Live Session';
+  pauseButton.hidden=practice;
+  if(practice)paused=false;
   manager.classList.toggle('is-minimized',!expanded);
   pill.hidden=expanded;manager.querySelector('.rz-v15-manager-pane').hidden=!expanded;
   manager.querySelector('#rzV15SessionLabel').textContent=room.class_name||room.simulation_title||'Live Class';
   if(room.share_token){codeNode.textContent=room.class_code||'—';linkNode.textContent=invitation(room);linkNode.dataset.url=invitation(room);if(expanded)qr(room);}
   else{codeNode.textContent='Loading…';linkNode.dataset.url='';qrNode?.replaceChildren();}
-  setPausedUI();readState(id);
+  setPausedUI();if(!practice)readState(id);
  }
  function init(){initManager();window.setInterval(()=>draw(false),2200);draw(true);}
  window.RizSimV15=Object.freeze({choose,open,draw,liveRoom});
