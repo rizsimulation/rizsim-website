@@ -59,8 +59,14 @@ def contract():
   elif path=="contact.html":
    # The Gmail-compose actions replace only the old mailto destinations.
    gmail='href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=rizsimulation%40gmail.com" target="_blank" rel="noopener noreferrer"'
-   restored=current.replace(gmail,'href="mailto:rizsimulation@gmail.com"')
-   assert restored==before,(path,'Contact change exceeded authorized Gmail action replacement')
+   if gmail in before:
+    # V15.1 main already contains the approved Gmail-compose link.
+    # Once deployed, preserve its exact HTML; do not ask a new PR to
+    # reverse an action that is already in the production baseline.
+    assert current==before,(path,'Published RizSimulation Team Contact actions changed unexpectedly')
+   else:
+    restored=current.replace(gmail,'href="mailto:rizsimulation@gmail.com"')
+    assert restored==before,(path,'Contact change exceeded authorized Gmail action replacement')
    assert 'RizSimulation Team' in current and 'copyEmailButton' in current
   elif path in PLAYERS:
    # Only the V15 welcome and paused-state assets are added to the runners.
