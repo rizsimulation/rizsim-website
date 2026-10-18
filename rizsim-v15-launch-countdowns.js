@@ -34,18 +34,50 @@
    const note=document.querySelector('.rz-clu-cta-note');if(note)note.textContent='Paid Course Lead access is scheduled for public release on 23 October 2026. View the countdown and upcoming details.';
    trigger.addEventListener('click',e=>{e.preventDefault();courseDialog();});
  }
+ let libraryTimer=null;
  function library(){
-   const anchor=document.getElementById('rzStudentSimulationLibrary');if(!anchor||document.getElementById('rzV15LibraryLaunch'))return;
-   const strip=node('section','rz-v15-library-countdown');strip.id='rzV15LibraryLaunch';strip.setAttribute('aria-label','RizSimulation Library publication countdown');
+   // Student Workspace creates the Library tab after document parsing, so this
+   // must also work when that authorized dashboard is mounted asynchronously.
+   const anchor=document.getElementById('rzStudentSimulationLibrary');
+   if(!anchor||!anchor.isConnected)return false;
+   if(document.getElementById('rzV15LibraryLaunch'))return true;
+   if(libraryTimer){clearInterval(libraryTimer);libraryTimer=null;}
+   const strip=node('section','rz-v15-library-countdown');strip.id='rzV15LibraryLaunch';
+   strip.setAttribute('aria-label','RizSimulation Library publication countdown');
    const copy=node('div');copy.append(node('strong','','RizSim Library · Coming Soon'),
-     node('p','', 'New resources, courses and eBooks are scheduled for publication.'));
-   const time=node('strong','rz-v15-library-timer');time.id='rzV15LibraryTime';strip.append(copy,time);anchor.before(strip);
+     node('p','','New resources, courses and eBooks are scheduled for publication.'));
+   const time=node('strong','rz-v15-library-timer');time.id='rzV15LibraryTime';
+   time.setAttribute('role','timer');time.setAttribute('aria-label','Time remaining before the Library publication date');
+   strip.append(copy,time);anchor.before(strip);
    function tick(){
-      if(ended(LIBRARY)){time.textContent='Launch day';copy.querySelector('strong').textContent='Library publication begins';copy.querySelector('p').textContent='Resources and eBooks will appear as the RizSimulation Team publishes them.';}
-      else{time.textContent=parts(LIBRARY).join(' : ');copy.querySelector('strong').textContent='RizSim Library · Coming Soon';
-        copy.querySelector('p').textContent=before()?'6-day countdown begins Monday 19 October, 6:00 AM PKT.':'New resources, courses and eBooks launch Sunday 25 October, 6:00 AM PKT.';}
-   }tick();setInterval(tick,1000);
+     if(ended(LIBRARY)){
+       time.textContent='Launch date reached';
+       copy.querySelector('strong').textContent='RizSim Library · Publication Update';
+       copy.querySelector('p').textContent='Courses, resources and eBooks will appear when the RizSimulation Team publishes them.';
+     }else{
+       time.textContent=parts(LIBRARY).join(' : ');
+       copy.querySelector('strong').textContent='RizSim Library · Coming Soon';
+       copy.querySelector('p').textContent=before()?
+         '6-day countdown begins Monday 19 October at 6:00 AM PKT.':
+         'Resources, courses and eBooks are scheduled for Sunday 25 October at 6:00 AM PKT.';
+     }
+   }
+   tick();
+   libraryTimer=setInterval(()=>{if(!strip.isConnected){clearInterval(libraryTimer);libraryTimer=null;return;}tick();},1000);
+   return true;
  }
- function init(){course();library();}
+ function init(){
+   course();
+   if(!library()){
+     const root=document.getElementById('studentApp')||document.body;
+     const observer=new MutationObserver(()=>{
+       if(library())observer.disconnect();
+     });
+     observer.observe(root,{childList:true,subtree:true});
+   }
+   // Restore the clock if the Student dashboard is rebuilt after sign-out/in.
+   window.addEventListener('focus',library);
+   document.addEventListener('visibilitychange',()=>{if(!document.hidden)library();});
+ }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
