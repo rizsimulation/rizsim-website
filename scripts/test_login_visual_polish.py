@@ -107,13 +107,13 @@ def test_visual(browser, base, label, viewport, page_name):
 def run():
     source_contracts()
     # 'before' screenshots load the exact approved main-branch gate HTML, with
-    # <base href="/"> so unchanged site-wide assets can resolve from the same server.
+    # <base href="/"> must precede ALL stylesheet links so baseline CSS resolves.
     before = ROOT / "__login_baseline"
     before.mkdir(exist_ok=True)
     try:
         for name in PAGES:
             html = subprocess.check_output(["git", "show", "origin/main:" + name], cwd=ROOT, text=True)
-            (before / name).write_text(html.replace("</head>", '<base href="/">\n</head>', 1))
+            (before / name).write_text(html.replace("<head>", '<head>\n<base href="/">', 1))
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), QuietHandler)
         t = threading.Thread(target=server.serve_forever, daemon=True)
         t.start()
