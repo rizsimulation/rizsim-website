@@ -32,7 +32,13 @@
    try{
     const active=liveRoom(bridge()?.getSnapshot());
     if(active)throw Error('An active Live Class already exists. End that session first.');
-    const begin=new Date(),finish=new Date(begin.getTime()+(access==='live'?3:7*24)*3600000);
+    const begin=new Date();
+    const license=(bridge()?.getSnapshot()?.licences||[]).find(l=>String(l.product_id)===String(productId));
+    const expiry=Date.parse(license?.expires_at||'');
+    let endMs=begin.getTime()+(access==='live'?3:7*24)*3600000;
+    if(Number.isFinite(expiry))endMs=Math.min(endMs,expiry-30000);
+    if(endMs-begin.getTime()<60000)throw Error('The simulation licence expires too soon to start this session. Renew the licence first.');
+    const finish=new Date(endMs);
     const label=[licensed.title||'RizSim simulation',access==='live'?'Live Class':'Practice',begin.toLocaleDateString('en-GB',{timeZone:'Asia/Karachi',day:'2-digit',month:'short'})].join(' · ').slice(0,150);
     const fields={p_product_id:productId,p_class_name:label,p_access_mode:access,
       p_live_starts_at:access==='live'?begin.toISOString():null,p_live_ends_at:access==='live'?finish.toISOString():null,
