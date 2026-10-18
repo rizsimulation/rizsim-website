@@ -7,7 +7,7 @@ for(const [f,s] of [['V5',v5],['V13',v13]])new vm.Script(s,{filename:f+'.js'});
 for(const x of ['rizsim-live-workspace.js','rizsim-live-workspace.css'])assert(html.includes(x),'V13 asset absent '+x);
 assert(html.indexOf('rizsim-live-classroom.js')<html.indexOf('rizsim-live-workspace.js'),'V5 must initialize before V13');
 assert(html.includes('id="rzLiveResultsAnchor"')&&html.includes('id="rzLiveRunningMount"'));
-assert(v13.includes('Session Studio')&&v13.includes('Student Results')&&v13.includes('Class Insights'));
+assert(v13.includes('Session Studio')&&v13.includes('Live Responses')&&v13.includes('Presenter Dashboard'),'V15 names retain all V13 authorized workspace tabs');
 assert(v13.includes('Share Access')&&v13.includes('rzV13StudioOverview')&&v13.includes('rzV13StudioShare'));
 assert(v13.includes("student=$('rzLiveStudentRosterMount')"),'V13 must mount using ACTUAL roster placeholder ID');
 assert(v13.includes("rail.setAttribute('aria-labelledby'")&&v13.includes('aria-orientation'));
