@@ -32911,6 +32911,15 @@ verifyAccess();
 window.RizSimFacultyBridge={
  getSnapshot:()=>({userId:currentUser?.id||null,role:currentMembership?.role||null,products:products.slice(),licences:myLicenseCatalogue.slice(),submissions:submissions.slice(),sessions:classroomSessions.slice(),courses:courses.slice(),selectedCourseId,courseMaterials:courseMaterials.slice(),courseSimulations:selectedCourseSimulations.slice(),courseSessions:courseClassroomSessions.slice(),licensed:getActiveLicensedSimulations()}),
  viewResponses:id=>openResponses(id),
+ selectSession:async id=>{
+   const item=classroomSessions.find(s=>String(s.session_id)===String(id));
+   if(!item)return false;
+   selectedClassroomSessionId=item.session_id;
+   ensureClassroomRosterSessionSelection();
+   await loadClassroomStudents(item.session_id,true);
+   renderClassroom();
+   return true;
+ },
  selectCourse:async id=>{await openCourseManager(id);return getSelectedCourse()},
  refresh:()=>{renderClassroom();renderResults();window.RizSimFacultyWorkspace?.render()}
 };
