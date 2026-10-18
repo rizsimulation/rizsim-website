@@ -60,8 +60,8 @@ def contract():
    # User-requested V15.3 design explicitly replaces ONLY public Contact main;
    # preserve official header/footer/nav and their page transitions exactly.
    stripped=current.replace('<link rel="stylesheet" href="rizsim-v153-focus.css">'+chr(10),'')
-   pattern=r'<main class="page-content">[\\s\\S]*?</main>'
-   assert re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',stripped)==re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',before),(path,'Contact changes escaped main section or scoped CSS link')
+   pattern=r'<main class="page-content">.*?</main>'
+   assert re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',stripped,flags=re.S)==re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',before,flags=re.S),(path,'Contact changes escaped main section or scoped CSS link')
    for locked in ('RizSimulation Team','rizsimulation@gmail.com','id="copyEmailButton"','id="copyConfirmation"','mail.google.com/mail/?view=cm'):
     assert locked in current,(path,'required Contact identity or Gmail/Copy action missing: '+locked)
   elif path=="contact.html":
