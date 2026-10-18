@@ -65,4 +65,5 @@
    return true;
  }
  window.RizSimV154Join=Object.freeze({show,reserve});
+ window.dispatchEvent(new Event('rizsim:v154-join-ready'));
 })();
