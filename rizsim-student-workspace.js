@@ -187,8 +187,8 @@
   countdown.textContent=remaining((time(attempt.practice_access_ends_at)||now())-now());timing.append(countdown);
   const note=el('p','rz-st-launch-note',
     'Your Faculty controls the Practice deadline. The simulation opens in a separate tab; this tab stays open for your shared resources.');
-  const who=bridge()?.snapshot(),storageKey='rizsim:v154:participant:'+id;
-  let prior={};try{prior=JSON.parse(localStorage.getItem(storageKey)||'{}')}catch(_){}
+  const who=bridge()?.snapshot();
+  let prior=window.RizSimV154Join?.previous?.(id)||{};
   if(prior.user!==who?.userId||prior.session!==attempt.classroom_session_id)prior={};
   const identityFields=el('div','rz-v154-practice-identity');
   const identityInput=(labelText,value,max)=>{
@@ -235,8 +235,8 @@
     if(identity!==owner||!n.open||error)throw new Error('Practice could not be verified after resuming.');
     const fresh=data?.attempts.find(x=>x.id===id);
     if(!fresh||phase(fresh)!=='open'||complete(fresh))throw new Error('This practice session is no longer open.');
-    try{localStorage.setItem('rizsim:v154:participant:'+id,
-      JSON.stringify({name,institution,session:fresh.classroom_session_id,user:owner,at:Date.now()}));}catch(_){}
+    window.RizSimV154Join?.remember?.(id,
+      {name,institution,session:fresh.classroom_session_id,user:owner,at:Date.now()});
     await bridge().launchPractice(id,runnerTab);
     n.close();
    }catch(e){
