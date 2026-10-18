@@ -105,3 +105,9 @@ body:has(.rz-v15-manager:not([hidden]).is-minimized) #authenticatedApp{padding-b
 .rz-v15-manager.is-practice .rz-v15-pill{background:linear-gradient(120deg,#69578b,#366f83);border-color:#c8b8e1}
 .rz-v15-manager.is-practice .rz-v15-manager-actions{grid-template-columns:1fr}
 .rz-v15-manager .rz-v15-pause[hidden]{display:none!important}
+
+/* Replace the obsolete horizontal-scroll instruction after responsive card conversion. */
+#rzS02RosterScrollHint{display:none!important}
+#rzV13Panestudents .rz-s02-table-scroller,
+#rzV13Panestudents .rz-i01-table-scroll,
+#rzV13Panestudents .rz-h03-table-scroll{overflow-x:visible!important;max-width:100%!important;min-width:0!important}
