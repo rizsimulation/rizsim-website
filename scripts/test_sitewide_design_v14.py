@@ -66,7 +66,9 @@ def contract():
   elif path=="contact.html" and 'rizsim-v153-focus.css' in current:
    # User-requested V15.3 design explicitly replaces ONLY public Contact main;
    # preserve official header/footer/nav and their page transitions exactly.
-   stripped=current.replace('<link rel="stylesheet" href="rizsim-v153-focus.css">'+chr(10),'')
+   stripped=current
+   if '<link rel="stylesheet" href="rizsim-v153-focus.css">'+chr(10) not in before:
+    stripped=current.replace('<link rel="stylesheet" href="rizsim-v153-focus.css">'+chr(10),'')
    pattern=r'<main class="page-content">.*?</main>'
    assert re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',stripped,flags=re.S)==re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',before,flags=re.S),(path,'Contact changes escaped main section or scoped CSS link')
    for locked in ('RizSimulation Team','rizsimulation@gmail.com','id="copyEmailButton"','id="copyConfirmation"','mail.google.com/mail/?view=cm'):
@@ -84,18 +86,28 @@ def contract():
     assert restored==before,(path,'Contact change exceeded authorized Gmail action replacement')
    assert 'RizSimulation Team' in current and 'copyEmailButton' in current
   elif path in PLAYERS:
-   # Only the V15 welcome and paused-state assets are added to the runners.
-   extras=('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">',
-           '<script src="/rizsim-v15-welcome.js" defer></script>',
-           '<script src="/rizsim-v15-runner-state.js" defer></script>')
-   if all(extra in before for extra in extras):
-    # Already published V15 on origin/main; ensure original academic runner
-    # body remains byte-for-byte identical in this later launch PR.
-    assert current==before,(path,'published academic simulation body changed')
+   # V15.4 specifically authorizes a persistent official logo and isolated
+   # responsiveness improvements, NOT changes to assessment items or scoring.
+   extras=('<link rel="stylesheet" href="/rizsim-v154-runner-ux.css">',
+           '<script src="/rizsim-v154-runner-ux.js" defer></script>')
+   assert all(extra in current for extra in extras),(path,'approved persistent logo assets missing')
+   stripped=current
+   for extra in extras:stripped=stripped.replace(extra+chr(10),'')
+   if path=="simulation-insight-to-implication.html":
+    assert stripped==before,(path,'original Sim01 academic runner changed')
+   elif path=="simulation-system-1-system-2.html":
+    def normalise_fast_choices(src):
+     src=re.sub(r'function selectReview\\(v\\)\\{.*?(?=function moveQuestion\\()', 'function selectReview(v){V154_FAST_SELECTION}\\n',src,flags=re.S)
+     src=re.sub(r'function selectLT\\(v\\)\\{.*?(?=function lockLT\\()', 'function selectLT(v){V154_FAST_SELECTION}\\n',src,flags=re.S)
+     return src
+    assert normalise_fast_choices(stripped)==normalise_fast_choices(before),(path,'Sim02 academic content or locked outcomes changed')
    else:
-    restored=current
-    for extra in extras:restored=restored.replace(extra+chr(10),'')
-    assert restored==before,(path,'original academic simulation body has changed')
+    # Hotel edits change a URL for the official logo and the idle refresh loop;
+    # protected assignment, photographs and submission code must remain intact.
+    stripped=stripped.replace('src="/RizSim%20finalized%20logo.png"','src="https://rizsim.com/rizsim-r.png"')
+    def normalise_hotel_refresh(src):
+     return re.sub(r'if\\(live\\.enabled\\)(?:setInterval|\\{).*?(?=\\n  \\}\\n  initialize\\(\\);)', 'V154_HOTEL_BACKGROUND_REFRESH;',src,flags=re.S)
+    assert normalise_hotel_refresh(stripped)==normalise_hotel_refresh(before),(path,'Hotel protected classroom logic changed outside refresh')
   else:
    assert current==before,(path,"existing V14 HTML and functionality must stay identical")
   assert "<script" in before or path in ("about.html",),path
