@@ -97,3 +97,11 @@ body:has(.rz-v15-manager:not([hidden]).is-minimized) #authenticatedApp{padding-b
 .rz-v15-kpi span{font-size:11px;color:#55717a;font-weight:700}
 @media(max-width:620px){.rz-v15-manager{right:9px;bottom:12px}.rz-v15-compact-table tr{grid-template-columns:repeat(2,minmax(0,1fr))}.rz-v15-kpis{gap:6px}.rz-v15-kpi{padding:9px 7px}.rz-v15-kpi strong{font-size:21px}}
 @media(prefers-reduced-motion:reduce){.rz-v15-live-dot{animation:none!important}}
+
+/* Obsolete full-width Active Session Access and its Schedule/Created/Expiry
+   fields are not shown. V15 still reads the original protected values. */
+.rz-v13-studio-overview #rzLiveRunningMount > .portal-panel{display:none!important}
+.rz-v15-manager.is-practice .rz-v15-live-dot{background:#bb9deb;animation:none}
+.rz-v15-manager.is-practice .rz-v15-pill{background:linear-gradient(120deg,#69578b,#366f83);border-color:#c8b8e1}
+.rz-v15-manager.is-practice .rz-v15-manager-actions{grid-template-columns:1fr}
+.rz-v15-manager .rz-v15-pause[hidden]{display:none!important}
