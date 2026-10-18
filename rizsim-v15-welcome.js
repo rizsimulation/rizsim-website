@@ -1,9 +1,10 @@
 /* New RizSim users see one warm, non-blocking welcome, once, on their first verified profile creation. */
 (()=>{'use strict';
  const key='rizsim:v15:welcome';
- function show(){
+ function show(userId){
+  if(location.pathname.endsWith('/access-in.html')&&!userId)return false;
   let user='';try{user=sessionStorage.getItem(key)||''}catch(_){}
-  if(!user||document.querySelector('.rz-v15-welcome'))return false;
+  if(!user||(userId&&user!==String(userId))||document.querySelector('.rz-v15-welcome'))return false;
   try{sessionStorage.removeItem(key)}catch(_){}
   const panel=document.createElement('aside');panel.className='rz-v15-welcome';panel.setAttribute('role','status');
   const kicker=document.createElement('small');kicker.textContent='A WARM WELCOME FROM RIZSIM';
