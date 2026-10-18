@@ -1,0 +1,133 @@
+/* RizSim login surface polish: design only.
+   Deliberately scoped to the existing Faculty/Student unauthenticated gate.
+   Preserve the approved site identity, structures, copy and OAuth handlers. */
+#authGate.access-gate {
+  background:
+    radial-gradient(ellipse 46% 48% at 88% 14%, rgba(24,184,176,.075), transparent 75%),
+    radial-gradient(ellipse 36% 42% at 7% 88%, rgba(159,201,198,.15), transparent 77%),
+    linear-gradient(165deg, #ffffff 13%, #f8fbfb 70%, #ffffff);
+}
+
+#authGate .gate-card {
+  border-color: rgba(9,75,88,.15);
+  background:
+    radial-gradient(circle at 95% 2%, rgba(24,184,176,.075), transparent 34%),
+    linear-gradient(155deg, #ffffff 0%, #fbfdfd 100%);
+  box-shadow:
+    0 26px 65px rgba(5,37,51,.105),
+    0 5px 18px rgba(5,37,51,.035),
+    inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+#authGate .gate-logo {
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+
+#authGate .gate-kicker {
+  line-height: 1.45;
+  letter-spacing: .115em;
+}
+
+#authGate .gate-card h1 {
+  margin-top: 10px;
+  line-height: 1.075;
+  letter-spacing: -.047em;
+  text-wrap: balance;
+}
+
+#authGate .gate-card > p {
+  color: #526d78;
+  line-height: 1.68;
+}
+
+#authGate .gate-status {
+  margin-top: 20px;
+  padding: 13px 15px;
+  color: #486571;
+  background: linear-gradient(115deg, #f4faf9, #fbfdfd);
+  border: 1px solid #dceae9;
+  border-left: 3px solid #81cfc6;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92);
+  line-height: 1.55;
+}
+
+#authGate .google-login-button {
+  min-height: 53px;
+  padding: 12px 18px;
+  gap: 12px;
+  color: #1f1f1f;
+  background: #ffffff;
+  border: 1px solid #747775;
+  border-radius: 12px;
+  font-size: .93rem;
+  font-weight: 720;
+  line-height: 1.35;
+  box-shadow: 0 4px 13px rgba(4,25,40,.05);
+  transition:
+    transform 170ms ease,
+    box-shadow 170ms ease,
+    border-color 170ms ease,
+    background-color 170ms ease;
+}
+
+#authGate .google-login-button:hover {
+  transform: translateY(-1px);
+  border-color: #5f6368;
+  background-color: #f9fbfb;
+  box-shadow: 0 7px 18px rgba(4,25,40,.09);
+}
+
+#authGate .google-login-button:active {
+  transform: translateY(0);
+  background-color: #f2f7f7;
+  box-shadow: 0 2px 7px rgba(4,25,40,.06);
+}
+
+#authGate .google-login-button:focus-visible {
+  outline: 3px solid rgba(24,184,176,.36);
+  outline-offset: 3px;
+}
+
+#authGate .google-login-button:disabled {
+  cursor: not-allowed;
+  opacity: .66;
+  transform: none;
+  box-shadow: none;
+}
+
+#authGate .google-mark {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+#authGate .gate-note {
+  color: #7a8b95 !important;
+  line-height: 1.6 !important;
+}
+
+@media (max-width: 480px) {
+  #authGate .gate-card h1 {
+    line-height: 1.1;
+  }
+  #authGate .google-login-button {
+    padding-inline: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #authGate .google-login-button,
+  #authGate .google-login-button:hover,
+  #authGate .google-login-button:active {
+    transition: none;
+    transform: none;
+  }
+}

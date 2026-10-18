@@ -1,0 +1,51 @@
+name: RizSim Login Visual-Only Verification
+on:
+  pull_request:
+    paths:
+      - 'access-out.html'
+      - 'access-in.html'
+      - 'rizsim-login-polish.css'
+      - 'google-g.svg'
+      - 'scripts/test_login_visual_polish.py'
+      - '.github/workflows/login-visual-only.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  design_only_login:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Existing user journeys and browser contracts are intact
+        run: |
+          node scripts/validate_live_classroom_v5.js
+          node scripts/validate_live_workspace_v13.js
+          node scripts/validate_v13_three_simulations.js
+          node scripts/validate_faculty_workspaces.js
+          node scripts/validate_student_workspace_v8.js
+          node scripts/validate_session_continuity.js
+          node scripts/validate_sim02_integration_v1.js
+          node scripts/validate_sim03_integration_v1.js
+          node scripts/test_insight_core_v1.js
+      - name: Pinned offline browser snapshot dependencies
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Verify exact design-only diff and desktop/mobile sign-in visuals
+        run: python scripts/test_login_visual_polish.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-login-polish-before-after
+          path: test-results/login-design/
+          retention-days: 7
