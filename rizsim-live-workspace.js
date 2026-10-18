@@ -5,7 +5,7 @@
 (function () {
   'use strict';
   const $=id=>document.getElementById(id);
-  const NAMES={studio:'Session Studio',students:'Student Results',insights:'Class Insights'};
+  const NAMES={studio:'Session Studio',students:'Live Responses',insights:'Presenter Dashboard'};
   const DESCRIPTIONS={studio:'Prepare this session, add approved resources and share access.',
     students:'Session roster, individual progress and authorized Student responses.',
     insights:'Combined course and simulation insights for the selected classroom.'};
@@ -228,7 +228,7 @@
     }
     const studio=panels.studio;
     const subnav=node('div','rz-v13-subnav');subnav.setAttribute('aria-label','Session Studio sections');
-    const overviewBtn=button('Overview',()=>studioSubview('overview'),'rz-v13-subtab');
+    const overviewBtn=button('Course Controls',()=>{studioSubview('overview');overviewBtn.dataset.rzVisited='true';},'rz-v13-subtab');
     overviewBtn.id='rzV13SubviewOverview';overviewBtn.setAttribute('aria-pressed','true');
     const shareBtn=button('Share Access',()=>studioSubview('share'),'rz-v13-subtab');
     shareBtn.id='rzV13SubviewShare';shareBtn.disabled=true;shareBtn.setAttribute('aria-pressed','false');
@@ -244,7 +244,7 @@
     const shareHead=node('div','rz-v13-share-head');shareHead.append(node('h3','','Share classroom access'),
       node('p','','Original authorized session code and join link. No additional link or session is created.'));
     share.append(shareHead);
-    const noAccess=node('p','rz-v13-share-empty','There is no active authorized join link for this session. Existing progress remains accessible under Student Results.');
+    const noAccess=node('p','rz-v13-share-empty','There is no active authorized join link for this session. Existing progress remains accessible under Live Responses.');
     noAccess.id='rzV13ShareEmpty';share.append(noAccess);
     const details=node('div','rz-v13-share-card');details.id='rzV13ShareDetails';details.hidden=true;
     shareQR=node('div','rz-v13-share-qr');shareQR.id='rzV13ShareQR';shareQR.setAttribute('aria-label','Same verified session QR code');
