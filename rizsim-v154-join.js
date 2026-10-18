@@ -64,6 +64,13 @@
    if(fullName.value.trim())institution.focus();else fullName.focus();
    return true;
  }
- window.RizSimV154Join=Object.freeze({show,reserve});
+ function previous(attemptId){
+   try{return JSON.parse(localStorage.getItem('rizsim:v154:participant:'+attemptId)||'{}')}catch(_){return {};}
+ }
+ function remember(attemptId,payload){
+   if(!attemptId)return;
+   try{localStorage.setItem('rizsim:v154:participant:'+attemptId,JSON.stringify(payload));}catch(_){}
+ }
+ window.RizSimV154Join=Object.freeze({show,reserve,previous,remember});
  window.dispatchEvent(new Event('rizsim:v154-join-ready'));
 })();
