@@ -112,7 +112,7 @@
    status=node('p','rz-v15-manager-status');status.setAttribute('role','status');pane.append(status);
    manager.append(pill,pane);document.body.append(manager);
    let start=null;
-   pill.addEventListener('pointerdown',e=>{if(e.button!==0)return;start={x:e.clientX,y:e.clientY,left:pill.getBoundingClientRect().left,top:pill.getBoundingClientRect().top};});
+   pill.addEventListener('pointerdown',e=>{if(e.button!==0)return;pill.setPointerCapture?.(e.pointerId);start={x:e.clientX,y:e.clientY,left:pill.getBoundingClientRect().left,top:pill.getBoundingClientRect().top};});
    pill.addEventListener('pointerup',e=>{if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>7)dragged=true;start=null;});
    pill.addEventListener('pointermove',e=>{if(!start||!(e.buttons&1))return;
       const dx=e.clientX-start.x,dy=e.clientY-start.y;
