@@ -111,6 +111,22 @@ async def main():
    await page.locator('#pname').fill('Synthetic Learner')
    await page.locator('#porg').fill('RizSim Browser QA')
    await page.get_by_role('button',name=re.compile('Begin Knowledge Review')).click()
+   # Diagnostic-only spy preserves wrapped server persistence function.
+   await page.evaluate("""() => {
+      window.__sim02LockTrace=[];
+      const original=lockReview;
+      lockReview=function(...args){
+        window.__sim02LockTrace.push({event:'function-call',args:args.slice(),phase:phase(record),locked:!!record?.kr?.at});
+        const res=original(...args);
+        window.__sim02LockTrace.push({event:'function-return',args:args.slice(),phase:phase(record),locked:!!record?.kr?.at,modal:!!document.getElementById('rzSim02CommitModal')});
+        return res;
+      };
+      document.addEventListener('click',e=>{
+       if(e.target?.id==='rzSim02CommitAccept'||e.target?.id==='rzSim02CommitCancel'){
+         window.__sim02LockTrace.push({event:'DOM-click',button:e.target.id});
+       }
+      },true);
+   }""")
    async def reviews(label):
     for i in range(6):
      await page.locator('label.option').first.click()
@@ -137,7 +153,7 @@ async def main():
       modal:!!document.getElementById('rzSim02CommitModal'),
       pending:document.querySelector('#rzSim02PendingOverlay')?.hidden,
       hostedBanner:document.querySelector('#rzSim02HostedStatus')?.textContent,
-      fake:window.__sim02FakeState()
+      fake:window.__sim02FakeState(), lockTrace:window.__sim02LockTrace
    })""")
    print('SIM02_DIALOG_DEBUG',repr(debug),'page_errors',repr(errors),flush=True)
    await synced(38)
