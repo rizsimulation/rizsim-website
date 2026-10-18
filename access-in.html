@@ -3849,6 +3849,8 @@ upsertResult.error
 return null;
 
 }
+// New profile only: carry a one-time welcome across the direct simulation redirect.
+if(!error && !data)try{sessionStorage.setItem("rizsim:v15:welcome",currentUser.id)}catch(_){}
 
 const retry =
 
@@ -4017,6 +4019,7 @@ await loadPlatformData();
 renderAll();
 
 hideLoading();
+if(!incomingShareToken)window.RizSimV15Welcome?.show?.();
 
 if(
 incomingShareToken && (!location.hash || ["#home","#player"].includes(location.hash))
@@ -7903,6 +7906,7 @@ initialize();
 <script src="rizsim-support.js" defer></script>
 <script type="module" src="rizsim-roles-library.js"></script>
 <script src="rizsim-shared-about.js" defer></script>
+<script src="rizsim-v15-welcome.js" defer></script>
 <script src="rizsim-v15-portal.js" defer></script>
 </body>
 
