@@ -40,7 +40,7 @@ def source_contracts():
     icon = (ROOT / "google-g.svg").read_text()
     for color in ("#EA4335", "#4285F4", "#FBBC05", "#34A853"):
         assert color in icon, f"Missing official Google color {color}"
-    assert "<script" not in icon and "http:" not in icon and "<foreignObject" not in icon
+    assert "<script" not in icon and "href=" not in icon and "<foreignObject" not in icon
     css = (ROOT / "rizsim-login-polish.css").read_text()
     assert "#authGate" in css and ":focus-visible" in css and "prefers-reduced-motion" in css
     assert not re.search(r"(^|\n)\s*(body|html|button|\*)\s*\{", css), "No global CSS modifications"
