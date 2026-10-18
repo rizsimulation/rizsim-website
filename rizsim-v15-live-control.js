@@ -144,6 +144,12 @@
   manager.hidden=false;
   const practice=room.access_mode==='practice'||(room.access_mode==='both'&&!isLive(room));
   manager.classList.toggle('is-practice',practice);
+  // Practice controls are in document flow, immediately after the existing
+  // classroom session panel. Live controls retain their established location.
+  const section=$('view-classroom');
+  const anchor=section?.querySelector('.rz-live-shell')||section?.querySelector('.content-shell');
+  if(practice&&anchor&&manager.parentElement!==anchor)anchor.append(manager);
+  else if(!practice&&manager.parentElement!==document.body)document.body.append(manager);
   manager.setAttribute('aria-label',practice?'Practice assignment controls':'Live Class controls');
   manager.querySelector('.rz-v15-manager-head .rz-v15-kicker').textContent=practice?'PRACTICE ASSIGNMENT':'LIVE CLASSROOM';
   manager.querySelector('.rz-v15-manager-head strong').textContent=practice?'Manage Practice':'Manage Live Session';
