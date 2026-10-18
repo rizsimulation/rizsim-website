@@ -6351,6 +6351,13 @@ function openRizSimJoinPrompt(mode){
         const receipt=await joinSession(mode,false);
         if(!receipt||String(receipt.session_id)!==String(session))
           throw new Error('The session could not be joined. Check your class access window.');
+        if(receipt.attempt_status==='submitted'||receipt.submitted_at){
+          // A submitted attempt is read-only; show the receipt in the website,
+          // close the empty tab and never restart the simulation.
+          try{tab.close()}catch(_){}
+          navigateStudent('player',false);
+          return;
+        }
         rememberRizSimParticipant(receipt,name,institution);
         const opened=await launchJoinedSimulation(tab);
         if(!opened)throw new Error('The simulation could not be opened. Your website tab and resources are unchanged.');
