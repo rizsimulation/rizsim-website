@@ -4,7 +4,10 @@ const student=fs.readFileSync('rizsim-student-workspace.js','utf8'),
   css=fs.readFileSync('rizsim-student-workspace.css','utf8'),
   access=fs.readFileSync('access-in.html','utf8'),
   runner=fs.readFileSync('simulation-test.html','utf8');
-assert(!student.includes('showPracticeLaunchDialog(a)'),'V15 removes the redundant Practice launch dialogue');
+// V15.4 explicitly asks for an on-website Practice confirmation so the
+// learner initiates a separate runner tab without losing shared resources.
+assert(student.includes('showPracticeLaunchDialog(a)'),'Practice card must open the website confirmation before separate-tab launch');
+assert(student.includes("window.open('about:blank','_blank')"),'Practice confirmation reserves a new browser tab during the user click');
 assert(student.includes('joinPracticeCode(practiceCode)')&&student.includes('rz-v15-practice-join'),'The Practice class code field persists');
 assert(student.includes('await bridge().launchPractice(id)'));
 assert(!student.includes('await bridge().openAttempt(fresh)'));
@@ -34,4 +37,4 @@ for(const [path,html] of [['access-in.html',access],['simulation-test.html',runn
  const source=match[1].replace(/import\s*\{[\s\S]*?\}\s*from\s*"https:[^;]+;/,'');
  new vm.Script(source,{filename:path});
 }
-console.log('PASS V9/V15 static: persistent Practice codes, direct server-checked launch, submission switch and sharing');
+console.log('PASS V9/V15 static: persistent Practice codes, user-initiated new-tab launch, submission switch and sharing');

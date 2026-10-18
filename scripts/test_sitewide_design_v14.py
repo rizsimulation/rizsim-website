@@ -66,7 +66,11 @@ def contract():
   elif path=="contact.html" and 'rizsim-v153-focus.css' in current:
    # User-requested V15.3 design explicitly replaces ONLY public Contact main;
    # preserve official header/footer/nav and their page transitions exactly.
-   stripped=current.replace('<link rel="stylesheet" href="rizsim-v153-focus.css">'+chr(10),'')
+   # After V15.3 is published, origin/main itself includes the scoped
+   # stylesheet. Compare header/footer byte-for-byte without stripping an
+   # approved existing asset. Strip only when the baseline lacks that link.
+   v153='<link rel="stylesheet" href="rizsim-v153-focus.css">'+chr(10)
+   stripped=current if v153 in before else current.replace(v153,'')
    pattern=r'<main class="page-content">.*?</main>'
    assert re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',stripped,flags=re.S)==re.sub(pattern,'<main>V15.3 APPROVED CONTACT REDESIGN</main>',before,flags=re.S),(path,'Contact changes escaped main section or scoped CSS link')
    for locked in ('RizSimulation Team','rizsimulation@gmail.com','id="copyEmailButton"','id="copyConfirmation"','mail.google.com/mail/?view=cm'):

@@ -201,6 +201,11 @@
     if(!fresh||phase(fresh)!=='open'||complete(fresh))throw new Error('This practice session is no longer open.');
     await bridge().launchPractice(id);
    }catch(e){
+    // No orphaned "Verifying Practice" browser tab after a failed access
+    // check. Successful launches clear this handle inside the bridge.
+    const pending=window.__rzV154RunnerTab;
+    window.__rzV154RunnerTab=null;
+    try{if(pending&&!pending.closed)pending.close();}catch(_){}
     if(n.open){feedback.textContent=e?.message||'Unable to launch practice. Please retry.';feedback.hidden=false;}
    }finally{
     actionBusy=false;launch.disabled=false;cancel.disabled=false;close.disabled=false;
@@ -215,9 +220,11 @@
    await refresh(true);if(error)throw new Error('Practice could not be verified. Please retry.');
    const a=data?.attempts.find(x=>x.id===id);
    if(!a||phase(a)!=='open'||complete(a))throw new Error('This Practice is no longer available.');
-   const receipt=await bridge().practice(id);
-   if(String(receipt?.attempt_id)!==String(id))throw new Error('RizSim did not confirm your saved attempt.');
-   await bridge().launchPractice(id);
+   // The Practice card must first open its existing on-website confirmation.
+   // Only a real click on "Launch simulation" may synchronously reserve the
+   // new browser tab; otherwise async RPC checks trigger popup blocking and
+   // remove the Student from the website/resources view.
+   showPracticeLaunchDialog(a);
   }catch(e){dialog('Practice is not available',e.message);}
   finally{actionBusy=false;renderPractice();}
  }

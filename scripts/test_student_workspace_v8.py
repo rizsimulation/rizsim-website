@@ -84,10 +84,14 @@ def run(browser,base):
   check('Retry restores Practice list')
   p.evaluate('__studentFixture.failPractice=true')
   p.locator('[data-practice-attempt="attempt-0"] button').click()
-  p.wait_for_selector('.rz-st-dialog[open]')
-  check('Revocation on direct Practice launch is denied','revoked' in p.locator('.rz-st-dialog[open]').inner_text().lower())
-  check('Denied Practice stays on its page',p.locator('#view-practice.active').is_visible())
-  p.locator('.rz-st-dialog[open] button').last.click()
+  p.wait_for_selector('.rz-st-launch-dialog[open]')
+  p.locator('.rz-st-launch-dialog').get_by_role('button',name='Launch simulation').click()
+  p.wait_for_function("""()=>(document.querySelector('.rz-st-launch-feedback')?.textContent||'').toLowerCase().includes('revoked')""")
+  check('Revocation at the explicit on-website Practice launch is denied',
+    'revoked' in p.locator('.rz-st-launch-feedback').inner_text().lower())
+  check('Denied Practice stays on its page',
+    p.locator('#view-practice.active').is_visible() and '/simulation-' not in p.url)
+  p.locator('.rz-st-launch-dialog .rz-st-close').click()
   p.evaluate('__studentFixture.failPractice=false')
   p.evaluate('__studentFixture.attempts.filter(a=>a.user_id==="student-1").forEach(a=>{a.status="submitted";a.submitted_at=new Date().toISOString()})');p.evaluate('RizSimStudentWorkspace.refresh(true)')
   check('All-submitted state has completion treatment','Practice complete. Well done.' in p.locator('#rzStudentPractice').inner_text() and p.locator('[data-practice-attempt]').count()==0)
