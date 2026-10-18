@@ -13,7 +13,7 @@
    const logo=document.createElement('img');logo.src='/rizsim-r.png';logo.alt='RizSim';logo.width=46;logo.height=46;
    const chip=document.createElement('span');chip.className='rz-v15-pause-chip';chip.textContent='PRESENTER CONTROL';
    const title=document.createElement('h2');title.textContent='Your presenter has paused the simulation.';
-   const copy=document.createElement('p');copy.textContent="Your progress is safely saved. Please wait — you\'ll continue right where you left off.";
+   const copy=document.createElement('p');copy.textContent="Your progress is safely saved. Please wait — you'll continue right where you left off.";
    const note=document.createElement('small');note.textContent='Keep this page open. Nothing needs to be restarted.';
    card.append(logo,chip,title,copy,note);overlay.append(card);document.body.append(overlay);return overlay;
  }
