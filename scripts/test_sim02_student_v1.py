@@ -97,7 +97,7 @@ async def main():
    page=await context.new_page()
    errors=[]
    page.on('pageerror',lambda e:errors.append(str(e)))
-   page.on('dialog',lambda d:asyncio.create_task(d.accept()))
+   page.on('dialog',lambda d:(errors.append('Unexpected native lock confirmation: '+d.message),asyncio.create_task(d.dismiss())))
    source=(ROOT/'simulation-assets/system-1-system-2/cloud.js').read_text()
    old="const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/+esm');"
    assert source.count(old)==1,'Hosted client import contract moved'
@@ -116,6 +116,16 @@ async def main():
      await page.locator('label.option').first.click()
      if i<5:await page.get_by_role('button',name='Next question').click()
     await page.get_by_role('button',name=f'Lock {label} · 6 responses').click()
+    modal=page.get_by_role('dialog',name='Confirm your decision')
+    await modal.wait_for()
+    assert await modal.get_by_text('Lock all six').count()==1
+    if label=='KR':
+     # Cancellation must preserve all six draft answers, never commit.
+     await modal.get_by_role('button',name='Go back').click()
+     assert (await page.evaluate('window.__sim02FakeState()'))['saves']==0
+     await page.get_by_role('button',name=f'Lock {label} · 6 responses').click()
+     await modal.wait_for()
+    await modal.get_by_role('button',name='Confirm & lock').click()
    async def synced(expected):
     await page.wait_for_function(f"window.__sim02FakeState()?.attempt.progress_percent==={expected}",timeout=10000)
     await page.wait_for_function("!document.querySelector('#rzSim02PendingOverlay') || document.querySelector('#rzSim02PendingOverlay').hidden",timeout=10000)
@@ -125,6 +135,9 @@ async def main():
     for kind in ('source','transfer'):
      await page.locator('label.option').first.click()
      await page.get_by_role('button',name=re.compile('Commit '+kind+' decision')).click()
+     modal=page.get_by_role('dialog',name='Confirm your decision')
+     await modal.wait_for()
+     await modal.get_by_role('button',name='Confirm & lock').click()
      await page.get_by_role('button',name=re.compile('Apply in a new case|Continue to the second pair|Begin Knowledge Gain')).click()
    await page.get_by_role('heading',name='Your fresh review').wait_for()
    await reviews('KG')

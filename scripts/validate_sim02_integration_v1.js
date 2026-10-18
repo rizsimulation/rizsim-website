@@ -41,6 +41,8 @@ assert(cloud.includes("result.receipt!=='submitted'"));
 assert(cloud.includes('submit_my_rizsim_classroom_attempt'));
 assert(cloud.includes('check_my_rizsim_classroom_attempt_access'));
 assert(cloud.includes('personalRGA=validRGA(proof)'));
+assert(html.includes('function confirmCommittedDecision('),'Sim02 stage locks must use accessible in-page confirmation');
+assert(bridge.includes('beforeReview(stage,...rest)')&&bridge.includes('beforeLT(i,kind,...rest)'),'The Student bridge must forward confirmed stages without dropping arguments');
 assert(bridge.includes('rizsim:student-ready')&&bridge.includes('rizsim:student-response'));
 assert(bridge.includes('if(!window.__RIZSIM_SIM02_HOSTED__)snapshot(reason,true)'));
 assert(faculty.includes("get_my_rizsim_s1s2_session_records"));

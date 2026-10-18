@@ -28,9 +28,9 @@
  }
  function onCommit(reason){if(!window.__RIZSIM_SIM02_HOSTED__)snapshot(reason,true)}
  const beforeReview=lockReview;
- lockReview=function(stage){const old=!!record?.[stage]?.at;beforeReview(stage);if(!old&&record?.[stage]?.at)onCommit(stage+'-locked')};
+ lockReview=function(stage,...rest){const old=!!record?.[stage]?.at;beforeReview(stage,...rest);if(!old&&record?.[stage]?.at)onCommit(stage+'-locked')};
  const beforeLT=lockLT;
- lockLT=function(i,kind){const old=!!record?.lt?.[i]?.[kind]?.at;beforeLT(i,kind);if(!old&&record?.lt?.[i]?.[kind]?.at)onCommit('lt-'+kind+'-locked')};
+ lockLT=function(i,kind,...rest){const old=!!record?.lt?.[i]?.[kind]?.at;beforeLT(i,kind,...rest);if(!old&&record?.lt?.[i]?.[kind]?.at)onCommit('lt-'+kind+'-locked')};
  const beforeFeedback=markFeedback;
  markFeedback=function(i,kind){const old=!!record?.lt?.[i]?.[kind]?.seen;beforeFeedback(i,kind);if(!old&&record?.lt?.[i]?.[kind]?.seen)onCommit('lt-'+kind+'-feedback-read')};
  window.addEventListener('message',ev=>{
