@@ -255,8 +255,10 @@
    await refresh(true);if(error)throw new Error('Practice could not be verified. Please retry.');
    const a=data?.attempts.find(x=>x.id===id);
    if(!a||phase(a)!=='open'||complete(a))throw new Error('This Practice is no longer available.');
-   // The confirmation remains in this Student website and requires name /
-   // institution before opening the authorized runner in a new tab.
+   // Verify the same authorized attempt before presenting identity inputs.
+   // Final launch also rechecks access after the Student confirms the new tab.
+   const receipt=await bridge().practice(id);
+   if(String(receipt?.attempt_id)!==String(id))throw new Error('RizSim did not confirm your saved attempt.');
    showPracticeLaunchDialog(a);
   }catch(e){dialog('Practice is not available',e.message);}
   finally{actionBusy=false;renderPractice();}
