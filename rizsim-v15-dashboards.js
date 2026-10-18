@@ -53,9 +53,20 @@
   finally{inFlight=false;}
  }
  function init(){
-  const pane=$('rzV13PaneStudents');if(!pane)return;
-  new MutationObserver(()=>requestAnimationFrame(compactTables)).observe(pane,{childList:true,subtree:true});
-  window.setInterval(refresh,3500);window.addEventListener('focus',refresh);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});refresh();
+  let observed=null;
+  function attach(){
+   const pane=$('rzV13Panestudents');
+   if(pane&&pane!==observed){
+    observed=pane;
+    new MutationObserver(()=>requestAnimationFrame(compactTables)).observe(pane,{childList:true,subtree:true});
+   }
+   compactTables();
+  }
+  attach();
+  window.setInterval(()=>{attach();refresh()},1800);
+  window.addEventListener('focus',()=>{attach();refresh()});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){attach();refresh()}});
+  refresh();
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
