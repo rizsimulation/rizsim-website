@@ -4031,6 +4031,8 @@ Continue with Google
 
 </button>
 
+<a id="rzV152FacultyOptIn" href="/access-out.html?intent=signup" class="google-login-button rz-v152-faculty-optin" hidden>Create Standard Faculty Access</a>
+
 <p class="gate-note">
 
 Standard Faculty Access does not require Owner approval.
@@ -11033,16 +11035,33 @@ if(
 !currentMembership
 ) {
 
-await withTimeout(
-ensureStandardFacultyAccess(),
-12000
-);
+  // A Student may visit this public Faculty page. Merely viewing it must
+  // NEVER create a new staff role. Registration is a deliberate opt-in.
+  // Existing Faculty, Course Lead, Institution and Owner roles are unchanged.
+  if(intent!=='signup'){
+    hideAllPrimaryScreens();
+    document.getElementById('authGate').classList.remove('hidden');
+    showUnauthenticatedHeader();
+    document.getElementById('googleLogin').hidden=true;
+    const activate=document.getElementById('rzV152FacultyOptIn');
+    activate.hidden=false;
+    document.getElementById('authKicker').textContent='FACULTY REGISTRATION';
+    document.getElementById('authTitle').textContent='Create Faculty Access?';
+    document.getElementById('authCopy').textContent='You are signed in to RizSim, but this account does not yet have Faculty Access. Create it only if you intend to teach or manage classes.';
+    document.getElementById('gateStatus').textContent='Browsing the Faculty page has not changed your Student account or permissions.';
+    return;
+  }
 
-currentMembership =
-await withTimeout(
-getMembership(),
-12000
-);
+  await withTimeout(
+    ensureStandardFacultyAccess(),
+    12000
+  );
+
+  currentMembership =
+  await withTimeout(
+    getMembership(),
+    12000
+  );
 
 }
 
