@@ -107,7 +107,7 @@ def run(browser,base):
  finally:
   if sys.exc_info()[0]:p.screenshot(path=str(OUT/'v8-failure.png'),full_page=True)
   ctx.close()
- ctx,p,errors=open_page(browser,base,'?session=share-open#player')
+ ctx,p,errors=open_page(browser,base,'?code=TEST1234#player')
  try:
   p.wait_for_selector('[data-join-access=practice]');check('Faculty invitation link still resolves the intended class','Decision Lab' in p.locator('#resolvedSessionCard').inner_text())
   p.evaluate('__studentFixture.attempts[0].status="submitted";__studentFixture.attempts[0].submitted_at=new Date().toISOString()');p.locator('[data-join-access=practice]').click();p.wait_for_selector('#joinedAttemptResult .launch-ready');check('Submitted attempt has no launch control',p.locator('[data-launch-attempt]').count()==0 and 'Submission complete' in p.locator('#joinedAttemptResult').inner_text())
@@ -117,14 +117,14 @@ def run(browser,base):
   ctx.close()
 
 
- ctx,p,errors=open_page(browser,base,'?session=share-open#player')
+ ctx,p,errors=open_page(browser,base,'?code=TEST1234#player')
  try:
   p.wait_for_selector('[data-join-access=practice]');p.locator('[data-join-access=practice]').click();p.wait_for_selector('[data-launch-attempt]')
   p.evaluate('__studentFixture.delayAccess=400')
   original=p.url;p.locator('[data-launch-attempt]').click();p.evaluate('__studentFixture.signOut()');p.wait_for_timeout(550)
   check('Delayed launch response cannot navigate after sign-out',p.url==original and p.locator('#studentApp.show').count()==0 and not errors)
  finally:ctx.close()
- ctx,p,errors=open_page(browser,base,'?session=share-open#player')
+ ctx,p,errors=open_page(browser,base,'?code=TEST1234#player')
  try:
   p.wait_for_selector('[data-join-access=practice]');p.locator('[data-join-access=practice]').click();p.wait_for_selector('#rzStudentPlayerMaterials .rz-st-resource-card button')
   p.evaluate('__studentFixture.delayMaterial=400')
