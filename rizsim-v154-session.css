@@ -1,0 +1,50 @@
+/* RizSim V15.4 — scoped live classroom, Student join and Practice enhancements.
+   Existing premium branding, site navigation, shadows and simulations stay intact. */
+
+/* Verified invitation is accepted on the Student website, NOT in a runner. */
+.rz-v154-join-dialog{width:min(450px,calc(100vw - 22px));max-height:min(88vh,750px);overflow-y:auto;padding:clamp(18px,4vw,28px);border:1px solid #b7d9d4;border-radius:22px;background:linear-gradient(148deg,#fff,#f0faf6 68%,#f9f5ff);color:#183f4b;box-shadow:0 24px 70px rgba(6,38,54,.28);font-family:inherit}
+.rz-v154-join-dialog::backdrop{background:rgba(6,29,44,.65)}
+.rz-v154-join-header{display:grid;gap:9px}
+.rz-v154-join-logo{max-height:46px;max-width:124px;width:auto;height:46px;object-fit:contain;object-position:left center}
+.rz-v154-join-eyebrow{color:#087d7d;font-size:10px;letter-spacing:.11em;font-weight:850}
+.rz-v154-join-header h2{color:#0e4651;font-size:clamp(21px,2.4vw,26px);letter-spacing:-.03em;line-height:1.2;margin:0}
+.rz-v154-join-header p{font-size:12px;color:#58717b;line-height:1.65;margin:0}
+.rz-v154-join-session{display:grid;gap:5px;margin:15px 0;padding:11px 13px;border:1px solid #cfe3df;border-radius:12px;background:#eef7f3;color:#1f5662}
+.rz-v154-join-session span{font-size:12px;font-weight:800}
+.rz-v154-join-session strong{font-size:11px;color:#627c83}
+.rz-v154-join-form{display:grid;gap:11px}
+.rz-v154-join-form label,.rz-v154-practice-identity label{display:grid;gap:6px;font-size:12px;font-weight:770;color:#335965}
+.rz-v154-join-form input,.rz-v154-practice-identity input{width:100%;min-width:0;min-height:45px;box-sizing:border-box;padding:10px 12px;border:1px solid #b7d6d0;border-radius:10px;background:#fff;color:#123b4b;font-size:15px;font-family:inherit}
+.rz-v154-join-form input:focus-visible,.rz-v154-practice-identity input:focus-visible{outline:3px solid #9ae4d6;outline-offset:1px}
+.rz-v154-join-feedback{font-size:11px;color:#965340;line-height:1.5;min-height:13px;margin:0}
+.rz-v154-join-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:3px}
+.rz-v154-join-actions button{flex:1 1 155px;min-height:43px;border-radius:10px;font-size:12px;font-weight:800;padding:10px;border:1px solid #c9dbd6;cursor:pointer}
+.rz-v154-join-cancel{background:#fff;color:#3e6470}
+.rz-v154-join-submit{background:linear-gradient(110deg,#0c8581,#12636c);border-color:#0d7379!important;color:#fff}
+.rz-v154-join-actions button:disabled{opacity:.58;cursor:wait}
+
+/* Student Practice resources are grouped per authorized class underneath
+   the class code and assignment cards, never in the upcoming Library. */
+#view-practice .rz-v154-practice-resources{margin:22px 0;padding:clamp(16px,2vw,24px);border-radius:18px;border:1px solid #cde1dc;background:linear-gradient(130deg,#f3faf6,#fff 65%);box-shadow:0 6px 21px rgba(18,64,69,.04);min-width:0}
+#view-practice .rz-v154-resources-explainer{color:#59737d;font-size:12px;line-height:1.6;margin:5px 0 16px}
+#view-practice .rz-v154-practice-resource-group{border-top:1px solid #deece9;padding-top:14px;margin-top:15px}
+#view-practice .rz-v154-practice-resource-group>h3{font-size:13px;color:#1a4d5b;margin:0 0 12px}
+#view-practice .rz-v154-practice-resources .rz-st-resource-grid{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}
+.rz-v154-practice-identity{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:11px 0 8px}
+.rz-v154-practice-identity label{min-width:0;font-size:11px}
+.rz-v154-practice-identity input{min-height:42px;font-size:14px}
+
+/* Practice: below Session Studio share/access panel, stationary.
+   Live sessions retain the existing floating manager without change. */
+.rz-v15-manager.rz-v154-practice-docked{
+ position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+ z-index:10!important;display:block;margin:12px 0 4px;max-width:min(100%,390px)!important;
+ width:min(100%,390px)!important;transform:none!important
+}
+.rz-v15-manager.rz-v154-practice-docked.is-minimized{width:max-content!important;max-width:100%!important}
+.rz-v15-manager.rz-v154-practice-docked .rz-v15-pill{cursor:pointer!important;touch-action:auto!important;min-height:43px;box-shadow:0 6px 15px rgba(18,69,75,.17)}
+.rz-v15-manager.rz-v154-practice-docked .rz-v15-manager-pane{max-height:none;overflow:visible;box-shadow:0 6px 24px rgba(8,51,60,.09)}
+.rz-v15-manager.rz-v154-practice-docked .rz-v15-manager-head .rz-v15-kicker{color:#74569a}
+body:has(.rz-v15-manager.rz-v154-practice-docked) #authenticatedApp{padding-bottom:0}
+@media(max-width:540px){.rz-v154-join-dialog{padding:18px}.rz-v154-practice-identity{grid-template-columns:1fr}.rz-v15-manager.rz-v154-practice-docked{max-width:100%!important}}
+@media(prefers-reduced-motion:reduce){.rz-v154-join-dialog *{transition:none!important}}
