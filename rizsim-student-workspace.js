@@ -255,7 +255,7 @@
   // Joined classroom simulations belong to Player / Practice / My Learning;
   // no authenticated attempt, class resource or licensed item is promoted here.
   const target=$('rzStudentSimulationLibrary');if(!target)return;
-  if(target.dataset.rzV153Advert==='ready')return;
+  if(target.dataset.rzV153Advert==='ready'&&target.querySelector('.rz-v153-library-category'))return;
   target.dataset.rzV153Advert='ready';
   target.replaceChildren();target.className='rz-v153-library-advert';
   const lead=el('div','rz-v153-library-lead');
