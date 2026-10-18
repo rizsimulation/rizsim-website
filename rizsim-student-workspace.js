@@ -123,6 +123,23 @@
     card.append(left,timing,run);list.append(card);
    });
   }
+  // Faculty resources are scoped to each joined Practice assignment.
+  // They remain reachable beside that Practice card, never in the independent Library.
+  const snap=bridge()?.snapshot();
+  if(snap?.materials?.length){
+    for(const attempt of all){
+      const card=target.querySelector('[data-practice-attempt="'+attempt.id+'"]');
+      if(!card)continue;
+      const resources=snap.materials.filter(m=>m.course_id===attempt.course_id||m.course_id===attempt.classroom_session_id);
+      if(!resources.length)continue;
+      const block=el('details','rz-v154-practice-resources');
+      const summary=el('summary','','Shared class resources ('+resources.length+')');
+      block.append(summary);
+      const grid=el('div','rz-st-resource-grid');
+      resources.forEach(m=>grid.append(materialCard(m)));
+      block.append(grid);card.after(block);
+    }
+  }
   if(done.length&&active.length)target.append(el('p','rz-st-support',done.length+' submitted practice '+(done.length===1?'session':'sessions')+' saved in My Learning.'));
   if(unavailable.length){const details=el('details','rz-st-archive');details.append(el('summary','',unavailable.length+' unavailable or ended practice '+(unavailable.length===1?'session':'sessions')));unavailable.forEach(a=>{const row=el('div','rz-st-archive-row');row.append(el('span','',a.title+' · '+(a.class_name||'Class')),statusBadge(phase(a)==='expired'?'Window ended':'Access unavailable','closed'));details.append(row);});target.append(details);}
  }
@@ -163,6 +180,10 @@
   n.showModal();launch.focus({preventScroll:true});
   launch.addEventListener('click',async()=>{
    if(actionBusy||!n.open)return;
+   // Open synchronously on the learner's click to avoid browser popup blockers.
+   try{const tab=window.open('about:blank','_blank');
+    if(tab){tab.document.title='Opening RizSim Practice…';tab.document.body.textContent='Verifying your Practice access…';window.__rzV154RunnerTab=tab;}
+   }catch(_){}
    actionBusy=true;launch.disabled=true;cancel.disabled=true;close.disabled=true;renderPractice();
    feedback.hidden=true;
    launch.querySelector('span:last-child').textContent='Verifying access…';
@@ -239,9 +260,9 @@
  function materialCard(m){const n=el('article','rz-st-resource-card');n.append(icon(m.source_type==='file'?'file':'link'));const text=el('div');text.append(el('h3','',m.title||'Learning resource'),el('p','',m.description||m.file_name||'Published by your Faculty'),el('span','rz-st-meta',m.course_title||'Class resource'));n.append(text,btn(m.source_type==='file'?'Open in RizSim':'Open link',()=>openMaterial(m.material_id),'rz-st-button secondary'));return n;}
  function renderMaterials(){
   const snap=bridge()?.snapshot();if(!snap?.userId)return;
-  for(const id of ['rzStudentLibraryMaterials','rzStudentPlayerMaterials']){
+  for(const id of ['rzStudentLibraryMaterials','rzStudentPlayerMaterials','rzV154SessionResourceList']){
    const target=$(id);if(!target)continue;target.replaceChildren();
-   const selected=id.includes('Player'),a=data?.attempts.find(x=>x.classroom_session_id===snap.resolved?.session_id);
+   const selected=id.includes('Player')||id==='rzV154SessionResourceList',a=data?.attempts.find(x=>x.classroom_session_id===snap.resolved?.session_id);
    if(selected&&!a){target.hidden=true;continue;}target.hidden=false;
    const title=el('div','rz-st-section-title');title.append(icon('file'),el('h2','','Class resources'));target.append(title);
    if(snap.errors.materials){empty(target,'Resources could not be refreshed','Your access has not changed. Refresh to try again.','warning','warning',['Refresh resources',()=>bridge().refresh().then(renderMaterials)]);continue;}

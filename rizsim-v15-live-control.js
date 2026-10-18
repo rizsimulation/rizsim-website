@@ -111,16 +111,9 @@
    },'rz-v15-button rz-v15-end');controls.append(pauseButton,end);pane.append(controls);
    status=node('p','rz-v15-manager-status');status.setAttribute('role','status');pane.append(status);
    manager.append(pill,pane);document.body.append(manager);
-   let start=null;
-   pill.addEventListener('pointerdown',e=>{if(e.button!==0)return;pill.setPointerCapture?.(e.pointerId);start={x:e.clientX,y:e.clientY,left:pill.getBoundingClientRect().left,top:pill.getBoundingClientRect().top};});
-   pill.addEventListener('pointerup',e=>{if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>7)dragged=true;start=null;});
-   pill.addEventListener('pointermove',e=>{if(!start||!(e.buttons&1))return;
-      const dx=e.clientX-start.x,dy=e.clientY-start.y;
-      if(Math.hypot(dx,dy)<7)return;dragged=true;
-      manager.style.right='auto';manager.style.bottom='auto';
-      manager.style.left=Math.max(8,Math.min(innerWidth-manager.offsetWidth-8,start.left+dx))+'px';
-      manager.style.top=Math.max(8,Math.min(innerHeight-manager.offsetHeight-8,start.top+dy))+'px';
-   });
+   // V15.4: neither Live nor Practice management is draggable.
+   // The compact Practice access button sits in its own stationary row
+   // beneath the classroom session panel, without a floating overlay.
  }
  async function togglePause(){
    if(changing||!current)return;
@@ -151,6 +144,12 @@
   manager.hidden=false;
   const practice=room.access_mode==='practice'||(room.access_mode==='both'&&!isLive(room));
   manager.classList.toggle('is-practice',practice);
+  // Practice controls are in document flow, immediately after the existing
+  // classroom session panel. Live controls retain their established location.
+  const section=$('view-classroom');
+  const anchor=section?.querySelector('.rz-live-shell')||section?.querySelector('.content-shell');
+  if(practice&&anchor&&manager.parentElement!==anchor)anchor.append(manager);
+  else if(!practice&&manager.parentElement!==document.body)document.body.append(manager);
   manager.setAttribute('aria-label',practice?'Practice assignment controls':'Live Class controls');
   manager.querySelector('.rz-v15-manager-head .rz-v15-kicker').textContent=practice?'PRACTICE ASSIGNMENT':'LIVE CLASSROOM';
   manager.querySelector('.rz-v15-manager-head strong').textContent=practice?'Manage Practice':'Manage Live Session';

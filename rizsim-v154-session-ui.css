@@ -1,0 +1,35 @@
+/* V15.4: scoped, low-cost student/runner presentation. Existing premium site brand locked. */
+.rz-v154-runner-brand{position:relative;z-index:15;display:flex;align-items:center;gap:13px;justify-content:space-between;flex-wrap:wrap;padding:10px clamp(14px,3vw,26px);background:linear-gradient(115deg,#f3faf7,#fff);border-bottom:1px solid #c8e1da;box-shadow:0 3px 13px rgba(14,64,67,.065);font:600 12px/1.4 system-ui,sans-serif;color:#285e62}
+.rz-v154-runner-brand img{display:block;max-width:115px;max-height:45px;width:auto;height:auto;object-fit:contain;flex:none}
+.rz-v154-runner-brand span{flex:1;min-width:105px;letter-spacing:.015em}
+.rz-v154-runner-brand a{color:#0f6d6a;text-decoration:none;border:1px solid #bbded7;background:#fff;border-radius:30px;font-size:11px;font-weight:750;padding:8px 11px}
+.rz-v154-runner-brand a:hover{text-decoration:underline;background:#e9f8f3}
+@media(max-width:520px){.rz-v154-runner-brand{gap:8px;padding:7px 11px}.rz-v154-runner-brand span{font-size:10px}.rz-v154-runner-brand a{font-size:10px;padding:6px 8px}}
+/* Less GPU overdraw for long hosted simulations: no blur or perpetual motion. */
+@media(prefers-reduced-motion:reduce){.rz-v154-runner-brand *{animation:none!important;transition:none!important}}
+body:has(.rz-v154-runner-brand) .rz-v15-student-paused{backdrop-filter:none}
+body:has(.rz-v154-runner-brand) img{content-visibility:auto}
+#view-player .rz-v154-join-profile{margin:12px 0 18px;padding:clamp(15px,2.7vw,21px);border:1px solid #bfdcd6;border-top:3px solid #2caaa0;border-radius:17px;background:linear-gradient(130deg,#f3fbf8,#fff);box-shadow:0 8px 25px rgba(12,61,72,.075)}
+#view-player .rz-v154-kicker{display:block;font-size:10px;color:#18827e;font-weight:850;letter-spacing:.13em}
+#view-player .rz-v154-join-profile h3{margin:7px 0;color:#123e50;font-size:18px}
+#view-player .rz-v154-join-profile p{font-size:12px;line-height:1.65;color:#526e77;margin:0 0 12px}
+#view-player .rz-v154-join-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#view-player .rz-v154-join-fields label{display:grid;gap:6px;font-size:12px;font-weight:750;color:#244e56}
+#view-player .rz-v154-join-fields input{width:100%;min-width:0;box-sizing:border-box;border:1px solid #bed9d1;border-radius:10px;background:#fff;padding:11px 12px;font:inherit;font-size:13px;color:#174958;min-height:43px}
+#view-player .rz-v154-join-fields input:focus-visible{outline:3px solid #a1e0d4;outline-offset:2px}
+#view-player .rz-v154-join-help{font-size:11px;color:#974d39;margin-top:7px;min-height:13px}
+#view-player .rz-v154-session-resources{margin-top:18px;border:1px solid #d1e3e0;background:#fcfefc;padding:16px;border-radius:15px}
+#view-player .rz-v154-session-resources h3{font-size:15px;margin:0 0 5px;color:#163f4d}
+#view-player .rz-v154-session-resources>p{font-size:12px;color:#567782;line-height:1.55;margin:0 0 9px}
+#view-player .rz-v154-session-resources .rz-st-materials{margin:0}
+#view-player .rz-v154-session-resources .rz-st-section-title{margin-bottom:9px}
+#view-practice .rz-v154-practice-resources{margin:7px 0 19px;padding:12px;border:1px solid #cbded7;border-radius:13px;background:#fcfefd}
+#view-practice .rz-v154-practice-resources summary{font-size:12px;font-weight:850;color:#145e61;cursor:pointer}
+#view-practice .rz-v154-practice-resources .rz-st-resource-grid{margin-top:12px}
+/* Practice manager sits beneath the class Studio, never draggable or overlaying content. */
+#view-classroom .rz-v15-manager.is-practice{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:min(352px,100%)!important;max-width:100%!important;margin:10px 0 20px;z-index:1}
+#view-classroom .rz-v15-manager.is-practice.is-minimized{width:max-content!important}
+#view-classroom .rz-v15-manager.is-practice .rz-v15-pill{cursor:pointer;touch-action:auto;border-radius:13px}
+#view-classroom .rz-v15-manager.is-practice .rz-v15-manager-pane{max-height:none}
+.rz-v15-manager .rz-v15-pill{cursor:pointer!important;touch-action:auto!important}
+@media(max-width:660px){#view-player .rz-v154-join-fields{grid-template-columns:1fr}#view-player .rz-v154-join-profile{padding:15px}}
