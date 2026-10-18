@@ -7805,7 +7805,7 @@ window.RizSimStudentBridge = Object.freeze({
   return {...joinedAttempt};
  },
  async practice(attemptId){const result=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attemptId});if(result.error)throw new Error(result.error.message);await reloadAttempts();return result.data;},
- async launchPractice(attemptId){
+ async launchPractice(attemptId,reservedTab){
   const actor=currentUser?.id,generation=studentResolveGeneration;
   if(!actor)throw new Error('Sign in again before launching Practice.');
   const own=attempts.find(a=>a.id===attemptId&&a.user_id===actor&&a.classroom_session_id);
@@ -7824,7 +7824,9 @@ window.RizSimStudentBridge = Object.freeze({
   destination.searchParams.set('attempt',own.id);
   destination.searchParams.set('session',own.classroom_session_id);
   destination.searchParams.set('access','practice');
-  window.location.href=destination.href;
+  if(!reservedTab||reservedTab.closed)throw new Error('A separate simulation tab must be opened from the Practice confirmation button.');
+  reservedTab.location.replace(destination.href);
+  return true;
  },
  async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
 });
