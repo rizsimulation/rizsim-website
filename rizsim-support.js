@@ -8,34 +8,77 @@ const client=()=>window.rizsimSharedAuth;
 const contactSelect=['#view-contact.student-view','#view-contact.auth-view'];
 let submitting=false,loading=false;
 function component(){
- const wrap=el('section','rz-support-panel');wrap.setAttribute('aria-label','RizSim Platform Support');
- const top=el('div','rz-support-heading');
- top.append(el('span','rz-support-kicker','PLATFORM SUPPORT'),el('h2','', 'Contact RizSim Support'),el('p','', 'For technical problems, access questions and suggestions, contact our team or submit a report to the platform Owner.'));
- const address=el('div','rz-support-email');address.append(el('span','',EMAIL));
- const email=el('a','rz-support-email-action','Email');email.href='mailto:'+EMAIL;email.setAttribute('aria-label','Email RizSim support at '+EMAIL);address.append(email);
+ const wrap=el('section','rz-support-panel rz-v153-support-panel');
+ wrap.setAttribute('aria-label','RizSim Platform Support');
+ const grid=el('div','rz-v153-support-grid');
+ const team=el('article','rz-v153-support-team');
+ const kicker=el('span','rz-support-kicker','DIRECT PLATFORM SUPPORT');
+ const identity=el('div','rz-v153-support-identity');
+ const avatar=el('span','rz-v153-support-avatar','R');avatar.setAttribute('aria-hidden','true');
+ const who=el('div');
+ who.append(el('h2','','RizSimulation Team'),el('p','','Your direct point of contact for RizSim.'));
+ identity.append(avatar,who);
+ const welcome=el('p','rz-v153-support-welcome',
+  'Have a question about a class, an account, licensing or learning on RizSim? We are here to help.');
+ const emailDisplay=el('strong','rz-v153-support-address',EMAIL);
+ const actions=el('div','rz-v153-support-actions');
+ const email=el('a','rz-support-email-action','Compose in Gmail');
+ email.href='https://mail.google.com/mail/?view=cm&fs=1&to=rizsimulation%40gmail.com';
+ email.target='_blank';email.rel='noopener noreferrer';
+ email.setAttribute('aria-label','Open a new Gmail message to RizSimulation Team');
+ const copy=el('button','rz-v153-support-copy','Copy Email');copy.type='button';
+ const copyStatus=el('p','rz-support-status rz-v153-copy-status','');copyStatus.setAttribute('role','status');
+ copyStatus.setAttribute('aria-live','polite');
+ copy.addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(EMAIL);copyStatus.textContent='Email address copied.';}
+  catch(_){copyStatus.textContent='Copy this email address: '+EMAIL;}
+ });
+ actions.append(email,copy);
+ team.append(kicker,identity,welcome,emailDisplay,actions,copyStatus);
+ const report=el('article','rz-v153-support-report');
+ report.append(el('span','rz-support-kicker','SEND A PLATFORM REPORT'),
+  el('h2','','Report an issue or send feedback'),
+  el('p','rz-v153-support-report-note',
+  'Your report goes directly to the RizSim Owner. You can submit a technical issue, an access question or feedback securely.'));
  const form=el('form','rz-support-form');form.noValidate=true;
- const lbl=el('label','','Report a problem or send feedback');const select=el('select','rz-support-category');select.required=true;select.setAttribute('aria-label','Report category');
- for(const [v,t] of [['general','General enquiry'],['technical','Technical problem'],['account','Account or access'],['content','Simulation or learning content'],['other','Other']]){const opt=el('option','',t);opt.value=v;select.append(opt)}
- const textarea=el('textarea','rz-support-message');textarea.rows=5;textarea.maxLength=3000;textarea.minLength=10;textarea.required=true;textarea.placeholder='Describe what happened, where it happened, and what you need help with. Please do not include passwords or other sensitive information.';
- lbl.append(select,textarea);
- const foot=el('div','rz-support-foot');const count=el('small','','0 / 3000 characters');const btn=el('button','rz-support-send','Send Report');btn.type='submit';const status=el('p','rz-support-status','');status.setAttribute('role','status');status.setAttribute('aria-live','polite');foot.append(count,btn);form.append(lbl,foot,status);
+ const categoryLabel=el('label','','What is your enquiry about?');
+ const select=el('select','rz-support-category');select.required=true;
+ select.setAttribute('aria-label','Report category');
+ for(const [v,t] of [['general','General enquiry'],['technical','Technical problem'],['account','Account or access'],['content','Simulation or learning content'],['other','Other']]){
+  const option=el('option','',t);option.value=v;select.append(option);
+ }
+ categoryLabel.append(select);
+ const messageLabel=el('label','','Describe your issue or feedback');
+ const textarea=el('textarea','rz-support-message');textarea.rows=4;textarea.maxLength=3000;
+ textarea.minLength=10;textarea.required=true;textarea.setAttribute('aria-label','Describe your problem or complaint');
+ textarea.placeholder='What happened, where did it happen, and how can we help?';
+ messageLabel.append(textarea);
+ const foot=el('div','rz-support-foot');
+ const count=el('small','','0 / 3000 characters');
+ const button=el('button','rz-support-send','Send Report');button.type='submit';
+ foot.append(count,button);
+ const status=el('p','rz-support-status','');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+ const safety=el('small','rz-v153-support-privacy','Please do not include passwords or sensitive account details.');
+ form.append(categoryLabel,messageLabel,foot,safety,status);
  textarea.addEventListener('input',()=>{count.textContent=textarea.value.length+' / 3000 characters';});
  form.addEventListener('submit',async e=>{
   e.preventDefault();if(submitting)return;
-  const message=textarea.value.trim();if(message.length<10){status.textContent='Please describe the issue in at least 10 characters.';textarea.focus();return;}
+  const message=textarea.value.trim();
+  if(message.length<10){status.textContent='Please describe the issue in at least 10 characters.';textarea.focus();return;}
   if(message.length>3000){status.textContent='Please shorten your report to 3,000 characters.';return;}
   if(!client()){status.textContent='Please wait for your RizSim account to finish loading.';return;}
-  submitting=true;btn.disabled=true;btn.textContent='Sending…';status.textContent='';
+  submitting=true;button.disabled=true;button.textContent='Sending…';status.textContent='';
   try{
    const {data:{user},error:identityError}=await client().auth.getUser();
    if(identityError||!user)throw Error('Please sign in to your RizSim workspace before reporting.');
    const {error}=await client().from('rizsim_support_reports').insert({category:select.value,message});
    if(error)throw Error(error.code==='42P01'?'Reporting is being prepared. Please email support for now.':error.message);
-   textarea.value='';count.textContent='0 / 3000 characters';status.textContent='Report received. It is now available to the platform Owner.';
+   textarea.value='';count.textContent='0 / 3000 characters';
+   status.textContent='Report received. It is now available to the platform Owner.';
   }catch(err){status.textContent='Report not sent: '+(err?.message||'Please try again. You can also email support.');}
-  finally{submitting=false;btn.disabled=false;btn.textContent='Send Report';}
+  finally{submitting=false;button.disabled=false;button.textContent='Send Report';}
  });
- wrap.append(top,address,form);return wrap;
+ report.append(form);grid.append(team,report);wrap.append(grid);return wrap;
 }
 function mountContact(){
  for(const sel of contactSelect){const view=$(sel);if(!view||$('.rz-support-panel',view))continue;
