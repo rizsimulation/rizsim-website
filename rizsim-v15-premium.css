@@ -111,3 +111,62 @@ body:has(.rz-v15-manager:not([hidden]).is-minimized) #authenticatedApp{padding-b
 #rzV13Panestudents .rz-s02-table-scroller,
 #rzV13Panestudents .rz-i01-table-scroll,
 #rzV13Panestudents .rz-h03-table-scroll{overflow-x:visible!important;max-width:100%!important;min-width:0!important}
+
+/* V15.1 polish: keep the original authenticated QR provenance in the DOM,
+   never show its obsolete Schedule / Licence Expires / Created access card. */
+.rz-v151-legacy-access-source,
+#rzLiveRunningMount > .portal-panel:has(#classroomCreatedResult),
+#rzLegacyPlayerPanels .portal-panel:has(#classroomCreatedResult){display:none!important}
+#rzV13StudioOverview #rzLiveRunning > .rz-live-running-title{display:none!important}
+
+/* Compact section identity: teal for Live Responses, soft violet for Presenter. */
+#rzV13Panestudents .rz-v13-pane-note,
+#rzV13Paneinsights .rz-v13-pane-note{padding:10px 13px;margin-bottom:11px;border-radius:12px}
+#rzV13Panestudents .rz-v13-pane-note{background:linear-gradient(105deg,#eaf7f4,#fafefe);border:1px solid #cce3dc;border-left:3px solid #269f9c}
+#rzV13Paneinsights .rz-v13-pane-note{background:linear-gradient(105deg,#f3effb,#fafcfe);border:1px solid #e0d7ec;border-left:3px solid #9980c6}
+#rzV13Panestudents .rz-v13-pane-note h3,#rzV13Paneinsights .rz-v13-pane-note h3{font-size:14px;letter-spacing:-.015em;margin:0 0 3px}
+#rzV13Panestudents .rz-v13-pane-note p,#rzV13Paneinsights .rz-v13-pane-note p{font-size:11px;line-height:1.45}
+#rzV13Panestudents .rz-v13-record-slot,
+#rzV13Panestudents .rz-v13-simulation-students,
+#rzV13Paneinsights .rz-v13-insights-content{gap:11px}
+#rzV13Panestudents .rz-v15-kpis,
+#rzV13Paneinsights .rz-v15-kpis{gap:8px;margin-bottom:10px}
+#rzV13Panestudents .rz-v15-kpi,
+#rzV13Paneinsights .rz-v15-kpi{padding:10px 11px;min-height:66px;box-shadow:0 3px 10px rgba(20,60,70,.035)}
+#rzV13Panestudents .rz-v15-kpi strong,
+#rzV13Paneinsights .rz-v15-kpi strong{font-size:clamp(20px,2vw,27px)}
+#rzV13Panestudents .rz-v15-kpi span,
+#rzV13Paneinsights .rz-v15-kpi span{font-size:10.5px}
+#rzV13Panestudents .rz-v15-compact-table tr{box-shadow:0 3px 12px rgba(14,65,75,.04);gap:5px}
+#rzV13Panestudents .rz-v15-compact-table td[data-rz-tone]{border-radius:9px!important;padding:5px 7px!important;font-weight:750}
+#rzV13Panestudents .rz-v15-compact-table td[data-rz-tone="complete"]{background:#e5f5ed;color:#17664e}
+#rzV13Panestudents .rz-v15-compact-table td[data-rz-tone="working"]{background:#fff4de;color:#855c1f}
+#rzV13Panestudents .rz-v15-compact-table td[data-rz-tone="waiting"]{background:#f1edfa;color:#665586}
+#rzV13Panestudents .rz-v15-compact-table td::before{letter-spacing:.04em;line-height:1.2}
+
+/* Presenter: accessible, proportionate bar showing real submitted vs working. */
+.rz-v151-progress{min-width:0;margin:0 0 11px;padding:11px 14px;border:1px solid #dcd7ec;border-radius:14px;background:linear-gradient(110deg,#faf7ff,#f6fbfc);box-shadow:0 4px 12px rgba(74,57,105,.045)}
+.rz-v151-progress[hidden]{display:none!important}
+.rz-v151-progress-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.rz-v151-progress-head>div{display:grid;gap:2px;min-width:0}
+.rz-v151-progress-head>div strong{font-size:12px;letter-spacing:-.01em;color:#3a3e68}
+.rz-v151-progress-head>div span{font-size:10.5px;color:#6a7183}
+.rz-v151-progress-rate{font-size:12px;color:#62518c;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rz-v151-progress-track{display:flex;width:100%;height:9px;overflow:hidden;background:#e6e4ed;border-radius:999px}
+.rz-v151-progress-track span{display:block;height:100%;min-width:0;transition:width .2s ease}
+.rz-v151-track-complete{background:#37a79c}
+.rz-v151-track-working{background:#e4ad63}
+.rz-v151-progress-legend{display:flex;flex-wrap:wrap;gap:6px 15px;margin-top:7px;font-size:10.5px;font-weight:650}
+.rz-v151-legend-submitted{color:#237c73}
+.rz-v151-legend-working{color:#9a6f2f}
+#rzV13Paneinsights .rz-v13-insights-content > .portal-panel,
+#rzV13Paneinsights .rz-v13-insights-content > .rz-i01-card,
+#rzV13Paneinsights .rz-v13-insights-content > .rz-s02-panel,
+#rzV13Paneinsights .rz-v13-insights-content > .rz-h03-card{border-top:3px solid #9a85c6!important}
+@media(max-width:620px){
+ .rz-v151-progress{padding:10px 11px}
+ .rz-v151-progress-head{align-items:flex-start}
+ .rz-v151-progress-head>div span{max-width:195px}
+ #rzV13Panestudents .rz-v15-kpi,#rzV13Paneinsights .rz-v15-kpi{padding:9px 7px}
+}
+@media(prefers-reduced-motion:reduce){.rz-v151-progress-track span{transition:none}}
