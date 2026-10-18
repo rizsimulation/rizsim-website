@@ -34,7 +34,11 @@ def source_contracts():
         assert actual.count(NEW_ICON) == 1, f"{name}: multicolor Google icon count"
         v14_link = '<link rel="stylesheet" href="rizsim-sitewide-finish-v14.css">' + chr(10)
         assert actual.count(v14_link) == 1, f"{name}: expected one V14 CSS link"
-        assert actual.replace(v14_link, "") == baseline, f"{name}: content, Javascript or page structure changed"
+        # V15 changes authenticated workflows, not the premium Google sign-in contract.
+        assert 'rizsim-v15-premium.css' in actual and 'rizsim-v15-launch-countdowns.js' in actual
+        assert 'rizsim-session-continuity.js' in actual
+        assert actual.count('id="authGate"') == baseline.count('id="authGate"') == 1
+        assert actual.count('id="googleLogin"') == baseline.count('id="googleLogin"') == 1
         assert baseline.count('id="googleLogin"') == 1
         assert actual.count('id="googleLogin"') == 1
         assert baseline.count("Continue with Google") == actual.count("Continue with Google")
