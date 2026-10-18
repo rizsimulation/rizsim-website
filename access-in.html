@@ -5957,6 +5957,13 @@ setPlayerMessage(
 );
 
 renderResolvedSession();
+// Faculty QR/share-token invitations open the authorized live simulation directly.
+// Practice invitations remain in the dedicated Practice workspace.
+if(sourceType==='token' && session.live_open===true){await joinSession('live',true);}
+else if(sourceType==='token' && session.practice_open===true){
+  await joinSession('practice',false);
+  navigateStudent('practice',false);
+}
 
 }
 
@@ -6409,7 +6416,8 @@ renderJoinedAttempt();
    ============================================================ */
 
 async function joinSession(
-requestedAccessType
+requestedAccessType,
+autoLaunch = false
 ){
 if(studentJoinBusy)return;
 studentJoinBusy=true;
@@ -6519,6 +6527,9 @@ joinedAttempt.is_existing_attempt
 );
 
 renderJoinedAttempt();
+if(autoLaunch && joinedAttempt && !joinedAttempt.submitted_at && joinedAttempt.attempt_status !== 'submitted'){
+  await launchJoinedSimulation();
+}
 
 } finally { studentJoinBusy=false; }
 }
