@@ -40,7 +40,8 @@
    if(changing)return;changing=true;options.querySelectorAll('button').forEach(b=>b.disabled=true);feedback.textContent='Preparing your verified session…';
    const owner=bridge()?.getSnapshot()?.userId;
    try{
-    const active=liveRoom(bridge()?.getSnapshot());
+    const currentScope=bridge()?.getSnapshot();
+    const active=currentScope?.role==='course_lead'?liveRoom(currentScope):null;
     if(active)throw Error('An active Live Class already exists. End that session first.');
     const begin=new Date();
     const license=(bridge()?.getSnapshot()?.licences||[]).find(l=>String(l.product_id)===String(productId));
