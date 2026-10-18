@@ -1,0 +1,46 @@
+/* RizSim V14: restrained sitewide design refinement, presentation only.
+   Approved sea-glass and teal identity retained. No navigation, splash,
+   sidebar, page transitions, response or authentication rules touched. */
+body[data-page],
+body[data-rizsim-home-portal] {
+ --rz-finish-line:#d7e8e7;
+ --rz-finish-soft-shadow:0 12px 30px rgba(5,48,61,.065),0 2px 7px rgba(5,48,61,.022);
+ --rz-finish-card-shadow:0 17px 36px rgba(5,48,61,.085),0 3px 10px rgba(5,48,61,.025);
+}
+/* Home: preserve existing hero composition, step geometry and emphasis. */
+body[data-page="home"] .bp-home .bp-heading p{line-height:1.71}
+body[data-page="home"] .bp-home :is(.bp-scenario,.bp-audience-chip,.bp-category-tile){box-shadow:var(--rz-finish-soft-shadow)}
+body[data-page="home"] .bp-home .bp-scenario{border-color:var(--rz-finish-line)}
+body[data-page="home"] .bp-home .bp-scenario h3{line-height:1.32;letter-spacing:-.023em}
+body[data-page="home"] .bp-home :is(.bp-audience-chip,.bp-proof span){line-height:1.47}
+body[data-page="home"] .bp-home .bp-category-tile:focus-visible{outline:3px solid rgba(24,184,176,.39);outline-offset:3px}
+/* Simulations catalogue; no product pricing or purchase interactions changed. */
+body[data-page="simulations"] :is(.sim-experience-card,.simulation-card,.sim-process-item){box-shadow:var(--rz-finish-card-shadow)}
+body[data-page="simulations"] .simulation-card{border-color:#d4e5e5}
+body[data-page="simulations"] :is(.simulation-card h3,.sim-experience-card h2){line-height:1.3;letter-spacing:-.024em}
+body[data-page="simulations"] :is(.simulation-card-description,.sim-experience-card > p){line-height:1.68}
+body[data-page="simulations"] .product-modal-card{box-shadow:0 27px 68px rgba(3,34,48,.21),inset 0 1px 0 rgba(255,255,255,.85)}
+body[data-page="simulations"] :is(.modal-close,.modal-license-option,.simulation-actions .button):focus-visible{outline:3px solid rgba(24,184,176,.46);outline-offset:3px}
+/* About: original paper motif and warm/accent card remain distinct. */
+body[data-page="about"] .rz-about .rz-about-foundation-card{box-shadow:var(--rz-finish-soft-shadow)}
+body[data-page="about"] .rz-about .rz-about-foundation-card p{line-height:1.72}
+body[data-page="about"] .rz-about :is(.rz-about-open-pdf,.rz-about-download-pdf):focus-visible{outline:3px solid #cba656;outline-offset:3px}
+/* Contact: local optical consistency, no moving buttons or card templates. */
+body[data-page="contact"] :is(.contact-card,.contact-option-card){box-shadow:var(--rz-finish-card-shadow)}
+body[data-page="contact"] .contact-option-card h3{line-height:1.32;letter-spacing:-.022em}
+body[data-page="contact"] :is(.contact-option-card p,.contact-card-header > p){line-height:1.68}
+body[data-page="contact"] :is(.contact-email-button,.contact-copy-button):focus-visible{outline:3px solid rgba(24,184,176,.46);outline-offset:3px}
+/* Faculty: same cards, materials, V13 studio and authoring modes; styling only. */
+body[data-rizsim-home-portal="faculty"] :is(.management-card,.workspace-card,.quick-access-card,.rz-licensed-card,.rz-v5-card,.rz-course-panel,.rz-author-card,.rz-author-list-panel,.rz-v13-share-card){box-shadow:var(--rz-finish-soft-shadow)}
+body[data-rizsim-home-portal="faculty"] :is(.portal-panel,.rz-modal-card){box-shadow:var(--rz-finish-card-shadow)}
+body[data-rizsim-home-portal="faculty"] :is(.auth-section-heading p,.rz-workspace-section-heading p){line-height:1.7}
+body[data-rizsim-home-portal="faculty"] .rz-modal-card{box-shadow:0 30px 74px rgba(3,30,44,.29)}
+/* Student: keep player navigation, history, learning and practice placement. */
+body[data-rizsim-home-portal="student"] :is(.learning-card,.info-card,.rz-st-history-card,.rz-st-practice-card,.rz-st-library-card,.rz-st-resource-card){box-shadow:var(--rz-finish-soft-shadow)}
+body[data-rizsim-home-portal="student"] :is(.student-heading p,.learning-section-heading p){line-height:1.7}
+body[data-rizsim-home-portal="student"] .rz-st-history-top{line-height:1.46}
+/* Equivalent keyboard focus, field feedback and tabular metric readability. */
+body[data-rizsim-home-portal] :is(.rz-v5-card-action,.rz-v13-share-action,.rz-st-button,.rz-run-button,.rz-action,.small-action,.management-action,.find-class-button,.join-button):focus-visible{outline:3px solid rgba(24,184,176,.42);outline-offset:3px}
+body[data-rizsim-home-portal] :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea):focus-visible{outline:3px solid rgba(24,184,176,.24);outline-offset:2px;border-color:#0e9692}
+body[data-rizsim-home-portal] :is(.status-badge,.rz-st-badge,.portal-metric-value,.rz-panel-caption){font-variant-numeric:tabular-nums}
+/* All existing responsive layout and animation behavior remains untouched. */
