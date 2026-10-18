@@ -11,6 +11,12 @@ begin
   if new.access_mode not in ('live','both') or not new.active then
     return new;
   end if;
+  -- The one-live-room restriction is limited to Course Leads. Standard
+  -- Faculty/institution workflows retain their existing concurrency rights.
+  if not exists (
+    select 1 from public.access_out_members m
+    where m.user_id=new.created_by and m.active=true and m.role='course_lead'
+  ) then return new; end if;
   -- Serializes concurrent creation requests from separate browser tabs.
   perform pg_advisory_xact_lock(hashtext(new.created_by::text), 202615);
   if exists (
