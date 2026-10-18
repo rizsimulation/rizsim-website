@@ -161,7 +161,32 @@ function feedbackView(i,kind){const c=DATA.pairs[i][kind],f=c.feedback,r=record.
 function resultsView(){let body;if(personalRGA){const m=personalRGA.metrics;body=`<div class="kpi-grid">${kpi('Knowledge Review',`${m.kr}<span class="small"> / 6</span>`,'Your locked starting score')}${kpi('Knowledge Gain',`${m.kg}<span class="small"> / 6</span>`,'Your repeated review score')}${kpi('Review change',signed(m.kg-m.kr,0),`${signed((m.kg-m.kr)/6*100,1)} percentage points`,true)}${kpi('Transfer',`${m.transfer}<span class="small"> / 2</span>`,`Source decisions: ${m.source}/2`)}</div><div class="grid2">${m.concepts.map(c=>`<section class="panel"><h3>${esc(c.name)}</h3>${bar('KR',c.kr,3,'gold',0)}${bar('KG',c.kg,3,'',0)}<p class="chart-note">Three review questions · Aggregate scores only</p></section>`).join('')}</div><div class="notice gold">This is immediate performance on a six-question repeated review, not a measure of long-term learning or professional ability. A change can reflect instruction, practice, or other influences. Transfer is reported separately and is based on only two cases.</div>`}else{body=`<div class="kpi-grid">${kpi('KR decisions','6 / 6','Locked baseline')}${kpi('LT decisions','4 / 4','Two complete case pairs')}${kpi('KG decisions','6 / 6','Fresh responses locked')}${kpi('Personal results','Pending','Waiting for RizSim verification',true)}</div><div class="panel"><div class="panel-title"><div><div class="eyebrow">Ready for Review Gain Analytics</div><h2>Share your responses.<br>Receive your personal summary.</h2></div><span class="completed-tick" aria-hidden="true">✓</span></div><p>RizSim computes your personal result securely after confirming your final submission. Scores appear when the server verifies your completed attempt.</p><div class="notice">Your completed responses have been stored in your authorized RizSim classroom attempt. Personal results are issued after the server verifies your submission.</div><div class="actions start"><button class="btn" onclick="exportProgress()">Download final response file</button></div></div>`}return`<section><div class="eyebrow">Review Gain Analytics</div><h2 id="viewTitle" tabindex="-1">${personalRGA?'Your learning review':'Your decisions are complete'}</h2><p class="muted">${esc(record.profile.name)} · ${esc(record.profile.organization)}</p>${body}<input class="sr-only" id="rgaInput" type="file" accept=".json,application/json" onchange="importRGA(event)"><div class="panel no-print"><h3>Keep your record</h3><div class="actions start"><button class="btn secondary" onclick="exportProgress()">Export responses again</button>${personalRGA?'<button class="btn secondary" onclick="window.print()">Print personal summary</button>':''}<a class="btn secondary" href="/access-in.html">Return to Student workspace</a></div><p class="chart-note">This classroom attempt is server-owned. Closing the page does not erase completed or saved responses.</p></div></section>`}
 function render(scroll=false){const p=phase(record);$('app').classList.toggle('join-shell',p==='join');$('app').innerHTML=(p==='join'?joinView():stepper(record)+(!persistOK?'<div class="notice red">Browser storage is unavailable. Keep this tab open and export committed checkpoints after each stage.</div>':'')+(p==='kr'||p==='kg'?reviewView(p):p==='rga'?resultsView():(()=>{const a=p.split('_'),i=Number(a[a.length-1]);return p.includes('feedback')?feedbackView(i,a[0]):caseView(i,a[0])})()))+commonFoot();if(p==='join')$('joinForm').addEventListener('submit',start);if(scroll){window.scrollTo({top:Math.max(0,$('app').offsetTop-10),behavior:'auto'});setTimeout(()=>$('viewTitle')?.focus({preventScroll:true}),0)}}
 function start(e){e.preventDefault();const name=$('pname').value.trim(),organization=$('porg').value.trim();if(!name||!organization){toast('Participant Name and Organization are required.');return}record=newRecord({name,organization,group:'Not specified',session:OFFLINE_SESSION});persist();render(true)}
-function selectReview(v){const p=phase(record);if(!['kr','kg'].includes(p)||record[p].at)return;record[p].a[recordOrder(record)[p][navIndex[p]]]=v;persist();const scrollY=window.scrollY;render();window.scrollTo(0,scrollY);document.querySelector(`input[name=decision][value="${v}"]`)?.focus({preventScroll:true})}
+function selectReview(v){
+ const p=phase(record);if(!['kr','kg'].includes(p)||record[p].at)return;
+ const order=recordOrder(record)[p],index=navIndex[p],answerIndex=order[index];
+ record[p].a[answerIndex]=v;persist();
+ // V15.4: changing a draft answer must not rebuild the entire dashboard.
+ // Update only the selected choice, progress, question navigation and lock
+ // control. Full rendering is still used for genuine stage transitions.
+ const field=document.querySelector('#app .options');
+ if(!field){render();return;}
+ field.querySelectorAll('.option').forEach(label=>{
+   const input=label.querySelector('input[name=decision]');
+   const selected=!!input&&Number(input.value)===v;
+   label.classList.toggle('selected',selected);
+   if(input)input.checked=selected;
+ });
+ const count=record[p].a.filter(isAnswer).length;
+ const nav=document.querySelector('#app .q-nav button.current');
+ if(nav){nav.classList.add('answered');nav.setAttribute('aria-label','Question '+(index+1)+', answered');}
+ const progress=document.querySelector('#app .progress-fill');
+ if(progress)progress.style.width=(count/6*100)+'%';
+ const button=document.querySelector('#app .workspace > section.panel > .actions button.btn:not(.secondary)');
+ if(button)button.disabled=index===5?count!==6:!isAnswer(record[p].a[answerIndex]);
+ const caption=document.querySelector('#app .workspace > section.panel > .actions span.small.muted');
+ if(caption)caption.textContent=count+'/6 selected · Changes allowed until you lock this stage.';
+ field.querySelector('input[name=decision]:checked')?.focus({preventScroll:true});
+}
 function moveQuestion(stage,i){if(phase(record)!==stage||i<0||i>5)return;navIndex[stage]=i;persist();render(true)}
 
 /* Secure hosted mode: score only after server-confirmed completion via authorized RPC.
@@ -207,7 +232,19 @@ function confirmCommittedDecision(message,onAccept){
 }
 
 function lockReview(stage,confirmed=false){if(phase(record)!==stage||record[stage].a.some(a=>!isAnswer(a)))return;if(!confirmed){confirmCommittedDecision(`Lock all six ${stage.toUpperCase()} responses? You will not be able to revise them.`,()=>lockReview(stage,true));return;}record[stage].at=now();if(stage==='kg'){record.completedAt=record[stage].at;personalRGA=null}persist();render(true);toast(`${stage.toUpperCase()} responses locked.`)}
-function selectLT(v){const p=phase(record);if(!/^(source|transfer)_[01]$/.test(p))return;const [kind,si]=p.split('_');record.lt[Number(si)][kind].a=v;persist();const y=window.scrollY;render();window.scrollTo(0,y);document.querySelector(`input[name=decision][value="${v}"]`)?.focus({preventScroll:true})}
+function selectLT(v){
+ const p=phase(record);if(!/^(source|transfer)_[01]$/.test(p))return;
+ const [kind,si]=p.split('_');record.lt[Number(si)][kind].a=v;persist();
+ const field=document.querySelector('#app .options');
+ if(!field){render();return;}
+ field.querySelectorAll('.option').forEach(label=>{
+   const input=label.querySelector('input[name=decision]'),selected=!!input&&Number(input.value)===v;
+   label.classList.toggle('selected',selected);if(input)input.checked=selected;
+ });
+ const commit=document.querySelector('#app .workspace > section.panel > .actions button.btn.dark');
+ if(commit)commit.disabled=false;
+ field.querySelector('input[name=decision]:checked')?.focus({preventScroll:true});
+}
 function lockLT(i,kind,confirmed=false){if(phase(record)!==`${kind}_${i}`||!isAnswer(record.lt[i][kind].a))return;if(!confirmed){confirmCommittedDecision('Commit this decision and open the explanation? Your original response will stay locked.',()=>lockLT(i,kind,true));return;}record.lt[i][kind].at=now();persist();render(true)}
 function markFeedback(i,kind){if(phase(record)!==`${kind}_feedback_${i}`)return;record.lt[i][kind].seen=now();persist();render(true)}
 function exportProgress(){if(!record)return;dump(`RizResponse_${safeName(record.profile.name)}_${record.id.slice(-8)}.json`,exportRecord(record));toast('Response file exported. Share it with your presenter; no automatic upload occurs.')}
