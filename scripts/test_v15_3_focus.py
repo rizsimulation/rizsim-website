@@ -18,8 +18,8 @@ def verify_contact(page,selector):
     assert panel.locator('.rz-v153-support-report').count()==1
     assert 'RizSimulation Team' in panel.inner_text()
     assert 'rizsimulation@gmail.com' in panel.inner_text()
-    assert panel.get_by_role('link',name='Compose in Gmail').count()==1
-    href=panel.get_by_role('link',name='Compose in Gmail').get_attribute('href')
+    assert panel.locator('a.rz-support-email-action').count()==1
+    href=panel.locator('a.rz-support-email-action').get_attribute('href')
     assert 'mail.google.com/mail/?view=cm' in href and 'to=rizsimulation%40gmail.com' in href
     assert panel.get_by_role('button',name='Copy Email').count()==1
     assert panel.get_by_role('button',name='Send Report').count()==1
