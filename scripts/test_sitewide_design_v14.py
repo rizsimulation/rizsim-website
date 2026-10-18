@@ -37,7 +37,19 @@ def contract():
   before=subprocess.check_output(["git","show","origin/main:"+path],cwd=ROOT,text=True)
   link=f'<link rel="stylesheet" href="{cssfile}">\n'
   assert current.count(link)==1,(path,"stylesheet link count")
-  assert current.replace(link,"")==before,(path,"must not change any text, route, handler or markup")
+  # V14's original PR compared to pre-V14 main. Once V14 is deployed,
+  # origin/main already includes the stylesheet; compare the deployed HTML
+  # directly and allow only the explicitly authorized Contact identity update.
+  if link not in before:
+   assert current.replace(link,"")==before,(path,"V14 styles may not change application markup")
+  elif path=="contact.html" and "Wajid Rizvi" in before:
+   original_avatar='<div class="contact-avatar">\\n              W\\n            </div>'
+   updated_avatar='<div class="contact-avatar">\\n              R\\n            </div>'
+   assert before.count("Wajid Rizvi")==1 and before.count(original_avatar)==1,"Expected original contact identity once"
+   expected=before.replace("Wajid Rizvi","RizSimulation Team",1).replace(original_avatar,updated_avatar,1)
+   assert current==expected,"Only the contact display name and avatar initial may change"
+  else:
+   assert current==before,(path,"existing V14 HTML and functionality must stay identical")
   assert "<script" in before or path in ("about.html",),path
  for css in set(STYLE.values()):
   body=(ROOT/css).read_text()
@@ -46,7 +58,7 @@ def contract():
   assert not re.search(r"(?m)^\s*(html|body|button|a|input|\*)\s*\{",body),f"{css}: no global reset permitted"
  assert "data-rizsim-home-portal" in (ROOT/"rizsim-sitewide-finish-v14.css").read_text()
  assert "prefers-reduced-motion" in (ROOT/"rizsim-participant-finish-v14.css").read_text()
- print("PASS: all 11 pages retain byte-identical content, scripts, routes and controls",flush=True)
+ print("PASS: all 11 pages retain sitewide V14 markup; only approved Contact identity may differ",flush=True)
 
 class Handler(http.server.SimpleHTTPRequestHandler):
  def __init__(self,*a,**kw):super().__init__(*a,directory=str(ROOT),**kw)
