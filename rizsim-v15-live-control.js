@@ -135,7 +135,7 @@
   manager.classList.toggle('is-minimized',!expanded);
   pill.hidden=expanded;manager.querySelector('.rz-v15-manager-pane').hidden=!expanded;
   manager.querySelector('#rzV15SessionLabel').textContent=room.class_name||room.simulation_title||'Live Class';
-  if(room.share_token){codeNode.textContent=room.class_code||'—';linkNode.textContent='Student invitation';linkNode.dataset.url=invitation(room);if(expanded)qr(room);}
+  if(room.share_token){codeNode.textContent=room.class_code||'—';linkNode.textContent=invitation(room);linkNode.dataset.url=invitation(room);if(expanded)qr(room);}
   else{codeNode.textContent='Loading…';linkNode.dataset.url='';qrNode?.replaceChildren();}
   setPausedUI();readState(id);
  }
