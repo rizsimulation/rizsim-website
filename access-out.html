@@ -32915,6 +32915,10 @@ window.RizSimFacultyBridge={
    const item=classroomSessions.find(s=>String(s.session_id)===String(id));
    if(!item)return false;
    selectedClassroomSessionId=item.session_id;
+   if(currentMembership?.role==='course_lead' && selectedCourseId){
+     await loadSelectedCourseClassroomSessions(selectedCourseId);
+     renderCourses();
+   }
    ensureClassroomRosterSessionSelection();
    await loadClassroomStudents(item.session_id,true);
    renderClassroom();
