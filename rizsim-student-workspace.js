@@ -180,6 +180,10 @@
   n.showModal();launch.focus({preventScroll:true});
   launch.addEventListener('click',async()=>{
    if(actionBusy||!n.open)return;
+   // Open synchronously on the learner's click to avoid browser popup blockers.
+   try{const tab=window.open('about:blank','_blank');
+    if(tab){tab.document.title='Opening RizSim Practice…';tab.document.body.textContent='Verifying your Practice access…';window.__rzV154RunnerTab=tab;}
+   }catch(_){}
    actionBusy=true;launch.disabled=true;cancel.disabled=true;close.disabled=true;renderPractice();
    feedback.hidden=true;
    launch.querySelector('span:last-child').textContent='Verifying access…';
