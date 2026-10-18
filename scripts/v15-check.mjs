@@ -5,7 +5,7 @@ const js=[
  'rizsim-v15-live-control.js','rizsim-v15-runner-state.js','rizsim-v15-welcome.js',
  'rizsim-v15-portal.js','rizsim-v15-launch-countdowns.js','rizsim-v15-dashboards.js',
  'rizsim-live-classroom.js','rizsim-live-workspace.js','rizsim-student-workspace.js',
- 'rizsim-course-environment.js'
+ 'rizsim-course-environment.js','rizsim-insight-faculty.js'
 ];
 let checks=0;
 for(const path of js){
@@ -62,5 +62,31 @@ const dashboard=fs.readFileSync('rizsim-v15-dashboards.js','utf8');
 if(!dashboard.includes('presenterProgress')||!dashboard.includes('data')||!dashboard.includes('rz-v15-compact-table')){
  console.error('Verified responsive dashboard layer missing');process.exitCode=1;
 }else checks++;
+
+// V15.2 release invariants: consent, real matched Sim01 metrics and exact pause text.
+const accessOut=fs.readFileSync('access-out.html','utf8');
+if(!accessOut.includes("if(intent!=='signup')")||
+ !accessOut.includes("Create Faculty Access?")||
+ !accessOut.includes('id="rzV152FacultyOptIn"')){
+ console.error('Faculty explicit-registration gate is missing');process.exitCode=1;
+}else checks++;
+const pause=fs.readFileSync('rizsim-v15-runner-state.js','utf8');
+if(!pause.includes("Your progress is safely saved. Please wait — you'll continue right where you left off.")){
+ console.error('Student pause overlay does not use approved copy');process.exitCode=1;
+}else checks++;
+const insight=fs.readFileSync('rizsim-insight-faculty.js','utf8');
+for(const key of ['One room. A visible learning shift.','Matched learners','a.pairedN','a.clusters[code]','learningShift(host,a)']){
+ if(!insight.includes(key)){console.error('Sim01 premium analytics missing source-based component:',key);process.exitCode=1;}else checks++;
+}
+for(const path of ['access-in.html','access-out.html']){
+ const html=fs.readFileSync(path,'utf8');
+ if(!html.includes('rizsim-v15-welcome.js')||!html.includes('rizsim:v15:welcome-name')){
+  console.error('First-login welcome missing on ',path);process.exitCode=1;
+ }else checks++;
+}
+const clocks=fs.readFileSync('rizsim-v15-launch-countdowns.js','utf8');
+for(const date of ['Friday, 23 October 2026','Sunday 25 October 2026']){
+ if(!clocks.includes(date)){console.error('Countdown release date not clearly visible',date);process.exitCode=1;}else checks++;
+}
 console.log('V15 static checks:',checks,process.exitCode?'FAILED':'PASSED');
 if(process.exitCode)process.exit(1);
