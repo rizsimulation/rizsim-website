@@ -47,6 +47,7 @@ def verify_contact(page,selector):
 
 def student_library(browser,base):
     ctx,page,errors=student_v8.open_page(browser,base,'#resources',True)
+    student_v8.nav(page,'resources')
     try:
         page.wait_for_selector('#rzStudentSimulationLibrary .rz-v153-library-category',timeout=16000)
         assert page.locator('#rzStudentSimulationLibrary .rz-v153-library-category').count()==4
