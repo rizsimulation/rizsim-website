@@ -22,6 +22,7 @@ async def main():
          <div id="rzLiveResultsAnchor"></div>
        </section>""")
     await page.add_style_tag(path=str(ROOT/"rizsim-insight-faculty.css"))
+    await page.add_style_tag(path=str(ROOT/"rizsim-v15-premium.css"))
     for asset in ASSETS: await page.add_script_tag(path=str(ROOT/asset))
     await page.evaluate("""() => {
       const D=window.InsightData,C=window.InsightCore;
@@ -73,6 +74,11 @@ async def main():
     }""")
     await page.wait_for_function("window.RizSimInsightFaculty.state().joined===3")
     assert await page.locator("#rzInsightFacultyAnalytics").is_visible()
+    assert await page.locator("#rzInsightFacultyAnalytics .rz-i01-learning-shift").count()==1
+    assert await page.get_by_text("One room. A visible learning shift.").count()==1
+    assert await page.locator(".rz-i01-shift-metric").count()==4
+    assert await page.locator(".rz-i01-shift-path").count()==4
+    assert await page.locator(".rz-i01-shift-metric").first.locator("strong").inner_text()=="1", "Only one matched Student may contribute learning gain"
     assert await page.get_by_text("Six-concept item comparison").count()==1
     assert await page.locator(".rz-i01-card-wide .rz-i01-table tbody tr").count()==3
     assert await page.locator(".rz-i01-progress-cell").count()==3

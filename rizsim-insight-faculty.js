@@ -308,6 +308,42 @@
     if(!target?.record)return;
     parent.append(individualStudentResult(target));
   }
+  // Premium Sim01 summary uses ONLY the same verified classroom analytics
+  // shown below. A paired mean is never calculated from unmatched students.
+  function learningShift(parent,a){
+    const feature=node('section','rz-i01-learning-shift');
+    feature.setAttribute('aria-label','Verified learning shift overview');
+    feature.append(named('span','rz-i01-eyebrow','ONE ROOM · VERIFIED LEARNING'),
+      named('h3','', 'One room. A visible learning shift.'),
+      named('p','', 'A compact picture of entry knowledge, exit knowledge and transfer decisions. All values are descriptive and scoped to this class.'));
+    const kpis=node('div','rz-i01-shift-kpis');
+    const gain=a.pairedN?(a.changePP>0?'+':'')+fixed(a.changePP)+' pp':'—';
+    for(const [value,label,note] of [
+      [String(a.pairedN),'Matched learners','Same students in both reviews'],
+      [a.pairedN?fixed(a.krAvg)+' / 6':'—','Entry review','Knowledge Review · matched'],
+      [a.pairedN?fixed(a.kgAvg)+' / 6':'—','Exit review','Knowledge Gain · matched'],
+      [gain,'Mean learning change','Percentage points · paired']
+    ]){
+      const card=node('article','rz-i01-shift-metric');
+      card.append(named('span','',label),named('strong','',value),named('small','',note));kpis.append(card);
+    }
+    feature.append(kpis);
+    const pathTitle=node('div','rz-i01-shift-path-title');
+    pathTitle.append(named('h4','','Four learning-transfer paths'),
+      named('p','','Source decision → transfer decision · verified, locked pairs (n = '+a.ltCompleted+').'));
+    feature.append(pathTitle);
+    const paths=node('div','rz-i01-shift-paths');
+    for(const code of ['CC','IC','CI','II']){
+      const card=node('article','rz-i01-shift-path rz-i01-shift-'+code.toLowerCase());
+      card.append(named('strong','',a.ltCompleted?String(a.clusters[code]):'—'),
+        named('span','',code+' · '+clusterLabel(code)),
+        named('small','','Locked source-to-transfer decisions'));
+      paths.append(card);
+    }
+    feature.append(paths,named('p','rz-i01-shift-caveat',
+      'No score or transfer path is inferred for an incomplete response. This within-class pattern is not evidence of causal learning effects.'));
+    parent.append(feature);
+  }
   function render(){
     if(!host||host.hidden||!sessionId)return;
     host.replaceChildren();if(studentHost)studentHost.replaceChildren();
@@ -329,6 +365,7 @@
     mini(summary,'Transfer locked',String(a.ltCompleted),'Committed source/transfer');
     mini(summary,'KG locked',String(a.kgCompleted),'Matched completed review');
     host.append(summary);
+    learningShift(host,a);
     const wrap=node('div','rz-i01-sections');
     const gains=node('article','rz-i01-card');
     heading(gains,'Knowledge Review → Knowledge Gain','Both means use matched students who locked both stages (n = '+a.pairedN+').');

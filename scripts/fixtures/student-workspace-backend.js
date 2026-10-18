@@ -28,7 +28,7 @@ async function rpc(name,args={}){state.calls.push({kind:'rpc',name,args});
  }
  if(name==='join_rizsim_classroom_session'){
   const s=sessions.find(s=>s.class_code===args.p_class_code||args.p_share_token==='share-open'&&s.session_id==='session-open');if(!s||s.access_status!=='open')return err('Class is not currently open');
-  let a=attempts.find(a=>a.classroom_session_id===s.session_id&&a.user_id===state.user?.id);if(!a&&state.allowNewJoin&&state.user){a={id:'attempt-new',user_id:state.user.id,product_id:s.product_id,classroom_session_id:s.session_id,classroom_access_type:args.p_requested_access_type,status:'in_progress',progress_percent:0,started_at:stamp(0),last_activity_at:stamp(0),created_at:stamp(0),joined_at:stamp(0),submitted_at:null};attempts.push(a);}if(!a)return err('Fixture join requires existing attempt');
+  let a=attempts.find(a=>a.classroom_session_id===s.session_id&&a.user_id===state.user?.id);if(!a&&state.allowNewJoin&&state.user){a={id:s.session_id==='session-new'?'attempt-new':'attempt-'+s.session_id,user_id:state.user.id,product_id:s.product_id,classroom_session_id:s.session_id,classroom_access_type:args.p_requested_access_type,status:'in_progress',progress_percent:0,started_at:stamp(0),last_activity_at:stamp(0),created_at:stamp(0),joined_at:stamp(0),submitted_at:null};attempts.push(a);}if(!a)return err('Fixture join requires existing attempt');
   return ok([{attempt_id:a.id,session_id:s.session_id,product_id:a.product_id,classroom_access_type:a.classroom_access_type,attempt_status:a.status,submitted_at:a.submitted_at,is_existing_attempt:true}]);
  }
  if(name==='check_my_rizsim_classroom_attempt_access'){

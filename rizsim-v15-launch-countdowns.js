@@ -17,7 +17,7 @@
    const desc=node('p','',ended(COURSE)
     ?'Course Lead is planned as a paid Faculty upgrade. Pricing and access details will be published by the RizSimulation Team when the public release is enabled.'
     :'Our premium Course Lead experience is scheduled for public release with paid access. Explore course building, classroom control and learning analytics.');
-   const timing=node('p','',before()?'Countdown begins Monday, 19 October, at 6:00 AM PKT.':'Public launch target: Friday, 23 October 2026, 6:00 AM PKT.');
+   const timing=node('p','',before()?'Countdown begins Monday, 19 October, at 6:00 AM PKT. Public launch target: Friday, 23 October 2026, 6:00 AM PKT.':'Public launch target: Friday, 23 October 2026, 6:00 AM PKT.');
    const grid=digits(COURSE),note=node('p','', 'A countdown is an announcement, not an automatic upgrade or a free-access offer.');
    const actions=node('div');actions.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:9px';
    const link=node('a','','Contact RizSimulation Team');link.href='https://mail.google.com/mail/?view=cm&fs=1&to=rizsimulation%40gmail.com&su=Course%20Lead%20paid%20access';link.target='_blank';link.rel='noopener noreferrer';
@@ -58,7 +58,7 @@
        time.textContent=parts(LIBRARY).join(' : ');
        copy.querySelector('strong').textContent='RizSim Library · Coming Soon';
        copy.querySelector('p').textContent=before()?
-         '6-day countdown begins Monday 19 October at 6:00 AM PKT.':
+         '6-day countdown begins Monday 19 October at 6:00 AM PKT. Scheduled publication: Sunday 25 October 2026 at 6:00 AM PKT.':
          'Resources, courses and eBooks are scheduled for Sunday 25 October at 6:00 AM PKT.';
      }
    }
