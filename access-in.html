@@ -6718,8 +6718,9 @@ const popup=window.__rzV154RunnerTab;
 window.__rzV154RunnerTab=null;
 if(popup&&!popup.closed){popup.location.replace(destination.href);popup.focus();}
 else{
- const newTab=window.open(destination.href,'_blank','noopener');
- if(!newTab)setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Launch Simulation again.',true);
+ const newTab=window.open(destination.href,'_blank');
+ if(newTab)newTab.opener=null;
+ else setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Launch Simulation again.',true);
 }
 
 }
