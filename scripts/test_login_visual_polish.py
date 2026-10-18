@@ -32,7 +32,7 @@ def source_contracts():
         actual = (ROOT / name).read_text()
         assert actual.count(NEW_CSS) == 1, f"{name}: stylesheet reference count"
         assert actual.count(NEW_ICON) == 1, f"{name}: multicolor Google icon count"
-        v14_link = '<link rel="stylesheet" href="rizsim-sitewide-finish-v14.css">\\n'.replace('\\\\n','\\n')
+        v14_link = '<link rel="stylesheet" href="rizsim-sitewide-finish-v14.css">' + chr(10)
         assert actual.count(v14_link) == 1, f"{name}: expected one V14 CSS link"
         assert actual.replace(v14_link, "") == baseline, f"{name}: content, Javascript or page structure changed"
         assert baseline.count('id="googleLogin"') == 1
