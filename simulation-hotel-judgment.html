@@ -31,10 +31,12 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
 <link rel="stylesheet" href="/rizsim-v15-runner-state.css">
 <script src="/rizsim-v15-welcome.js" defer></script>
 <script src="/rizsim-v15-runner-state.js" defer></script>
+<link rel="stylesheet" href="/rizsim-v154-runner-ux.css">
+<script src="/rizsim-v154-runner-ux.js" defer></script>
 </head>
 <body>
 <section id="rizHotelAuthGate" aria-live="polite" style="background:#fff;border-radius:18px;margin:24px auto;padding:28px;max-width:760px;font:16px/1.5 system-ui;color:#234e49"><h2>RizSim · Checking classroom access</h2><p>Verifying your account, assigned classroom attempt and original hotel stimulus files.</p></section><main class="app">
-<section class="hero"><div class="riz-logo-row"><img alt="RizSimulation R logo" class="riz-logo" src="https://rizsim.com/rizsim-r.png" onerror="this.style.display='none'"/><div class="riz-logo-label">RizSimulation · Learning through experience</div></div>
+<section class="hero"><div class="riz-logo-row"><img alt="RizSimulation R logo" class="riz-logo" src="/RizSim%20finalized%20logo.png" onerror="this.style.display='none'"/><div class="riz-logo-label">RizSimulation · Learning through experience</div></div>
 <div class="eyebrow">RizSimulation Learning Transfer Framework</div>
 <h1>Hotel Judgment Lab</h1>
 <p><strong>My Hotel Choice · Participant Dashboard</strong><br/>Work independently. Select the group assigned to you in the workshop, study the hotel pictures, and record your judgment. Do not discuss your response until your presenter closes the activity.</p>
@@ -283,12 +285,23 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
     if(state.submitted)revealCompletion(false);
     else if(state.group)revealExperiment(state.group,false);
     save();refreshStatus();
-    if(live.enabled)setInterval(async()=>{
-      try{await live.refresh();refreshStatus()}catch{
-        $('#connectionStatus').textContent='Local classroom connection lost. Keep this page open and reconnect.';
-        submit.disabled=true;
+    if(live.enabled){
+      // V15.4: a hidden runner tab must not repeatedly download/verify the
+      // four original photos or overlap network requests while the Student
+      // consults Faculty-shared resources in the website tab.
+      let checking=false;
+      async function refreshVisible(){
+        if(checking||document.hidden||state.submitted)return;
+        checking=true;
+        try{await live.refresh();refreshStatus()}catch{
+          $('#connectionStatus').textContent='Classroom connection interrupted. Keep the tab open to reconnect.';
+          submit.disabled=true;
+        }finally{checking=false;}
       }
-    },3000);
+      setInterval(refreshVisible,6500);
+      document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshVisible();});
+      window.addEventListener('pageshow',refreshVisible);
+    }
   }
   initialize();
 })();

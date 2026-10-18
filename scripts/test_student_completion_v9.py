@@ -78,9 +78,19 @@ def run(browser,base):
   p.goto(base+'/access-in.html#practice',wait_until='networkidle');p.wait_for_selector('#studentApp.show')
   check('Practice code field stays available',p.locator('.rz-v15-practice-join input').count()==1)
   p.locator('[data-practice-attempt="attempt-4"] button').click()
-  check('No obsolete launch confirmation',p.locator('.rz-st-launch-dialog').count()==0)
+  dialog=p.locator('.rz-st-launch-dialog[open]')
+  dialog.wait_for(state='visible')
+  check('Practice identity is collected inside the Student website',dialog.locator('.rz-v154-practice-identity input').count()==2)
+  dialog.locator('.rz-v154-practice-identity input').nth(0).fill('QA Student')
+  dialog.locator('.rz-v154-practice-identity input').nth(1).fill('QA School')
+  website=p
+  with website.expect_popup() as runner_popup:
+   dialog.get_by_role('button',name='Launch simulation').click()
+  p=runner_popup.value
   p.wait_for_url('**/simulation-test.html?*',timeout=15000)
-  check('One action launches runner directly without Player redirect','attempt=attempt-4' in p.url and 'access=practice' in p.url)
+  check('Verified runner opens separately while Practice resources stay in website',
+    'attempt=attempt-4' in p.url and 'access=practice' in p.url
+    and website.url.endswith('#practice') and website.locator('#view-practice.active').count()==1)
   p.wait_for_selector('#simulation.show')
   check('Questionnaire visible before submission',p.locator('.question:visible').count()==3 and p.locator('#submitButton').is_disabled())
   for name,value in [('q1','review_priorities'),('q2','provisional'),('q3','process')]:

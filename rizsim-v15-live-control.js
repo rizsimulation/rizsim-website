@@ -64,7 +64,7 @@
     await bridge().runtime.refresh();
     await bridge().selectSession?.(result.session_id);
     if(mode!=='simulation')window.RizSimCourseEnvironment?.invalidate(mode,args.selection);
-    closeModal();openedFor=String(result.session_id);expanded=true;
+    closeModal();openedFor=String(result.session_id);expanded=access==='live';
     window.RizSimLiveClassroom?.navigate?.(mode,'running',args.selection,result.session_id,false,mode==='own'?productId:'');
     if(access==='practice'){window.RizSimLiveWorkspace?.select?.('studio');window.RizSimLiveWorkspace?.selectStudio?.('share');}
     draw(true);
@@ -112,9 +112,9 @@
    status=node('p','rz-v15-manager-status');status.setAttribute('role','status');pane.append(status);
    manager.append(pill,pane);document.body.append(manager);
    let start=null;
-   pill.addEventListener('pointerdown',e=>{if(e.button!==0)return;pill.setPointerCapture?.(e.pointerId);start={x:e.clientX,y:e.clientY,left:pill.getBoundingClientRect().left,top:pill.getBoundingClientRect().top};});
-   pill.addEventListener('pointerup',e=>{if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>7)dragged=true;start=null;});
-   pill.addEventListener('pointermove',e=>{if(!start||!(e.buttons&1))return;
+   pill.addEventListener('pointerdown',e=>{if(manager.classList.contains('rz-v154-practice-docked')||e.button!==0)return;pill.setPointerCapture?.(e.pointerId);start={x:e.clientX,y:e.clientY,left:pill.getBoundingClientRect().left,top:pill.getBoundingClientRect().top};});
+   pill.addEventListener('pointerup',e=>{if(manager.classList.contains('rz-v154-practice-docked')){start=null;return;}if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>7)dragged=true;start=null;});
+   pill.addEventListener('pointermove',e=>{if(manager.classList.contains('rz-v154-practice-docked')||!start||!(e.buttons&1))return;
       const dx=e.clientX-start.x,dy=e.clientY-start.y;
       if(Math.hypot(dx,dy)<7)return;dragged=true;
       manager.style.right='auto';manager.style.bottom='auto';
@@ -139,6 +139,27 @@
     if(row){paused=!!row.presenter_paused;setPausedUI();}}
   catch(_){/* Keep the last confirmed state and retry. */}
  }
+ function dockPracticeControl(isPractice){
+   if(!manager)return;
+   if(isPractice){
+     // Session Studio has the original Share Access panel. Keep its controls
+     // immediately below that panel, never floating over other sections.
+     const share=$('rzV13StudioShare'),overview=$('rzV13StudioOverview');
+     const target=share&&!share.hidden?share:overview;
+     if(target){
+       const anchor=target===share?$('rzV13ShareDetails'):$('rzV13StudioShareStrip');
+       if(anchor&&anchor.parentElement===target){
+         if(manager.previousElementSibling!==anchor)anchor.after(manager);
+       }else if(manager.parentElement!==target)target.append(manager);
+       manager.classList.add('rz-v154-practice-docked');
+       manager.style.left='';manager.style.top='';manager.style.right='';manager.style.bottom='';
+       dragged=false;
+     }
+   }else{
+     manager.classList.remove('rz-v154-practice-docked');
+     if(manager.parentElement!==document.body)document.body.append(manager);
+   }
+ }
  function open(){initManager();expanded=true;draw(true);}
  function draw(force=false){
   const s=bridge()?.getSnapshot(),visible=s&&['faculty','course_lead'].includes(s.role)&&$('authenticatedApp')?.classList.contains('show');
@@ -147,10 +168,11 @@
   if(identity!==lastIdentity){current='';lastIdentity=identity;paused=false;if(openedFor!==String(room?.session_id||'')){openedFor='';expanded=false;}}
   if(!room){manager.hidden=true;current='';return;}
   const id=String(room.session_id),isNew=id!==current;
-  if(isNew){current=id;paused=false;lastRefresh=0;expanded=openedFor===id;qrFor='';tell('');}
+  if(isNew){current=id;paused=false;lastRefresh=0;expanded=room.access_mode==='practice'?false:openedFor===id;qrFor='';tell('');}
   manager.hidden=false;
   const practice=room.access_mode==='practice'||(room.access_mode==='both'&&!isLive(room));
   manager.classList.toggle('is-practice',practice);
+  dockPracticeControl(practice);
   manager.setAttribute('aria-label',practice?'Practice assignment controls':'Live Class controls');
   manager.querySelector('.rz-v15-manager-head .rz-v15-kicker').textContent=practice?'PRACTICE ASSIGNMENT':'LIVE CLASSROOM';
   manager.querySelector('.rz-v15-manager-head strong').textContent=practice?'Manage Practice':'Manage Live Session';

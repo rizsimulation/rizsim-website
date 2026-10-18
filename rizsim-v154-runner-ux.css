@@ -1,0 +1,32 @@
+/* V15.4 student-runner performance and identity, scoped to the activity pages.
+   No changes to the public RizSim site navigation or approved branding. */
+body.rz-v154-runner{scroll-behavior:auto}
+.rz-v154-runner-bar{position:sticky;top:0;z-index:3000;display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;min-height:60px;padding:7px clamp(12px,3vw,32px);background:#f9fffd;border-bottom:1px solid #cbe2dc;box-shadow:0 2px 12px rgba(7,67,68,.09);color:#1b5260;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+.rz-v154-runner-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.rz-v154-runner-brand img{display:block;width:auto;max-width:110px;height:43px;max-height:43px;object-fit:contain;flex:none}
+.rz-v154-runner-brand-text{font-size:12px;font-weight:790;letter-spacing:-.005em;white-space:normal}
+.rz-v154-runner-hint{font-size:11px;line-height:1.35;color:#617b80;flex:1 1 210px;text-align:right}
+.rz-v154-runner-return{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:6px 12px;border:1px solid #aed8ce;background:#eaf6f1;border-radius:9px;font-size:11px;font-weight:790;text-decoration:none;color:#125f65;white-space:nowrap}
+.rz-v154-runner-return:hover{background:#d7efe7}
+/* Shadow and filter effects were unnecessarily repainting large areas when
+   the participant interface re-rendered after draft selections. */
+body.rz-v154-runner .panel,
+body.rz-v154-runner .stage,
+body.rz-v154-runner .card,
+body.rz-v154-runner .hero,
+body.rz-v154-runner .student-rail>.panel{box-shadow:0 4px 15px rgba(13,62,67,.055)}
+body.rz-v154-runner .modal-backdrop,
+body.rz-v154-runner .rz-s02-confirm-overlay{backdrop-filter:none!important}
+body.rz-v154-runner .rz-v15-student-paused{backdrop-filter:none!important}
+@media(max-width:690px){
+ .rz-v154-runner-bar{gap:3px 12px;padding:8px 12px}
+ .rz-v154-runner-brand img{max-width:88px;height:36px}
+ .rz-v154-runner-brand-text{font-size:11px}
+ .rz-v154-runner-hint{order:3;flex:1 1 100%;text-align:left;font-size:10px}
+ .rz-v154-runner-return{margin-left:auto;padding:5px 7px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.rz-v154-runner *,
+ body.rz-v154-runner *::before,
+ body.rz-v154-runner *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
