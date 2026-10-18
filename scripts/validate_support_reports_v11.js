@@ -9,7 +9,7 @@ for(const [name,html] of [['Student',student],['Faculty/Owner',portal]]){
  assert.match(html,/id="view-contact"/,name+' contact view');
 }
 assert.match(support,/rizsimulation@gmail\.com/);
-assert.match(support,/href='mailto:'/);
+assert.match(support,/mail\\.google\\.com\\/mail\\/\\?view=cm/);\nassert.match(support,/Copy Email/);
 assert.match(support,/\.from\('rizsim_support_reports'\)\.insert\(\{category:select\.value,message\}\)/);
 assert.match(support,/window\.RizSimSupport=\{/);
 assert.match(support,/showOwnerOnly\(role\)/);
