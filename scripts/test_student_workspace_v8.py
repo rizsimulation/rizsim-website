@@ -13,6 +13,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
  def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(ROOT),**kwargs)
  def log_message(self,*args):pass
 
+def accept_site_join(p,mode='practice'):
+ # QR/class code now stays inside RizSim and confirms name/institution before
+ # a separate runner tab opens. The isolated synthetic backend never writes real data.
+ p.locator('[data-join-access='+mode+']').click()
+ dialog=p.locator('.rz-v154-join-dialog[open]')
+ dialog.wait_for(state='visible',timeout=9000)
+ assert dialog.locator('input').count()==2
+ dialog.locator('input').nth(0).fill('QA Learner')
+ dialog.locator('input').nth(1).fill('QA University')
+ dialog.locator('button[type=submit]').click()
+ p.wait_for_selector('#joinedAttemptResult .launch-ready',timeout=12000)
+ if dialog.count() and dialog.is_visible():
+  dialog.locator('button[type=submit]:not([disabled])').wait_for(timeout=7000)
+  dialog.locator('button[type=button]').click()
+
 def open_page(browser,base,path='#home',mobile=False):
  ctx=browser.new_context(viewport={'width':390 if mobile else 1366,'height':844 if mobile else 960},has_touch=mobile,is_mobile=mobile,reduced_motion='reduce')
  ctx.add_init_script('window.__scrollCalls=[];const os=window.scrollTo;window.scrollTo=function(...x){__scrollCalls.push(x);return os.apply(this,x)}')
@@ -43,7 +58,7 @@ def run(browser,base):
   check('Join a class opens existing Player',p.locator('#classCodeInput').is_visible())
   p.locator('#classCodeInput').fill('test1234');p.locator('#findClassButton').click();p.wait_for_selector('[data-join-access=practice]')
   check('Original code normalization retained',p.locator('#classCodeInput').input_value()=='TEST1234')
-  p.locator('[data-join-access=practice]').click();p.wait_for_selector('[data-launch-attempt]')
+  accept_site_join(p);p.wait_for_selector('[data-launch-attempt]')
   check('Original join and launch handlers retained',p.evaluate('__studentFixture.calls.some(c=>c.name==="join_rizsim_classroom_session")'))
   p.wait_for_selector('#rzStudentPlayerMaterials .rz-st-resource-card')
   check('Authorized class resources are available in Player','Class handout' in p.locator('#rzStudentPlayerMaterials').inner_text())
@@ -112,7 +127,7 @@ def run(browser,base):
  ctx,p,errors=open_page(browser,base,'?code=TEST1234#player')
  try:
   p.wait_for_selector('[data-join-access=practice]');check('Faculty invitation link still resolves the intended class','Decision Lab' in p.locator('#resolvedSessionCard').inner_text())
-  p.evaluate('__studentFixture.attempts[0].status="submitted";__studentFixture.attempts[0].submitted_at=new Date().toISOString()');p.locator('[data-join-access=practice]').click();p.wait_for_selector('#joinedAttemptResult .launch-ready');check('Submitted attempt has no launch control',p.locator('[data-launch-attempt]').count()==0 and 'Submission complete' in p.locator('#joinedAttemptResult').inner_text())
+  p.evaluate('__studentFixture.attempts[0].status="submitted";__studentFixture.attempts[0].submitted_at=new Date().toISOString()');accept_site_join(p);p.wait_for_selector('#joinedAttemptResult .launch-ready');check('Submitted attempt has no launch control',p.locator('[data-launch-attempt]').count()==0 and 'Submission complete' in p.locator('#joinedAttemptResult').inner_text())
   check('Invitation flow error-free',not errors)
  finally:
   if sys.exc_info()[0]:p.screenshot(path=str(OUT/'v8-failure.png'),full_page=True)
@@ -121,14 +136,14 @@ def run(browser,base):
 
  ctx,p,errors=open_page(browser,base,'?code=TEST1234#player')
  try:
-  p.wait_for_selector('[data-join-access=practice]');p.locator('[data-join-access=practice]').click();p.wait_for_selector('[data-launch-attempt]')
+  p.wait_for_selector('[data-join-access=practice]');accept_site_join(p);p.wait_for_selector('[data-launch-attempt]')
   p.evaluate('__studentFixture.delayAccess=400')
   original=p.url;p.locator('[data-launch-attempt]').click();p.evaluate('__studentFixture.signOut()');p.wait_for_timeout(550)
   check('Delayed launch response cannot navigate after sign-out',p.url==original and p.locator('#studentApp.show').count()==0 and not errors)
  finally:ctx.close()
  ctx,p,errors=open_page(browser,base,'?code=TEST1234#player')
  try:
-  p.wait_for_selector('[data-join-access=practice]');p.locator('[data-join-access=practice]').click();p.wait_for_selector('#rzStudentPlayerMaterials .rz-st-resource-card button')
+  p.wait_for_selector('[data-join-access=practice]');accept_site_join(p);p.wait_for_selector('#rzStudentPlayerMaterials .rz-st-resource-card button')
   p.evaluate('__studentFixture.delayMaterial=400')
   with p.expect_popup() as popup:
    p.locator('#rzStudentPlayerMaterials .rz-st-resource-card button').click()
@@ -141,7 +156,7 @@ def run(browser,base):
  try:
   p.evaluate("__studentFixture.allowNewJoin=true;__studentFixture.sessions.push({...__studentFixture.sessions[0],session_id:'session-new',class_code:'NEWP1234',class_name:'Freshly joined class'});__studentFixture.materials.push({...__studentFixture.materials[0],material_id:'material-new',course_id:'session-new',title:'New class handout'})")
   nav(p,'player');p.locator('#classCodeInput').fill('NEWP1234');p.locator('#findClassButton').click();p.wait_for_selector('[data-join-access=practice]')
-  p.locator('[data-join-access=practice]').click();p.wait_for_selector('[data-launch-attempt]')
+  accept_site_join(p);p.wait_for_selector('[data-launch-attempt]')
   p.locator('#rzStudentPlayerMaterials .rz-st-resource-card').filter(has_text='New class handout').wait_for(timeout=5000)
   check('First-time join immediately reveals its authorized class resources')
   nav(p,'practice');p.wait_for_selector('[data-practice-attempt="attempt-new"]',timeout=5000)
