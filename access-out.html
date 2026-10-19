@@ -3642,6 +3642,7 @@ border-color:#315b92;
 <link rel="stylesheet" href="rizsim-v15-premium.css">
 <link rel="stylesheet" href="rizsim-v153-focus.css">
 <link rel="stylesheet" href="/rizsim-v154-session-ui.css">
+<link rel="stylesheet" href="/rizsim-owner-web-analytics.css">
 </head>
 
 <body data-rizsim-home-portal="faculty">
@@ -9789,6 +9790,7 @@ aria-hidden="true"
 <script src="rizsim-session-confirmation.js"></script>
 <script src="rizsim-course-authoring-service.js"></script>
 <script src="rizsim-course-service.js"></script>
+<script src="rizsim-owner-web-analytics.js" defer></script>
 <script type="module">
 
 import {
@@ -11486,6 +11488,8 @@ document
 role !==
 "owner"
 );
+
+window.RizSimOwnerWebAnalytics?.setOwner?.(role==="owner",currentUser?.id||null);
 
 let title =
 roleLabel(
