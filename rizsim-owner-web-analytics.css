@@ -1,0 +1,31 @@
+/* Owner account / Website Analytics. Scoped to the existing premium Account page. */
+#rzOwnerWebAnalytics{margin-top:24px;border:1px solid #cfe5df;border-radius:22px;background:linear-gradient(125deg,#f2fbf9,#fff 55%,#f7fbfc);box-shadow:0 14px 36px rgba(9,65,74,.07);padding:clamp(18px,2.8vw,29px);color:#164452}
+#rzOwnerWebAnalytics[hidden]{display:none!important}
+#rzOwnerWebAnalytics .rz-wa-head{display:flex;align-items:start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+#rzOwnerWebAnalytics .rz-wa-kicker{color:#14837b;text-transform:uppercase;letter-spacing:.13em;font-weight:850;font-size:11px}
+#rzOwnerWebAnalytics h2{font-size:clamp(21px,2.7vw,29px);margin:7px 0;color:#153f50}
+#rzOwnerWebAnalytics .rz-wa-intro{font-size:13px;line-height:1.65;color:#55737d;max-width:600px;margin:0}
+#rzOwnerWebAnalytics .rz-wa-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+#rzOwnerWebAnalytics .rz-wa-button,#rzOwnerWebAnalytics select{min-height:39px;padding:9px 13px;border:1px solid #b7d6ce;border-radius:11px;background:#fff;color:#17535b;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+#rzOwnerWebAnalytics .rz-wa-button:focus-visible,#rzOwnerWebAnalytics select:focus-visible{outline:3px solid #8ed9ce;outline-offset:2px}
+#rzOwnerWebAnalytics .rz-wa-button:disabled{opacity:.6;cursor:wait}
+#rzOwnerWebAnalytics .rz-wa-status{font-size:12px;line-height:1.6;margin:14px 0;color:#506b74}
+#rzOwnerWebAnalytics .rz-wa-status[data-state=error]{color:#99523f}
+#rzOwnerWebAnalytics .rz-wa-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:16px}
+#rzOwnerWebAnalytics .rz-wa-metric{background:#fff;border:1px solid #d6e9e3;border-radius:14px;padding:14px;min-width:0}
+#rzOwnerWebAnalytics .rz-wa-metric small{display:block;font-size:11px;color:#648088;font-weight:700;line-height:1.5}
+#rzOwnerWebAnalytics .rz-wa-metric strong{display:block;font-size:clamp(24px,3.2vw,34px);margin-top:6px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+#rzOwnerWebAnalytics .rz-wa-details{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px;margin-top:15px}
+#rzOwnerWebAnalytics .rz-wa-card{background:#fff;border:1px solid #d6e9e3;border-radius:15px;padding:17px;min-width:0}
+#rzOwnerWebAnalytics .rz-wa-card h3{font-size:14px;color:#204f58;margin:0 0 12px}
+#rzOwnerWebAnalytics svg{display:block;width:100%;height:152px;overflow:visible}
+#rzOwnerWebAnalytics .rz-wa-trendline{fill:none;stroke:#159d94;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}
+#rzOwnerWebAnalytics .rz-wa-gridline{stroke:#dcece9;stroke-dasharray:3 5}
+#rzOwnerWebAnalytics .rz-wa-labels{display:flex;justify-content:space-between;color:#739099;font-size:10px;margin-top:8px}
+#rzOwnerWebAnalytics .rz-wa-pages{list-style:none;padding:0;margin:0;display:grid;gap:12px;font-size:12px}
+#rzOwnerWebAnalytics .rz-wa-pages li{display:flex;gap:12px;justify-content:space-between;align-items:center}
+#rzOwnerWebAnalytics .rz-wa-pages strong{font-variant-numeric:tabular-nums}
+#rzOwnerWebAnalytics .rz-wa-foot{color:#708792;font-size:11px;margin:14px 0 0;line-height:1.6}
+@media(max-width:850px){#rzOwnerWebAnalytics .rz-wa-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#rzOwnerWebAnalytics .rz-wa-details{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:480px){#rzOwnerWebAnalytics{padding:16px}#rzOwnerWebAnalytics .rz-wa-metric{padding:11px}#rzOwnerWebAnalytics .rz-wa-actions{width:100%}#rzOwnerWebAnalytics select{flex:1}}
+@media(prefers-reduced-motion:reduce){#rzOwnerWebAnalytics *{animation:none!important;transition:none!important}}
