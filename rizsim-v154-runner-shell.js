@@ -13,6 +13,25 @@
   for(const img of document.querySelectorAll('img:not(.rz-v154-runner-brand img)')){
     if(!img.hasAttribute('loading'))img.loading='lazy';img.decoding='async';
   }
+  // Website identity is convenience metadata, not an authorization credential.
+  const qp=new URLSearchParams(location.search);
+  let handoff=null;
+  try{handoff=JSON.parse(sessionStorage.getItem('rizsim:v154:participant')||'null');}catch(_){}
+  if(handoff&&handoff.at>Date.now()-600000&&String(handoff.attempt)===qp.get('attempt')&&String(handoff.session)===qp.get('session')){
+   const fill=()=>{
+    const name=document.querySelector('#participant-name,#pname');
+    const org=document.querySelector('#participant-org,#porg');
+    if(!name||!org)return false;
+    name.value=String(handoff.name||'').slice(0,120);
+    org.value=String(handoff.institution||'').slice(0,120);
+    return true;
+   };
+   if(!fill()){
+    const observer=new MutationObserver(()=>{if(fill())observer.disconnect();});
+    observer.observe(document.getElementById('app')||document.body,{childList:true,subtree:true});
+    setTimeout(()=>observer.disconnect(),12000);
+   }
+  }
  };
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

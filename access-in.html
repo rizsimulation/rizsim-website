@@ -5721,11 +5721,11 @@ document.body.classList.remove(
 // V15.4: reserve a browser tab in the actual user gesture, before asynchronous
 // secure access RPC; otherwise browsers block window.open after await.
 document.addEventListener('click',event=>{
- const pressed=event.target.closest?.('[data-join-access="live"],[data-launch-attempt]');
+ const pressed=event.target.closest?.('[data-join-access="live"],[data-join-access="practice"],[data-launch-attempt]');
  if(!pressed||!pressed.closest('#view-player')||window.__rzV154RunnerTab&&!window.__rzV154RunnerTab.closed)return;
  // Invalid name/institution must show validation in the current RizSim tab;
  // do not spawn a blank tab before the first-party Join check can reject it.
- if(pressed.matches('[data-join-access="live"]')){
+ if(pressed.matches('[data-join-access="live"],[data-join-access="practice"]')){
   const who=document.getElementById('rzV154JoinName');
   const school=document.getElementById('rzV154JoinInstitution');
   if((who&&!who.value.trim())||(school&&!school.value.trim()))return;
@@ -5906,8 +5906,9 @@ if(sourceType==='token' && session.live_open===true){
   navigateStudent('player',false);
 }
 else if(sourceType==='token' && session.practice_open===true){
-  await joinSession('practice',false);
-  navigateStudent('practice',false);
+  // A Practice invitation requires the same first-party website Join click.
+  // Never silently join or launch a runner on QR/link arrival.
+  navigateStudent('player',false);
 }
 
 }
@@ -6372,14 +6373,17 @@ renderJoinedAttempt();
 
 async function joinSession(
 requestedAccessType,
-autoLaunch = false
+autoLaunch = false,
+identityOverride = null
 ){
 if(studentJoinBusy)return;
 const who=document.getElementById('rzV154JoinName'),school=document.getElementById('rzV154JoinInstitution');
-if(who&&school){
- const name=who.value.trim(),institution=school.value.trim();
- if(!name||!institution){const n=document.getElementById('rzV154JoinHelp');if(n)n.textContent='Enter both your name and institution before joining.';(!name?who:school).focus();return;}
- try{sessionStorage.setItem('rizsim:v154:join-identity',JSON.stringify({name,institution,session:resolvedSession?.session_id}));}catch(_){}
+const provided=identityOverride && typeof identityOverride==='object';
+if(provided || (who&&school)){
+ const name=String(provided?identityOverride.name:who.value).trim();
+ const institution=String(provided?identityOverride.institution:school.value).trim();
+ if(!name||!institution){const n=document.getElementById('rzV154JoinHelp');if(n)n.textContent='Enter both your name and institution before joining.';if(!provided)(!name?who:school).focus();return;}
+ try{sessionStorage.setItem('rizsim:v154:join-identity',JSON.stringify({name:name.slice(0,120),institution:institution.slice(0,180),session:resolvedSession?.session_id}));}catch(_){}
 }
 studentJoinBusy=true;
 const requestUser=currentUser?.id;
@@ -6605,6 +6609,22 @@ connected to a launch URL in RizSim.
    LAUNCH
    ============================================================ */
 
+// First-party identity handoff is display metadata, never an access grant.
+// Every hosted runner rechecks the signed-in Student and saved attempt.
+function handoffIdentityToTab(tab,attemptId,sessionId){
+ if(!tab||tab.closed||!currentUser?.id)return;
+ try{
+  const data=JSON.parse(sessionStorage.getItem('rizsim:v154:join-identity')||'null');
+  if(!data||String(data.session)!==String(sessionId))return;
+  const name=String(data.name||'').trim(),institution=String(data.institution||'').trim();
+  if(!name||!institution)return;
+  tab.sessionStorage.setItem('rizsim:v154:participant',JSON.stringify({
+   name:name.slice(0,120),institution:institution.slice(0,180),
+   user:String(currentUser.id),attempt:String(attemptId),session:String(sessionId),at:Date.now()
+  }));
+ }catch(_){/* Keep the existing runner entry form as the safe fallback. */}
+}
+
 async function launchJoinedSimulation(){
 if(joinedAttempt?.attempt_status === "submitted" || joinedAttempt?.submitted_at){setPlayerMessage("This response has already been submitted.",true);return;}
 
@@ -6723,10 +6743,10 @@ joinedAttempt.classroom_access_type
 // A user-initiated Join/Launch click reserves the tab synchronously below.
 const popup=window.__rzV154RunnerTab;
 window.__rzV154RunnerTab=null;
-if(popup&&!popup.closed){popup.location.replace(destination.href);popup.focus();}
+if(popup&&!popup.closed){handoffIdentityToTab(popup,joinedAttempt.attempt_id,joinedAttempt.session_id);popup.location.replace(destination.href);popup.opener=null;popup.focus();}
 else{
- const newTab=window.open(destination.href,'_blank');
- if(newTab)newTab.opener=null;
+ const newTab=window.open('about:blank','_blank');
+ if(newTab){handoffIdentityToTab(newTab,joinedAttempt.attempt_id,joinedAttempt.session_id);newTab.location.replace(destination.href);newTab.opener=null;}
  else setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Launch Simulation again.',true);
 }
 
@@ -7708,7 +7728,7 @@ if(joinButton){
 
 joinSession(
 joinButton.dataset.joinAccess,
-joinButton.dataset.joinAccess === 'live'
+['live','practice'].includes(joinButton.dataset.joinAccess)
 );
 
 return;
@@ -7829,15 +7849,17 @@ window.RizSimStudentBridge = Object.freeze({
   joinedAttempt={attempt_id:own.id,session_id:own.classroom_session_id,product_id:own.product_id,classroom_access_type:own.classroom_access_type,attempt_status:own.status,submitted_at:own.submitted_at,is_existing_attempt:true};
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
- async joinPracticeCode(code){
+ async joinPracticeCode(code,participant){
   const actor=currentUser?.id;if(!actor)throw new Error('Sign in before joining a Practice class.');
   const clean=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
   if(!clean)throw new Error('Enter your Faculty class code.');
+  if(!participant||!String(participant.name||'').trim()||!String(participant.institution||'').trim())
+   throw new Error('Confirm your name and institution on RizSim before adding Practice.');
   await resolveSession('code',clean);
   if(currentUser?.id!==actor||!resolvedSession||resolvedSourceType!=='code'||resolvedSession.class_code!==clean)
     throw new Error('This Practice class could not be verified. Check the code and try again.');
   if(!resolvedSession.practice_open)throw new Error('Practice is not currently available for this class.');
-  await joinSession('practice',false);
+  await joinSession('practice',false,participant);
   if(!joinedAttempt?.attempt_id||joinedAttempt.classroom_access_type!=='practice')
     throw new Error('RizSim could not confirm this Practice assignment.');
   window.dispatchEvent(new Event('rizsim:student-data'));
@@ -7864,8 +7886,8 @@ window.RizSimStudentBridge = Object.freeze({
   destination.searchParams.set('session',own.classroom_session_id);
   destination.searchParams.set('access','practice');
   const popup=window.__rzV154RunnerTab;window.__rzV154RunnerTab=null;
-  if(popup&&!popup.closed){popup.location.replace(destination.href);popup.focus();}
-  else{const tab=window.open(destination.href,'_blank');if(tab)tab.opener=null;
+  if(popup&&!popup.closed){handoffIdentityToTab(popup,own.id,own.classroom_session_id);popup.location.replace(destination.href);popup.opener=null;popup.focus();}
+  else{const tab=window.open('about:blank','_blank');if(tab){handoffIdentityToTab(tab,own.id,own.classroom_session_id);tab.location.replace(destination.href);tab.opener=null;}
    else throw new Error('Please allow RizSim pop-ups to open your Practice simulation in a separate tab.');}
  },
  async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
