@@ -32,6 +32,8 @@ html[data-rizsim-hosted].rizsim-authorized #rizHotelAuthGate{display:none!import
 <script src="/rizsim-v15-welcome.js" defer></script>
 <script src="/rizsim-v15-runner-state.js" defer></script>
 <link rel="stylesheet" href="/rizsim-v154-session-ui.css">
+<style>/* Hosted ERP is captured on RizSim Classroom only, never requested again inside the runner. */
+html[data-rizsim-hosted] label[for="participant"],html[data-rizsim-hosted] #participant{display:none!important}</style>
 </head>
 <body>
 <section id="rizHotelAuthGate" aria-live="polite" style="background:#fff;border-radius:18px;margin:24px auto;padding:28px;max-width:760px;font:16px/1.5 system-ui;color:#234e49"><h2>RizSim · Checking classroom access</h2><p>Verifying your account, assigned classroom attempt and original hotel stimulus files.</p></section><main class="app">
