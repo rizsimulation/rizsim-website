@@ -7,11 +7,18 @@ const sessions=[session('session-open'),session('session-upcoming',{product_id:'
 const attempts=sessions.map((s,i)=>({id:'attempt-'+i,user_id:user.id,product_id:s.product_id,classroom_session_id:s.session_id,classroom_access_type:i===4?'live':'practice',status:i===2?'submitted':'in_progress',progress_percent:i===2?100:i===0?35:0,started_at:stamp(-3600000*(i+1)),last_activity_at:stamp(-60000*(i+1)),created_at:stamp(-3600000*(i+1)),joined_at:stamp(-3600000*(i+1)),submitted_at:i===2?stamp(-120000):null}));
 attempts.push({id:'foreign-attempt',user_id:'stranger',product_id:'sim-1',status:'submitted',progress_percent:100});
 const material={material_id:'material-1',course_id:'session-open',course_title:'Practice seminar',title:'Class handout',description:'Published class reading',source_type:'file',file_name:'handout.pdf',mime_type:'application/pdf',material_type:'student_handout'};
-const state=window.__studentFixture={user,products,sessions,attempts,materials:[material],calls:[],failWorkspace:false,failMaterials:false,failResolve:false,failPractice:false,delay:0,authCallbacks:[],serverOffset:0,signOut(){this.user=null;this.authCallbacks.forEach(f=>f('SIGNED_OUT',null));}};
+const state=window.__studentFixture={user,products,sessions,attempts,materials:[material],calls:[],failWorkspace:false,failMaterials:false,failResolve:false,failPractice:false,delay:0,authCallbacks:[],serverOffset:0,erp:null,signOut(){this.user=null;this.authCallbacks.forEach(f=>f('SIGNED_OUT',null));}};
 const ok=data=>({data:structuredClone(data),error:null});const err=message=>({data:null,error:{message}});
 function query(table){const filters=[];const q={select(){return q},eq(k,v){filters.push([k,v]);return q},order(){return q},in(){return q},limit(){return q},upsert(){return Promise.resolve(ok(null))},async maybeSingle(){return result(true)},then(a,b){return Promise.resolve(result(false)).then(a,b)}};
 function result(single){state.calls.push({kind:'query',table,filters:structuredClone(filters)});let rows=table==='profiles'?[{id:state.user?.id,email:'learner@example.test',display_name:'Sample Learner',account_status:'active',created_at:stamp(-86400000)}]:table==='products'?products:table==='categories'?[{id:'cat-1',name:'Learning',active:true}]:table==='simulation_attempts'?attempts:[];rows=rows.filter(r=>filters.every(([k,v])=>r[k]===v));return ok(single?rows[0]||null:rows)}return q;}
 async function rpc(name,args={}){state.calls.push({kind:'rpc',name,args});
+ if(name==='get_my_rizsim_erp_preferences')return state.user&&state.erp?ok([state.erp]):ok([]);
+ if(name==='set_my_rizsim_erp_preferences'){
+  if(!state.user)return err('Sign in before saving your ERP.');
+  if(!/^[A-Za-z0-9][A-Za-z0-9._/-]{1,39}$/.test(args.p_erp_number||''))return err('Invalid ERP number');
+  state.erp={erp_number:args.p_erp_number,remember:args.p_remember===true};return ok(true);
+ }
+
  if(name==='get_my_rizsim_resource_catalogue')return ok([{product_id:'book-1',title:'Reading Companion',product_type:'ebook'}]);
  if(name==='get_my_rizsim_student_courses')return ok([]);
  if(name==='get_my_rizsim_student_course_materials')return state.failMaterials?err('Resource read failed'):ok(state.materials);
