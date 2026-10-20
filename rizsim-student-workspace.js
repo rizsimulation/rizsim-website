@@ -30,7 +30,7 @@
  let refreshQueued=false;
  let ready=false, identity='', epoch=0, inFlight=null, data=null, error='', lastFetched=0, baseServer=0, baseMonotonic=0;
  let historyFilter='all', historySearch='', lastPhase='', actionBusy=false, dialogSerial=0, practiceCode='', practiceJoinBusy=false, practiceMessage='';
-  let practiceJoinIdentity={name:'',institution:''};
+  // Google/RizSim profile is the student identity.
  const now=()=>baseServer ? baseServer+(performance.now()-baseMonotonic):Date.now();
  function heading(target,kicker,title,copy,glyph){const h=el('header','rz-st-heading');const text=el('div');text.append(el('span','rz-st-eyebrow',kicker),el('h1','',title),el('p','',copy));h.append(icon(glyph),text);target.append(h);return h;}
  function empty(target,title,copy,glyph='spark',tone='calm',action){const n=el('div','rz-st-empty '+tone);n.append(icon(glyph),el('h2','',title),el('p','',copy));if(action)n.append(btn(action[0],action[1],'rz-st-button secondary'));target.append(n);return n;}
@@ -91,21 +91,14 @@
   const h=heading(target,'PRACTICE','A little practice. A lasting difference.','Practice from classes you have joined. Availability is checked again before you continue.','clock');h.append(toolbarRefresh());
   // Persistent entry form: adding one class never removes the ability to add another.
   const joinForm=el('form','rz-v15-practice-join'),label=el('label','','ADD A PRACTICE CLASS'),input=el('input');
-  const snapProfile=bridge()?.snapshot()?.profile||{};
-  const identityName=el('input'),identityInstitution=el('input');
-  identityName.type='text';identityName.maxLength=120;identityName.required=true;identityName.autocomplete='name';identityName.placeholder='Your name';identityName.setAttribute('aria-label','Your name');
-  identityInstitution.type='text';identityInstitution.maxLength=180;identityInstitution.required=true;identityInstitution.autocomplete='organization';identityInstitution.placeholder='Your institution';identityInstitution.setAttribute('aria-label','Your institution');
-  identityName.value=practiceJoinIdentity.name||snapProfile.display_name||'';identityInstitution.value=practiceJoinIdentity.institution||'';
-  identityName.addEventListener('input',()=>{practiceJoinIdentity.name=identityName.value;});
-  identityInstitution.addEventListener('input',()=>{practiceJoinIdentity.institution=identityInstitution.value;});
   input.type='text';input.maxLength=8;input.autocomplete='off';input.placeholder='Enter Faculty code';input.setAttribute('aria-label','Faculty Practice class code');input.value=practiceCode;
   input.addEventListener('input',()=>{practiceCode=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);input.value=practiceCode;});
   const join=btn(practiceJoinBusy?'Joining…':'Add Practice',null,'rz-st-button secondary','join');join.type='submit';join.disabled=practiceJoinBusy;
   const note=el('p','rz-v15-practice-message',practiceMessage);note.setAttribute('role','status');
-  joinForm.append(label,input,identityName,identityInstitution,join,note);
+  joinForm.append(label,input,join,note);
   joinForm.addEventListener('submit',async e=>{
     e.preventDefault();if(practiceJoinBusy)return;practiceJoinBusy=true;practiceMessage='Verifying your class…';renderPractice();
-    try{const result=await bridge().joinPracticeCode(practiceCode,{name:identityName.value.trim(),institution:identityInstitution.value.trim()});
+    try{const result=await bridge().joinPracticeCode(practiceCode);
       if(!result?.attempt_id)throw Error('This Practice assignment was not verified.');
       practiceCode='';practiceMessage='Practice added. Enter another code whenever you like.';await refresh(true);
     }catch(err){practiceMessage=err?.message||'This code could not be joined. Please retry.';}
@@ -228,11 +221,8 @@
    await refresh(true);if(error)throw new Error('Practice could not be verified. Please retry.');
    const a=data?.attempts.find(x=>x.id===id);
    if(!a||phase(a)!=='open'||complete(a))throw new Error('This Practice is no longer available.');
-   // The Practice card must first open its existing on-website confirmation.
-   // Only a real click on "Launch simulation" may synchronously reserve the
-   // new browser tab; otherwise async RPC checks trigger popup blocking and
-   // remove the Student from the website/resources view.
-   showPracticeLaunchDialog(a);
+   // Resume in the same Classroom; ERP is checked only on Start Simulation.
+   await bridge().openAttempt(a);
   }catch(e){dialog('Practice is not available',e.message);}
   finally{actionBusy=false;renderPractice();}
  }
@@ -341,7 +331,7 @@
   finally{if(myEpoch===epoch){inFlight=null;render();if(refreshQueued){refreshQueued=false;queueMicrotask(()=>refresh(true));}}}})();
   render();return inFlight;
  }
- function clear(){epoch++;refreshQueued=false;identity='';data=null;inFlight=null;error='';lastFetched=0;baseServer=0;baseMonotonic=0;historySearch='';historyFilter='all';lastPhase='';actionBusy=false;practiceCode='';practiceMessage='';practiceJoinBusy=false;practiceJoinIdentity={name:'',institution:''};
+ function clear(){epoch++;refreshQueued=false;identity='';data=null;inFlight=null;error='';lastFetched=0;baseServer=0;baseMonotonic=0;historySearch='';historyFilter='all';lastPhase='';actionBusy=false;practiceCode='';practiceMessage='';practiceJoinBusy=false;
   document.querySelectorAll('.rz-st-dialog[open]').forEach(n=>n.close());
   for(const id of ['rzStudentPractice','rzStudentHistory','rzStudentSimulationLibrary','rzStudentLibraryMaterials','rzStudentPlayerMaterials'])$(id)?.replaceChildren();
  }
