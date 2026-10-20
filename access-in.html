@@ -1957,6 +1957,7 @@ animation:none!important;
 <link rel="stylesheet" href="rizsim-v15-premium.css">
 <link rel="stylesheet" href="rizsim-v153-focus.css">
 <link rel="stylesheet" href="/rizsim-v154-session-ui.css">
+<link rel="stylesheet" href="/rizsim-student-classroom-v155.css">
 </head>
 
 
@@ -5718,35 +5719,15 @@ document.body.classList.remove(
 }
 
 
-// V15.4: reserve a browser tab in the actual user gesture, before asynchronous
-// secure access RPC; otherwise browsers block window.open after await.
-document.addEventListener('click',event=>{
- const pressed=event.target.closest?.('[data-join-access="live"],[data-join-access="practice"],[data-launch-attempt]');
- if(!pressed||!pressed.closest('#view-player')||window.__rzV154RunnerTab&&!window.__rzV154RunnerTab.closed)return;
- // Invalid name/institution must show validation in the current RizSim tab;
- // do not spawn a blank tab before the first-party Join check can reject it.
- if(pressed.matches('[data-join-access="live"],[data-join-access="practice"]')){
-  const who=document.getElementById('rzV154JoinName');
-  const school=document.getElementById('rzV154JoinInstitution');
-  if((who&&!who.value.trim())||(school&&!school.value.trim()))return;
- }
- try{
-  const tab=window.open('about:blank','_blank');
-  if(tab){tab.document.title='Preparing RizSim simulation…';
-   tab.document.body.textContent='RizSim is checking your classroom access. This tab will open your simulation shortly.';
-   window.__rzV154RunnerTab=tab;
-   window.setTimeout(()=>{if(window.__rzV154RunnerTab===tab){tab.close();window.__rzV154RunnerTab=null;}},30000);
-  }
- }catch(_){}
-},true);
-
+// Change 3: the Classroom ERP confirmation owns the new-tab gesture.
 /* ============================================================
    PLAYER RESOLVE
    ============================================================ */
 
 async function resolveSession(
 sourceType,
-value
+value,
+preferredAccess='live'
 ){
 const generation=++studentResolveGeneration;
 const requestUser=currentUser?.id;
@@ -5899,17 +5880,13 @@ setPlayerMessage(
 );
 
 renderResolvedSession();
-// Faculty QR/share-token invitations open the authorized live simulation directly.
-// Practice invitations remain in the dedicated Practice workspace.
-if(sourceType==='token' && session.live_open===true){
-  // No auto-join: show the Faculty session details and first-party Join button.
-  navigateStudent('player',false);
-}
-else if(sourceType==='token' && session.practice_open===true){
-  // A Practice invitation requires the same first-party website Join click.
-  // Never silently join or launch a runner on QR/link arrival.
-  navigateStudent('player',false);
-}
+// Code, QR and invitation link converge on the same website Classroom subtab.
+// Joining here does NOT launch the simulation. ERP is requested only on Start.
+navigateStudent('player',false);
+window.dispatchEvent(new Event('rizsim:classroom-resolved'));
+const preferred=preferredAccess==='practice'&&session.practice_open?'practice':session.live_open?'live':session.practice_open?'practice':null;
+if(preferred && session.access_status==='open')await joinSession(preferred,false);
+window.dispatchEvent(new Event('rizsim:classroom-resolved'));
 
 }
 
@@ -6330,16 +6307,7 @@ session.access_status ===
 }
 
 
-<section class="rz-v154-join-profile" aria-label="Classroom entry details">
- <span class="rz-v154-kicker">BEFORE YOU JOIN</span>
- <h3>Confirm your classroom identity</h3>
- <p>Your name and institution stay on the RizSim website. Your simulation will open in a separate tab while class resources remain here.</p>
- <div class="rz-v154-join-fields">
-  <label>Name<input id="rzV154JoinName" type="text" maxlength="100" autocomplete="name" value="${escapeHTML(currentProfile?.display_name||'')}" required></label>
-  <label>Institution<input id="rzV154JoinInstitution" type="text" maxlength="120" autocomplete="organization" value="${escapeHTML(session.institution_name && session.institution_name !== 'Independent Faculty' ? session.institution_name : '')}" required placeholder="Enter your institution"></label>
- </div>
- <div class="rz-v154-join-help" id="rzV154JoinHelp" role="status"></div>
-</section>
+<section class="rz-v154-join-profile" aria-label="Verified student identity"><span class="rz-v154-kicker">YOUR CLASSROOM</span><p>Signed in as ${escapeHTML(currentProfile?.display_name||'RizSim Learner')}. Select Start Simulation from the Classroom panel whenever you are ready.</p></section>
 <div class="session-actions">${actions}</div>
 <section class="rz-v154-session-resources" id="rzV154SessionResources" aria-label="Faculty shared class resources">
  <h3>Resources shared by your presenter</h3><p>After joining, keep this RizSim tab open to review your class resources while the simulation runs separately.</p>
@@ -6373,18 +6341,9 @@ renderJoinedAttempt();
 
 async function joinSession(
 requestedAccessType,
-autoLaunch = false,
-identityOverride = null
+autoLaunch = false
 ){
 if(studentJoinBusy)return;
-const who=document.getElementById('rzV154JoinName'),school=document.getElementById('rzV154JoinInstitution');
-const provided=identityOverride && typeof identityOverride==='object';
-if(provided || (who&&school)){
- const name=String(provided?identityOverride.name:who.value).trim();
- const institution=String(provided?identityOverride.institution:school.value).trim();
- if(!name||!institution){const n=document.getElementById('rzV154JoinHelp');if(n)n.textContent='Enter both your name and institution before joining.';if(!provided)(!name?who:school).focus();return;}
- try{sessionStorage.setItem('rizsim:v154:join-identity',JSON.stringify({name:name.slice(0,120),institution:institution.slice(0,180),session:resolvedSession?.session_id}));}catch(_){}
-}
 studentJoinBusy=true;
 const requestUser=currentUser?.id;
 const joiningSession=resolvedSession?.session_id;
@@ -6480,7 +6439,7 @@ return;
 }
 
 await reloadAttempts();
-
+await loadStudentCourseWorkspace();
 renderAll();
 
 setPlayerMessage(
@@ -6494,6 +6453,7 @@ joinedAttempt.is_existing_attempt
 renderJoinedAttempt();
 window.RizSimStudentWorkspace?.refresh?.();
 window.dispatchEvent(new Event('rizsim:student-data'));
+window.dispatchEvent(new Event('rizsim:classroom-resolved'));
 if(autoLaunch && joinedAttempt && !joinedAttempt.submitted_at && joinedAttempt.attempt_status !== 'submitted'){
   await launchJoinedSimulation();
 }
@@ -6614,18 +6574,22 @@ connected to a launch URL in RizSim.
 function handoffIdentityToTab(tab,attemptId,sessionId){
  if(!tab||tab.closed||!currentUser?.id)return;
  try{
-  const data=JSON.parse(sessionStorage.getItem('rizsim:v154:join-identity')||'null');
-  if(!data||String(data.session)!==String(sessionId))return;
-  const name=String(data.name||'').trim(),institution=String(data.institution||'').trim();
-  if(!name||!institution)return;
+  const name=String(currentProfile?.display_name||currentUser.user_metadata?.full_name||'RizSim Learner').trim();
+  const institution=String(resolvedSession?.institution_name||'RizSim classroom').trim();
+  const erp=window.__rzV155ERPConfirmed;
+  if(!erp||erp.user!==currentUser.id||String(erp.session)!==String(sessionId))return;
+  // Short-lived authenticated first-party handoff. No ERP in URLs.
   tab.sessionStorage.setItem('rizsim:v154:participant',JSON.stringify({
-   name:name.slice(0,120),institution:institution.slice(0,180),
+   name:name.slice(0,120),institution:institution.slice(0,120),erp:String(erp.erp).slice(0,40),
    user:String(currentUser.id),attempt:String(attemptId),session:String(sessionId),at:Date.now()
   }));
- }catch(_){/* Keep the existing runner entry form as the safe fallback. */}
+ }catch(_){/* An unavailable tab store cannot bypass the runner's own access check. */}
 }
 
 async function launchJoinedSimulation(){
+if(!window.__rzV155ERPConfirmed||window.__rzV155ERPConfirmed.user!==currentUser?.id||String(window.__rzV155ERPConfirmed.session)!==String(joinedAttempt?.session_id)){
+ setPlayerMessage('Confirm your ERP number in Classroom before starting.',true);return false;
+}
 if(joinedAttempt?.attempt_status === "submitted" || joinedAttempt?.submitted_at){setPlayerMessage("This response has already been submitted.",true);return;}
 
 if(
@@ -6743,12 +6707,13 @@ joinedAttempt.classroom_access_type
 // A user-initiated Join/Launch click reserves the tab synchronously below.
 const popup=window.__rzV154RunnerTab;
 window.__rzV154RunnerTab=null;
-if(popup&&!popup.closed){handoffIdentityToTab(popup,joinedAttempt.attempt_id,joinedAttempt.session_id);popup.location.replace(destination.href);popup.opener=null;popup.focus();}
+if(popup&&!popup.closed){handoffIdentityToTab(popup,joinedAttempt.attempt_id,joinedAttempt.session_id);popup.location.replace(destination.href);popup.focus();}
 else{
  const newTab=window.open('about:blank','_blank');
- if(newTab){handoffIdentityToTab(newTab,joinedAttempt.attempt_id,joinedAttempt.session_id);newTab.location.replace(destination.href);newTab.opener=null;}
- else setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Launch Simulation again.',true);
+ if(newTab){handoffIdentityToTab(newTab,joinedAttempt.attempt_id,joinedAttempt.session_id);newTab.location.replace(destination.href);}
+ else {setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Start Simulation again.',true);return false;}
 }
+return true;
 
 }
 
@@ -7837,29 +7802,30 @@ window.RizSimStudentBridge = Object.freeze({
   products:products.map(p=>({...p})),attempts:attempts.filter(a=>a.user_id===currentUser?.id).map(a=>({...a})),courses:studentCourses.map(c=>({...c})),materials:studentCourseMaterials.map(m=>({...m})),
   errors:{attempts:studentAttemptDataError,materials:studentCourseDataError},resolved:resolvedSession?{...resolvedSession}:null,joined:joinedAttempt?{...joinedAttempt}:null};},
  navigate(view){navigateStudent(view,false);},
+ async startClassroom(){if(!currentUser||!resolvedSession||!joinedAttempt)throw Error('Join the authorized classroom before starting.');const result=await launchJoinedSimulation();if(!result)throw Error('The simulation could not be launched. Please check your Classroom.');return true;},
+ async fetchERP(){const {data,error}=await supabase.rpc('get_my_rizsim_erp_preferences');if(error)throw Error(error.message);return Array.isArray(data)?data[0]||null:data||null;},
+ async saveERP(number,remember){const {data,error}=await supabase.rpc('set_my_rizsim_erp_preferences',{p_erp_number:String(number||'').trim(),p_remember:!!remember});if(error||data!==true)throw Error(error?.message||'ERP number could not be saved.');return true;},
+ async refreshResources(){if(!currentUser)return;await loadStudentCourseWorkspace();window.dispatchEvent(new Event('rizsim:student-data'));},
  async workspace(){const result=await supabase.rpc('get_my_rizsim_student_workspace');if(result.error)throw new Error(result.error.message);return result.data;},
  async refresh(){if(!currentUser)return;await reloadAttempts();if(currentUser)renderAll();},
  async openAttempt(attempt){
   if(!attempt || !attempt.class_code)return;
   navigateStudent('player',false);
-  await resolveSession('code',attempt.class_code);
+  await resolveSession('code',attempt.class_code,attempt.classroom_access_type==='practice'?'practice':'live');
   if(resolvedSession?.session_id!==attempt.classroom_session_id)return;
   const own=attempts.find(a=>a.id===attempt.id && a.user_id===currentUser?.id);
   if(!own)return;
   joinedAttempt={attempt_id:own.id,session_id:own.classroom_session_id,product_id:own.product_id,classroom_access_type:own.classroom_access_type,attempt_status:own.status,submitted_at:own.submitted_at,is_existing_attempt:true};
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
- async joinPracticeCode(code,participant){
+ async joinPracticeCode(code){
   const actor=currentUser?.id;if(!actor)throw new Error('Sign in before joining a Practice class.');
   const clean=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
   if(!clean)throw new Error('Enter your Faculty class code.');
-  if(!participant||!String(participant.name||'').trim()||!String(participant.institution||'').trim())
-   throw new Error('Confirm your name and institution on RizSim before adding Practice.');
-  await resolveSession('code',clean);
+  await resolveSession('code',clean,'practice');
   if(currentUser?.id!==actor||!resolvedSession||resolvedSourceType!=='code'||resolvedSession.class_code!==clean)
     throw new Error('This Practice class could not be verified. Check the code and try again.');
   if(!resolvedSession.practice_open)throw new Error('Practice is not currently available for this class.');
-  await joinSession('practice',false,participant);
   if(!joinedAttempt?.attempt_id||joinedAttempt.classroom_access_type!=='practice')
     throw new Error('RizSim could not confirm this Practice assignment.');
   window.dispatchEvent(new Event('rizsim:student-data'));
@@ -7886,8 +7852,8 @@ window.RizSimStudentBridge = Object.freeze({
   destination.searchParams.set('session',own.classroom_session_id);
   destination.searchParams.set('access','practice');
   const popup=window.__rzV154RunnerTab;window.__rzV154RunnerTab=null;
-  if(popup&&!popup.closed){handoffIdentityToTab(popup,own.id,own.classroom_session_id);popup.location.replace(destination.href);popup.opener=null;popup.focus();}
-  else{const tab=window.open('about:blank','_blank');if(tab){handoffIdentityToTab(tab,own.id,own.classroom_session_id);tab.location.replace(destination.href);tab.opener=null;}
+  if(popup&&!popup.closed){handoffIdentityToTab(popup,own.id,own.classroom_session_id);popup.location.replace(destination.href);popup.focus();}
+  else{const tab=window.open('about:blank','_blank');if(tab){handoffIdentityToTab(tab,own.id,own.classroom_session_id);tab.location.replace(destination.href);}
    else throw new Error('Please allow RizSim pop-ups to open your Practice simulation in a separate tab.');}
  },
  async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
@@ -7896,7 +7862,7 @@ window.addEventListener('popstate',()=>{navigateStudent(location.hash.slice(1)||
 // The underlying auth client remains the single owner of token refresh.
 supabase.auth.onAuthStateChange((event,session)=>{
  if(event==='SIGNED_OUT' || (currentUser && session?.user && session.user.id!==currentUser.id)){
-  currentUser=null;currentProfile=null;attempts=[];studentCourses=[];studentCourseMaterials=[];resolvedSession=null;joinedAttempt=null;studentResolveGeneration++;
+  currentUser=null;currentProfile=null;attempts=[];studentCourses=[];studentCourseMaterials=[];resolvedSession=null;joinedAttempt=null;studentResolveGeneration++;window.__rzV155ERPConfirmed=null;
   window.dispatchEvent(new Event('rizsim:student-cleared'));
   document.getElementById('studentApp').classList.remove('show');document.getElementById('authGate').classList.remove('hidden');
  }
@@ -7913,6 +7879,7 @@ initialize();
 </script>
 
 <script src="rizsim-student-workspace.js" defer></script>
+<script src="rizsim-student-classroom-v155.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script src="rizsim-support.js" defer></script>

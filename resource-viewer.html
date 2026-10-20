@@ -510,6 +510,12 @@ display:none !important;
 </style>
 
 <link rel="stylesheet" href="rizsim-viewer-finish-v14.css">
+<style>/* Bottom controls reuse the existing secure viewer navigation and pinch-zoom. */
+#viewerToolbarBottom{position:sticky;bottom:0;z-index:41;max-width:1320px;margin:0 auto;padding:0 18px 10px}
+#viewerToolbarBottom[hidden]{display:none!important}
+#viewerToolbarBottom .viewer-toolbar-inner{box-shadow:0 -8px 28px rgba(20,56,70,.06)}
+@media(max-width:630px){#viewerToolbarBottom{padding:0 8px 8px}#viewerToolbarBottom .viewer-button{min-height:38px;padding:7px 10px}}
+@media print{#viewerToolbarBottom{display:none!important}}</style>
 </head>
 
 
@@ -699,7 +705,17 @@ hidden
 
 </main>
 
-
+<div id="viewerToolbarBottom" aria-label="Bottom secure document controls" hidden>
+ <div class="viewer-toolbar-inner">
+  <button id="bottomResourcePrevious" class="viewer-button" type="button" aria-label="Previous page">← Previous</button>
+  <span class="page-indicator" id="bottomResourcePage">Page —</span>
+  <button id="bottomResourceNext" class="viewer-button" type="button" aria-label="Next page">Next →</button>
+  <button id="bottomResourceZoomOut" class="viewer-button" type="button" aria-label="Zoom out">−</button>
+  <span class="page-indicator" id="bottomResourceZoom">100%</span>
+  <button id="bottomResourceZoomIn" class="viewer-button" type="button" aria-label="Zoom in">+</button>
+  <button id="bottomResourceFit" class="viewer-button" type="button" aria-label="Fit page">Fit</button>
+ </div>
+</div>
 
 <div class="security-note">
 
@@ -3366,8 +3382,26 @@ renderPdfPage();
    START
    ============================================================ */
 
+// Both toolbars share the same protected PDF controls and remain synchronized.
+const topToolbar=document.getElementById('viewerToolbar'),bottomToolbar=document.getElementById('viewerToolbarBottom');
+function syncBottomResourceToolbar(){
+ bottomToolbar.hidden=topToolbar.hidden;
+ for(const [bottom,top] of [['bottomResourcePrevious','previousPage'],['bottomResourceNext','nextPage'],['bottomResourceZoomOut','zoomOut'],['bottomResourceZoomIn','zoomIn'],['bottomResourceFit','fitPage']]){
+  document.getElementById(bottom).disabled=document.getElementById(top).disabled;
+ }
+ document.getElementById('bottomResourcePage').textContent=document.getElementById('pageIndicator').textContent;
+ document.getElementById('bottomResourceZoom').textContent=document.getElementById('zoomIndicator').textContent;
+}
+for(const [bottom,top] of [['bottomResourcePrevious','previousPage'],['bottomResourceNext','nextPage'],['bottomResourceZoomOut','zoomOut'],['bottomResourceZoomIn','zoomIn'],['bottomResourceFit','fitPage']]){
+ document.getElementById(bottom).addEventListener('click',()=>document.getElementById(top).click());
+}
+const resourceToolbarObserver=new MutationObserver(syncBottomResourceToolbar);
+resourceToolbarObserver.observe(topToolbar,{attributes:true,attributeFilter:['hidden']});
+for(const target of ['pageIndicator','zoomIndicator','previousPage','nextPage','zoomIn','zoomOut','fitPage']){
+ resourceToolbarObserver.observe(document.getElementById(target),{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled']});
+}
+syncBottomResourceToolbar();
 initialize();
-
 
 </script>
 

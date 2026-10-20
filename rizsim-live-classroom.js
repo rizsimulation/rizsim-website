@@ -87,9 +87,18 @@
     if (route.mode === 'own') return text(item.course_id) === route.selection || courseSessionIds(s).has(text(item.session_id));
     return route.mode === 'simulation' && text(item.product_id) === route.selection;
   }
-  function card(title, subtitle, actionLabel, action, tone, locked = false, href = '') {
+  function sessionStatus(s,mode,id){
+    const live=(room)=>room.active===true&&!['ended','closed'].includes(room.session_status)&&['live','both'].includes(room.access_mode)&&(!room.live_ends_at||Date.parse(room.live_ends_at)>Date.now())&&(!room.live_starts_at||Date.parse(room.live_starts_at)<=Date.now());
+    const practice=(room)=>room.active===true&&!['ended','closed'].includes(room.session_status)&&['practice','both'].includes(room.access_mode)&&(!room.practice_ends_at||Date.parse(room.practice_ends_at)>Date.now())&&(!room.practice_starts_at||Date.parse(room.practice_starts_at)<=Date.now());
+    const fromCourse=mode==='purchased'?window.RizSimCourseEnvironment?.runtime('purchased',id)?.sessions||[]:[];
+    const ids=new Set(fromCourse.map(x=>text(x.session_id)));
+    const rooms=(s.sessions||[]).filter(x=>mode==='simulation'?text(x.product_id)===id:mode==='own'?text(x.course_id)===id:ids.has(text(x.session_id))||text(x.course_id)===id);
+    if(rooms.some(live))return 'Live';if(rooms.some(practice))return 'Practice';return '';
+  }
+  function card(title, subtitle, actionLabel, action, tone, locked = false, href = '', status='') {
     const n = el('article', 'rz-v5-card rz-v5-card-' + tone + (locked ? ' is-locked' : ''));
     const copy = el('div', 'rz-v5-card-copy'); copy.append(el('h3', '', title), el('p', '', subtitle));
+    if(status){const badge=el('span','rz-session-state');const dot=el('span','rz-session-state-dot');dot.setAttribute('aria-hidden','true');badge.append(dot,el('span','',status==='Live'?'Session Live':'Practice active'));copy.append(badge);}
     const a = href ? el('a', 'rz-v5-card-action', actionLabel) : button(actionLabel, 'rz-v5-card-action', action);
     if (href) {
       a.href = href;
@@ -130,7 +139,7 @@
   }
   function collection(s) {
     const items = route.mode === 'simulation' ? licensed(s) : route.mode === 'own' ? ownCourses(s) : (window.RizSimCourseEnvironment?.catalogue()||[]);
-    const key = route.mode + ':' + s.role + ':' + window.RizSimCourseEnvironment?.catalogueState() + ':' + JSON.stringify(items);
+    const key = route.mode + ':' + s.role + ':' + window.RizSimCourseEnvironment?.catalogueState() + ':' + JSON.stringify(items) + ':' + JSON.stringify((s.sessions||[]).map(x=>[x.session_id,x.product_id,x.course_id,x.active,x.access_mode,x.session_status,x.live_starts_at,x.live_ends_at,x.practice_starts_at,x.practice_ends_at]));
     $('rzLiveCollectionTitle').textContent = {simulation:'Choose a simulation', own:'Choose your course', purchased:'Purchased RizSim courses'}[route.mode];
     if (lastCards === key) return; lastCards = key;
     const grid = $('rzLiveCards'); grid.replaceChildren();
@@ -140,7 +149,7 @@
     [...items].sort((a,b) => text(a.title).localeCompare(text(b.title))).forEach((item, i) => {
       const id = text(route.mode === 'simulation' ? item.id : item.course_id), r = {mode:route.mode, stage:route.mode==='simulation'?'setup':'environment', selection:id};
       grid.append(card(item.title || 'Untitled experience', item.short_description || item.description || 'Prepare a session for your learners.',
-        'Select ' + (route.mode === 'simulation' ? 'Simulation' : 'Course'), () => navigate(route.mode,route.mode==='simulation'?'setup':'environment',id), i % 4, false, urlFor(r)));
+        'Select ' + (route.mode === 'simulation' ? 'Simulation' : 'Course'), () => navigate(route.mode,route.mode==='simulation'?'setup':'environment',id), i % 4, false, urlFor(r),sessionStatus(s,route.mode,id)));
     });
     const own = route.mode === 'own', title = own ? 'Create More Courses' : route.mode === 'simulation' ? 'Add More Simulations' : 'Add More Courses';
     grid.append(card(title, own ? 'Build another course in your Courses workspace.' : 'Explore the Learning, Skills and Children categories on Home.',
@@ -397,6 +406,7 @@
       scheduleDraw();
     });
     window.addEventListener('hashchange',() => { route = readRoute(); scheduleDraw(); });
+    window.setInterval(()=>{if(active()&&route.stage==='list')scheduleDraw();},8000);
     document.addEventListener('click',ev => {
       const n = ev.target.closest('[data-course-session-progress],[data-roster-session]');
       if (!n || !active() || route.stage !== 'running') return;
@@ -425,7 +435,7 @@
         name:source.querySelector('h3')?.textContent.trim()||session.class_name||'RizSim Classroom',
         code,link,qr:source.querySelector('.rz-v5-qr svg')?.cloneNode(true)||null});
     }
-    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw,navigate,verifiedShare});
+    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw,navigate,verifiedShare,sessionStatus});
     scheduleDraw();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();

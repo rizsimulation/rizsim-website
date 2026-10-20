@@ -110,3 +110,9 @@
 .rz-live-running .rz-v5-access-source .classroom-link-box,
 .rz-live-running .rz-v5-access-source .rz-v5-qr,
 .rz-live-running .rz-v5-access-source [data-copy-value]{display:none!important}
+
+/* Change 5: subtle real-session status across the three Faculty/Course Lead card collections. */
+.rz-session-state{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;width:max-content;max-width:100%;padding:5px 10px;border:1px solid #f1ccc9;border-radius:100px;background:#fff5f4;color:#a12934;font-weight:780;font-size:.71rem;letter-spacing:.01em;margin-top:8px}
+.rz-session-state-dot{width:9px;height:9px;border-radius:50%;background:#d92636;box-shadow:0 0 0 3px #f6d3d3;animation:rzSessionBeacon 1.65s ease-in-out infinite;flex:none}
+@keyframes rzSessionBeacon{0%,100%{box-shadow:0 0 0 2px #f5d8d8;opacity:1}50%{box-shadow:0 0 0 6px #fbe1e1;opacity:.68}}
+@media(prefers-reduced-motion:reduce){.rz-session-state-dot{animation:none}}

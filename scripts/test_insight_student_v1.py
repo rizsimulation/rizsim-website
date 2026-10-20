@@ -54,10 +54,12 @@ async def main():
           await route.fulfill(status=200,content_type='application/javascript',body=MOCK_CLOUD)
         await page.route('**/simulation-assets/insight-to-implication/rizsim-cloud.js',stub)
         await page.goto(f'http://127.0.0.1:{port}/simulation-insight-to-implication.html?attempt=12345678-1234-4234-8234-123456789abc&session=23456789-1234-4234-8234-123456789abc&access=practice')
-        await page.locator('#participant-name').fill('RizSim Test Learner')
-        await page.locator('#participant-org').fill('Test Cohort')
-        await page.get_by_role('button',name='Begin the activity').click()
+        # In authenticated classrooms Google identity is verified once: no
+        # redundant name/organization form inside the simulation.
         await page.wait_for_selector('button[data-action="choose-review"]')
+        assert await page.locator('#join-form').count()==0,'Hosted simulation must not ask for name/organization again'
+        await page.locator('button[data-action="choose-review"]').nth(1).click()
+        assert await page.locator('button[data-action="choose-review"]').nth(1).get_attribute('aria-pressed')=='true','Choice must highlight synchronously before server response'
         for i in range(6):
           await page.locator('button[data-action="choose-review"]').first.click()
           await page.wait_for_function("window.__sim01SaveCount>0")

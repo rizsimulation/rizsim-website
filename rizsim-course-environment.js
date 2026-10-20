@@ -204,6 +204,8 @@
   if(!data.simulations.length)sims.append(node('p','rz-panel-caption','No simulations are included yet.'));
   data.simulations.forEach((sim,index)=>{
    const card=node('article','rz-v5-card rz-v5-card-'+index%4),copy=node('div','rz-v5-card-copy');copy.append(node('h3','',sim.title),node('p','',sim.description||'Included in this course.'));
+    const roomStatus=window.RizSimLiveClassroom?.sessionStatus?.(s,'simulation',str(sim.product_id));
+    if(roomStatus){const badge=node('span','rz-session-state'),dot=node('span','rz-session-state-dot');dot.setAttribute('aria-hidden','true');badge.append(dot,node('span','',roomStatus==='Live'?'Session Live':'Practice active'));copy.append(badge);}
    const hasLicence=(s.licensed||[]).some(x=>str(x.id)===str(sim.product_id));
    const activeCourseLeadSession=s.role==='course_lead'?window.RizSimV15?.activeRoom?.(s):null;
     const run=btn(hasLicence?'Run Simulation':'Active simulation licence required',()=>nav(route.mode,'setup',route.selection,'',false,sim.product_id));run.className='rz-v5-card-action';run.disabled=!hasLicence||!!activeCourseLeadSession;run.title=activeCourseLeadSession?'End your current Live Class or Practice assignment before launching another.':'';run.dataset.rzRunProduct=str(sim.product_id);card.append(copy,run);sims.append(card);

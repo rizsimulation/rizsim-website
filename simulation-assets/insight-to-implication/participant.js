@@ -7,6 +7,32 @@
     busy:false,nav:{kr:0,kg:0},error:'',statusText:'',statusTimer:null,cloud:null,submitted:false,cloudGate:!!document.body.dataset.rizsimProductionRunner};
   const $=id=>document.getElementById(id), E=C.esc;
   let confirmCallback=null, pollBusy=false, toastTimer=null;
+   let selectionTimer=null,paintTimer=null,queuedChoice=null,choiceSave=Promise.resolve(),choiceSaveError=null;
+   async function flushChoices(){
+     clearTimeout(selectionTimer);selectionTimer=null;
+     if(queuedChoice){
+       const draft=queuedChoice;queuedChoice=null;
+       choiceSave=choiceSave.catch(()=>{}).then(async()=>{
+         if(S.cloud)await S.cloud.saveRecord(draft);
+         else if(S.live){const reply=await api('/api/save',{record:draft});S.mode=reply.mode;S.keyReleased=!!reply.keyReleased;}
+         choiceSaveError=null;S.error='';
+       }).catch(err=>{choiceSaveError=err;S.error='Your selection could not be saved: '+errorText(err);notify(S.error,true);throw err;});
+     }
+     await choiceSave;
+     if(queuedChoice)return flushChoices();
+     if(choiceSaveError)throw choiceSaveError;
+   }
+   function chooseInstant(button,update){
+     if(S.busy||S.submitted||!S.record||!permitted())return;
+     const phase=button.dataset.phase;if(S.record.locks?.[phase])return;
+     const next=C.clone(S.record);update(next);
+     next.updatedAt=C.now();next.revision=(Number(S.record.revision)||0)+1;
+     S.record=next;keepLocal();
+     // Mark the choice synchronously, before any network request or full render.
+     button.closest('.choices')?.querySelectorAll('.choice').forEach(b=>{const yes=b===button;b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes));});
+     clearTimeout(paintTimer);paintTimer=setTimeout(()=>{if(!S.busy)render();},95);
+     if(S.cloud||S.live){queuedChoice=C.clone(next);clearTimeout(selectionTimer);selectionTimer=setTimeout(()=>{flushChoices().catch(()=>{});},140);}
+   }
   function loadLocal(){try{const s=JSON.parse(localStorage.getItem(LOCAL_KEY)||'null');
     if(s&&C.validRecord(s.record)){S.record=s.record;S.token=s.token||null;S.offlineKeyReleased=!!s.offlineKeyReleased;
       S.nav={kr:Math.max(0,Math.min(5,Number(s.nav?.kr)||0)),kg:Math.max(0,Math.min(5,Number(s.nav?.kg)||0))};}
@@ -30,6 +56,9 @@
          if(!window.RizSimInsightCloud)throw new Error('Authenticated simulation integration is missing.');
          S.cloud=await window.RizSimInsightCloud.init();
          S.record=S.cloud.record;S.submitted=!!S.cloud.submitted;
+         // Hosted Google authentication supplies the learner name: no second join form.
+         if(!S.record&&!S.submitted){const display=String(S.cloud.displayName||'RizSim Learner').trim().slice(0,120);
+           S.record=await S.cloud.saveRecord(C.createRecord(display,'RizSim classroom'));}
          S.mode='active';S.error='';
        }catch(err){
          $('app').innerHTML='<div class="panel panel-pad centered"><div class="section-kicker">RizSim authentication required</div><h2>Classroom access could not be verified</h2><p class="note error">'+E(errorText(err))+'</p><p>Return to your signed-in RizSim Student workspace and launch your authorized session. Nothing was submitted.</p><a class="btn secondary" href="/access-in.html">Return to Student workspace</a></div>';
@@ -62,6 +91,8 @@
     if(S.mode!=='active'){notify('Please wait for the facilitator to start or resume the activity.',true);return false}return true;}
   async function saveNext(next){if(!permitted()||S.submitted)return false;S.busy=true;
      const before=S.record?{...S.record.locks}:{};
+     clearTimeout(paintTimer);
+     try{await flushChoices();}catch(err){S.busy=false;notify('Selections were not confirmed by RizSim. Retry after reconnecting.',true);render();return false;}
     next.updatedAt=C.now();next.revision=S.record?S.record.revision+1:next.revision;
     try{
        if(S.cloud){S.record=await S.cloud.saveRecord(next);}
@@ -207,9 +238,9 @@
     if(type==='nav'){S.nav[b.dataset.phase]=Number(b.dataset.index);keepLocal();render();return}
     if(type==='prev'||type==='next'){const phase=b.dataset.phase;S.nav[phase]=Math.max(0,Math.min(5,S.nav[phase]+(type==='prev'?-1:1)));keepLocal();render();return}
     if(type==='choose-review'){
-      const {phase,id,letter}=b.dataset;const next=C.clone(S.record);next.picks[phase][id]=letter;await saveNext(next);return;
+      const {phase,id,letter}=b.dataset;chooseInstant(b,next=>{next.picks[phase][id]=letter});return;
     }
-    if(type==='choose-case'){const next=C.clone(S.record);next.picks[b.dataset.phase]=b.dataset.letter;await saveNext(next);return}
+    if(type==='choose-case'){chooseInstant(b,next=>{next.picks[b.dataset.phase]=b.dataset.letter});return}
     if(type==='lock-review'){
       const phase=b.dataset.phase;if(C.countAnswered(S.record,phase)!==6)return;
       confirm(phase==='kr'?'Lock your Knowledge Review?':'Lock your Knowledge Gain?',

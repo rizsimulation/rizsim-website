@@ -79,10 +79,14 @@ def run(browser,base):
   check('Practice code field stays available',p.locator('.rz-v15-practice-join input').count()==1)
   hub=p
   hub.locator('[data-practice-attempt="attempt-4"] button').click()
-  hub.wait_for_selector('.rz-st-launch-dialog[open]')
-  check('Practice opens an on-site launch confirmation',hub.locator('.rz-st-launch-dialog').count()==1)
+  hub.wait_for_selector('#view-player.rz-c155-classroom #rzC155Classroom .rz-c155-start')
+  check('Practice secure resume opens the on-site Classroom',hub.locator('#view-player.rz-c155-classroom').count()==1)
+  hub.locator('#rzC155Classroom .rz-c155-start').click()
+  hub.wait_for_selector('.rz-c155-erp[open]')
+  check('ERP confirmation requested before starting, without another Name/Organization form',hub.locator('.rz-c155-erp input[type=text]').count()==1 and hub.locator('#rzV154JoinName,#rzV154JoinInstitution').count()==0)
+  hub.locator('.rz-c155-erp input[type=text]').fill('V9-ERP-04')
   with ctx.expect_page() as launch:
-   hub.locator('.rz-st-launch-dialog').get_by_role('button',name='Launch simulation').click()
+   hub.locator('.rz-c155-erp').get_by_role('button',name='Continue').click()
   p=launch.value
   p.on('pageerror',lambda e:errors.append(str(e)))
   p.wait_for_url('**/simulation-test.html?*',timeout=15000)
@@ -134,12 +138,11 @@ def run(browser,base):
   check('Mobile layout has no horizontal overflow',p.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
   p.evaluate('__studentFixture.failPractice=true')
   p.locator('[data-practice-attempt="attempt-4"] button').click()
-  p.wait_for_selector('.rz-st-launch-dialog[open]')
-  p.locator('.rz-st-launch-dialog').get_by_role('button',name='Launch simulation').click()
-  p.wait_for_function("""()=>(document.querySelector('.rz-st-launch-feedback')?.textContent||'').toLowerCase().includes('revoked')""",timeout=12000)
-  check('Revocation during Practice launch keeps the Student on the website and closes the placeholder',
-    'revoked' in p.locator('.rz-st-launch-feedback').inner_text().lower() and
+  p.wait_for_selector('.rz-st-dialog[open]')
+  check('Server Practice revocation blocks Classroom entry before ERP or new tab',
+    'revoked' in p.locator('.rz-st-dialog[open]').inner_text().lower() and
     '/simulation-test.html' not in p.url and
+    p.locator('.rz-c155-erp[open]').count()==0 and
     p.evaluate('!window.__rzV154RunnerTab || window.__rzV154RunnerTab.closed'))
   check('No mobile browser exceptions',not errors)
  finally:ctx.close()

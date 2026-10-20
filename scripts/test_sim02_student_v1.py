@@ -107,10 +107,9 @@ async def main():
    await page.route('**/simulation-assets/system-1-system-2/cloud.js',serve_cloud)
    url=f'http://127.0.0.1:{server.server_address[1]}/simulation-system-1-system-2.html?attempt={AID}&session={SID}&access=practice'
    await page.goto(url,wait_until='domcontentloaded')
-   await page.locator('#joinForm').wait_for()
-   await page.locator('#pname').fill('Synthetic Learner')
-   await page.locator('#porg').fill('RizSim Browser QA')
-   await page.get_by_role('button',name=re.compile('Begin Knowledge Review')).click()
+   # Google authentication supplies the hosted participant identity.
+   await page.get_by_role('heading',name='Your starting understanding').wait_for()
+   assert await page.locator('#joinForm').count()==0,'Hosted Sim02 still prompts for name/organization'
    async def reviews(label):
     for i in range(6):
      await page.locator('label.option').first.click()

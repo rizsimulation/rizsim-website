@@ -1,0 +1,52 @@
+/* Change 3: scoped nested Classroom in RizSimulation Player; premium design locked. */
+#view-player .rz-c155-tabs{display:flex;align-items:center;gap:8px;margin:10px 0 20px;flex-wrap:wrap}
+#view-player .rz-c155-tab{border:1px solid #c6dedc;border-radius:999px;padding:8px 17px;min-height:39px;font:inherit;font-size:.78rem;font-weight:800;color:#19535d;background:#fff;cursor:pointer}
+#view-player .rz-c155-tab[aria-selected=true]{background:#e5f6f2;border-color:#80c3b9;color:#087d76;box-shadow:0 3px 11px #0d5f6210}
+#view-player .rz-c155-tab:focus-visible,#view-player .rz-c155-start:focus-visible{outline:3px solid #74c4bd;outline-offset:3px}
+#view-player.rz-c155-classroom .player-layout,#view-player.rz-c155-classroom>.content-shell>.student-heading{display:none!important}
+#view-player:not(.rz-c155-classroom) #rzC155Classroom{display:none!important}
+#view-player .rz-c155-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:13px;margin-bottom:16px;flex-wrap:wrap}
+#view-player .rz-c155-heading span{color:#118e86;font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;font-weight:850}
+#view-player .rz-c155-heading h1{font-size:clamp(1.43rem,2.5vw,2rem);color:#113647;margin:5px 0 0}
+#view-player .rz-c155-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;align-items:stretch}
+#view-player .rz-c155-panel{min-width:0;min-height:330px;background:linear-gradient(145deg,#fff,#f5fbfa);border:1px solid #cfe6e1;border-radius:21px;padding:clamp(17px,2vw,25px);box-shadow:0 14px 38px #1339430c;display:flex;flex-direction:column;gap:12px}
+#view-player .rz-c155-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+#view-player .rz-c155-eyebrow{font-size:.66rem;color:#168b86;font-weight:850;letter-spacing:.115em;text-transform:uppercase}
+#view-player .rz-c155-panel h2{color:#0e3449;font-size:clamp(1.16rem,1.85vw,1.45rem);line-height:1.27;margin:0}
+#view-player .rz-c155-panel p{color:#577580;font-size:.82rem;line-height:1.63;margin:0}
+#view-player .rz-c155-state{display:inline-flex;align-items:center;gap:9px;width:max-content;max-width:100%;border-radius:999px;background:#fff3f2;border:1px solid #f0ceca;color:#a92736;font-weight:800;font-size:.72rem;padding:6px 10px}
+#view-player .rz-c155-state.offline{color:#526c77;background:#eef3f5;border-color:#d8e3e5}
+#view-player .rz-c155-dot{width:9px;height:9px;flex:none;border-radius:100%;background:#d52c3d;box-shadow:0 0 0 3px #f6d3d7;animation:rzC155Pulse 1.55s ease-in-out infinite}
+#view-player .rz-c155-state.offline .rz-c155-dot{background:#869da5;box-shadow:none;animation:none}
+#view-player .rz-c155-start{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:12px;padding:12px 19px;min-height:46px;margin-top:auto;color:white;background:#078982;font:inherit;font-size:.83rem;font-weight:850;cursor:pointer}
+#view-player .rz-c155-start:disabled{opacity:.55;cursor:not-allowed}
+#view-player .rz-c155-status{font-size:.73rem;color:#587681;min-height:18px;line-height:1.45}
+#view-player .rz-c155-status[data-error=true]{color:#9c303b}
+#view-player .rz-c155-resources{overflow:auto;max-height:min(53vh,510px);display:grid;gap:9px;align-content:start}
+#view-player .rz-c155-material{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #dce9e8;border-radius:12px;padding:10px;min-width:0}
+#view-player .rz-c155-material-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;color:#077e7b;background:#e9f7f4;font-weight:850;font-size:11px;flex:none}
+#view-player .rz-c155-material-name{flex:1;min-width:0}
+#view-player .rz-c155-material-name strong{display:block;color:#173e4e;font-size:.79rem;overflow-wrap:anywhere}
+#view-player .rz-c155-material-name small{display:block;color:#69838e;font-size:.68rem;line-height:1.45;margin-top:2px}
+#view-player .rz-c155-material button{flex:none;border:1px solid #bcd9d3;background:#f4faf9;color:#0d7874;border-radius:9px;font:inherit;font-size:.72rem;font-weight:850;padding:8px 10px;cursor:pointer}
+#view-player .rz-c155-empty{flex:1;display:grid;align-content:center;justify-items:center;gap:10px;min-height:190px;text-align:center;padding:18px 6px}
+#view-player .rz-c155-empty-icon{display:grid;place-items:center;width:56px;height:56px;color:#118d86;background:#e9f7f3;border:1px solid #cbe6df;border-radius:19px;font-size:27px}
+#view-player .rz-c155-empty strong{color:#174653;font-size:.91rem}
+#view-player .rz-c155-empty p{max-width:270px}
+.rz-c155-erp{border:1px solid #d6e7e4;border-radius:22px;padding:0;max-width:min(430px,calc(100vw - 28px));width:100%;background:#fff;box-shadow:0 26px 80px #06354536;color:#153b49}
+.rz-c155-erp::backdrop{background:#0927328c;backdrop-filter:blur(4px)}
+.rz-c155-erp-inner{padding:28px;display:grid;gap:14px}
+.rz-c155-erp h2{font-size:1.35rem;margin:0}
+.rz-c155-erp p{font-size:.81rem;line-height:1.6;color:#617d85;margin:0}
+.rz-c155-erp label{display:grid;gap:7px;font-size:.76rem;font-weight:800}
+.rz-c155-erp input[type=text]{width:100%;border-radius:10px;border:1px solid #b8d6d1;padding:12px 13px;font-size:1rem}
+.rz-c155-erp .rz-c155-remember{display:flex;align-items:center;gap:9px;color:#7e9099;font-weight:650;opacity:.8}
+.rz-c155-erp .rz-c155-remember input{width:16px;height:16px;accent-color:#0d9087}
+.rz-c155-erp .rz-c155-error{color:#a3333e;font-size:.74rem;min-height:17px}
+.rz-c155-erp .rz-c155-actions{display:flex;align-items:center;gap:9px;justify-content:flex-end}
+.rz-c155-erp button{border:1px solid #c1dcd7;border-radius:10px;padding:10px 15px;background:#f2f8f7;color:#0b6667;font-weight:800;cursor:pointer}
+.rz-c155-erp button.primary{color:#fff;background:#087f80;border-color:#087f80}
+.rz-c155-erp button:disabled{opacity:.5;cursor:wait}
+@keyframes rzC155Pulse{0%,100%{box-shadow:0 0 0 2px #f6d3d7;opacity:1}50%{box-shadow:0 0 0 7px #ffebed;opacity:.72}}
+@media(max-width:760px){#view-player .rz-c155-grid{grid-template-columns:minmax(0,1fr)}#view-player .rz-c155-panel{min-height:250px}#view-player .rz-c155-resources{max-height:310px}}
+@media(prefers-reduced-motion:reduce){#view-player .rz-c155-dot{animation:none}.rz-c155-erp::backdrop{backdrop-filter:none}}
