@@ -435,7 +435,7 @@
         name:source.querySelector('h3')?.textContent.trim()||session.class_name||'RizSim Classroom',
         code,link,qr:source.querySelector('.rz-v5-qr svg')?.cloneNode(true)||null});
     }
-    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw,navigate,verifiedShare});
+    window.RizSimLiveClassroom = Object.freeze({draw:scheduleDraw,navigate,verifiedShare,sessionStatus});
     scheduleDraw();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
