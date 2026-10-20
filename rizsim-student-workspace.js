@@ -221,8 +221,11 @@
    await refresh(true);if(error)throw new Error('Practice could not be verified. Please retry.');
    const a=data?.attempts.find(x=>x.id===id);
    if(!a||phase(a)!=='open'||complete(a))throw new Error('This Practice is no longer available.');
-   // Resume in the same Classroom; ERP is checked only on Start Simulation.
-   await bridge().openAttempt(a);
+   // Preserve the original server-side Practice revocation/resume check.
+   // It can set practice access mode without creating an extra attempt.
+   await bridge().practice(a.id);
+   // Resume in the same website Classroom; ERP is requested only on Start.
+   await bridge().openAttempt({...a,classroom_access_type:'practice'});
   }catch(e){dialog('Practice is not available',e.message);}
   finally{actionBusy=false;renderPractice();}
  }
