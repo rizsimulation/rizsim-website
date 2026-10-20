@@ -87,6 +87,16 @@ def contract():
     restored=current.replace(gmail,'href="mailto:rizsimulation@gmail.com"')
     assert restored==before,(path,'Contact change exceeded authorized Gmail action replacement')
    assert 'RizSimulation Team' in current and 'copyEmailButton' in current
+  elif path in VIEWERS:
+   # Change 4 adds controls, but never relaxes original authorization or policy.
+   assert cssfile in current and '<script' in current,(path,'original secure viewer shell missing')
+   assert 'getUser' in current or 'verifyUser' in current,(path,'protected identity verification missing')
+   if path=='course-material-viewer.html':
+    for key in ('bottomToolbar','bottomPrevPage','requestZoom','touchmove','wheel'):
+     assert key in current,(path,'approved PDF viewer zoom/navigation feature absent',key)
+   else:
+    for key in ('viewerToolbarBottom','syncBottomResourceToolbar','security-note'):
+     assert key in current,(path,'approved secure resource navigation absent',key)
   elif path in PLAYERS:
    # Only the V15 welcome and paused-state assets are added to the runners.
    extras=('<link rel="stylesheet" href="/rizsim-v15-runner-state.css">',
@@ -95,7 +105,13 @@ def contract():
    if all(extra in before for extra in extras):
     # Already published V15 on origin/main; ensure original academic runner
     # body remains byte-for-byte identical in this later launch PR.
-    assert current==before,(path,'published academic simulation body changed')
+    # Change 3 hides only the redundant hosted Hotel participant-code field.
+    expected=current
+    if path=='simulation-hotel-judgment.html':
+     injection='<style>/* Hosted ERP is captured on RizSim Classroom only, never requested again inside the runner. */\\nhtml[data-rizsim-hosted] label[for="participant"],html[data-rizsim-hosted] #participant{display:none!important}</style>\\n'
+     assert current.count(injection.replace('\\n',chr(10)))==1,(path,'Unexpected hosted ERP presentation change')
+     expected=current.replace(injection.replace('\\n',chr(10)),'')
+    assert expected==before,(path,'academic experiment changed beyond authorized hosted ERP presentation')
    else:
     restored=current
     for extra in extras:restored=restored.replace(extra+chr(10),'')
