@@ -4,7 +4,7 @@
  const $=id=>document.getElementById(id),bridge=()=>window.RizSimStudentBridge;
  const E=(tag,cls,copy)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(copy!==undefined)x.textContent=String(copy??'');return x};
  const id=v=>String(v||''),safeERP=v=>/^[A-Za-z0-9][A-Za-z0-9._/-]{1,39}$/.test(String(v||'').trim());
- let mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',seenKey='',channel=null,erpPreference=null,erpUser='',erpBusy=null,lastCount=-1;
+ let mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',channel=null,erpPreference=null,erpUser='',lastCount=-1,statusError='';
  const element=id=>$(id);
  const snap=()=>bridge()?.snapshot?.()||null;
  function initialize(){
@@ -93,8 +93,8 @@
   const start=E('button','rz-c155-start',attempt?.attempt_status==='submitted'?'Submitted': 'Start Simulation ↗');
   start.type='button';start.disabled=!enabled||launching;
   start.addEventListener('click',onStart);left.append(start);
-  const status=E('p','rz-c155-status');status.id='rzC155Status';status.setAttribute('role','status');
-  if(!enabled)status.textContent=attempt?.attempt_status==='submitted'?'Your submitted response is available in My Learning.':room.access_status!=='open'?'The presenter has not opened this class for participation.':'Classroom access has not yet been confirmed.';
+  const status=E('p','rz-c155-status');status.id='rzC155Status';status.setAttribute('role','status');if(statusError){status.textContent=statusError;status.dataset.error='true';}
+  if(!enabled&&!statusError)status.textContent=attempt?.attempt_status==='submitted'?'Your submitted response is available in My Learning.':room.access_status!=='open'?'The presenter has not opened this class for participation.':'Classroom access has not yet been confirmed.';
   left.append(status);
   const rtop=E('div','rz-c155-top');rtop.append(E('span','rz-c155-eyebrow','SHARED BY YOUR PRESENTER'),E('span','rz-c155-eyebrow',resources.length+' resources'));right.append(rtop,E('h2','','Class Resources'));
   const list=E('div','rz-c155-resources');list.id='rzC155Resources';
@@ -108,7 +108,7 @@
   right.append(list);grid.append(left,right);root.append(grid);
   broadcastCount();
  }
- function setStatus(message,error=false){const e=$('rzC155Status');if(e){e.textContent=message;e.dataset.error=String(!!error);}}
+ function setStatus(message,error=false){statusError=error?String(message||''):'';const e=$('rzC155Status');if(e){e.textContent=message;e.dataset.error=String(!!error);}}
  async function loadERP(user){if(!user||erpUser===user)return;erpUser=user;erpPreference=null;
   try{erpPreference=await bridge().fetchERP();}catch(_){erpPreference=null;}
  }
@@ -121,9 +121,9 @@
   if(launching)return;const info=sourceInfo();if(!info)return;
   const popup=reserveTab();
   if(!popup){setStatus('Your browser blocked the simulation window. Allow pop-ups for rizsim.com and try again.',true);return;}
-  launching=true;if(submit)submit.disabled=true;render();const originalUser=info.s.userId,room=id(info.room.session_id);
+  statusError='';launching=true;if(submit)submit.disabled=true;render();const originalUser=info.s.userId,room=id(info.room.session_id);
   try{
-   if(!stored)await bridge().saveERP(erp,remember);
+   if(!stored && remember)await bridge().saveERP(erp,true);
    if(!snap()||snap().userId!==originalUser||id(snap().resolved?.session_id)!==room)throw Error('Your Classroom changed. Reopen the simulation.');
    erpPreference={erp_number:erp,remember:!!remember};window.__rzV155ERPConfirmed={user:originalUser,session:room,erp};
    await bridge().startClassroom();
@@ -166,7 +166,7 @@
   return true;
  }
  function clear(){
-  mode='join';lastSignature='';currentUser='';lastRoom='';lastCount=-1;erpPreference=null;erpUser='';channel?.close();channel=null;
+  mode='join';lastSignature='';currentUser='';lastRoom='';lastCount=-1;erpPreference=null;erpUser='';statusError='';channel?.close();channel=null;
   $('view-player')?.classList.remove('rz-c155-classroom');$('rzC155Classroom')?.replaceChildren();
  }
  window.RizSimStudentClassroom=Object.freeze({openResources,render,unread:()=>{const i=sourceInfo();return i?unreadCount(i):0;}});
