@@ -24,7 +24,12 @@
     channel.onmessage=e=>{if(e.data?.kind!=='resources-count'||String(e.data?.session)!==session)return;
      const n=Math.max(0,Math.floor(Number(e.data.count)||0));count.dataset.visible=String(n>0);count.textContent=n>99?'99+':String(n);count.setAttribute('aria-label',n+' new class resources');};
     channel.postMessage({kind:'resources-request'});
-    window.addEventListener('pagehide',()=>channel?.close(),{once:true});
+    // Presenter resources may be published after the learner enters the simulation.
+    // Ask the still-open original Classroom to refresh even when that tab is hidden.
+    const requestTimer=window.setInterval(()=>{
+     if(!document.hidden)channel?.postMessage({kind:'resources-request'});
+    },20000);
+    window.addEventListener('pagehide',()=>{clearInterval(requestTimer);channel?.close();},{once:true});
    }catch(_){}
   }
   resources.addEventListener('click',event=>{
