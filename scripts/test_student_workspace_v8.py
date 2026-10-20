@@ -79,7 +79,7 @@ def run(browser,base):
   child.wait_for_selector('.rz-v155-count[data-visible=true]')
   check('Runner shows red new-resource count without another browser tab',
     child.locator('.rz-v155-count').inner_text()=='1' and len(ctx.pages)==2)
-  child.get_by_role('link',name='Class Resources').click()
+  child.get_by_role('button',name='Return to the original RizSim Classroom tab without closing this simulation').click()
   p.wait_for_function("RizSimStudentClassroom.unread()===0")
   check('Class Resources returns to the existing RizSim tab, clearing seen count',
     len(ctx.pages)==2 and p.locator('#view-player.rz-c155-classroom').is_visible())

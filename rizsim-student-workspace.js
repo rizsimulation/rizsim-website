@@ -266,6 +266,23 @@
   }catch(e){tab?.close();if(materialEpoch!==epoch||materialUser!==bridge()?.snapshot().userId)return;dialog('Resource unavailable',e.message);await bridge().refresh();renderMaterials();}
  }
  function materialCard(m){const n=el('article','rz-st-resource-card');n.append(icon(m.source_type==='file'?'file':'link'));const text=el('div');text.append(el('h3','',m.title||'Learning resource'),el('p','',m.description||m.file_name||'Published by your Faculty'),el('span','rz-st-meta',m.course_title||'Class resource'));n.append(text,btn(m.source_type==='file'?'Open in RizSim':'Open link',()=>openMaterial(m.material_id),'rz-st-button secondary'));return n;}
+ // Resolve a joined Classroom to its server-verified Course. The core
+ // simulation_attempts table intentionally omits course_id, while the signed-in
+ // workspace RPC provides it. All listed materials already passed backend checks.
+ function classroomResources(sessionId){
+  const snap=bridge()?.snapshot(),scope=String(sessionId||'');
+  if(!snap?.userId||!scope||identity!==snap.userId)return [];
+  const joined=(data?.attempts||[]).find(a=>String(a.classroom_session_id||'')===scope&&
+    (snap.attempts||[]).some(own=>own.id===a.id&&own.user_id===snap.userId));
+  const ids=new Set([scope,joined?.course_id].filter(Boolean).map(String));
+  const seen=new Set();
+  return (snap.materials||[]).filter(m=>{
+   const mid=String(m.material_id||''),cid=String(m.course_id||'');
+   if(!mid||!ids.has(cid)||seen.has(mid))return false;
+   seen.add(mid);return true;
+  }).sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||
+    String(a.created_at||'').localeCompare(String(b.created_at||'')));
+ }
  function renderMaterials(){
   const snap=bridge()?.snapshot();if(!snap?.userId)return;
   for(const id of ['rzStudentLibraryMaterials','rzStudentPlayerMaterials','rzV154SessionResourceList']){
@@ -330,6 +347,7 @@
    if(myEpoch!==epoch||who!==bridge()?.snapshot().userId)return;
    if(!result||!Array.isArray(result.attempts)||time(result.server_time)===null)throw new Error('The learning response could not be verified.');
    data=result;baseServer=time(result.server_time);baseMonotonic=performance.now();lastFetched=Date.now();
+   window.dispatchEvent(new Event('rizsim:student-workspace-updated'));
   }catch(e){if(myEpoch===epoch)error=e.message||'Unable to load learning';}
   finally{if(myEpoch===epoch){inFlight=null;render();if(refreshQueued){refreshQueued=false;queueMicrotask(()=>refresh(true));}}}})();
   render();return inFlight;
@@ -369,6 +387,6 @@
   if($('rizsimSharedHome')?.shadowRoot)decorateHome($('rizsimSharedHome').shadowRoot);
   render();refresh(true);
  }
- window.RizSimStudentWorkspace=Object.freeze({openAccount,closeDrawer,decorateHome,refresh});
+ window.RizSimStudentWorkspace=Object.freeze({openAccount,closeDrawer,decorateHome,refresh,classroomResources});
  if(document.readyState==='complete')init();else document.addEventListener('DOMContentLoaded',init,{once:true});
 })();

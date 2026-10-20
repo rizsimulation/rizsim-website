@@ -40,11 +40,11 @@
   .downloadable-frame{width:100%;height:calc(100dvh - 140px);min-height:700px;max-height:1600px;border:0;background:#fff}
   body[data-delivery-mode=downloadable] .shell{width:min(1400px,calc(100% - 24px))}
   body[data-delivery-mode=downloadable] .page-container{padding:12px 8px}
-  .bottom-toolbar{margin-top:-1px;border-radius:0 0 14px 14px;position:sticky;bottom:0;z-index:9;box-shadow:0 -7px 24px #112d3c0a}
+  .bottom-toolbar{margin-top:-1px;border-radius:0 0 14px 14px;position:static;box-shadow:0 7px 24px #112d3c0a}
   .bottom-toolbar[hidden]{display:none!important}
   .page-container[data-bottom-controls=true]{border-radius:0;min-height:65vh}
   #pdfCanvas{transform-origin:center top;will-change:width,height}
-  @media(max-width:630px){.downloadable-frame{height:calc(100dvh - 110px);min-height:560px}.bottom-toolbar{position:relative}}
+  @media(max-width:630px){.downloadable-frame{height:calc(100dvh - 110px);min-height:560px}.bottom-toolbar{position:static}}
   .downloadable-image{display:block;max-width:100%;max-height:82vh;object-fit:contain}
   .page-container[data-downloadable=true]{user-select:text;-webkit-user-select:text}
   .controls[hidden]{display:none!important}

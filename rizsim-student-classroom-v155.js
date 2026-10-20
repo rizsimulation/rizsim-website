@@ -17,7 +17,7 @@
   }
   const classroom=E('section','rz-c155-classroom');classroom.id='rzC155Classroom';classroom.setAttribute('aria-label','Your active classroom');
   root.insertBefore(tabs,layout);root.insertBefore(classroom,layout);
-  for(const evt of ['rizsim:student-ready','rizsim:student-data','rizsim:student-view'])window.addEventListener(evt,render);
+  for(const evt of ['rizsim:student-ready','rizsim:student-data','rizsim:student-view','rizsim:student-workspace-updated'])window.addEventListener(evt,render);
   // Explicit Find/QR/class-code resolution must reopen Classroom even for the same room.
   window.addEventListener('rizsim:classroom-resolved',()=>{if(sourceInfo()){mode='classroom';lastSignature='';}render();});
   window.addEventListener('rizsim:student-cleared',clear);
@@ -32,9 +32,14 @@
  function sourceInfo(){const s=snap();return s?.resolved?.session_id?{s,room:s.resolved,attempt:s.joined}:null;}
  function courseResources(s,room){
   if(!s?.joined?.attempt_id)return [];
-  const found=(s.attempts||[]).find(x=>id(x.id)===id(s.joined.attempt_id));
-  const keys=new Set([room.session_id,s.joined.course_id,found?.course_id,found?.classroom_session_id].filter(Boolean).map(id));
-  return(s.materials||[]).filter(x=>keys.has(id(x.course_id))||keys.has(id(x.classroom_session_id))).filter(x=>x.material_id);
+  // A course-based classroom publishes under COURSE ID. Derive it only from
+  // the signed-in student's verified workspace attempt (not the join response).
+  const fromWorkspace=window.RizSimStudentWorkspace?.classroomResources?.(room.session_id);
+  if(Array.isArray(fromWorkspace)&&fromWorkspace.length)return fromWorkspace;
+  // Authorized session-specific files can already render while workspace
+  // course information is still loading. No cross-course fallback.
+  const ids=new Set([room.session_id,s.joined.course_id].filter(Boolean).map(id));
+  return(s.materials||[]).filter(m=>m.material_id&&ids.has(id(m.course_id)));
  }
  function seenStorage(info){return'rizsim:class-resources-seen:'+info.s.userId+':'+info.room.session_id;}
  function getSeen(info){try{const v=JSON.parse(localStorage.getItem(seenStorage(info))||'[]');return new Set(Array.isArray(v)?v.map(id):[]);}catch(_){return new Set()}}
@@ -52,7 +57,10 @@
   if(room&&typeof BroadcastChannel==='function'){
    try{channel=new BroadcastChannel('rizsim:classroom:'+room);channel.onmessage=e=>{
     if(e.data?.kind==='resources-request'){void refreshResources().then(()=>broadcastCount(true));}
-    if(e.data?.kind==='open-resources')openResources(room);
+    if(e.data?.kind==='open-resources'){
+     const done=openResources(room);
+     try{channel?.postMessage({kind:'resources-return-ack',session:room,accepted:done});}catch(_){}
+    }
    }}catch(_){}
   }
  }
