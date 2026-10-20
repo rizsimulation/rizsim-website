@@ -152,9 +152,13 @@
   n.showModal();input.focus({preventScroll:true});
  }
  async function openMaterial(m){
+  const originalUser=snap()?.userId,originalRoom=id(snap()?.resolved?.session_id);
+  if(!originalUser||!originalRoom)return;
   const popup=window.open('about:blank','_blank');if(popup)popup.opener=null;
   try{
-   const result=await bridge().material(m.material_id);let destination;
+   const result=await bridge().material(m.material_id);
+   if(snap()?.userId!==originalUser||id(snap()?.resolved?.session_id)!==originalRoom){popup?.close();return;}
+   let destination;
    if(result.source_type==='file')destination='/course-material-viewer.html?material='+encodeURIComponent(m.material_id);
    else {const url=new URL(result.external_url);if(!['https:','http:'].includes(url.protocol)||url.username||url.password)throw Error('Invalid resource address.');destination=url.href;}
    if(popup)popup.location.replace(destination);else{const a=E('a','','Open class resource');a.href=destination;a.target='_blank';a.rel='noopener noreferrer';$('rzC155Resources')?.append(a);}
