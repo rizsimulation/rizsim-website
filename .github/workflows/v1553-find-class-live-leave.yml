@@ -1,0 +1,28 @@
+name: RizSim V15.5.3 Find Class / Leave Live QA
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  browser-regression:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install offline Chromium
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Verify Find Class, Live status and non-destructive leave
+        run: python scripts/test_v1553_find_class_live_leave.py
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: find-class-live-leave-screenshots
+          path: test-results/v1553-*.png
+          retention-days: 3
