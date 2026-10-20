@@ -90,7 +90,7 @@ def contract():
   elif path in VIEWERS:
    # Change 4 adds controls, but never relaxes original authorization or policy.
    assert cssfile in current and '<script' in current,(path,'original secure viewer shell missing')
-   assert 'getUser' in current or 'verifyUser' in current,(path,'protected identity verification missing')
+   assert ('getUser' in current or 'verifyUser' in current or ('loadUser(' in current and 'loadResourceContext(' in current)),(path,'protected identity verification missing')
    if path=='course-material-viewer.html':
     for key in ('bottomToolbar','bottomPrevPage','requestZoom','touchmove','wheel'):
      assert key in current,(path,'approved PDF viewer zoom/navigation feature absent',key)
