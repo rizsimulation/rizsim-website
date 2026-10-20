@@ -5719,28 +5719,7 @@ document.body.classList.remove(
 }
 
 
-// V15.4: reserve a browser tab in the actual user gesture, before asynchronous
-// secure access RPC; otherwise browsers block window.open after await.
-document.addEventListener('click',event=>{
- const pressed=event.target.closest?.('[data-join-access="live"],[data-join-access="practice"],[data-launch-attempt]');
- if(!pressed||!pressed.closest('#view-player')||window.__rzV154RunnerTab&&!window.__rzV154RunnerTab.closed)return;
- // Invalid name/institution must show validation in the current RizSim tab;
- // do not spawn a blank tab before the first-party Join check can reject it.
- if(pressed.matches('[data-join-access="live"],[data-join-access="practice"]')){
-  const who=document.getElementById('rzV154JoinName');
-  const school=document.getElementById('rzV154JoinInstitution');
-  if((who&&!who.value.trim())||(school&&!school.value.trim()))return;
- }
- try{
-  const tab=window.open('about:blank','_blank');
-  if(tab){tab.document.title='Preparing RizSim simulation…';
-   tab.document.body.textContent='RizSim is checking your classroom access. This tab will open your simulation shortly.';
-   window.__rzV154RunnerTab=tab;
-   window.setTimeout(()=>{if(window.__rzV154RunnerTab===tab){tab.close();window.__rzV154RunnerTab=null;}},30000);
-  }
- }catch(_){}
-},true);
-
+// Change 3: the Classroom ERP confirmation owns the new-tab gesture.
 /* ============================================================
    PLAYER RESOLVE
    ============================================================ */
@@ -6595,18 +6574,22 @@ connected to a launch URL in RizSim.
 function handoffIdentityToTab(tab,attemptId,sessionId){
  if(!tab||tab.closed||!currentUser?.id)return;
  try{
-  const data=JSON.parse(sessionStorage.getItem('rizsim:v154:join-identity')||'null');
-  if(!data||String(data.session)!==String(sessionId))return;
-  const name=String(data.name||'').trim(),institution=String(data.institution||'').trim();
-  if(!name||!institution)return;
+  const name=String(currentProfile?.display_name||currentUser.user_metadata?.full_name||'RizSim Learner').trim();
+  const institution=String(resolvedSession?.institution_name||'RizSim classroom').trim();
+  const erp=window.__rzV155ERPConfirmed;
+  if(!erp||erp.user!==currentUser.id||String(erp.session)!==String(sessionId))return;
+  // Short-lived authenticated first-party handoff. No ERP in URLs.
   tab.sessionStorage.setItem('rizsim:v154:participant',JSON.stringify({
-   name:name.slice(0,120),institution:institution.slice(0,180),
+   name:name.slice(0,120),institution:institution.slice(0,120),erp:String(erp.erp).slice(0,40),
    user:String(currentUser.id),attempt:String(attemptId),session:String(sessionId),at:Date.now()
   }));
- }catch(_){/* Keep the existing runner entry form as the safe fallback. */}
+ }catch(_){/* An unavailable tab store cannot bypass the runner's own access check. */}
 }
 
 async function launchJoinedSimulation(){
+if(!window.__rzV155ERPConfirmed||window.__rzV155ERPConfirmed.user!==currentUser?.id||String(window.__rzV155ERPConfirmed.session)!==String(joinedAttempt?.session_id)){
+ setPlayerMessage('Confirm your ERP number in Classroom before starting.',true);return false;
+}
 if(joinedAttempt?.attempt_status === "submitted" || joinedAttempt?.submitted_at){setPlayerMessage("This response has already been submitted.",true);return;}
 
 if(
@@ -6724,10 +6707,10 @@ joinedAttempt.classroom_access_type
 // A user-initiated Join/Launch click reserves the tab synchronously below.
 const popup=window.__rzV154RunnerTab;
 window.__rzV154RunnerTab=null;
-if(popup&&!popup.closed){handoffIdentityToTab(popup,joinedAttempt.attempt_id,joinedAttempt.session_id);popup.location.replace(destination.href);popup.opener=null;popup.focus();}
+if(popup&&!popup.closed){handoffIdentityToTab(popup,joinedAttempt.attempt_id,joinedAttempt.session_id);popup.location.replace(destination.href);popup.focus();}
 else{
  const newTab=window.open('about:blank','_blank');
- if(newTab){handoffIdentityToTab(newTab,joinedAttempt.attempt_id,joinedAttempt.session_id);newTab.location.replace(destination.href);newTab.opener=null;}
+ if(newTab){handoffIdentityToTab(newTab,joinedAttempt.attempt_id,joinedAttempt.session_id);newTab.location.replace(destination.href);}
  else setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Launch Simulation again.',true);
 }
 
@@ -7867,8 +7850,8 @@ window.RizSimStudentBridge = Object.freeze({
   destination.searchParams.set('session',own.classroom_session_id);
   destination.searchParams.set('access','practice');
   const popup=window.__rzV154RunnerTab;window.__rzV154RunnerTab=null;
-  if(popup&&!popup.closed){handoffIdentityToTab(popup,own.id,own.classroom_session_id);popup.location.replace(destination.href);popup.opener=null;popup.focus();}
-  else{const tab=window.open('about:blank','_blank');if(tab){handoffIdentityToTab(tab,own.id,own.classroom_session_id);tab.location.replace(destination.href);tab.opener=null;}
+  if(popup&&!popup.closed){handoffIdentityToTab(popup,own.id,own.classroom_session_id);popup.location.replace(destination.href);popup.focus();}
+  else{const tab=window.open('about:blank','_blank');if(tab){handoffIdentityToTab(tab,own.id,own.classroom_session_id);tab.location.replace(destination.href);}
    else throw new Error('Please allow RizSim pop-ups to open your Practice simulation in a separate tab.');}
  },
  async material(id){const result=await supabase.rpc('get_rizsim_course_material_view_context',{p_material_id:id});if(result.error)throw new Error(result.error.message);const item=result.data?.[0];if(!item)throw new Error('This resource is no longer available.');return item;}
