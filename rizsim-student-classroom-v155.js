@@ -17,7 +17,9 @@
   }
   const classroom=E('section','rz-c155-classroom');classroom.id='rzC155Classroom';classroom.setAttribute('aria-label','Your active classroom');
   root.insertBefore(tabs,layout);root.insertBefore(classroom,layout);
-  for(const evt of ['rizsim:classroom-resolved','rizsim:student-ready','rizsim:student-data','rizsim:student-view'])window.addEventListener(evt,render);
+  for(const evt of ['rizsim:student-ready','rizsim:student-data','rizsim:student-view'])window.addEventListener(evt,render);
+  // Explicit Find/QR/class-code resolution must reopen Classroom even for the same room.
+  window.addEventListener('rizsim:classroom-resolved',()=>{if(sourceInfo()){mode='classroom';lastSignature='';}render();});
   window.addEventListener('rizsim:student-cleared',clear);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshResources();});
   window.addEventListener('focus',()=>refreshResources());
