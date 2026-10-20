@@ -74,6 +74,13 @@
   if(latest)record=clone(latest);
   else if(record){try{const local=validateRecord(record);if(local.profile.session!=='RIZSIM-'+sessionId)record=null}
     catch(e){record=null}}
+  // Use the Google/RizSim identity already verified above.
+  // Hosted classrooms never ask for Name / Organization a second time.
+  if(!record && attempt.status==='in_progress'){
+    const name=String(user.user_metadata?.full_name||user.email?.split('@')[0]||'RizSim Learner').trim().slice(0,120);
+    record=newRecord({name,organization:'RizSim classroom',group:'Not specified',session:'RIZSIM-'+sessionId});
+    persist();
+  }
   verified=true;
   if(attempt.status==='submitted'){
     try{await loadPersonal()}catch(e){banner('Submission verified, but personal scoring is unavailable: '+errorText(e),true);}
