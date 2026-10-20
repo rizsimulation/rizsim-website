@@ -4,7 +4,7 @@
  const $=id=>document.getElementById(id),bridge=()=>window.RizSimStudentBridge;
  const E=(tag,cls,copy)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(copy!==undefined)x.textContent=String(copy??'');return x};
  const id=v=>String(v||''),safeERP=v=>/^[A-Za-z0-9][A-Za-z0-9._/-]{1,39}$/.test(String(v||'').trim());
- let mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',channel=null,erpPreference=null,erpUser='',lastCount=-1,statusError='';
+ let mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',channel=null,erpPreference=null,erpUser='',lastCount=-1,statusError='',resourceRefreshBusy=null;
  const element=id=>$(id);
  const snap=()=>bridge()?.snapshot?.()||null;
  function initialize(){
@@ -23,7 +23,9 @@
   window.addEventListener('rizsim:student-cleared',clear);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshResources();});
   window.addEventListener('focus',()=>refreshResources());
-  window.setInterval(()=>{if(!document.hidden)refreshResources();},25000);
+  // Continue background source-tab refresh while its simulation is in the foreground.
+  // Chrome may throttle background timers; the runner additionally requests a refresh via BroadcastChannel.
+  window.setInterval(()=>{void refreshResources();},25000);
   render();
  }
  function setMode(next){if(next==='classroom'&&!snap()?.resolved)return;mode=next;render();}
@@ -49,7 +51,7 @@
   channel?.close();channel=null;lastRoom=room;lastCount=-1;
   if(room&&typeof BroadcastChannel==='function'){
    try{channel=new BroadcastChannel('rizsim:classroom:'+room);channel.onmessage=e=>{
-    if(e.data?.kind==='resources-request')broadcastCount(true);
+    if(e.data?.kind==='resources-request'){void refreshResources().then(()=>broadcastCount(true));}
     if(e.data?.kind==='open-resources')openResources(room);
    }}catch(_){}
   }
@@ -61,7 +63,9 @@
   lastCount=count;try{channel.postMessage({kind:'resources-count',session:id(info.room.session_id),count});}catch(_){}
  }
  async function refreshResources(){const info=sourceInfo();if(!info||mode!=='classroom'||!$('view-player')?.classList.contains('active'))return;
-  try{await bridge().refreshResources();}catch(_){/* Explicit resource controls retain retry. */}
+  if(resourceRefreshBusy)return resourceRefreshBusy;
+  resourceRefreshBusy=Promise.resolve().then(()=>bridge().refreshResources()).catch(()=>{/* Explicit resource controls retain retry. */}).finally(()=>{resourceRefreshBusy=null;});
+  return resourceRefreshBusy;
  }
  function statusText(room){return room.live_open===true?'Session Live':room.practice_open===true?'Practice active':'Session not currently open';}
  function render(){
