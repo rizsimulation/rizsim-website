@@ -37,7 +37,14 @@
   .privacy{font-size:.72rem;color:#496774;margin:15px 0 35px;text-align:center}
   .downloadable-wrap{display:grid;width:100%;min-height:300px;place-items:center;background:#f5f8fa;border-radius:8px}
   .downloadable-wrap[hidden],.downloadable-frame[hidden],.downloadable-image[hidden]{display:none!important}
-  .downloadable-frame{width:100%;height:min(80vh,1050px);min-height:480px;border:0;background:#fff}
+  .downloadable-frame{width:100%;height:calc(100dvh - 140px);min-height:700px;max-height:1600px;border:0;background:#fff}
+  body[data-delivery-mode=downloadable] .shell{width:min(1400px,calc(100% - 24px))}
+  body[data-delivery-mode=downloadable] .page-container{padding:12px 8px}
+  .bottom-toolbar{margin-top:-1px;border-radius:0 0 14px 14px;position:sticky;bottom:0;z-index:9;box-shadow:0 -7px 24px #112d3c0a}
+  .bottom-toolbar[hidden]{display:none!important}
+  .page-container[data-bottom-controls=true]{border-radius:0;min-height:65vh}
+  #pdfCanvas{transform-origin:center top;will-change:width,height}
+  @media(max-width:630px){.downloadable-frame{height:calc(100dvh - 110px);min-height:560px}.bottom-toolbar{position:relative}}
   .downloadable-image{display:block;max-width:100%;max-height:82vh;object-fit:contain}
   .page-container[data-downloadable=true]{user-select:text;-webkit-user-select:text}
   .controls[hidden]{display:none!important}
@@ -76,6 +83,10 @@
       <img class="downloadable-image" id="downloadableImage" alt="Downloadable course image" hidden>
     </div>
   </div>
+  <div class="toolbar bottom-toolbar" id="bottomToolbar" hidden aria-label="Bottom PDF reading controls">
+    <div class="controls"><button id="bottomPrevPage" type="button" aria-label="Previous PDF page">← Previous</button><span class="counter" id="bottomPageCounter">Page 1 / 1</span><button id="bottomNextPage" type="button" aria-label="Next PDF page">Next →</button></div>
+    <div class="controls"><button id="bottomZoomOut" type="button" aria-label="Zoom out">−</button><span class="counter" id="bottomZoomLabel">100%</span><button id="bottomZoomIn" type="button" aria-label="Zoom in">+</button></div>
+  </div>
   <p class="privacy" id="privacyNote">Secure View: RizSim limits download, copy and print controls, with a watermark. Screenshots or technical extraction cannot be fully prevented.</p>
 </main>
 <script type="module">
@@ -86,7 +97,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dis
 const SUPABASE_URL='https://rvmumpvtvjvvuyimeybc.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_wufSxfg90bb4R6XarScaJQ_Dl5wlmtf';
 const supabase=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
-const elements=Object.fromEntries(['materialTitle','courseTitle','toolbar','pageContainer','message','pdfCanvas','imageWrap','materialImage','imageWatermark','downloadableWrap','downloadableFrame','downloadableImage','downloadControls','downloadButton','pageControls','zoomControls','deliveryBadge','privacyNote','prevPage','nextPage','pageCounter','zoomOut','zoomIn','zoomLabel'].map(id=>[id,document.getElementById(id)]));
+const elements=Object.fromEntries(['materialTitle','courseTitle','toolbar','pageContainer','message','pdfCanvas','imageWrap','materialImage','imageWatermark','downloadableWrap','downloadableFrame','downloadableImage','downloadControls','downloadButton','pageControls','zoomControls','deliveryBadge','privacyNote','prevPage','nextPage','pageCounter','zoomOut','zoomIn','zoomLabel','bottomToolbar','bottomPrevPage','bottomNextPage','bottomPageCounter','bottomZoomIn','bottomZoomOut','bottomZoomLabel'].map(id=>[id,document.getElementById(id)]));
 const materialId=new URLSearchParams(location.search).get('material')||'';
 const uuid=/^[a-f\d]{8}-[a-f\d]{4}-[1-8][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
 let documentContext=null,viewerUser=null,pdf=null,pageNum=1,zoom=1,rendering=false,rerenderRequested=false,imageUrl=null,deliveryMode=null;
