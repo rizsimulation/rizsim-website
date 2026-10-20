@@ -78,8 +78,11 @@ def multiple_practice_classes(browser,base):
         for code,attempt in [('PRAC0001','attempt-practice-a'),('PRAC0002','attempt-practice-b')]:
             page.locator('.rz-v15-practice-join input').fill(code)
             page.locator('.rz-v15-practice-join button[type="submit"]').click()
-            page.wait_for_selector('[data-practice-attempt="'+attempt+'"]',timeout=11000)
-            assert page.locator('.rz-v15-practice-join input').is_visible(), 'Adding Practice hides persistent code entry'
+            page.wait_for_selector('#view-player.rz-c155-classroom #rzC155Classroom .rz-c155-start',timeout=11000)
+            assert page.evaluate('window.__studentFixture.attempts.some(a=>a.id==="'+attempt+'")'),'Practice class not created after first-party Classroom join'
+            student_v8.nav(page,'practice')
+            page.wait_for_selector('[data-practice-attempt="'+attempt+'"]:visible',timeout=11000)
+            assert page.locator('.rz-v15-practice-join input').is_visible(), 'Returning to Practice must retain the add-another-code field'
             assert page.locator('.rz-v15-practice-join input').input_value()=='', 'Successful Practice join should clear only used code'
         assert page.locator('[data-practice-attempt="attempt-practice-a"]').count()==1
         assert page.locator('[data-practice-attempt="attempt-practice-b"]').count()==1
