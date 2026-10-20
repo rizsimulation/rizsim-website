@@ -1957,6 +1957,7 @@ animation:none!important;
 <link rel="stylesheet" href="rizsim-v15-premium.css">
 <link rel="stylesheet" href="rizsim-v153-focus.css">
 <link rel="stylesheet" href="/rizsim-v154-session-ui.css">
+<link rel="stylesheet" href="/rizsim-student-classroom-v155.css">
 </head>
 
 
@@ -5746,7 +5747,8 @@ document.addEventListener('click',event=>{
 
 async function resolveSession(
 sourceType,
-value
+value,
+preferredAccess='live'
 ){
 const generation=++studentResolveGeneration;
 const requestUser=currentUser?.id;
@@ -5899,17 +5901,13 @@ setPlayerMessage(
 );
 
 renderResolvedSession();
-// Faculty QR/share-token invitations open the authorized live simulation directly.
-// Practice invitations remain in the dedicated Practice workspace.
-if(sourceType==='token' && session.live_open===true){
-  // No auto-join: show the Faculty session details and first-party Join button.
-  navigateStudent('player',false);
-}
-else if(sourceType==='token' && session.practice_open===true){
-  // A Practice invitation requires the same first-party website Join click.
-  // Never silently join or launch a runner on QR/link arrival.
-  navigateStudent('player',false);
-}
+// Code, QR and invitation link converge on the same website Classroom subtab.
+// Joining here does NOT launch the simulation. ERP is requested only on Start.
+navigateStudent('player',false);
+window.dispatchEvent(new Event('rizsim:classroom-resolved'));
+const preferred=preferredAccess==='practice'&&session.practice_open?'practice':session.live_open?'live':session.practice_open?'practice':null;
+if(preferred && session.access_status==='open')await joinSession(preferred,false);
+window.dispatchEvent(new Event('rizsim:classroom-resolved'));
 
 }
 
@@ -6330,16 +6328,7 @@ session.access_status ===
 }
 
 
-<section class="rz-v154-join-profile" aria-label="Classroom entry details">
- <span class="rz-v154-kicker">BEFORE YOU JOIN</span>
- <h3>Confirm your classroom identity</h3>
- <p>Your name and institution stay on the RizSim website. Your simulation will open in a separate tab while class resources remain here.</p>
- <div class="rz-v154-join-fields">
-  <label>Name<input id="rzV154JoinName" type="text" maxlength="100" autocomplete="name" value="${escapeHTML(currentProfile?.display_name||'')}" required></label>
-  <label>Institution<input id="rzV154JoinInstitution" type="text" maxlength="120" autocomplete="organization" value="${escapeHTML(session.institution_name && session.institution_name !== 'Independent Faculty' ? session.institution_name : '')}" required placeholder="Enter your institution"></label>
- </div>
- <div class="rz-v154-join-help" id="rzV154JoinHelp" role="status"></div>
-</section>
+<section class="rz-v154-join-profile" aria-label="Verified student identity"><span class="rz-v154-kicker">YOUR CLASSROOM</span><p>Signed in as ${escapeHTML(currentProfile?.display_name||'RizSim Learner')}. Select Start Simulation from the Classroom panel whenever you are ready.</p></section>
 <div class="session-actions">${actions}</div>
 <section class="rz-v154-session-resources" id="rzV154SessionResources" aria-label="Faculty shared class resources">
  <h3>Resources shared by your presenter</h3><p>After joining, keep this RizSim tab open to review your class resources while the simulation runs separately.</p>
@@ -6373,18 +6362,9 @@ renderJoinedAttempt();
 
 async function joinSession(
 requestedAccessType,
-autoLaunch = false,
-identityOverride = null
+autoLaunch = false
 ){
 if(studentJoinBusy)return;
-const who=document.getElementById('rzV154JoinName'),school=document.getElementById('rzV154JoinInstitution');
-const provided=identityOverride && typeof identityOverride==='object';
-if(provided || (who&&school)){
- const name=String(provided?identityOverride.name:who.value).trim();
- const institution=String(provided?identityOverride.institution:school.value).trim();
- if(!name||!institution){const n=document.getElementById('rzV154JoinHelp');if(n)n.textContent='Enter both your name and institution before joining.';if(!provided)(!name?who:school).focus();return;}
- try{sessionStorage.setItem('rizsim:v154:join-identity',JSON.stringify({name:name.slice(0,120),institution:institution.slice(0,180),session:resolvedSession?.session_id}));}catch(_){}
-}
 studentJoinBusy=true;
 const requestUser=currentUser?.id;
 const joiningSession=resolvedSession?.session_id;
@@ -6480,7 +6460,7 @@ return;
 }
 
 await reloadAttempts();
-
+await loadStudentCourseWorkspace();
 renderAll();
 
 setPlayerMessage(
@@ -6494,6 +6474,7 @@ joinedAttempt.is_existing_attempt
 renderJoinedAttempt();
 window.RizSimStudentWorkspace?.refresh?.();
 window.dispatchEvent(new Event('rizsim:student-data'));
+window.dispatchEvent(new Event('rizsim:classroom-resolved'));
 if(autoLaunch && joinedAttempt && !joinedAttempt.submitted_at && joinedAttempt.attempt_status !== 'submitted'){
   await launchJoinedSimulation();
 }
@@ -7913,6 +7894,7 @@ initialize();
 </script>
 
 <script src="rizsim-student-workspace.js" defer></script>
+<script src="rizsim-student-classroom-v155.js" defer></script>
 <script src="rizsim-shared-home.js" defer></script>
 <script src="rizsim-experiences.js" defer></script>
 <script src="rizsim-support.js" defer></script>
