@@ -68,8 +68,10 @@
   const name=E('strong','rz-c156-class-name',title),state=E('span','rz-c156-live-state');
   state.append(E('i','rz-c155-dot'),E('span','','Session Live'));
   top.append(name,state);item.append(top);
+  // The dotted Leave action sits immediately below the simulation title.
+  item.append(leaveButton('find'));
   if(room.class_name&&room.class_name!==title)item.append(E('p','rz-c156-subtitle',room.class_name));
-  item.append(leaveButton('find'));list.append(item);host.append(list);
+  list.append(item);host.append(list);
  }
  function courseResources(s,room){
   if(!s?.joined?.attempt_id)return [];
