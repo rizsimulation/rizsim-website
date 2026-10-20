@@ -6339,6 +6339,25 @@ renderJoinedAttempt();
    JOIN SESSION
    ============================================================ */
 
+/* One attempt per learner and classroom. The join RPC intentionally returns
+   the existing mode (which can be Live); a separate server-authorized resume
+   converts that same attempt to Practice without resetting responses. */
+async function ensurePracticeAccessMode(attempt,sessionId,actor){
+  if(!attempt?.attempt_id)throw new Error('RizSim could not confirm your learning attempt.');
+  if(attempt.attempt_status==='submitted'||attempt.submitted_at)return attempt;
+  if(attempt.classroom_access_type==='practice')return attempt;
+  if(attempt.classroom_access_type!=='live')throw new Error('This saved attempt cannot be resumed as Practice.');
+  const {data,error}=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attempt.attempt_id});
+  if(currentUser?.id!==actor)throw new Error('Your RizSim account changed. Sign in again.');
+  if(error)throw new Error(error.message||'Practice could not be resumed.');
+  const returned=Array.isArray(data)?data[0]:data;
+  if(String(returned?.attempt_id)!==String(attempt.attempt_id)||
+     String(returned?.session_id)!==String(sessionId)||
+     returned?.classroom_access_type!=='practice')
+    throw new Error('The Practice attempt could not be verified. Refresh and try again.');
+  return {...attempt,classroom_access_type:'practice'};
+}
+
 async function joinSession(
 requestedAccessType,
 autoLaunch = false
@@ -6436,6 +6455,15 @@ true
 
 return;
 
+}
+
+// Already-enrolled Live learners may enter a currently open Practice period.
+// Preserve the original attempt and require the server to authorize the
+// transition. A rejection remains visible on the Classroom join screen.
+if(requestedAccessType==='practice'&&joinedAttempt.attempt_status!=='submitted'&&!joinedAttempt.submitted_at){
+  try{joinedAttempt=await ensurePracticeAccessMode(joinedAttempt,joiningSession,requestUser);}
+  catch(error){joinedAttempt=null;setPlayerMessage(error?.message||'Practice is not currently available.',true);return;}
+  if(currentUser?.id!==requestUser||joiningSession!==resolvedSession?.session_id||joiningGeneration!==studentResolveGeneration)return;
 }
 
 await reloadAttempts();
