@@ -2,9 +2,9 @@
 .rz-v154-runner-brand{position:relative;z-index:15;display:flex;align-items:center;gap:13px;justify-content:space-between;flex-wrap:wrap;padding:10px clamp(14px,3vw,26px);background:linear-gradient(115deg,#f3faf7,#fff);border-bottom:1px solid #c8e1da;box-shadow:0 3px 13px rgba(14,64,67,.065);font:600 12px/1.4 system-ui,sans-serif;color:#285e62}
 .rz-v154-runner-brand img{display:block;max-width:115px;max-height:45px;width:auto;height:auto;object-fit:contain;flex:none}
 .rz-v154-runner-brand span{flex:1;min-width:105px;letter-spacing:.015em}
-.rz-v154-runner-brand a{color:#0f6d6a;text-decoration:none;border:1px solid #bbded7;background:#fff;border-radius:30px;font-size:11px;font-weight:750;padding:8px 11px}
-.rz-v154-runner-brand a:hover{text-decoration:underline;background:#e9f8f3}
-@media(max-width:520px){.rz-v154-runner-brand{gap:8px;padding:7px 11px}.rz-v154-runner-brand span{font-size:10px}.rz-v154-runner-brand a{font-size:10px;padding:6px 8px}}
+.rz-v154-runner-brand a,.rz-v154-runner-brand .rz-v155-resource-return{color:#0f6d6a;text-decoration:none;border:1px solid #bbded7;background:#fff;border-radius:30px;font-size:11px;font-weight:750;padding:8px 11px}
+.rz-v154-runner-brand a:hover,.rz-v154-runner-brand .rz-v155-resource-return:hover{text-decoration:underline;background:#e9f8f3}
+@media(max-width:520px){.rz-v154-runner-brand{gap:8px;padding:7px 11px}.rz-v154-runner-brand span{font-size:10px}.rz-v154-runner-brand a,.rz-v154-runner-brand .rz-v155-resource-return{font-size:10px;padding:6px 8px}}
 /* Less GPU overdraw for long hosted simulations: no blur or perpetual motion. */
 @media(prefers-reduced-motion:reduce){.rz-v154-runner-brand *{animation:none!important;transition:none!important}}
 body:has(.rz-v154-runner-brand) .rz-v15-student-paused{backdrop-filter:none}
