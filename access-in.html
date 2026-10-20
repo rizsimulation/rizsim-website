@@ -6711,8 +6711,9 @@ if(popup&&!popup.closed){handoffIdentityToTab(popup,joinedAttempt.attempt_id,joi
 else{
  const newTab=window.open('about:blank','_blank');
  if(newTab){handoffIdentityToTab(newTab,joinedAttempt.attempt_id,joinedAttempt.session_id);newTab.location.replace(destination.href);}
- else setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Launch Simulation again.',true);
+ else {setPlayerMessage('Your browser blocked the simulation tab. Please allow pop-ups for rizsim.com and click Start Simulation again.',true);return false;}
 }
+return true;
 
 }
 
@@ -7801,29 +7802,30 @@ window.RizSimStudentBridge = Object.freeze({
   products:products.map(p=>({...p})),attempts:attempts.filter(a=>a.user_id===currentUser?.id).map(a=>({...a})),courses:studentCourses.map(c=>({...c})),materials:studentCourseMaterials.map(m=>({...m})),
   errors:{attempts:studentAttemptDataError,materials:studentCourseDataError},resolved:resolvedSession?{...resolvedSession}:null,joined:joinedAttempt?{...joinedAttempt}:null};},
  navigate(view){navigateStudent(view,false);},
+ async startClassroom(){if(!currentUser||!resolvedSession||!joinedAttempt)throw Error('Join the authorized classroom before starting.');const result=await launchJoinedSimulation();if(!result)throw Error('The simulation could not be launched. Please check your Classroom.');return true;},
+ async fetchERP(){const {data,error}=await supabase.rpc('get_my_rizsim_erp_preferences');if(error)throw Error(error.message);return Array.isArray(data)?data[0]||null:data||null;},
+ async saveERP(number,remember){const {data,error}=await supabase.rpc('set_my_rizsim_erp_preferences',{p_erp_number:String(number||'').trim(),p_remember:!!remember});if(error||data!==true)throw Error(error?.message||'ERP number could not be saved.');return true;},
+ async refreshResources(){if(!currentUser)return;await loadStudentCourseWorkspace();window.dispatchEvent(new Event('rizsim:student-data'));},
  async workspace(){const result=await supabase.rpc('get_my_rizsim_student_workspace');if(result.error)throw new Error(result.error.message);return result.data;},
  async refresh(){if(!currentUser)return;await reloadAttempts();if(currentUser)renderAll();},
  async openAttempt(attempt){
   if(!attempt || !attempt.class_code)return;
   navigateStudent('player',false);
-  await resolveSession('code',attempt.class_code);
+  await resolveSession('code',attempt.class_code,attempt.classroom_access_type==='practice'?'practice':'live');
   if(resolvedSession?.session_id!==attempt.classroom_session_id)return;
   const own=attempts.find(a=>a.id===attempt.id && a.user_id===currentUser?.id);
   if(!own)return;
   joinedAttempt={attempt_id:own.id,session_id:own.classroom_session_id,product_id:own.product_id,classroom_access_type:own.classroom_access_type,attempt_status:own.status,submitted_at:own.submitted_at,is_existing_attempt:true};
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
- async joinPracticeCode(code,participant){
+ async joinPracticeCode(code){
   const actor=currentUser?.id;if(!actor)throw new Error('Sign in before joining a Practice class.');
   const clean=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
   if(!clean)throw new Error('Enter your Faculty class code.');
-  if(!participant||!String(participant.name||'').trim()||!String(participant.institution||'').trim())
-   throw new Error('Confirm your name and institution on RizSim before adding Practice.');
-  await resolveSession('code',clean);
+  await resolveSession('code',clean,'practice');
   if(currentUser?.id!==actor||!resolvedSession||resolvedSourceType!=='code'||resolvedSession.class_code!==clean)
     throw new Error('This Practice class could not be verified. Check the code and try again.');
   if(!resolvedSession.practice_open)throw new Error('Practice is not currently available for this class.');
-  await joinSession('practice',false,participant);
   if(!joinedAttempt?.attempt_id||joinedAttempt.classroom_access_type!=='practice')
     throw new Error('RizSim could not confirm this Practice assignment.');
   window.dispatchEvent(new Event('rizsim:student-data'));
@@ -7860,7 +7862,7 @@ window.addEventListener('popstate',()=>{navigateStudent(location.hash.slice(1)||
 // The underlying auth client remains the single owner of token refresh.
 supabase.auth.onAuthStateChange((event,session)=>{
  if(event==='SIGNED_OUT' || (currentUser && session?.user && session.user.id!==currentUser.id)){
-  currentUser=null;currentProfile=null;attempts=[];studentCourses=[];studentCourseMaterials=[];resolvedSession=null;joinedAttempt=null;studentResolveGeneration++;
+  currentUser=null;currentProfile=null;attempts=[];studentCourses=[];studentCourseMaterials=[];resolvedSession=null;joinedAttempt=null;studentResolveGeneration++;window.__rzV155ERPConfirmed=null;
   window.dispatchEvent(new Event('rizsim:student-cleared'));
   document.getElementById('studentApp').classList.remove('show');document.getElementById('authGate').classList.remove('hidden');
  }
