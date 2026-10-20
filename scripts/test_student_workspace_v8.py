@@ -72,6 +72,28 @@ def run(browser,base):
   check('Simulation opens only after ERP with source Classroom tab intact',not p.is_closed() and 'attempt=attempt-0' in child.url and p.locator('#view-player.rz-c155-classroom').is_visible())
   check('ERP remembered with explicit consent',p.evaluate('__studentFixture.erp.erp_number')=='ERP-001' and p.evaluate('__studentFixture.erp.remember') is True)
   check('Original Google / course authorization untouched',p.evaluate('__studentFixture.calls.some(c=>c.name==="check_my_rizsim_classroom_attempt_access")'))
+  # The real academic runners include this shared RizSim header. Mount it on the
+  # isolated test runner to verify cross-tab resource counts and return actions.
+  child.add_script_tag(url=base+'/rizsim-v154-runner-shell.js')
+  child.wait_for_selector('[data-rz-runner-brand]')
+  child.wait_for_selector('.rz-v155-count[data-visible=true]')
+  check('Runner shows red new-resource count without another browser tab',
+    child.locator('.rz-v155-count').inner_text()=='1' and len(ctx.pages)==2)
+  child.get_by_role('link',name='Class Resources').click()
+  p.wait_for_function("RizSimStudentClassroom.unread()===0")
+  check('Class Resources returns to the existing RizSim tab, clearing seen count',
+    len(ctx.pages)==2 and p.locator('#view-player.rz-c155-classroom').is_visible())
+  p.evaluate("""()=>__studentFixture.materials.push({...__studentFixture.materials[0],
+    material_id:'material-published-later',title:'Newly published presenter slides'})""")
+  child.evaluate("""()=>{
+    const c=new BroadcastChannel('rizsim:classroom:session-open');
+    c.postMessage({kind:'resources-request'});c.close();
+  }""")
+  p.wait_for_selector('#rzC155Resources .rz-c155-material:nth-child(2)',timeout=10000)
+  child.wait_for_function("document.querySelector('.rz-v155-count')?.dataset.visible==='true'",timeout=10000)
+  check('New presenter materials appear in running simulation via existing Classroom relay',
+    child.locator('.rz-v155-count').inner_text()=='1' and
+    'Newly published presenter slides' in p.locator('#rzC155Resources').inner_text())
   child.close()
   with ctx.expect_page() as launch2:
    hub.get_by_role('button',name='Start Simulation').click()
