@@ -1,0 +1,22 @@
+name: Student Practice Code V15.5 Regression
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  practice-join:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright Chromium (isolated synthetic only)
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Verify Live-to-Practice reuse, closed and invalid codes, revocation, mobile and player entry
+        run: python scripts/test_practice_code_v155.py

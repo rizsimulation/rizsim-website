@@ -109,8 +109,10 @@ def contract():
     expected=current
     if path=='simulation-hotel-judgment.html':
      injection='<style>/* Hosted ERP is captured on RizSim Classroom only, never requested again inside the runner. */\\nhtml[data-rizsim-hosted] label[for="participant"],html[data-rizsim-hosted] #participant{display:none!important}</style>\\n'
-     assert current.count(injection.replace('\\n',chr(10)))==1,(path,'Unexpected hosted ERP presentation change')
-     expected=current.replace(injection.replace('\\n',chr(10)),'')
+     approved=injection.replace('\\n',chr(10))
+     assert current.count(approved)==1,(path,'Approved hosted ERP presentation was removed')
+     # V15.5 has already shipped; preserve the approved CSS if present in main.
+     expected=current if approved in before else current.replace(approved,'')
     assert expected==before,(path,'academic experiment changed beyond authorized hosted ERP presentation')
    else:
     restored=current

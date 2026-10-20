@@ -6339,6 +6339,25 @@ renderJoinedAttempt();
    JOIN SESSION
    ============================================================ */
 
+/* One attempt per learner and classroom. The join RPC intentionally returns
+   the existing mode (which can be Live); a separate server-authorized resume
+   converts that same attempt to Practice without resetting responses. */
+async function ensurePracticeAccessMode(attempt,sessionId,actor){
+  if(!attempt?.attempt_id)throw new Error('RizSim could not confirm your learning attempt.');
+  if(attempt.attempt_status==='submitted'||attempt.submitted_at)return attempt;
+  if(attempt.classroom_access_type==='practice')return attempt;
+  if(attempt.classroom_access_type!=='live')throw new Error('This saved attempt cannot be resumed as Practice.');
+  const {data,error}=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attempt.attempt_id});
+  if(currentUser?.id!==actor)throw new Error('Your RizSim account changed. Sign in again.');
+  if(error)throw new Error(error.message||'Practice could not be resumed.');
+  const returned=Array.isArray(data)?data[0]:data;
+  if(String(returned?.attempt_id)!==String(attempt.attempt_id)||
+     String(returned?.session_id)!==String(sessionId)||
+     returned?.classroom_access_type!=='practice')
+    throw new Error('The Practice attempt could not be verified. Refresh and try again.');
+  return {...attempt,classroom_access_type:'practice'};
+}
+
 async function joinSession(
 requestedAccessType,
 autoLaunch = false
@@ -6436,6 +6455,15 @@ true
 
 return;
 
+}
+
+// Already-enrolled Live learners may enter a currently open Practice period.
+// Preserve the original attempt and require the server to authorize the
+// transition. A rejection remains visible on the Classroom join screen.
+if(requestedAccessType==='practice'&&joinedAttempt.attempt_status!=='submitted'&&!joinedAttempt.submitted_at){
+  try{joinedAttempt=await ensurePracticeAccessMode(joinedAttempt,joiningSession,requestUser);}
+  catch(error){joinedAttempt=null;setPlayerMessage(error?.message||'Practice is not currently available.',true);return;}
+  if(currentUser?.id!==requestUser||joiningSession!==resolvedSession?.session_id||joiningGeneration!==studentResolveGeneration)return;
 }
 
 await reloadAttempts();
@@ -7819,16 +7847,60 @@ window.RizSimStudentBridge = Object.freeze({
   renderJoinedAttempt();window.dispatchEvent(new Event('rizsim:student-data'));
  },
  async joinPracticeCode(code){
-  const actor=currentUser?.id;if(!actor)throw new Error('Sign in before joining a Practice class.');
+  const actor=currentUser?.id;
+  if(!actor)throw new Error('Sign in with Google before adding a Practice class.');
   const clean=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
-  if(!clean)throw new Error('Enter your Faculty class code.');
-  await resolveSession('code',clean,'practice');
-  if(currentUser?.id!==actor||!resolvedSession||resolvedSourceType!=='code'||resolvedSession.class_code!==clean)
-    throw new Error('This Practice class could not be verified. Check the code and try again.');
-  if(!resolvedSession.practice_open)throw new Error('Practice is not currently available for this class.');
-  if(!joinedAttempt?.attempt_id||joinedAttempt.classroom_access_type!=='practice')
-    throw new Error('RizSim could not confirm this Practice assignment.');
+  if(clean.length!==8)throw new Error('Enter the complete 8-character Faculty class code.');
+  // A failed/closed code must not remove the student from Practice or
+  // silently switch to a Classroom without verified membership.
+  const generation=++studentResolveGeneration;
+  const assertCurrent=()=>{
+    if(currentUser?.id!==actor||generation!==studentResolveGeneration)
+      throw new Error('Your RizSim account or classroom changed. Try again.');
+  };
+  const {data:found,error:lookupError}=await supabase.rpc('resolve_rizsim_classroom_access',{
+    p_class_code:clean,p_share_token:null
+  });
+  assertCurrent();
+  if(lookupError)throw new Error(lookupError.message||'This Faculty class code was not found.');
+  const room=Array.isArray(found)?found[0]:found;
+  if(!room?.session_id||String(room.class_code)!==clean)
+    throw new Error('This Faculty class code was not found. Check the code and try again.');
+  if(room.access_status!=='open'||room.practice_open!==true){
+    if(room.access_status==='closed')throw new Error('Faculty has closed this classroom. Ask your presenter to open a Practice session.');
+    if(room.access_status==='scheduled')throw new Error('This Practice session has not opened yet. Ask Faculty for the start time.');
+    if(room.access_status==='licence_expired'||room.access_status==='licence_revoked')
+      throw new Error('Practice is unavailable because its licence has expired or been revoked. Contact Faculty.');
+    if(room.access_mode==='live')throw new Error('This code belongs to a Live-only class. Faculty must enable Practice first.');
+    throw new Error('Practice is not currently open for this class. Ask Faculty to enable the Practice session.');
+  }
+  const {data:joined,error:joinError}=await supabase.rpc('join_rizsim_classroom_session',{
+    p_class_code:clean,p_share_token:null,p_requested_access_type:'practice'
+  });
+  assertCurrent();
+  if(joinError)throw new Error(joinError.message||'This Practice class could not be joined.');
+  let attempt=Array.isArray(joined)?joined[0]:joined;
+  if(!attempt?.attempt_id||String(attempt.session_id)!==String(room.session_id))
+    throw new Error('RizSim could not confirm your Practice attempt. Please retry.');
+  if(attempt.attempt_status==='submitted'||attempt.submitted_at)
+    throw new Error('You already submitted this class response. Find it under My Learning.');
+  attempt=await ensurePracticeAccessMode(attempt,room.session_id,actor);
+  assertCurrent();
+  // Commit the verified session only AFTER a successful server join/resume.
+  // Google login remains the single source for student identity.
+  resolvedSession=room;resolvedSourceType='code';resolvedSourceValue=room.class_code;joinedAttempt=attempt;
+  const codeInput=document.getElementById('classCodeInput');if(codeInput)codeInput.value=clean;
+  await reloadAttempts();
+  await loadStudentCourseWorkspace();
+  assertCurrent();
+  renderAll();
+  renderResolvedSession();
+  renderJoinedAttempt();
+  setPlayerMessage('Practice access confirmed. Start from your Classroom whenever you are ready.');
+  navigateStudent('player',false);
+  window.RizSimStudentWorkspace?.refresh?.();
   window.dispatchEvent(new Event('rizsim:student-data'));
+  window.dispatchEvent(new Event('rizsim:classroom-resolved'));
   return {...joinedAttempt};
  },
  async practice(attemptId){const result=await supabase.rpc('resume_my_rizsim_student_practice',{p_attempt_id:attemptId});if(result.error)throw new Error(result.error.message);await reloadAttempts();return result.data;},
