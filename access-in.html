@@ -7830,6 +7830,31 @@ window.RizSimStudentBridge = Object.freeze({
   products:products.map(p=>({...p})),attempts:attempts.filter(a=>a.user_id===currentUser?.id).map(a=>({...a})),courses:studentCourses.map(c=>({...c})),materials:studentCourseMaterials.map(m=>({...m})),
   errors:{attempts:studentAttemptDataError,materials:studentCourseDataError},resolved:resolvedSession?{...resolvedSession}:null,joined:joinedAttempt?{...joinedAttempt}:null};},
  navigate(view){navigateStudent(view,false);},
+ // Leaving exits only the active Live Classroom view. Server-owned attempts,
+ // enrolment, answers and Presenter session remain untouched and resumable.
+ leaveClassroom(){
+  if(!currentUser||!resolvedSession?.session_id||!joinedAttempt?.attempt_id||
+     joinedAttempt.classroom_access_type!=='live')return false;
+  const oldRoom=String(resolvedSession.session_id);
+  studentResolveGeneration++;
+  resolvedSession=null;joinedAttempt=null;
+  resolvedSourceType=null;resolvedSourceValue=null;
+  window.__rzV155ERPConfirmed=null;
+  const input=document.getElementById('classCodeInput');if(input)input.value='';
+  // Remove the invitation from this browser tab to avoid auto-join on refresh.
+  try{
+   const target=new URL(window.location.href);
+   target.searchParams.delete('session');target.searchParams.delete('code');
+   target.hash='player';
+   window.history.replaceState(null,'',target.pathname+target.search+target.hash);
+  }catch(_){/* The on-page exit still succeeds if history is unavailable. */}
+  renderResolvedSession();
+  setPlayerMessage('You left the Live Classroom view. Your saved work remains in My Learning.');
+  renderAll();
+  navigateStudent('player',false);
+  window.dispatchEvent(new CustomEvent('rizsim:classroom-left',{detail:{sessionId:oldRoom}}));
+  return true;
+ },
  async startClassroom(){if(!currentUser||!resolvedSession||!joinedAttempt)throw Error('Join the authorized classroom before starting.');const result=await launchJoinedSimulation();if(!result)throw Error('The simulation could not be launched. Please check your Classroom.');return true;},
  async fetchERP(){const {data,error}=await supabase.rpc('get_my_rizsim_erp_preferences');if(error)throw Error(error.message);return Array.isArray(data)?data[0]||null:data||null;},
  async saveERP(number,remember){const {data,error}=await supabase.rpc('set_my_rizsim_erp_preferences',{p_erp_number:String(number||'').trim(),p_remember:!!remember});if(error||data!==true)throw Error(error?.message||'ERP number could not be saved.');return true;},

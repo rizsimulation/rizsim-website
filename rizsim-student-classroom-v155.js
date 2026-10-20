@@ -4,7 +4,7 @@
  const $=id=>document.getElementById(id),bridge=()=>window.RizSimStudentBridge;
  const E=(tag,cls,copy)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(copy!==undefined)x.textContent=String(copy??'');return x};
  const id=v=>String(v||''),safeERP=v=>/^[A-Za-z0-9][A-Za-z0-9._/-]{1,39}$/.test(String(v||'').trim());
- let mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',channel=null,erpPreference=null,erpUser='',lastCount=-1,statusError='',resourceRefreshBusy=null;
+ let lastLiveSignature='',mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',channel=null,erpPreference=null,erpUser='',lastCount=-1,statusError='',resourceRefreshBusy=null;
  const element=id=>$(id);
  const snap=()=>bridge()?.snapshot?.()||null;
  function initialize(){
@@ -17,6 +17,10 @@
   }
   const classroom=E('section','rz-c155-classroom');classroom.id='rzC155Classroom';classroom.setAttribute('aria-label','Your active classroom');
   root.insertBefore(tabs,layout);root.insertBefore(classroom,layout);
+  // Keep the existing Join Class code card and event handlers exactly intact.
+  // A compact session list takes the place of the legacy full detail panel.
+  const live=E('section','rz-c156-live-panel');live.id='rzC156LiveList';
+  live.setAttribute('aria-label','Your joined Live Classroom');layout.append(live);
   for(const evt of ['rizsim:student-ready','rizsim:student-data','rizsim:student-view','rizsim:student-workspace-updated'])window.addEventListener(evt,render);
   // Explicit Find/QR/class-code resolution must reopen Classroom even for the same room.
   window.addEventListener('rizsim:classroom-resolved',()=>{if(sourceInfo()){mode='classroom';lastSignature='';}render();});
@@ -30,6 +34,45 @@
  }
  function setMode(next){if(next==='classroom'&&!snap()?.resolved)return;mode=next;render();}
  function sourceInfo(){const s=snap();return s?.resolved?.session_id?{s,room:s.resolved,attempt:s.joined}:null;}
+ function isJoinedLive(info){return !!(info?.s?.userId&&info?.room?.session_id&&
+   info?.attempt?.attempt_id&&info.attempt.classroom_access_type==='live');}
+ function leaveLiveClassroom(){
+  if(!isJoinedLive(sourceInfo())||launching)return;
+  if(bridge()?.leaveClassroom?.()!==true)return;
+  // Never delete a student attempt, close a Faculty session, or close runner tabs.
+  mode='join';lastSignature='';lastLiveSignature='';statusError='';
+  erpPreference=null;erpUser='';setChannel('');render();
+  try{$('classCodeInput')?.focus({preventScroll:true});}catch(_){}
+ }
+ function leaveButton(placement){
+  const b=E('button','rz-c156-leave'+(placement==='classroom'?' rz-c156-leave-classroom':''),'Leave Live Classroom');
+  b.type='button';b.setAttribute('aria-label','Leave Live Classroom without deleting saved progress');
+  b.addEventListener('click',leaveLiveClassroom);return b;
+ }
+ function renderLiveList(info){
+  const host=$('rzC156LiveList');if(!host)return;
+  const eligible=isJoinedLive(info)&&info.room.live_open===true&&info.room.access_status==='open';
+  const room=eligible?info.room:null;
+  const title=room?.simulation_title||(info?.s?.products||[]).find(p=>id(p.id)===id(room?.product_id))?.title||'RizSim simulation';
+  const signature=JSON.stringify([info?.s?.userId,room?.session_id,room?.class_name,room?.class_code,title,eligible]);
+  if(signature===lastLiveSignature)return;
+  lastLiveSignature=signature;host.replaceChildren();
+  host.append(E('span','rz-c156-kicker','YOUR LIVE CLASSROOM'),E('h2','','Running Live Class'));
+  if(!eligible){
+   const empty=E('div','rz-c156-empty'),icon=E('span','rz-c156-empty-icon','▣');icon.setAttribute('aria-hidden','true');
+   empty.append(icon,E('strong','','No Live Classroom joined'),
+    E('p','','Use your Faculty class code, link, or QR invitation to enter a Live Classroom.'));
+   host.append(empty);return;
+  }
+  const list=E('ul','rz-c156-list'),item=E('li','rz-c156-item'),top=E('div','rz-c156-item-top');
+  const name=E('strong','rz-c156-class-name',title),state=E('span','rz-c156-live-state');
+  state.append(E('i','rz-c155-dot'),E('span','','Session Live'));
+  top.append(name,state);item.append(top);
+  // The dotted Leave action sits immediately below the simulation title.
+  item.append(leaveButton('find'));
+  if(room.class_name&&room.class_name!==title)item.append(E('p','rz-c156-subtitle',room.class_name));
+  list.append(item);host.append(list);
+ }
  function courseResources(s,room){
   if(!s?.joined?.attempt_id)return [];
   // A course-based classroom publishes under COURSE ID. Derive it only from
@@ -79,13 +122,14 @@
  function render(){
   if(!ready)return;
   const data=snap(),info=sourceInfo(),user=data?.userId||'';
-  if(user!==currentUser){currentUser=user;erpPreference=null;erpUser='';statusError='';lastSignature='';lastRoom='';}
+  if(user!==currentUser){currentUser=user;erpPreference=null;erpUser='';statusError='';lastSignature='';lastLiveSignature='';lastRoom='';}
   const currentRoom=id(info?.room?.session_id);
   if(info && currentRoom!==lastRoom){setChannel(currentRoom);mode='classroom';statusError='';lastSignature='';void loadERP(user);}
   if(!info){setChannel('');mode='join';}
   const view=$('view-player');view?.classList.toggle('rz-c155-classroom',mode==='classroom'&&!!info);
   const buttons=view?.querySelectorAll('[data-classroom-tab]')||[];
   buttons.forEach(b=>{const selected=b.dataset.classroomTab===mode;b.setAttribute('aria-selected',String(selected));b.disabled=b.dataset.classroomTab==='classroom'&&!info;});
+  renderLiveList(info);
   if(!info||mode!=='classroom')return;
   const {s,room,attempt}=info,resources=courseResources(s,room);
   const product=(s.products||[]).find(p=>id(p.id)===id(room.product_id)),title=room.simulation_title||product?.title||'RizSim simulation';
@@ -97,7 +141,9 @@
   const root=$('rzC155Classroom');root.replaceChildren();
   const heading=E('div','rz-c155-heading'),titleBox=E('div');
   titleBox.append(E('span','','RIZSIM PLAYER · CLASSROOM'),E('h1','','Your Classroom'));
-  heading.append(titleBox);root.append(heading);
+  heading.append(titleBox);
+  if(isJoinedLive(info))heading.append(leaveButton('classroom'));
+  root.append(heading);
   const grid=E('div','rz-c155-grid'),left=E('article','rz-c155-panel'),right=E('article','rz-c155-panel');
   const ltop=E('div','rz-c155-top');ltop.append(E('span','rz-c155-eyebrow','LIVE SIMULATION'));
   const state=E('span','rz-c155-state'+(room.live_open===true||room.practice_open===true?'':' offline'));
@@ -185,7 +231,7 @@
   return true;
  }
  function clear(){
-  mode='join';lastSignature='';currentUser='';lastRoom='';lastCount=-1;erpPreference=null;erpUser='';statusError='';channel?.close();channel=null;
+  mode='join';lastSignature='';lastLiveSignature='';currentUser='';lastRoom='';lastCount=-1;erpPreference=null;erpUser='';statusError='';channel?.close();channel=null;
   $('view-player')?.classList.remove('rz-c155-classroom');$('rzC155Classroom')?.replaceChildren();
  }
  window.RizSimStudentClassroom=Object.freeze({openResources,render,unread:()=>{const i=sourceInfo();return i?unreadCount(i):0;}});
