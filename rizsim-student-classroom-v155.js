@@ -65,9 +65,9 @@
  function render(){
   if(!ready)return;
   const data=snap(),info=sourceInfo(),user=data?.userId||'';
-  if(user!==currentUser){currentUser=user;erpPreference=null;erpUser='';lastSignature='';lastRoom='';}
+  if(user!==currentUser){currentUser=user;erpPreference=null;erpUser='';statusError='';lastSignature='';lastRoom='';}
   const currentRoom=id(info?.room?.session_id);
-  if(info && currentRoom!==lastRoom){setChannel(currentRoom);mode='classroom';lastSignature='';void loadERP(user);}
+  if(info && currentRoom!==lastRoom){setChannel(currentRoom);mode='classroom';statusError='';lastSignature='';void loadERP(user);}
   if(!info){setChannel('');mode='join';}
   const view=$('view-player');view?.classList.toggle('rz-c155-classroom',mode==='classroom'&&!!info);
   const buttons=view?.querySelectorAll('[data-classroom-tab]')||[];
@@ -110,7 +110,8 @@
  }
  function setStatus(message,error=false){statusError=error?String(message||''):'';const e=$('rzC155Status');if(e){e.textContent=message;e.dataset.error=String(!!error);}}
  async function loadERP(user){if(!user||erpUser===user)return;erpUser=user;erpPreference=null;
-  try{erpPreference=await bridge().fetchERP();}catch(_){erpPreference=null;}
+  try{const result=await bridge().fetchERP();if(erpUser!==user||snap()?.userId!==user)return;erpPreference=result;}
+  catch(_){if(erpUser===user)erpPreference=null;}
  }
  function reserveTab(){
   const tab=window.open('about:blank','_blank');
