@@ -144,7 +144,10 @@ async def run_arm(browser,port,arm):
  await page.screenshot(path=str(ROOT/'test-results'/f'sim03-student-condition-{arm}.png'),full_page=True)
  await page.locator('#yesBtn').click()
  await page.locator('#wtp').fill('12000' if arm=='A' else '38000')
- await page.locator('#participant').fill('Test '+arm)
+ # The hosted legacy participant-code field is filled by the website ERP handoff,
+ # never prompted inside the simulation.
+ assert await page.locator('#participant').is_hidden()
+ await page.locator('#participant').evaluate('(node,arm)=>node.value="Test "+arm',arm)
  await page.get_by_role('button',name='Submit & lock response').click()
  try:
   await page.locator('#submittedStage:not(.hidden)').wait_for(timeout=8000)
