@@ -19,7 +19,7 @@ CAPTURE=r'''(families)=>{
  const roots=[document];for(const n of document.querySelectorAll('*'))if(n.shadowRoot)roots.push(n.shadowRoot);
  const lum=c=>{const a=(c.match(/[\d.]+/g)||[]).slice(0,3).map(Number).map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4});return a.reduce((s,x,i)=>s+x*[.2126,.7152,.0722][i],0)};
  const buttons=[];
- for(const root of roots)for(const n of root.querySelectorAll('button,a.button,a.rz-v5-card-action,[role=tab],input,select,textarea,summary')){
+ for(const root of roots)for(const n of root.querySelectorAll('button,a[href],[role=tab],input,select,textarea,summary')){
   const s=getComputedStyle(n),r=n.getBoundingClientRect();if(!r.width||!r.height||s.visibility==='hidden')continue;
   let p=n,bg='rgb(255, 255, 255)',gradient=false;
   while(p){const c=getComputedStyle(p);if(c.backgroundImage!=='none')gradient=true;const v=(c.backgroundColor.match(/[\d.]+/g)||[]).map(Number);if(v.length===3||v[3]>.99){bg=c.backgroundColor;break}p=p.parentElement||p.getRootNode()?.host}
