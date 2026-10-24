@@ -2,10 +2,10 @@ name: RizSim Design Code 1.3 interiors and mounted Faculty
 on:
   pull_request:
     branches: [main]
-    paths: ['**.css', 'rizsim-v154-runner-shell.js', 'scripts/test_design_code_v13.py', 'scripts/verify_design_code_v13_release.py', '.github/workflows/design-code-v13.yml']
+    paths: ['**.css', 'rizsim-v154-runner-shell.js', 'scripts/test_design_code_v13*.py', 'scripts/verify_design_code_v13_release.py', '.github/workflows/design-code-v13.yml']
   push:
     branches: [main]
-    paths: ['**.css', 'rizsim-v154-runner-shell.js', 'scripts/test_design_code_v13.py', 'scripts/verify_design_code_v13_release.py', '.github/workflows/design-code-v13.yml']
+    paths: ['**.css', 'rizsim-v154-runner-shell.js', 'scripts/test_design_code_v13*.py', 'scripts/verify_design_code_v13_release.py', '.github/workflows/design-code-v13.yml']
 permissions:
   contents: read
 concurrency:
@@ -35,7 +35,7 @@ jobs:
         env:
           RIZSIM_V13_SCOPE: ${{ matrix.scope }}
           RIZSIM_V13_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: python scripts/test_design_code_v13.py
+        run: python scripts/test_design_code_v13_settled.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
