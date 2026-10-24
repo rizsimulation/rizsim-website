@@ -2,15 +2,18 @@ name: RizSim Design Code v1.1 visual refinement
 on:
   pull_request:
     branches: [main]
+    paths: ['**.css', 'rizsim-shared-home.js', 'access-in.html', 'access-out.html', 'index.html', 'scripts/test_design_code_v11.py', 'scripts/verify_design_code_v11_release.py', '.github/workflows/design-code-v11.yml']
   push:
     branches: [main]
-    paths: ['**.css', 'rizsim-shared-home.js', 'scripts/test_design_code_v11.py', 'scripts/verify_design_code_v11_release.py', '.github/workflows/design-code-v11.yml']
+    paths: ['**.css', 'rizsim-shared-home.js', 'access-in.html', 'access-out.html', 'index.html', 'scripts/test_design_code_v11.py', 'scripts/verify_design_code_v11_release.py', '.github/workflows/design-code-v11.yml']
 permissions:
   contents: read
 jobs:
   interactions:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      RIZSIM_VISUAL_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
     steps:
       - uses: actions/checkout@v4
         with:
