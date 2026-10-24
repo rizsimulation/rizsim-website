@@ -2,9 +2,10 @@ name: RizSim Design Code 1.2 sitewide audit
 on:
   pull_request:
     branches: [main]
+    paths: ['**.css', 'scripts/test_design_code_v12*.py', 'scripts/test_public_priority_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
   push:
     branches: [main]
-    paths: ['**.css', 'scripts/test_design_code_v12.py', 'scripts/test_public_priority_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
+    paths: ['**.css', 'scripts/test_design_code_v12*.py', 'scripts/test_public_priority_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
 permissions:
   contents: read
 concurrency:
