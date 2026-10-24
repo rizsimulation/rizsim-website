@@ -50,6 +50,8 @@ def measure(p,label,targets=(),screenshot=True,require_p1=True):
  reduced:matchMedia('(prefers-reduced-motion:reduce)').matches,
  headings:[...document.querySelectorAll('.auth-view.active h1,.student-view.active h1')].filter(n=>n.getClientRects().length).map(n=>({text:n.textContent.trim(),px:parseFloat(getComputedStyle(n).fontSize)}))})""")
  m['name']=label;m['p1']=[]
+ if m['scroll']>m['width']+2:
+  m['overflow']=p.evaluate("() => [...document.querySelectorAll('body *')].filter(n=>n.getClientRects().length && n.getBoundingClientRect().right>innerWidth+2).slice(-20).map(n=>({tag:n.tagName,id:n.id,cls:n.className,x:n.getBoundingClientRect().x,w:n.getBoundingClientRect().width,text:n.textContent.slice(0,90)}))")
  check(label+' reflows within viewport',m['scroll']<=m['width']+2,m)
  for selector in targets:
   l=p.locator(selector).first
@@ -77,7 +79,9 @@ def nav(p,role,view):
   if link.count() and link.first.is_visible():link.first.click()
   elif role=='student':p.evaluate('(v)=>RizSimStudentBridge.navigate(v)',view)
   else:raise AssertionError('Requested role navigation is unavailable: '+view)
- p.wait_for_selector('#view-'+view+'.active',timeout=7000)
+ if role=='student' and view=='account':
+  p.wait_for_selector('#rzStudentAccountDialog[open]');check('Student account opens in its established dialog',True);p.keyboard.press('Escape')
+ else:p.wait_for_selector('#view-'+view+'.active',timeout=7000)
  p.wait_for_timeout(150)
 
 def shared_interactions(p):
@@ -88,11 +92,11 @@ def shared_interactions(p):
  p.keyboard.press('Shift+Tab');check('Dialog keyboard focus is contained',p.evaluate("document.activeElement.textContent==='Delete class'"))
  p.keyboard.press('Escape');p.wait_for_function('__dialogResult===false')
  check('Escape cancels and restores initiating focus',p.evaluate("document.activeElement.id==='dcTestTrigger'"))
- p.evaluate("window.__note='waiting';RizSimUI.prompt('Optional note:','kept value',{action:'Save note'}).then(x=>__note=x)")
+ p.evaluate("() => {window.__note='waiting';RizSimUI.prompt('Optional note:','kept value',{action:'Save note'}).then(x=>__note=x)}")
  p.locator('.rz-dc-dialog input').fill('Edited note');p.locator('.rz-dc-dialog button').filter(has_text='Save note').click();p.wait_for_function("__note==='Edited note'")
  check('Prompt preserves entered note and resolves asynchronously')
  p.locator('#dcTestTrigger').focus()
- p.evaluate("window.__twice=[];RizSimUI.confirm('Same intent',{action:'Proceed'}).then(x=>__twice.push(x));RizSimUI.confirm('Same intent',{action:'Proceed'}).then(x=>__twice.push(x))")
+ p.evaluate("() => {window.__twice=[];RizSimUI.confirm('Same intent',{action:'Proceed'}).then(x=>__twice.push(x));RizSimUI.confirm('Same intent',{action:'Proceed'}).then(x=>__twice.push(x))}")
  p.locator('.rz-dc-dialog').get_by_role('button',name='Proceed').click()
  p.wait_for_function('__twice.length===2')
  check('Double activation yields only one accepted operation',p.evaluate('__twice.filter(Boolean).length===1'))
@@ -100,7 +104,7 @@ def shared_interactions(p):
  check('Invalid supporting field opens its section and receives focus',p.evaluate("document.getElementById('dcClosedDetails').open&&document.activeElement.id==='dcHiddenField'"))
  p.evaluate("document.getElementById('dcClosedDetails').remove()")
  # Test the website-native fallback without touching browser security prompts.
- p.evaluate("window.__oldDialog=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=undefined;window.__fallback=null;RizSimUI.confirm('Fallback synthetic task',{action:'Proceed'}).then(x=>__fallback=x)")
+ p.evaluate("() => {window.__oldDialog=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=undefined;window.__fallback=null;RizSimUI.confirm('Fallback synthetic task',{action:'Proceed'}).then(x=>__fallback=x)}")
  p.locator('.rz-dc-fallback-scrim [role=dialog]').wait_for()
  check('Fallback dialog makes original workspace inert',p.evaluate("document.getElementById('authenticatedApp')?.inert===true"))
  p.locator('.rz-dc-fallback-scrim button').filter(has_text='Cancel').click();p.wait_for_function('__fallback===false')

@@ -279,3 +279,27 @@ body[data-rz-design-code] .bp-categories-head h2{font-size:clamp(1.5rem,3vw,2rem
  body[data-rz-surface=portal] .institution-tab-panel .management-card:has(#institutionFacultyName){grid-template-columns:minmax(0,1fr);}
  body[data-rz-surface=portal] :is(.admin-operation-action,.admin-mini-button,.admin-cancel-button,.rz-author-btn){min-height:2.75rem;}
 }
+
+/* Measured task-first corrections: no essential input/action is collapsed. */
+body[data-rz-surface=portal] :is(.auth-view,.student-view){padding-top:1rem;}
+body[data-rz-surface=portal] :is(.auth-view,.student-view)>.content-shell{padding-top:0;}
+body[data-rz-surface=portal] .admin-category-form-grid{display:contents;}
+body[data-rz-surface=portal] :is(.admin-category-form,.admin-category-form-grid,.management-field,.admin-operation-grid,.admin-form-actions){min-width:0;}
+body[data-rz-surface=portal] .admin-category-form :is(input,select,textarea){min-width:0;max-width:100%;box-sizing:border-box;}
+body[data-rz-surface=portal] :is(.admin-category-form,.admin-list-search,.admin-form-actions) :is(label,button,span){overflow-wrap:anywhere;}
+body[data-rz-surface=portal] .admin-form-actions{flex-wrap:wrap;}
+body[data-rz-surface=portal] .admin-boundary{margin:.75rem;}
+body[data-rz-surface=portal] #institutionRequestPanel{border:0;box-shadow:none;overflow:visible;background:transparent;}
+/* This title/approval note duplicates the immediately preceding Faculty heading. */
+body[data-rz-surface=portal] #institutionRequestPanel>.portal-panel-header{display:none;}
+body[data-rz-surface=portal] #institutionRequestPanel>.management-grid{padding:0;margin:0;grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+body[data-rz-surface=portal] #institutionRequestPanel .management-card-kicker{display:none;}
+body[data-rz-surface=portal] #institutionRequestPanel .rz-dc-optional-fields>:not(summary){margin:.75rem;}
+body[data-rz-surface=portal] .admin-operation-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+body[data-rz-surface=portal] .rz-dc-optional-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+body[data-rz-surface=portal] .rz-dc-section-links{margin:.5rem 0;gap:.375rem;}
+body[data-rz-surface=portal] .rz-dc-section-links a{padding:.375rem .625rem;}
+body[data-rz-surface=portal] .student-view h1{font-size:var(--rz-dc-heading);line-height:1.25;}
+@media(max-width:760px){
+ body[data-rz-surface=portal] :is(.admin-operation-grid,.rz-dc-optional-grid),body[data-rz-surface=portal] #institutionRequestPanel>.management-grid{grid-template-columns:minmax(0,1fr);}
+}

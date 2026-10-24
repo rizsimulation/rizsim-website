@@ -173,25 +173,37 @@
  }
  function supportGroup(elements,label){
   const items=elements.filter(Boolean);if(!items.length||items[0].closest('.rz-dc-context'))return;
-  const d=node('details','rz-dc-context'),summary=node('summary','',label);d.append(summary);items[0].before(d);items.forEach(x=>d.append(x));
+  const d=node('details','rz-dc-context'),summary=node('summary','',label);d.append(summary);items[0].before(d);items.forEach(x=>d.append(x));return d;
  }
  function organizeWorkspaceContext(){
   // Context is secondary to the selected task. Keep every original node and listener.
   const admin=document.getElementById('view-administration'),institution=document.getElementById('view-institution');
-  supportGroup([document.getElementById('administrationMetrics'),admin?.querySelector('.admin-command')],'Workspace overview and access boundaries');
-  supportGroup([institution?.querySelector('.institution-command'),institution?.querySelector('.institution-overview-grid')],'Institution summary and activity totals');
+  const adminContext=supportGroup([document.getElementById('administrationMetrics'),admin?.querySelector('.admin-command')],'Workspace overview and access boundaries');
+  if(adminContext)admin?.querySelector('.admin-hub')?.after(adminContext);
+  const institutionContext=supportGroup([institution?.querySelector('.institution-command'),institution?.querySelector('.institution-overview-grid')],'Institution summary and activity totals');
+  if(institutionContext)institution?.querySelector('.institution-hub')?.after(institutionContext);
   // Slugs are auto-generated; descriptions are optional. Required fields stay open.
   for(const prefix of ['adminCategory','adminSimulation','adminResource']){
-   const ids=[prefix+'Slug',prefix+'Description'];
+   const ids=['Slug','Description','ShortDescription','FullDescription'].map(suffix=>prefix+suffix);
    const fields=ids.map(id=>document.getElementById(id)?.closest('.management-field')).filter(Boolean);
    const form=fields[0]?.closest('.admin-category-form');if(!form||form.querySelector('.rz-dc-optional-fields'))continue;
    const details=node('details','rz-dc-optional-fields');details.append(node('summary','','Optional description and URL slug'));
    const content=node('div','rz-dc-optional-grid');fields.forEach(x=>content.append(x));details.append(content);
-   const actions=form.querySelector('.admin-form-actions');if(actions)actions.before(details);else form.append(details);
+   const actions=form.querySelector('.admin-form-actions');if(actions)actions.after(details);else form.append(details);
+   const guidance=form.querySelector('.admin-boundary');if(guidance)details.append(guidance);
   }
+ }
+ function organizeRequestContext(){
+  const note=document.getElementById('institutionFacultyNote')?.closest('.management-field');
+  const submit=document.getElementById('submitInstitutionFacultyRequest');
+  if(!note||!submit||note.closest('details'))return;
+  const d=node('details','rz-dc-optional-fields');d.append(node('summary','','Optional request context'));d.append(note);
+  const copy=submit.closest('.management-card')?.querySelector(':scope>p');if(copy)d.append(copy);
+  submit.after(d);
  }
  function init(){
   organizeWorkspaceContext();
+  organizeRequestContext();
   /* Supplemental prose only; all task controls remain in their original panels. */
   document.querySelectorAll('.admin-command p').forEach(p=>supportText(p,'About content operations'));
   document.querySelectorAll('.institution-command p').forEach(p=>supportText(p,'About this institution workspace'));
