@@ -2,7 +2,7 @@
 
 Before adding or changing a page, tab, component or UI state, read
 `RIZSIM_DESIGN_CODE.md`, `docs/design-code-v1-coverage.md`, and the current
-`docs/design-code-v1.1-refinement.md` addendum. Design Code 1.1 extends 1.0;
+`docs/design-code-v1.1-refinement.md` and `docs/design-code-v1.2-sitewide.md` addenda. Design Code 1.2 extends 1.1 and 1.0;
 its quiet-button, accessible hover-reveal and motion refinements also govern
 future additions. Preserve rules not explicitly revised by an addendum.
 
@@ -24,7 +24,7 @@ future additions. Preserve rules not explicitly revised by an addendum.
 
 ## Frontend conventions
 
-Reuse `rizsim-design-code.css` tokens, `rizsim-visual-refinement-v11.css`, and
+Reuse `rizsim-design-code.css` tokens, `rizsim-visual-refinement-v11.css`, `rizsim-design-code-v12.css`, and
 `window.RizSimUI` primitives. Keep ordinary interface copy readable, essential
 task actions first, complementary colors purposeful, and every consequential
 action accessible by keyboard/touch. Explore reveal must never hide Start,
@@ -34,7 +34,7 @@ and unsaved-work safeguards are not application dialogs. No fake progress,
 artificial waits or correctness-colored answer selections.
 
 Run the Design Code structural/browser tests, `scripts/test_design_code_v11.py`,
-and existing relevant suites. Changes to old exact-source tests must allow only
+`scripts/test_design_code_v12.py`, and existing relevant suites. Changes to old exact-source tests must allow only
 specifically authorized presentation changes while keeping original academic,
 data and security invariants. At release record workstream, PR, exact deployed
 SHA, test evidence, limitations, other-stream impact and remaining items. Keep
