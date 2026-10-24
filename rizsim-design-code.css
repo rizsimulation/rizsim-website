@@ -303,3 +303,26 @@ body[data-rz-surface=portal] .student-view h1{font-size:var(--rz-dc-heading);lin
 @media(max-width:760px){
  body[data-rz-surface=portal] :is(.admin-operation-grid,.rz-dc-optional-grid),body[data-rz-surface=portal] #institutionRequestPanel>.management-grid{grid-template-columns:minmax(0,1fr);}
 }
+
+/* Wide create/edit workbench; supporting catalogue remains in this same tab. */
+body[data-rz-surface=portal] .admin-operation-card:has(.admin-category-form){grid-column:1/-1;}
+body[data-rz-surface=portal] .admin-operation-card:has(.admin-category-form)>span{display:none;}
+body[data-rz-surface=portal] .admin-category-form{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;}
+body[data-rz-surface=portal] .admin-category-form .management-field{margin:0;}
+body[data-rz-surface=portal] .admin-category-form .management-help{display:block;font-size:.75rem;font-weight:400;line-height:1.45;letter-spacing:normal;text-transform:none;margin-top:.25rem;}
+body[data-rz-surface=portal] .admin-category-form .admin-boundary{margin:.375rem 0 0;padding:.375rem .5rem;font-size:.75rem;}
+.rz-dc-form-heading{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;}
+.rz-dc-form-heading>a{font-size:.8125rem;color:var(--rz-dc-teal);padding:.5rem;min-height:2.5rem;display:inline-flex;align-items:center;}
+.rz-dc-form-heading>a:hover{text-decoration-thickness:2px;}
+body[data-rz-surface=portal] .admin-tab-nav{grid-template-columns:repeat(auto-fit,minmax(7rem,1fr));}
+body[data-rz-surface=portal] #authenticatedApp .auth-section-heading h1,
+body[data-rz-surface=portal] #studentApp .student-heading h1,
+body[data-rz-surface=portal] #studentApp .rz-c155-heading h2{font-size:var(--rz-dc-heading);line-height:1.25;}
+body[data-rz-surface=portal] :is(.auth-section-heading,.student-heading)>p{max-width:none;}
+/* Enlarged text reflows instead of expanding hidden menus or the main navigation. */
+body[data-rz-surface=portal] .main-nav{flex-wrap:wrap;min-width:0;justify-content:center;}
+body[data-rz-surface=portal] .account-menu :is(.rz-role-switch,.rz-role-switch>* ){min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;}
+body[data-rz-surface=portal] .account-menu .rz-role-switch :is(a,.rz-role-current){flex-wrap:wrap;}
+body[data-rz-surface=portal] .account-menu .rz-role-title{white-space:normal;}
+@media(max-width:1000px){body[data-rz-surface=portal] .admin-category-form{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:760px){body[data-rz-surface=portal] .admin-category-form{grid-template-columns:minmax(0,1fr);}}

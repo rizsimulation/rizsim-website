@@ -108,7 +108,7 @@ def shared_interactions(p):
  p.locator('.rz-dc-fallback-scrim [role=dialog]').wait_for()
  check('Fallback dialog makes original workspace inert',p.evaluate("document.getElementById('authenticatedApp')?.inert===true"))
  p.locator('.rz-dc-fallback-scrim button').filter(has_text='Cancel').click();p.wait_for_function('__fallback===false')
- p.evaluate('HTMLDialogElement.prototype.showModal=__oldDialog')
+ p.evaluate('()=>{HTMLDialogElement.prototype.showModal=__oldDialog;}')
  check('Fallback restores original inert state',p.evaluate("document.getElementById('authenticatedApp')?.inert===false"))
  # Small isolated form exercises the shared primitive, not a stand-in portal.
  p.evaluate("""()=>{const f=document.createElement('form');f.id='dcTestForm';f.innerHTML='<label>Required name<input id="dcTestName" required></label><label>Email<input id="dcTestEmail" type="email" required value="invalid"></label><button>Submit test</button>';f.onsubmit=e=>e.preventDefault();document.body.append(f);f.requestSubmit();}""")
@@ -124,7 +124,7 @@ def shared_interactions(p):
  check('Reduced motion stops feedback animations',p.locator('#rzDcToasts [data-rz-tone=denied] .rz-dc-outcome').evaluate('(n)=>getComputedStyle(n).animationName')=='none')
  p.evaluate("document.getElementById('dcTestForm').remove();document.getElementById('dcTestTrigger').remove();document.getElementById('rzDcToasts').remove()")
 
-ADMIN_TARGETS={'overview':[], 'categories':['#adminCategoryName','#saveAdminCategoryButton'],'simulations':['#adminSimulationTitle','#saveAdminSimulationButton'],'materials':['#adminResourceTitle','#saveAdminResourceButton'],'publishing':['#adminPublishingMessage']}
+ADMIN_TARGETS={'overview':[], 'categories':['#adminCategoryName','#saveAdminCategoryButton'],'simulations':['#adminSimulationTitle','#adminSimulationCategory','#adminSimulationLaunchPath','#adminSimulationAccessType','#adminSimulationPrice','#saveAdminSimulationButton'],'materials':['#adminResourceType','#adminResourceCategory','#adminResourceTitle','#adminResourceAccessType','#adminResourcePrice','#adminResourceFile','#saveAdminResourceButton'],'publishing':['#adminPublishingMessage']}
 INST_TARGETS={'overview':['#institutionWorkspaceSelect'],'faculty':['#institutionFacultyName','#submitInstitutionFacultyRequest'],'classes':['#institutionClassesContent'],'simulations':['#institutionLicenceContent'],'analytics':['#institutionAnalyticsContent']}
 
 def role_pass(browser,base,role,size):
