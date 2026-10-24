@@ -1,0 +1,112 @@
+/* Design Code 1.3: actual learning interiors, not only launch/return controls.
+   Selected answers stay neutral. Questions, source order, locks and images unchanged. */
+body[data-rz-surface=runner][data-rz-learning]{--rz-learning-ready:1;background:#f5f8f7;color:#173f49;font-family:Inter,"Segoe UI",system-ui,sans-serif;line-height:1.5}
+body[data-rz-learning] :is(.shell,main.app){max-width:1280px;padding:12px 24px 32px}
+body[data-rz-learning] :is(h1,h2,h3,p){overflow-wrap:break-word}
+body[data-rz-learning] :is(.panel,.stage){border:1px solid #d6e3df;border-radius:14px;box-shadow:0 3px 14px #173f4907}
+body[data-rz-learning] :is(.panel-pad,.workspace>.panel,.aside>.panel,.rail-panel,.stage){padding:16px}
+body[data-rz-learning] :is(.workspace,.view-layout){grid-template-columns:minmax(0,1fr) 254px;gap:14px;align-items:start}
+body[data-rz-learning] :is(.panel h2,.stage h2){font-size:1.25rem;line-height:1.35;letter-spacing:-.025em;margin:0 0 8px;font-weight:650}
+body[data-rz-learning] :is(.panel h3,.stage h3){font-size:1rem;line-height:1.4;margin:0 0 8px;font-weight:650}
+body[data-rz-learning] :is(.small,.muted,.question-status,.step-counter){font-size:.8125rem;line-height:1.5;color:#526c72}
+body[data-rz-learning] :is(.eyebrow,.section-kicker){font-size:.75rem;font-weight:650;letter-spacing:.075em;margin-bottom:6px}
+body[data-rz-learning] :is(.introline,.panel-title){gap:10px;margin-bottom:8px}
+body[data-rz-learning] :is(.divider,.section-divider){margin:10px 0}
+body[data-rz-learning] :is(.question-stem,.q-stem,.prompt){font-size:1rem;line-height:1.55;font-weight:600;margin:12px 0;color:#173f49;max-width:none}
+body[data-rz-learning] :is(.choices,.options){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+body[data-rz-learning] :is(.choice,.option){min-height:64px;padding:12px;border:1px solid #cfdfd9;border-radius:10px;background:#fff;color:#254b55;font-size:.9375rem;line-height:1.5;font-weight:450;box-shadow:none;gap:10px;transition:background-color 180ms,border-color 180ms,box-shadow 180ms;transform:none}
+body[data-rz-learning] :is(.choice,.option):hover{background:#f0f7f4;border-color:#92bcb0;transform:none}
+body[data-rz-learning] :is(.choice.selected,.option.selected){background:#edf6f3;border-color:#087f86;box-shadow:inset 3px 0 0 #087f86;color:#173f49}
+body[data-rz-learning] :is(.choice,.option):focus-visible,body[data-rz-learning] .option:focus-within{outline:2px solid #70528a;outline-offset:3px}
+body[data-rz-learning] .choice .letter{width:28px;height:28px;min-width:28px;border-radius:8px;background:#f3f6f5;border:1px solid #d7e2de;color:#46646b;font-size:.8125rem;font-weight:650;display:grid;place-items:center}
+body[data-rz-learning] .choice.selected .letter{background:#d9eeea;color:#075b61;border-color:#a4cfc5}
+body[data-rz-learning] .option .letter{color:#526c72;font-size:.8125rem;font-weight:650;margin-bottom:2px}
+body[data-rz-learning] .actions{gap:8px;margin-top:12px}
+body[data-rz-learning] :is(.question-tabs,.q-nav){gap:6px;margin:8px 0}
+body[data-rz-learning] :is(.question-tabs .number,.q-nav button){min-height:36px;min-width:36px;border-radius:8px;font-size:.875rem}
+body[data-rz-learning] :is(.notice,.note,.instruction,.locked-choice){border-radius:10px;padding:12px 14px;font-size:.875rem;line-height:1.55;margin-block:12px}
+body[data-rz-learning] :is(.progress-track,.progress-bar){margin-bottom:12px}
+body[data-rz-learning] :is(.student-rail,.aside){position:static;gap:12px}
+body[data-rz-learning] :is(.rail-dark,.aside>.dark){background:#f5f2f9;color:#70528a;border-color:#ded5e8;box-shadow:none}
+body[data-rz-learning] :is(.rail-dark,.aside>.dark) :is(h3,p,.small,.eyebrow){color:#5e4974!important;font-size:.8125rem;line-height:1.55}
+body[data-rz-learning] .rail-list{margin:8px 0;gap:4px}
+body[data-rz-learning] .rail-list>div{font-size:.8125rem;padding:6px 0}
+body[data-rz-learning] .foot{font-size:.75rem;margin-top:12px;padding-top:12px;color:#526c72}
+/* Insight: replace the tall repeat banner with a compact, still legible stage strip. */
+body[data-rz-learning=insight] #app>.topbar{padding:4px 0 8px;gap:8px}
+body[data-rz-learning=insight] #app>.hero{min-height:0;padding:14px 16px;margin-bottom:12px;border-radius:12px;background:#eef6f3;color:#173f49;border:1px solid #d1e3da;box-shadow:none;gap:16px}
+body[data-rz-learning=insight] .hero h1{font-size:1.375rem;line-height:1.25;margin:3px 0 5px;color:#173f49;letter-spacing:-.025em}
+body[data-rz-learning=insight] .hero :is(p,.eyebrow){color:#466970;font-size:.8125rem}
+body[data-rz-learning=insight] .hero-art{max-width:none;gap:6px}
+body[data-rz-learning=insight] .journey-step{padding:8px 10px;border:1px solid #d1e1da;background:#fff;border-radius:9px;color:#466970;min-width:76px}
+body[data-rz-learning=insight] .journey-step strong{font-size:.875rem;color:#466970}
+body[data-rz-learning=insight] .journey-step span{font-size:.75rem;color:#526c72}
+body[data-rz-learning=insight] .journey-step.active{background:#e2f2ec;border-color:#84bfb0;color:#075b61}
+body[data-rz-learning=insight] .journey-step.active strong{color:#075b61}
+body[data-rz-learning=insight] :is(.scene,.scene-card,.case-card){border-radius:12px;padding:14px;box-shadow:none}
+body[data-rz-learning=insight] .bridge-grid{gap:10px;margin:12px 0}
+body[data-rz-learning=insight] .bridge-grid .mini{padding:12px;border-radius:10px}
+body[data-rz-learning=insight] .confirm-box{padding:12px;margin-top:12px}
+/* Systems: remove large minimum answer-card heights, not the scenario information. */
+body[data-rz-learning=systems] .topbar{background:#eef6f3;border-bottom:1px solid #d1e3da;color:#173f49}
+body[data-rz-learning=systems] .topbar .top-meta,body[data-rz-learning=systems] .topbar .top-meta strong{color:#285c64}
+body[data-rz-learning=systems] .stepper{gap:8px;margin:0 0 12px}
+body[data-rz-learning=systems] .step{padding:8px 10px;gap:8px;background:#fff;border-radius:10px}
+body[data-rz-learning=systems] .step.current{background:#e8f4ef;border-color:#91bfb1}
+body[data-rz-learning=systems] .step b{width:30px;height:30px}
+body[data-rz-learning=systems] .step strong{font-size:.8125rem}
+body[data-rz-learning=systems] .step span{font-size:.75rem;color:#526c72}
+body[data-rz-learning=systems] .pair-strip{gap:6px;margin:8px 0 12px;font-size:.75rem}
+body[data-rz-learning=systems] .case-context{font-size:.8125rem;margin-bottom:8px}
+body[data-rz-learning=systems] .case-board{margin:12px 0;padding:14px;border-radius:12px;box-shadow:none}
+body[data-rz-learning=systems] .board-message{padding:12px;margin-bottom:10px}
+body[data-rz-learning=systems] .board-label{margin-bottom:8px}
+body[data-rz-learning=systems] .board-stats{gap:8px}
+body[data-rz-learning=systems] .feedback-title{gap:12px;margin:12px 0}
+body[data-rz-learning=systems] .process-row{gap:8px;margin:12px 0}
+body[data-rz-learning=systems] .process-node{padding:12px;font-size:.875rem;line-height:1.5}
+/* Hotel: preserve all four photographs, equal image geometry and assigned prompt. */
+body[data-rz-learning=hotel] main.app>.hero{padding:14px 16px;min-height:0;margin-bottom:12px;border-radius:12px;background:#eef6f3;color:#173f49;box-shadow:none}
+body[data-rz-learning=hotel] .hero :is(h1,h2){font-size:1.375rem;line-height:1.3;margin:4px 0 8px;color:#173f49}
+body[data-rz-learning=hotel] .hero .sub{font-size:.875rem;line-height:1.5;color:#526c72}
+body[data-rz-learning=hotel] :is(.group-btn,.question-card){padding:16px;border-radius:12px;box-shadow:none;border-color:#d3e2db}
+body[data-rz-learning=hotel] .choice-row{gap:10px}
+body[data-rz-learning=hotel] .choice-row .choice{min-height:44px;width:auto;flex:1}
+body[data-rz-learning=hotel] .question-card .label{font-size:.875rem;font-weight:600}
+body[data-rz-learning=hotel] .question-card .exact{font-size:1.125rem;line-height:1.5}
+body[data-rz-learning=hotel] :is(.money-wrap,#wtp){border-radius:10px;font-size:1rem}
+body[data-rz-learning=hotel] .validation:not(:empty){padding:10px 12px;border:1px solid #e1b9c0;border-radius:10px;background:#fff3f3;color:#9b3141}
+/* Feedback decorates released information only. No evaluator or answer key is introduced. */
+body[data-rz-learning] .outcome[data-rz-feedback=review]{background:#fff5f4;border-color:#e4bcc2}
+body[data-rz-learning] .outcome[data-rz-feedback=success]{background:#eff8f3;border-color:#b9dbc7}
+body[data-rz-learning] .outcome .outcome-mark[data-rz-enhanced]{display:flex;gap:12px;align-items:center;min-width:0;background:transparent;min-height:0;padding:0;border:0}
+body[data-rz-learning] .rz-learning-verdict{display:grid;justify-items:center;gap:4px;font-size:.75rem;line-height:1.4;font-weight:600;min-width:50px;color:#217451}
+body[data-rz-learning] .rz-learning-verdict[data-outcome=review]{color:#a63847}
+body[data-rz-learning] .rz-learning-outcome{width:34px;height:34px;flex:none;display:block}
+body[data-rz-learning] .feedback-icon[data-rz-enhanced]{width:36px;height:36px;flex:none;background:#f1ecf8;color:#70528a;border:1px solid #d8cce5;border-radius:10px;display:grid;place-items:center}
+body[data-rz-learning] .rz-learning-revisited .rz-learning-outcome *{animation:none!important}
+@media(prefers-reduced-motion:no-preference){
+ body[data-rz-learning] .rz-learning-outcome circle{stroke-dasharray:65;animation:rzLearningRing 440ms ease-out both}
+ body[data-rz-learning] .rz-learning-outcome path{stroke-dasharray:30;animation:rzLearningStroke 420ms 100ms ease-out both}
+ body[data-rz-learning] .outcome[data-rz-feedback=review]:not(.rz-learning-revisited){animation:rzLearningArrive 240ms ease-out both}
+ body[data-rz-learning=hotel] .validation:not(:empty){animation:rzLearningArrive 220ms ease-out both}
+}
+@keyframes rzLearningRing{from{stroke-dashoffset:65}to{stroke-dashoffset:0}}
+@keyframes rzLearningStroke{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+@keyframes rzLearningArrive{from{opacity:.55;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media(max-width:1000px){body[data-rz-learning] :is(.workspace,.view-layout){grid-template-columns:minmax(0,1fr)}body[data-rz-learning] :is(.student-rail,.aside){display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}body[data-rz-learning=insight] #app>.hero{flex-wrap:wrap}}
+@media(max-width:760px){
+ body[data-rz-learning] :is(.shell,main.app){padding:12px 12px 24px}
+ body[data-rz-learning] :is(.choices,.options,.student-rail,.aside){grid-template-columns:minmax(0,1fr)}
+ body[data-rz-learning] :is(.panel-pad,.workspace>.panel,.stage){padding:14px}
+ body[data-rz-learning] :is(.question-tabs .number,.q-nav button){min-height:44px;min-width:44px}
+ body[data-rz-learning=systems] .stepper{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-rz-learning=insight] .hero-art{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ body[data-rz-learning] .outcome{align-items:flex-start;flex-wrap:wrap;padding:14px;gap:12px}
+}
+@media(prefers-reduced-motion:reduce){body[data-rz-learning] :is(.rz-learning-outcome,.rz-learning-outcome *,.outcome,.validation){animation:none!important;transition:none!important;transform:none!important}}
+@media print{body[data-rz-learning]{background:#fff}body[data-rz-learning] :is(.workspace,.view-layout){display:block}body[data-rz-learning] .rz-learning-outcome *{animation:none!important}}
+
+body[data-rz-learning=hotel] .group-btn{background:#fff;color:#28545d;font-family:inherit;font-weight:500}
+body[data-rz-learning=hotel] .group-btn:hover{background:#f5f2f9;border-color:#bba9ce}
+body[data-rz-learning=hotel] .group-btn strong{font-size:1rem;font-weight:650}

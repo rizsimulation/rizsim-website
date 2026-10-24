@@ -2,7 +2,7 @@
 
 Before adding or changing a page, tab, component or UI state, read
 `RIZSIM_DESIGN_CODE.md`, `docs/design-code-v1-coverage.md`, and the current
-`docs/design-code-v1.1-refinement.md` and `docs/design-code-v1.2-sitewide.md` addenda. Design Code 1.2 extends 1.1 and 1.0;
+`docs/design-code-v1.1-refinement.md` and `docs/design-code-v1.2-sitewide.md` addenda. Design Code 1.3 (`docs/design-code-v1.3-interiors.md`) extends these rules;
 its quiet-button, accessible hover-reveal and motion refinements also govern
 future additions. Preserve rules not explicitly revised by an addendum.
 
@@ -31,10 +31,10 @@ action accessible by keyboard/touch. Explore reveal must never hide Start,
 Submit, validation or entitlement guidance. Native application `alert`,
 `confirm`, `prompt` are not allowed; await the in-site helper. Browser security
 and unsaved-work safeguards are not application dialogs. No fake progress,
-artificial waits or correctness-colored answer selections.
+artificial waits or correctness-colored answer selections. Only already-released practice feedback may receive outcome animation as specified in the 1.3 addendum.
 
 Run the Design Code structural/browser tests, `scripts/test_design_code_v11.py`,
-`scripts/test_design_code_v12.py`, and existing relevant suites. Changes to old exact-source tests must allow only
+`scripts/test_design_code_v12.py`, `scripts/test_design_code_v13.py`, and existing relevant suites. Changes to old exact-source tests must allow only
 specifically authorized presentation changes while keeping original academic,
 data and security invariants. At release record workstream, PR, exact deployed
 SHA, test evidence, limitations, other-stream impact and remaining items. Keep
