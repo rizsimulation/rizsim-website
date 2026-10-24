@@ -37,10 +37,9 @@ def run(browser,url):
     p.screenshot(path=str(base.OUT/'v7-courses-home.png'),full_page=True)
     create(p)
     check('New course uses Publish Course label',p.locator('#rzAuthorSave').inner_text()=='PUBLISH COURSE')
-    p.evaluate("() => { window.__v11InvalidScrolls=[];const field=document.getElementById('rzAuthorTitle');const original=field.scrollIntoView.bind(field);field.scrollIntoView=function(o){__v11InvalidScrolls.push({id:field.id,block:o?.block});return original(o)}; }")
     p.locator('#rzAuthorSave').click()
     check('Empty Course title receives inline red guidance',p.locator('#rzAuthorTitle[aria-invalid="true"]').count()==1 and p.locator('#rzAuthorTitle + .rz-inline-error').is_visible())
-    check('Save automatically scrolls and focuses the exact missing Course title',p.evaluate('document.activeElement?.id==="rzAuthorTitle"&&__v11InvalidScrolls.some(s=>s.id==="rzAuthorTitle"&&s.block==="center")'))
+    check('Save focuses the exact missing Course title without hiding it behind other content',p.evaluate('(() => {const e=document.getElementById("rzAuthorTitle"),r=e.getBoundingClientRect();return document.activeElement===e&&r.top>=0&&r.bottom<=innerHeight&&document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)===e})()'))
     p.locator('#rzAuthorTitle').fill('Responsible Marketing Studio')
     p.locator('#rzAuthorDescription').fill('A thoughtfully assembled course with simulations and resources.')
     check('Entry navigation has its own URL','courses=create' in p.url)
@@ -102,10 +101,9 @@ def run(browser,url):
     check('Review closes back to metadata without resetting the file choice',
         p.locator('[data-author-dialog=details]').is_visible() and
         p.locator('[data-author-dialog=details] input[value=downloadable]').is_checked())
-    p.evaluate("() => { const field=document.getElementById('rzAuthorResourceTitle');const original=field.scrollIntoView.bind(field);field.scrollIntoView=function(o){__v11InvalidScrolls.push({id:field.id,block:o?.block});return original(o)}; }")
     p.locator('#rzAuthorResourceTitle').fill('')
     p.locator('#rzAuthorResourcePublish').click()
-    check('Missing file title auto-scrolls and focuses its error',p.evaluate('document.activeElement?.id==="rzAuthorResourceTitle"&&__v11InvalidScrolls.some(s=>s.id==="rzAuthorResourceTitle"&&s.block==="center")') and p.locator('#rzAuthorResourceTitle[aria-invalid="true"] + .rz-inline-error').is_visible())
+    check('Missing file title is focused, visible and accompanied by its error',p.evaluate('(() => {const e=document.getElementById("rzAuthorResourceTitle"),r=e.getBoundingClientRect();return document.activeElement===e&&r.top>=0&&r.bottom<=innerHeight&&document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)===e})()') and p.locator('#rzAuthorResourceTitle[aria-invalid="true"] + .rz-inline-error').is_visible())
     p.locator('#rzAuthorResourceTitle').fill('Course handout')
     p.locator('#rzAuthorResourcePublish').click()
     success_review=p.locator('[data-author-review=staged-success]')

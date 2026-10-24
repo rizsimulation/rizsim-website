@@ -40,6 +40,9 @@ jobs:
         run: |
           python -m pip install playwright==1.57.0
           python -m playwright install --with-deps chromium
+      - name: Offline validation, focus and nested-scroll component regressions
+        if: matrix.scope == 'public'
+        run: python scripts/test_design_code_validation.py
       - name: Actual role and viewport interactions
         timeout-minutes: 5
         shell: bash

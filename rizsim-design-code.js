@@ -57,7 +57,16 @@
   input.focus({preventScroll:true});
   const headers=[...document.querySelectorAll('header,.site-header,.auth-header,.student-header')].filter(n=>['fixed','sticky'].includes(getComputedStyle(n).position));
   const top=Math.max(0,...headers.map(n=>n.getBoundingClientRect().bottom));
-  const r=input.getBoundingClientRect();if(r.top<top+12||r.bottom>innerHeight-16)input.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'});
+  const r=input.getBoundingClientRect();
+  let clipped=r.top<top+12||r.bottom>innerHeight-16||r.left<0||r.right>innerWidth;
+  // A field can be inside the viewport yet clipped by a scrollable dialog/panel.
+  for(let parent=input.parentElement;parent;parent=parent.parentElement){
+   const style=getComputedStyle(parent),box=parent.getBoundingClientRect();
+   const left=box.left+parent.clientLeft,upper=box.top+parent.clientTop;
+   if(/auto|scroll|hidden|clip/.test(style.overflowY)&&(r.top<upper||r.bottom>upper+parent.clientHeight))clipped=true;
+   if(/auto|scroll|hidden|clip/.test(style.overflowX)&&(r.left<left||r.right>left+parent.clientWidth))clipped=true;
+  }
+  if(clipped)input.scrollIntoView({block:'center',inline:'nearest',behavior:reduced()?'auto':'smooth'});
   return true;
  }
  function invalid(input,message){fieldError(input,message);reveal(input);return false;}
