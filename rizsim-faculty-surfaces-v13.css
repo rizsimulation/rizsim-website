@@ -1,5 +1,5 @@
 /* Design Code 1.3: actual mounted Presenter Dashboard and Live Responses.
-   No hidden/inert overrides, data changes, reordering or global navigation restyling. */
+   No hidden/inert overrides, data changes or global navigation restyling. */
 body[data-rz-surface=portal] #rzLiveV13Workspace{--rz-faculty-ready:1;gap:12px;margin-block:8px 24px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading{padding:0 0 10px;margin:0 0 10px;border-bottom:1px solid #d7e3de}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading h2{font-size:1.25rem;line-height:1.35;margin:3px 0;font-weight:650}
@@ -73,3 +73,21 @@ body[data-rz-surface=portal] #rzV13SimulationStudentResults :is(.rz-i01-root,.rz
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v15-compact-table td::before{font-size:.75rem;line-height:1.4;letter-spacing:.015em;color:#526c72}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v15-compact-table tbody{gap:8px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v15-compact-table tr{border-radius:10px;box-shadow:none;background:#fff}
+
+/* Simulation-specific work is Priority 1; preserve general session summaries below.
+   These rules never activate hidden tabs or hidden report roots. */
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region{padding:14px;border-radius:14px;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading h2{font-size:1.25rem!important;margin:3px 0!important;line-height:1.35}
+body[data-rz-surface=portal] #rzV13Panestudents:not([hidden]):has(#rzV13SimulationStudentResults>section:not([hidden])),
+body[data-rz-surface=portal] #rzV13Paneinsights:not([hidden]):has(:is(#rzInsightFacultyAnalytics,#rizsimSystemFacultyResults,#rizsimHotelFacultyResults):not([hidden])){display:flex;flex-direction:column;gap:10px}
+body[data-rz-surface=portal] #rzV13Panestudents:has(#rzV13SimulationStudentResults>section:not([hidden]))>*{order:2}
+body[data-rz-surface=portal] #rzV13Panestudents:has(#rzV13SimulationStudentResults>section:not([hidden]))>#rzV13SimulationStudentResults{order:1}
+body[data-rz-surface=portal] #rzV13Paneinsights:has(:is(#rzInsightFacultyAnalytics,#rizsimSystemFacultyResults,#rizsimHotelFacultyResults):not([hidden]))>*{order:2}
+body[data-rz-surface=portal] #rzV13Paneinsights:has(:is(#rzInsightFacultyAnalytics,#rizsimSystemFacultyResults,#rizsimHotelFacultyResults):not([hidden]))>#rzV13InsightsContent{order:1}
+body[data-rz-surface=portal] #rzV13InsightsContent{gap:8px}
+body[data-rz-surface=portal] #rzV13InsightsContent #rzLiveResultsAnchor{gap:8px}
+body[data-rz-surface=portal] #rzV13InsightsContent .rz-v5-results-heading{margin:0;min-height:40px}
+body[data-rz-surface=portal] #rzV13InsightsContent .rz-v5-results-heading h3{font-size:1rem;font-weight:600}
+body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-heading{margin-bottom:8px}
+body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-breadcrumb{margin-bottom:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-card,.rz-s02-result-section,.rz-h03-card)>:is(h3,h4){font-size:1rem;line-height:1.4;font-weight:600;margin:0 0 8px}

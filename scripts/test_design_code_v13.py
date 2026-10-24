@@ -63,6 +63,7 @@ def insight(browser,url,size,access='practice',correct=False):
   p.wait_for_selector('[data-action=choose-review]')
   capture(p,label+'-KR',['.choices','.actions.end'])
   for i in range(6):
+   capture(p,label+'-KR-q'+str(i+1),['.choices','.actions.end'])
    p.locator('[data-action=choose-review]').first.click()
    check(label+' no verdict before KR lock '+str(i),p.locator('.rz-learning-verdict').count()==0)
    if i<5:p.locator('[data-action=next]').click()
@@ -83,6 +84,7 @@ def insight(browser,url,size,access='practice',correct=False):
    state='success' if correct else 'review';marks=p.locator('.rz-learning-verdict[data-outcome='+state+']')
    check(label+' released verdict icons',marks.count()==2)
    check(label+' visible labelled feedback',all(marks.nth(i).get_attribute('aria-label') for i in range(marks.count())))
+   check(label+' verdict and explanation never overlap',p.locator('.outcome').evaluate('n=>{const a=n.querySelector(".outcome-mark").getBoundingClientRect(),b=n.lastElementChild.getBoundingClientRect();return a.right<=b.left+1||a.bottom<=b.top+1}'))
    check(label+' stroke animation exists',p.locator('.rz-learning-outcome path').first.evaluate('(n)=>getComputedStyle(n).animationName')=='rzLearningStroke')
    p.emulate_media(reduced_motion='reduce')
    check(label+' reduced motion',p.locator('.rz-learning-outcome path').first.evaluate('(n)=>getComputedStyle(n).animationName')=='none')
@@ -92,6 +94,7 @@ def insight(browser,url,size,access='practice',correct=False):
   if p.locator('#feedback-check').count():p.locator('#feedback-check').check()
   p.locator('[data-action=feedback-ack]').click();p.wait_for_selector('[data-action=choose-review][data-phase=kg]');capture(p,label+'-KG',['.choices','.actions.end'])
   for i in range(6):
+   capture(p,label+'-KG-q'+str(i+1),['.choices','.actions.end'])
    p.locator('[data-action=choose-review]').first.click()
    if i<5:p.locator('[data-action=next]').click()
   p.locator('[data-action=lock-review]').click();p.locator('[data-action=accept-confirm]').click()
@@ -110,6 +113,7 @@ def systems(browser,url,size):
   p.get_by_role('heading',name='Your starting understanding').wait_for();capture(p,label+'-KR',['.options','.workspace>.panel>.actions'])
   def reviews(stage):
    for i in range(6):
+    capture(p,label+'-'+stage+'-q'+str(i+1),['.options','.workspace>.panel>.actions'])
     p.locator('label.option').first.click()
     if i<5:p.get_by_role('button',name='Next question').click()
    p.get_by_role('button',name=f'Lock {stage}').click();p.get_by_role('dialog',name='Confirm your decision').get_by_role('button',name='Confirm & lock').click()
@@ -193,6 +197,8 @@ def faculty(browser,url,kind,size,role='faculty'):
   if close.count():close.first.click()
   tab('insights');p.locator(rootid).wait_for(state='visible')
   capture(p,label+'-presenter',[rootid+' h2',rootid+' '+{'insight':'.rz-i01-stat-grid','systems':'.rz-s02-metrics','hotel':'.rz-h03-metrics'}[kind]])
+  check(label+' general session summary remains available',p.locator('#rzV15insightsMetrics').count()==1 and p.locator('#rzV15insightsMetrics').is_visible())
+  check(label+' simulation report precedes supporting summary',p.locator(rootid).bounding_box()['y']<p.locator('#rzV15insightsMetrics').bounding_box()['y'])
   before=p.locator(rootid).inner_text();p.locator(rootid).get_by_role('button',name=re.compile('Refresh')).first.click();p.wait_for_timeout(200)
   check(label+' refresh remains functional',p.locator(rootid+' h2').is_visible())
   p.evaluate('window.__v13Fail=true;window.'+module+'.refresh()');p.wait_for_selector(rootid+' '+{'insight':'.rz-i01-error','systems':'.rz-s02-error','hotel':'.rz-h03-error'}[kind]);capture(p,label+'-error')

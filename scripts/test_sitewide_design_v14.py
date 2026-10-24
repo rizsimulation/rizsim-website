@@ -185,6 +185,8 @@ def capture(browser,base,page_name,size,variant):
       loginLabel:document.querySelector('#authGate #googleLogin')?.textContent.trim()||null,
       loginButton:rect('#authGate #googleLogin'),
       loginLogo:document.querySelector('#authGate .gate-logo')?.naturalWidth||null,
+      learning:document.body.dataset.rzLearning||null,
+      runnerLogo:document.querySelector(".rz-v154-runner-brand img")?.naturalWidth||null,
       stylesheet:[...document.styleSheets].some(x=>x.href?.includes('finish-v14.css')),
       reduced:matchMedia('(prefers-reduced-motion: reduce)').matches
     };
@@ -222,11 +224,21 @@ def run():
         assert abs(old[key]["width"]-now[key]["width"])<3,(path,key,"navigation resized")
         assert abs(old[key]["height"]-now[key]["height"])<3,(path,key,"navigation height changed")
       if old["main"] and now["main"]:
-       assert abs(old["main"]["x"]-now["main"]["x"])<3,(path,device,"main layout shifted horizontally")
-       assert abs(old["main"]["width"]-now["main"]["width"])<3,(path,device,"main width changed")
+       if path in PLAYERS:
+        # Design Code 1.3 explicitly authorizes runner interior geometry.
+        # Keep exact academic HTML/assets above; replace the obsolete width lock
+        # only for these three routes with bounds, identity and no-overflow checks.
+        assert now["learning"] in ("insight","systems","hotel"),(path,"interior styling missing")
+        assert now["runnerLogo"] and now["runnerLogo"]>0,(path,"official runner logo missing")
+        assert now["main"]["x"]>=0,(path,device,"runner escaped viewport left")
+        assert now["main"]["x"]+now["main"]["width"]<=size[0]+2,(path,device,"runner escaped viewport right")
+        assert now["main"]["width"]>=min(320,size[0]-24),(path,device,"runner compressed beyond usable width")
+       else:
+        assert abs(old["main"]["x"]-now["main"]["x"])<3,(path,device,"main layout shifted horizontally")
+        assert abs(old["main"]["width"]-now["main"]["width"])<3,(path,device,"main width changed")
       assert now["loginLabel"]==old["loginLabel"],f"{path}: login copy modified"
       REPORT.append({"page":path,"device":device,"before":old,"after":now})
-      print(f"PASS {path} {device}: same geometry, no new overflow, screenshot compared",flush=True)
+      print(f"PASS {path} {device}: approved geometry, no new overflow, screenshot compared",flush=True)
    finally:browser.close()
  finally:
   server.shutdown()

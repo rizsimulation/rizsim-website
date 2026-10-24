@@ -43,7 +43,7 @@ body[data-rz-learning=insight] .journey-step strong{font-size:.875rem;color:#466
 body[data-rz-learning=insight] .journey-step span{font-size:.75rem;color:#526c72}
 body[data-rz-learning=insight] .journey-step.active{background:#e2f2ec;border-color:#84bfb0;color:#075b61}
 body[data-rz-learning=insight] .journey-step.active strong{color:#075b61}
-body[data-rz-learning=insight] :is(.scene,.scene-card,.case-card){border-radius:12px;padding:14px;box-shadow:none}
+body[data-rz-learning=insight] .source-story{border-radius:10px;padding:14px;box-shadow:none}
 body[data-rz-learning=insight] .bridge-grid{gap:10px;margin:12px 0}
 body[data-rz-learning=insight] .bridge-grid .mini{padding:12px;border-radius:10px}
 body[data-rz-learning=insight] .confirm-box{padding:12px;margin-top:12px}
@@ -110,3 +110,24 @@ body[data-rz-learning] .rz-learning-revisited .rz-learning-outcome *{animation:n
 body[data-rz-learning=hotel] .group-btn{background:#fff;color:#28545d;font-family:inherit;font-weight:500}
 body[data-rz-learning=hotel] .group-btn:hover{background:#f5f2f9;border-color:#bba9ce}
 body[data-rz-learning=hotel] .group-btn strong{font-size:1rem;font-weight:650}
+
+/* Final rendered-state corrections: preserve room for KR/KG task actions. */
+body[data-rz-learning=systems] .topbar .topbar-inner{min-height:32px;padding-block:4px}
+body[data-rz-learning=systems] .topbar .top-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:.8125rem}
+body[data-rz-learning=systems] .topbar .top-meta strong{font-size:.875rem;margin:0}
+body[data-rz-learning=systems] #app.shell{padding-top:4px}
+body[data-rz-learning=systems] .workspace>.panel>p.small{margin-bottom:10px}
+body[data-rz-learning=insight] #app>.hero{padding-block:10px}
+body[data-rz-learning=insight] .hero h1{margin:2px 0 3px}
+body[data-rz-learning=insight] .hero .eyebrow{margin-bottom:4px}
+body[data-rz-learning=insight] #student-main>p.small{margin-block:6px}
+body[data-rz-learning] .outcome .outcome-mark[data-rz-enhanced]{flex:0 0 auto;width:auto;gap:10px}
+body[data-rz-learning] .outcome[data-rz-feedback]>div:last-child{min-width:0;flex:1 1 220px}
+body[data-rz-learning=insight] :is(.mini-charts,.two-col){gap:12px;margin:12px 0}
+body[data-rz-learning=insight] :is(.chart-panel,.mini){padding:12px;border-radius:10px}
+body[data-rz-learning=insight] :is(.chart-panel,.mini) p{font-size:.8125rem;line-height:1.55;color:#526c72}
+body[data-rz-learning=insight] .modal{padding:20px;border:1px solid #d6e3df;border-radius:14px}
+body[data-rz-learning=insight] .modal h2{font-size:1.25rem;line-height:1.4}
+body[data-rz-learning=insight] .modal .actions{margin-top:16px}
+body[data-rz-learning=systems] .rz-s02-confirm-panel{padding:20px;border-radius:14px;border:1px solid #d6e3df}
+body[data-rz-learning=systems] .rz-s02-confirm-panel h2{font-size:1.25rem;line-height:1.4}

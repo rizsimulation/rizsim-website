@@ -60,3 +60,18 @@ has a presentation-only appendage; no network or data operations in that helper.
 CSS imports are shared, not a replacement application. No TinyFish. Backend
 Phase 9F is separate. Record exact covered states, limitations and deployment
 hash evidence. No claim of exhaustive all-browser or real-account acceptance.
+
+## Rendered review corrections
+
+The first mounted-state test found that generic KPI and progress panels pushed
+simulation responses and presenter analytics below the laptop fold. Where a
+simulation-specific root exists, put that task area first in the existing tab;
+retain generic summaries and guidance below it. Do not activate hidden tabs or
+relocate features to another tab. The compact-title rule must override the old
+workspace title's explicit large size. Expanded tests measure every KR/KG item,
+not just the first question, and verify outcome text never overlaps its icons.
+
+The old V14 test's unchanged-main-width assertion is no longer valid for the three
+explicitly redesigned runners. Replace only that geometry comparison with usable
+viewport bounds and intact official branding. Exact academic HTML/assets, public
+navigation geometry, source protection and all functional gates stay enforced.
