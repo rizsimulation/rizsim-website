@@ -4,7 +4,7 @@ on:
     branches: [main]
   push:
     branches: [main]
-    paths: ['**.css', 'scripts/test_design_code_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
+    paths: ['**.css', 'scripts/test_design_code_v12.py', 'scripts/test_public_priority_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
 permissions:
   contents: read
 concurrency:
@@ -71,6 +71,7 @@ jobs:
           python scripts/test_sim03_faculty_v1.py
       - name: Secure and downloadable resources, authoring and touch
         run: |
+          python scripts/test_public_priority_v12.py
           python scripts/test_design_code_v12_deep.py
           python scripts/test_course_environment_v6.py
           python scripts/test_material_modes_v10.py

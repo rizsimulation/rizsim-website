@@ -12,7 +12,7 @@ restrained complementary accents and brief feedback. Solid teal means the main
 operation; light teal/neutral surfaces mean supporting actions; violet denotes
 resources/results; amber marks exploration; red remains destructive/negative.
 Labels, shapes, selected indicators and keyboard focus carry meaning as well as
-color. No new user permissions, content movement or navigation destinations.
+color. No new user permissions, unrelated-tab movement or navigation destinations.
 
 Desktop Classroom Explore stays hover/focus-revealed; touch shows it. Do not
 extend hover hiding to Start, Save, Submit, required inputs, errors, disabled
@@ -23,7 +23,7 @@ explanations or entitlement guidance. These must remain discoverable.
 | Surface | Reviewed controls and presentation | Preserved boundaries |
 |---|---|---|
 | Public Home and embedded role Home | Environment tiles, modest headings, supporting text; approved 1.1 cards | Official artwork, splash, shared content and destination handlers |
-| Public Simulations | Compact introductory area, catalogue filters, licence options, details/purchase actions | Product/price information and existing access decisions |
+| Public Simulations | Catalogue/filter/licence/details actions first; unchanged explanatory introduction follows as Priority 2 | Product/price information and existing access decisions |
 | About and Contact | Document actions, smaller Contact heading, support actions | Existing content, contact destination and protected downloads |
 | Student | Find a Class, Classroom, Practice, history, resource cards, account/dialog controls | ERP consent, original-tab return, Live/Practice access, saved work |
 | Faculty | Classroom, session tools, records, results, Courses premium information | Premium-tier boundary, original class and response handlers |
@@ -66,7 +66,7 @@ Faculty reports, secure/downloadable resources and course-authoring/touch flows.
 A source inventory is not proof that every possible runtime state was tested.
 Synthetic permissions/tests are not real signed-in production acceptance.
 Publish precise covered states and outstanding limitations with the release.
-GitHub Pages and the 16-asset byte comparison are separate post-merge gates.
+GitHub Pages and the 18-asset byte comparison are separate post-merge gates.
 
 The local assistant environment blocks browser navigation; source inspection
 and baseline GitHub evidence were used locally. Actual interaction/visual tests
@@ -80,3 +80,18 @@ explicit control family and audit matrix for new components, then test normal,
 hover/focus, selected, disabled, loading, invalid, denied and completion states.
 Keep changes separated from Backend Phase 9F and update Master Status only from
 verified release evidence. This document alone is not a claim of deployment.
+
+## Resumed visual review: public task priorities
+
+Review of the rendered candidate found About document controls partly below the
+1366x768 fold and catalogue products below a large introductory area. The scoped
+`rizsim-public-priority-v12.css`, imported by the existing sitewide stylesheet,
+reduces shared About top spacing and places the public catalogue before its
+unchanged explanatory section. It does not move features to unrelated tabs,
+change link/price/filter handlers or alter HTML/JavaScript. The decorative About
+PDF badge is now a vector document drawing; its accessible action label remains.
+
+`test_public_priority_v12.py` checks both About actions for all active roles,
+public first-row catalogue actions at desktop sizes, mobile/text reflow,
+original destinations, category filtering and product-modal open/close. These
+checks supplement, not replace, the full role and simulation/resource gates.
