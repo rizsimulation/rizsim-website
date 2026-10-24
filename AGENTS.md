@@ -1,7 +1,10 @@
 # RizSim development instructions
 
 Before adding or changing a page, tab, component or UI state, read
-`RIZSIM_DESIGN_CODE.md` and `docs/design-code-v1-coverage.md`.
+`RIZSIM_DESIGN_CODE.md`, `docs/design-code-v1-coverage.md`, and the current
+`docs/design-code-v1.1-refinement.md` addendum. Design Code 1.1 extends 1.0;
+its quiet-button, accessible hover-reveal and motion refinements also govern
+future additions. Preserve rules not explicitly revised by an addendum.
 
 ## Shared project rules
 
@@ -21,16 +24,19 @@ Before adding or changing a page, tab, component or UI state, read
 
 ## Frontend conventions
 
-Reuse `rizsim-design-code.css` tokens and `window.RizSimUI` primitives. Keep
-ordinary interface copy readable, essential task actions first, complementary
-colors purposeful, and every consequential action accessible by keyboard/touch.
-Native application `alert`, `confirm`, `prompt` are not allowed; await the in-site
-helper. Browser security and unsaved-work safeguards are not application dialogs.
-No fake progress, artificial waits or correctness-colored answer selections.
+Reuse `rizsim-design-code.css` tokens, `rizsim-visual-refinement-v11.css`, and
+`window.RizSimUI` primitives. Keep ordinary interface copy readable, essential
+task actions first, complementary colors purposeful, and every consequential
+action accessible by keyboard/touch. Explore reveal must never hide Start,
+Submit, validation or entitlement guidance. Native application `alert`,
+`confirm`, `prompt` are not allowed; await the in-site helper. Browser security
+and unsaved-work safeguards are not application dialogs. No fake progress,
+artificial waits or correctness-colored answer selections.
 
-Run the Design Code structural and browser tests and existing relevant suites.
-Changes to old exact-source tests must allow only specifically authorized
-presentation changes while keeping original academic/data/security invariants.
-At release record workstream, PR, exact deployed SHA, test evidence, limitations,
-other-stream impact and remaining items. Keep shared Master Status current after
-verification; project-source files are snapshots, not automatically synchronized.
+Run the Design Code structural/browser tests, `scripts/test_design_code_v11.py`,
+and existing relevant suites. Changes to old exact-source tests must allow only
+specifically authorized presentation changes while keeping original academic,
+data and security invariants. At release record workstream, PR, exact deployed
+SHA, test evidence, limitations, other-stream impact and remaining items. Keep
+shared Master Status current after verification; project-source files are
+snapshots, not automatically synchronized.
