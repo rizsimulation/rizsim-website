@@ -55,6 +55,7 @@ def role_test(browser, base, role, size):
         card=p.locator('#rzLiveChoices .rz-v5-card:not(.is-locked)').first
         action=card.locator('.rz-v5-card-action')
         check(label+' existing Explore action',action.inner_text().strip()=='Explore')
+        check(label+' graphical card cue',card.locator('h3').evaluate("n=>getComputedStyle(n,'::before').maskImage.includes('data:image/svg+xml')"))
         h=card.evaluate('(n)=>n.offsetHeight')
         fg,bg=css(action,'color'),css(action,'backgroundColor')
         check(label+' amber button color',fg=='rgb(121, 80, 27)' and bg=='rgb(255, 245, 223)',{'foreground':fg,'background':bg})
@@ -68,9 +69,15 @@ def role_test(browser, base, role, size):
             p.screenshot(path=str(OUT/(label+'-hover.png')),full_page=False)
             check(label+' reveal preserves card height',card.evaluate('(n)=>n.offsetHeight')==h)
             p.mouse.move(4,4);p.wait_for_timeout(300)
-            action.focus();p.wait_for_timeout(300)
+            # Enter keyboard modality through actual Tab navigation. Programmatic
+            # focus immediately after mouse input need not match :focus-visible.
+            action.focus()
+            p.keyboard.press('Shift+Tab')
+            p.keyboard.press('Tab')
+            p.wait_for_timeout(300)
             check(label+' keyboard focus reveals Explore',float(css(action,'opacity'))>.99 and action.evaluate('(n)=>n===document.activeElement'))
             check(label+' visible keyboard outline',css(action,'outlineStyle')!='none')
+            p.screenshot(path=str(OUT/(label+'-keyboard.png')),full_page=False)
         else:
             check(label+' touch Explore visible',float(css(action,'opacity'))>.99 and css(action,'pointerEvents')=='auto')
             p.screenshot(path=str(OUT/(label+'-touch.png')),full_page=False)
