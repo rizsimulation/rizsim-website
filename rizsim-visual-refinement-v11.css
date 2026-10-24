@@ -1,0 +1,100 @@
+/* RizSim Design Code 1.1: quiet controls and purposeful motion.
+   Presentation only. Existing DOM, roles, routes and assessments remain authoritative.
+   Imported by the established sitewide sheet; explicitly shared with Home Shadow DOM. */
+:root,:host {
+ --rz-v11-teal:#086d74; --rz-v11-violet:#70528a; --rz-v11-coral:#925940;
+ --rz-v11-amber:#79501b; --rz-v11-amber-soft:#fff5df;
+ --rz-v11-danger:#a63847; --rz-v11-muted:#546c70;
+ --rz-v11-line:#d5e3df; --rz-v11-ease:cubic-bezier(.2,.75,.25,1);
+}
+/* Classroom choice cards: substantially lighter surfaces, quieter typography. */
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveChoices .rz-v5-card,
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveCards .rz-v5-card {
+ --rz-card-accent:#087b7d; --rz-card-soft:#f0f8f5;
+ background:radial-gradient(ellipse at 100% 0,var(--rz-card-soft),transparent 70%),#fff;
+ border:1px solid var(--rz-v11-line);border-top:2px solid #a4c8bd;
+ border-radius:1rem;box-shadow:0 3px 12px #173f4906;padding:1.125rem;
+ gap:1rem;min-width:0;transition:border-color 220ms,box-shadow 240ms,transform 260ms var(--rz-v11-ease);
+}
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveChoices .rz-v5-card {min-height:11rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-1 {--rz-card-accent:#70528a;--rz-card-soft:#f5f0f9;border-top-color:#c5b0d4}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-2 {--rz-card-accent:#925940;--rz-card-soft:#fcf2ea;border-top-color:#dfbca2}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-3 {--rz-card-accent:#406c89;--rz-card-soft:#eef5f9;border-top-color:#afc7d7}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-copy h3 {font-weight:650;font-size:1.125rem;letter-spacing:-.025em;line-height:1.35;color:#173f49;margin-bottom:.5rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-copy p {font-size:.875rem;line-height:1.6;color:#546c70}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-action {
+ align-self:flex-end;min-height:2.5rem;width:auto;padding:.5rem .875rem;
+ font-size:.875rem;font-weight:600;line-height:1.4;letter-spacing:0;
+ color:#79501b;background:#fff5df;border:1px solid #dec593;border-radius:.6rem;
+ box-shadow:none;transition:opacity 180ms,transform 220ms var(--rz-v11-ease),background-color 180ms,border-color 180ms;
+}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-action:hover {color:#654014;background:#ffedc4;border-color:#c6a568;box-shadow:0 3px 10px #79501b0c}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card.is-locked {background:#f6f7f6;border-color:#d8e0dc;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card.is-locked .rz-v5-card-action {color:#70528a;background:#f5f0f9;border-color:#d4c6df;opacity:1;pointer-events:auto;transform:none}
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveCards .rz-v5-card-add {border:1px dashed #c2ae86;background:#fffcf5}
+/* Hide only the menu Explore affordance, never a required field, Start or Submit.
+   Opacity keeps links in keyboard order; focus-within reveals before activation. */
+@media(hover:hover) and (pointer:fine) {
+ body[data-rz-design-code][data-rz-surface=portal] #rzLiveChoices .rz-v5-card:not(.is-locked) .rz-v5-card-action {opacity:0;pointer-events:none;transform:translateY(5px)}
+ body[data-rz-design-code][data-rz-surface=portal] #rzLiveChoices .rz-v5-card:not(.is-locked):is(:hover,:focus-within) .rz-v5-card-action {opacity:1;pointer-events:auto;transform:translateY(0)}
+ body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card:is(:hover,:focus-within) {border-color:var(--rz-card-accent);box-shadow:0 12px 26px #173f4910;transform:translateY(-2px)}
+}
+@media(hover:none),(pointer:coarse) {
+ body[data-rz-design-code][data-rz-surface=portal] #rzLiveChoices .rz-v5-card .rz-v5-card-action {opacity:1;pointer-events:auto;transform:none;min-height:2.75rem}
+}
+/* Supporting actions: distinguish by legible text, not a wall of solid blocks. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.small-action,.rz-action-secondary,.rz-author-btn.secondary,.rz-author-button.secondary,.management-action.secondary,.rz-st-button.secondary),
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveJumpResults {
+ color:#346471;background:#f6f9f8;background-image:none;border:1px solid #dbe6e1;
+ box-shadow:none;font-weight:600;letter-spacing:0;border-radius:.55rem;
+ transition:background-color 160ms,border-color 160ms,color 160ms,box-shadow 200ms;
+}
+body[data-rz-design-code][data-rz-surface=portal] :is(.small-action,.rz-action-secondary,.rz-author-btn.secondary,.rz-author-button.secondary,.management-action.secondary,.rz-st-button.secondary):hover {color:#164d59;background:#eaf3ef;border-color:#bdcec8;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveJumpResults {color:#70528a;background:#f7f3fa;border-color:#dfd3e8;font-size:.875rem}
+body[data-rz-design-code][data-rz-surface=portal] #rzLiveJumpResults:hover {background:#eee5f5;color:#61427b;box-shadow:none}
+/* The destructive label stays red in every state; do not reclassify permissions. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.small-action.danger,.small-action.classroom-end-button,.rz-action-danger) {color:#a63847!important;background:#fff3f3!important;border-color:#e7c3c7!important;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(.small-action.danger,.small-action.classroom-end-button,.rz-action-danger):hover {color:#8d2937!important;background:#fce6e8!important}
+body[data-rz-design-code] .rz-dc-dialog-actions button:not(.rz-dc-primary):not(.rz-dc-danger) {background:#f6f9f8;color:#47666a;border-color:#d8e4df;box-shadow:none;font-weight:550}
+/* Tabs are navigation, not competing call-to-action buttons. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-records-tab,.rz-c155-tab,.institution-tab-button,.admin-tab-button,.learning-tab-button) {background:transparent;border-color:transparent;box-shadow:none;color:#546c70;font-weight:550;transition:background-color 180ms,color 180ms,box-shadow 180ms}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-records-tab,.rz-c155-tab,.institution-tab-button,.admin-tab-button,.learning-tab-button):is(.active,.is-active,[aria-selected=true]) {background:#eaf4f0;color:#086d74;border-color:#c5ded5;box-shadow:inset 0 -2px 0 #087f86;font-weight:650}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-records-tab,.rz-c155-tab,.institution-tab-button,.admin-tab-button,.learning-tab-button):hover {background:#eef5f2;color:#235c62}
+/* Home tiles share this sheet inside their existing Shadow DOM. */
+.bp-home .bp-category-grid .bp-category-tile {--rz-home-accent:#087b7d;--rz-home-soft:#eff8f4;border:1px solid #d7e4df;border-top:2px solid #a6c9be;background:radial-gradient(ellipse at 100% 0,var(--rz-home-soft),transparent 80%),#fff;box-shadow:0 3px 12px #173f4906;border-radius:1rem;transition:box-shadow 240ms,transform 260ms,border-color 200ms}
+.bp-home .bp-category-grid .bp-category-tile:nth-child(2) {--rz-home-accent:#70528a;--rz-home-soft:#f5effa;border-top-color:#c5b0d4}
+.bp-home .bp-category-grid .bp-category-tile:nth-child(3) {--rz-home-accent:#925940;--rz-home-soft:#fdf1e7;border-top-color:#dfbca2}
+.bp-home .bp-category-grid .bp-category-tile strong {font-weight:650;color:#173f49;letter-spacing:-.02em}
+.bp-home .bp-category-grid .bp-category-tile small {color:#546c70;line-height:1.6}
+.bp-home .bp-category-grid .bp-category-tile .bp-category-icon {color:var(--rz-home-accent);background:#ffffffc9;border:1px solid #dfebe5;box-shadow:none;transition:transform 220ms}
+.bp-home .bp-category-grid .bp-category-tile .bp-category-arrow {color:#79501b;background:#fff5df;border-color:#dec593;box-shadow:none;transition:transform 220ms,background-color 180ms}
+@media(hover:hover) and (pointer:fine) {
+ .bp-home .bp-category-grid .bp-category-tile:is(:hover,:focus-visible) {border-color:var(--rz-home-accent);box-shadow:0 12px 26px #173f4910;transform:translateY(-2px)}
+ .bp-home .bp-category-grid .bp-category-tile:hover .bp-category-icon {transform:rotate(-4deg)}
+ .bp-home .bp-category-grid .bp-category-tile:hover .bp-category-arrow {transform:translate(2px,-2px);background:#ffedc4}
+}
+/* Primary teal actions remain the visual anchor; only supporting actions soften. */
+body[data-rz-design-code] .bp-home .bp-hero .button-secondary {background:#f4f8f6;color:#41656b;border-color:#d1e1da;box-shadow:none;font-weight:600}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-c155-start,.find-class-button) {box-shadow:0 3px 10px #087f8617;font-weight:650;transition:background-color 180ms,box-shadow 220ms,transform 180ms}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-c155-start,.find-class-button):hover:not(:disabled) {box-shadow:0 6px 15px #087f8624}
+/* Purposeful feedback: slightly longer draw/nod so the result can be perceived. */
+@media(prefers-reduced-motion:no-preference) {
+ body[data-rz-design-code] .rz-dc-dialog[open] {animation:rzV11Arrive 220ms var(--rz-v11-ease) both}
+ body[data-rz-design-code] .rz-dc-feedback:is([data-rz-tone=success],[data-rz-tone=error]) .rz-dc-outcome path {animation-duration:520ms}
+ body[data-rz-design-code] .rz-dc-feedback[data-rz-tone=denied] .rz-dc-outcome {animation:rzV11Nod 580ms ease-out both}
+ body[data-rz-design-code] .rz-dc-busy-mark {animation-duration:900ms}
+ body[data-rz-design-code] :is(#portalLoading,#loading) :is(.portal-spinner,.spinner) {border-top-color:#087f86;border-right-color:#d7ad68;box-shadow:0 0 0 4px #087f860a}
+ body[data-rz-design-code] .rz-session-state-dot {animation-duration:1.9s}
+}
+@keyframes rzV11Arrive {from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes rzV11Nod {0%,100%{transform:rotate(0)}35%{transform:rotate(7deg)}70%{transform:rotate(-3deg)}}
+@media(max-width:760px) {
+ body[data-rz-design-code][data-rz-surface=portal] #rzLiveChoices .rz-v5-card {min-height:0}
+ body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-action {min-height:2.75rem}
+}
+@media(prefers-reduced-motion:reduce) {
+ body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card,
+ body[data-rz-design-code][data-rz-surface=portal] :is(#rzLiveChoices,#rzLiveCards) .rz-v5-card-action,
+ .bp-home .bp-category-grid .bp-category-tile,.bp-home .bp-category-grid .bp-category-tile :is(.bp-category-icon,.bp-category-arrow) {transition:none!important;transform:none!important}
+ body[data-rz-design-code] .rz-dc-dialog[open],body[data-rz-design-code] .rz-dc-feedback[data-rz-tone=denied] .rz-dc-outcome {animation:none!important;transform:none!important}
+}
