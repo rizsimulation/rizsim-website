@@ -125,7 +125,9 @@ def shared_interactions(p):
  p.evaluate("document.getElementById('dcTestForm').remove();document.getElementById('dcTestTrigger').remove();document.getElementById('rzDcToasts').remove()")
 
 ADMIN_TARGETS={'overview':[], 'categories':['#adminCategoryName','#saveAdminCategoryButton'],'simulations':['#adminSimulationTitle','#adminSimulationCategory','#adminSimulationLaunchPath','#adminSimulationAccessType','#adminSimulationPrice','#saveAdminSimulationButton'],'materials':['#adminResourceType','#adminResourceCategory','#adminResourceTitle','#adminResourceAccessType','#adminResourcePrice','#adminResourceFile','#saveAdminResourceButton'],'publishing':['#adminPublishingMessage']}
-INST_TARGETS={'overview':['#institutionWorkspaceSelect'],'faculty':['#institutionFacultyName','#submitInstitutionFacultyRequest'],'classes':['#institutionClassesContent'],'simulations':['#institutionLicenceContent'],'analytics':['#institutionAnalyticsContent']}
+# Analytics figures are Priority 1. The explanatory scope note is Priority 2;
+# measure the complete figures grid, not its parent plus secondary guidance.
+INST_TARGETS={'overview':['#institutionWorkspaceSelect'],'faculty':['#institutionFacultyName','#submitInstitutionFacultyRequest'],'classes':['#institutionClassesContent'],'simulations':['#institutionLicenceContent'],'analytics':['#institutionAnalyticsContent .institution-data-grid']}
 
 def role_pass(browser,base,role,size):
  ctx,p,errors=open_page(browser,base,'access-in.html' if role=='student' else 'access-out.html',role,size)
@@ -170,6 +172,7 @@ def role_pass(browser,base,role,size):
     for tab,targets in INST_TARGETS.items():
      p.locator('[data-institution-tab='+tab+']').click();p.wait_for_timeout(120)
      measure(p,label+'-institution-'+tab,targets)
+     if tab=='analytics':check(label+' secondary analytics scope note retained',p.locator('#institutionAnalyticsContent .institution-insight-card').is_visible())
     p.locator('[data-institution-tab=faculty]').click();p.locator('#submitInstitutionFacultyRequest').click()
     check(label+' institution form identifies first missing input',p.evaluate("document.activeElement.id==='institutionFacultyName'"))
     check(label+' Institution has no content/governance tab',not p.locator('#mainNav [data-auth-view=administration]').is_visible())
