@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: design-code-v1-${{ github.ref }}
+  group: design-code-v1-matrix-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   ingest-reviewed-source:
@@ -64,7 +64,7 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
   browser-matrix:
     needs: ingest-reviewed-source
-    if: always() && (needs.ingest-reviewed-source.outputs.sha != '' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch')
+    if: ${{ !cancelled() && (needs.ingest-reviewed-source.outputs.sha != '' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') }}
     strategy:
       fail-fast: false
       matrix:
