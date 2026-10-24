@@ -172,7 +172,7 @@ def capture(browser,base,page_name,size,variant):
   assert page.locator("body").count()==1
   metrics=page.evaluate("""() => {
     const rect=sel=>{
-      const el=document.querySelector(sel);
+      const el=[...document.querySelectorAll(sel)].find(n=>n.getClientRects().length>0);
       if(!el)return null;
       const r=el.getBoundingClientRect();
       return {x:r.x,y:r.y,width:r.width,height:r.height};
@@ -181,7 +181,7 @@ def capture(browser,base,page_name,size,variant):
       scroll:document.documentElement.scrollWidth,
       vp:innerWidth,
       nav:rect('.nav-shell'),
-      main:rect('.bp-hero,.sim-hero,.rz-about,.contact-hero,#authGate,.viewer-info-card,.viewer-header,.hero,.panel,.stage,#app'),
+      main:rect('.bp-hero,.sim-hero,.rz-about,.contact-hero,#authGate,.viewer-info-card,.viewer-header,#rizHotelAuthGate,.hero,.panel,.stage,#app'),
       loginLabel:document.querySelector('#authGate #googleLogin')?.textContent.trim()||null,
       loginButton:rect('#authGate #googleLogin'),
       loginLogo:document.querySelector('#authGate .gate-logo')?.naturalWidth||null,
