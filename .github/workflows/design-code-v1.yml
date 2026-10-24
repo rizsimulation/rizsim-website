@@ -1,0 +1,47 @@
+name: RizSim Design Code v1
+
+on:
+  push:
+    branches: [frontend/design-code-v1-20261024]
+  pull_request:
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - 'scripts/**'
+      - 'RIZSIM_DESIGN_CODE.md'
+      - '.github/workflows/design-code-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: design-code-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-and-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Snapshot reviewed source (no credentials, no database access)
+        run: |
+          mkdir -p /tmp/rizsim-design-code
+          git archive --format=zip HEAD > /tmp/rizsim-design-code/source.zip
+          git rev-parse HEAD > /tmp/rizsim-design-code/commit.txt
+      - name: Run Design Code verification when implemented
+        run: |
+          if [ -f scripts/validate_design_code_v1.cjs ]; then
+            node scripts/validate_design_code_v1.cjs
+          else
+            echo 'Initial inventory checkpoint; implementation tests not yet present.'
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rizsim-design-code-source
+          path: /tmp/rizsim-design-code/
+          retention-days: 2
