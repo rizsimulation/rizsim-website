@@ -1,0 +1,28 @@
+name: Design Code review source snapshot
+on:
+  push:
+    branches: [frontend/design-code-v1-20261024]
+    paths: ['.github/workflows/design-code-review-source.yml']
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Archive public repository source only
+        run: |
+          mkdir -p /tmp/rizsim-review
+          git archive --format=zip HEAD > /tmp/rizsim-review/source.zip
+          git archive --format=zip origin/main > /tmp/rizsim-review/main.zip
+          git bundle create /tmp/rizsim-review/review.bundle HEAD refs/remotes/origin/main
+          git rev-parse HEAD > /tmp/rizsim-review/commit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rizsim-design-review-source
+          path: /tmp/rizsim-review/
+          retention-days: 1
