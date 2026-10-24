@@ -16,7 +16,11 @@
     if (!session || pending) return false;
     const warning = 'Student access will stop immediately. The session, student progress and submitted responses will remain preserved.';
     if (typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) {
-      return window.confirm('End session: ' + (session.class_name || 'Classroom session') + '?\n\n' + warning);
+      pending = true;
+      try {
+        const confirmed = await window.RizSimUI.confirm('End session: ' + (session.class_name || 'Classroom session') + '?\n\n' + warning, {title:'End this session?',action:'End session',danger:true});
+        return confirmed === true && !!allowed(sessionId, course);
+      } finally { pending = false; }
     }
     pending = true;
     const previous = document.activeElement;

@@ -160,7 +160,8 @@
   const list=E('div','rz-c155-resources');list.id='rzC155Resources';
   if(!resources.length){const e=E('div','rz-c155-empty');e.append(E('div','rz-c155-empty-icon','▤'),E('strong','','No resources shared yet'),E('p','','Resources published by your presenter will appear here.'));list.append(e);}
   else for(const m of resources){
-   const row=E('article','rz-c155-material'),icon=E('span','rz-c155-material-icon',m.source_type==='file'?(m.mime_type==='application/pdf'?'PDF':'FILE'):'↗');
+   const row=E('article','rz-c155-material'),icon=E('span','rz-c155-material-icon');
+   icon.append(window.RizSimUI.fileIcon(m));icon.setAttribute('role','img');icon.setAttribute('aria-label',m.source_type==='link'?'Web link':m.mime_type==='application/pdf'?'PDF document':'File resource');
    const meta=E('div','rz-c155-material-name');meta.append(E('strong','',m.title||'Class resource'),E('small','',m.description||m.file_name||'Published by your presenter'));
    const action=E('button','','Open');action.type='button';action.addEventListener('click',()=>{markSeen(false,id(m.material_id));void openMaterial(m);});
    row.append(icon,meta,action);list.append(row);
