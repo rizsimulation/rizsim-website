@@ -100,3 +100,57 @@
  };
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
+
+/* Design Code 1.3: decorate already-released learning feedback, never evaluate answers. */
+(()=>{'use strict';
+ const paths={'/simulation-insight-to-implication.html':'insight','/simulation-system-1-system-2.html':'systems','/simulation-hotel-judgment.html':'hotel'};
+ const kind=paths[location.pathname];if(!kind)return;
+ const init=()=>{
+  const root=document.getElementById('app')||document.querySelector('main.app');if(!root)return;
+  document.body.dataset.rzLearning=kind;
+  const practice=new URLSearchParams(location.search).get('access')==='practice';
+  const shown=new Set();let queued=false;
+  const icon=(outcome)=>{
+   const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+   svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');
+   svg.setAttribute('stroke-width','1.8');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');
+   svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');svg.classList.add('rz-learning-outcome');
+   const ring=document.createElementNS(ns,'circle');ring.setAttribute('cx','12');ring.setAttribute('cy','12');ring.setAttribute('r','10');
+   const path=document.createElementNS(ns,'path');path.setAttribute('d',outcome==='review'?'m8 8 8 8M16 8l-8 8':outcome==='success'?'m7 12 3 3 7-7':'M8 12h8m-3-3 3 3-3 3');
+   svg.append(ring,path);return svg;
+  };
+  function decorate(){queued=false;
+   if(!practice)return; // Live-session answer release and its presentation stay authoritative.
+   if(kind==='insight'){
+    const mark=root.querySelector('.outcome .outcome-mark');
+    if(mark&&!mark.dataset.rzEnhanced){
+     // These two characters are rendered ONLY by the existing locked-pair feedback stage.
+     // Never read keys, infer correctness from choices, or grade a tentative response.
+     const verdicts=Array.from(mark.textContent.trim());
+     if(verdicts.length!==2||!verdicts.every(x=>x==='\u2713'||x==='\u00d7'))return;
+     const panel=mark.closest('.outcome'),key=panel.textContent;
+     if(shown.has(key))panel.classList.add('rz-learning-revisited');shown.add(key);
+     mark.dataset.rzEnhanced='true';panel.dataset.rzFeedback=verdicts.includes('\u00d7')?'review':'success';
+     const chips=verdicts.map((value,i)=>{const state=value==='\u2713'?'success':'review';
+      const chip=document.createElement('span');chip.className='rz-learning-verdict';chip.dataset.outcome=state;
+      const label=document.createElement('span');label.textContent=i?'Transfer':'Source';
+      chip.setAttribute('role','img');chip.setAttribute('aria-label',label.textContent+(state==='success'?' correct':' needs review'));
+      chip.append(icon(state),label);return chip;});mark.replaceChildren(...chips);
+    }
+   }else if(kind==='systems'){
+    const mark=root.querySelector('.panel.feedback .feedback-icon');
+    if(mark&&!mark.dataset.rzEnhanced){
+     // This simulation releases instructional feedback, not a per-choice verdict.
+     // An arrow communicates review without falsely marking an answer wrong/right.
+     const panel=mark.closest('.feedback'),key=panel.textContent;
+     if(shown.has(key))panel.classList.add('rz-learning-revisited');shown.add(key);
+     mark.dataset.rzEnhanced='true';panel.dataset.rzFeedback='instructional';mark.replaceChildren(icon('instructional'));
+    }
+   }
+  }
+  const schedule=()=>{if(!queued){queued=true;requestAnimationFrame(decorate);}};
+  const observer=new MutationObserver(schedule);observer.observe(root,{childList:true,subtree:true});decorate();
+  window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();

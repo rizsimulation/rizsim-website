@@ -1,0 +1,106 @@
+/* Design Code 1.3: actual mounted Presenter Dashboard and Live Responses.
+   No hidden/inert overrides, data changes or global navigation restyling. */
+body[data-rz-surface=portal] #rzLiveV13Workspace{--rz-faculty-ready:1;gap:12px;margin-block:8px 24px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading{padding:0 0 10px;margin:0 0 10px;border-bottom:1px solid #d7e3de}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading h2{font-size:1.25rem;line-height:1.35;margin:3px 0;font-weight:650}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading p{font-size:.8125rem;line-height:1.5;margin:4px 0 0;color:#526c72}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-pane-note{background:#f7f9f8;border:1px solid #dde6e1;padding:10px 12px;border-radius:10px;margin-bottom:10px;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-pane-note :is(h3,p){font-size:.875rem;line-height:1.5;margin:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-pane-note h3{font-weight:650}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-root,.rz-s02-root,.rz-h03-root){font-family:inherit;font-size:.875rem;margin:0 0 12px;padding:12px;border-radius:12px;border:1px solid #d8e4de;background:#fff;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head){gap:10px;padding-bottom:12px;margin-bottom:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head) h2{font-size:1.125rem;line-height:1.4;font-weight:650;letter-spacing:-.02em;margin:4px 0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head) p{font-size:.8125rem;line-height:1.5;color:#526c72;margin:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-eyebrow,.rz-s02-eyebrow,.rz-h03-kicker,.rz-v13-kicker){font-size:.75rem;line-height:1.4;font-weight:600;letter-spacing:.055em;color:#406b72}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-actions,.rz-s02-actions,.rz-h03-actions){gap:8px;align-items:center}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-btn,.rz-s02-btn,.rz-h03-btn){font-family:inherit;font-size:.875rem;font-weight:600;line-height:1.4;min-height:40px;padding:8px 12px;border-radius:9px;border:1px solid #d9cfe3;background:#f6f2fa;color:#70528a;box-shadow:none;filter:none;transition:background-color 160ms,border-color 160ms}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-btn,.rz-s02-btn,.rz-h03-btn):hover:not(:disabled){background:#eee6f6;border-color:#bca9cc;color:#5b3978;filter:none;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-btn,.rz-s02-btn,.rz-h03-btn):focus-visible{outline:2px solid #70528a;outline-offset:3px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-stat-grid,.rz-s02-metrics,.rz-h03-metrics,.rz-i01-student-tiles){gap:8px;margin:10px 0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-stat,.rz-s02-metric,.rz-h03-metric,.rz-v15-kpi){padding:10px 12px;border:1px solid #dce6e1;border-radius:10px;background:#f8fbf9;box-shadow:none;min-width:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-stat-name,.rz-s02-metric-label,.rz-h03-metric>span,.rz-v15-kpi>span){font-size:.75rem;font-weight:600;letter-spacing:.025em;color:#526c72}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-stat-value,.rz-s02-metric-value,.rz-h03-metric>strong,.rz-v15-kpi>strong){font-size:1.375rem;font-weight:650;line-height:1.25;color:#174d58;margin-block:4px;font-variant-numeric:tabular-nums}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-stat,.rz-s02-metric,.rz-h03-metric) small{font-size:.75rem;line-height:1.4;color:#526c72}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-sections,.rz-s02-layout,.rz-i01-personal-grids,.rz-s02-two-metrics){gap:12px;margin-top:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-card,.rz-s02-panel,.rz-h03-card,.rz-i01-personal-panel,.rz-s02-subpanel){padding:12px;border:1px solid #dce6e1;border-top:2px solid #b8cfe0;border-radius:10px;background:#fff;box-shadow:none;margin-top:12px;min-width:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-section-head,.rz-s02-section-title,.rz-h03-title){margin-bottom:10px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-section-head,.rz-s02-section-title,.rz-h03-title) :is(h3,h4){font-size:1rem;font-weight:650;line-height:1.4;margin:0 0 4px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-section-head,.rz-s02-section-title,.rz-h03-title) p{font-size:.8125rem;line-height:1.5;color:#526c72;margin:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-select,.rz-s02-select){font-size:.875rem;min-height:40px;padding:8px 10px;border:1px solid #c6dad0;border-radius:8px;background:#fff;color:#28545d;max-width:100%}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-table,.rz-s02-table,.rz-h03-table){font-family:inherit;font-size:.875rem;border-collapse:collapse;color:#28545d}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-table,.rz-s02-table,.rz-h03-table) th{background:#eef4f1;color:#466970;font-size:.75rem;font-weight:650;letter-spacing:.02em;padding:10px 8px;line-height:1.4}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-table,.rz-s02-table,.rz-h03-table) td{font-size:.8125rem;line-height:1.5;padding:10px 8px;border-color:#e2ebe6}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-table,.rz-s02-table,.rz-h03-table) tbody tr:nth-child(even){background:#f8faf9}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-table,.rz-s02-table,.rz-h03-table) tbody tr:focus-within{background:#f4eff8}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-progress-label,.rz-s02-progress-label,.rz-h03-progress-line) small{font-size:.75rem;color:#526c72}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-empty,.rz-s02-empty,.rz-h03-empty,.rz-i01-error,.rz-s02-error,.rz-h03-error){padding:12px;font-size:.875rem;line-height:1.5;border-radius:10px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-error,.rz-s02-error,.rz-h03-error){color:#9b3141;background:#fff3f3;border-color:#e3b9c0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-note,.rz-s02-note,.rz-h03-note,.rz-s02-footer,.rz-h03-footer,.rz-h03-sealed-note){font-size:.8125rem;line-height:1.5;color:#526c72}
+/* Real learning-shift overview: compact values and pathways, not a second hero. */
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-i01-learning-shift{padding:12px;margin:12px 0;border-radius:12px;background:#f7faf9;box-shadow:none}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-v153-shift-heading{gap:10px;margin-bottom:10px}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-v153-shift-heading h3{font-size:1rem;line-height:1.4;margin:4px 0;font-weight:650}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-v153-shift-heading p{font-size:.8125rem;line-height:1.5;color:#526c72}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics :is(.rz-v153-shift-sample,.rz-v153-path-eyebrow){font-size:.75rem;font-weight:600;color:#526c72}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics :is(.rz-i01-shift-kpis,.rz-i01-shift-paths,.rz-v153-review-tiles){gap:8px;margin-block:8px}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics :is(.rz-i01-shift-metric,.rz-i01-shift-path,.rz-v153-review-tile){padding:10px;border-radius:9px;box-shadow:none}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics :is(.rz-i01-shift-metric,.rz-i01-shift-path,.rz-v153-review-tile)>strong{font-size:1.375rem;line-height:1.25;margin-block:3px;font-weight:650}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics :is(.rz-i01-shift-metric,.rz-i01-shift-path,.rz-v153-review-tile) :is(span,small){font-size:.75rem;line-height:1.4}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics :is(.rz-i01-shift-path-title,.rz-v153-review-group){margin-top:10px}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-i01-shift-path-title :is(h4,p){margin:0 0 4px;font-size:.8125rem;line-height:1.4}
+body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-i01-shift-caveat{font-size:.75rem;line-height:1.5;margin:8px 0 0;color:#526c72}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-individual,.rz-s02-individual,.rz-h03-individual){margin-top:12px;border-radius:12px;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-individual-banner,.rz-s02-person-banner,.rz-h03-individual-head){padding:14px;background:#f0edf7;border-color:#dcd2e6;color:#624779}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-individual-banner,.rz-s02-person-banner,.rz-h03-individual-head) :is(h3,p,span){color:#624779}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-individual-banner,.rz-s02-person-banner,.rz-h03-individual-head) h3{font-size:1.125rem;line-height:1.4;margin:4px 0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-individual-body,.rz-i01-student-progress,.rz-i01-journey,.rz-s02-indiv-progress){padding:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-h03-collection-status{padding:10px 12px;margin-bottom:10px;font-size:.875rem}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-h03-collection-status p{font-size:.8125rem;margin:4px 0 0}
+@media(min-width:1050px){
+ body[data-rz-surface=portal] #rzLiveV13Workspace:not(.rz-v13-collapsed){grid-template-columns:208px minmax(0,1fr)}
+ body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-i01-shift-paths{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-stat-grid,.rz-s02-metrics,.rz-h03-metrics,.rz-i01-student-tiles){grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-btn,.rz-s02-btn,.rz-h03-btn,.rz-i01-select,.rz-s02-select){min-height:44px}
+ body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head){align-items:stretch}
+ body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-actions,.rz-s02-actions,.rz-h03-actions){width:100%}
+}
+@media(prefers-reduced-motion:reduce){body[data-rz-surface=portal] #rzLiveV13Workspace :is(button,.rz-i01-progress-fill,.rz-s02-progress-fill,.rz-h03-progress-fill){animation:none!important;transition:none!important}}
+
+/* Headers generated directly in the live-roster mount are not analytics headers. */
+body[data-rz-surface=portal] #rzV13SimulationStudentResults :is(.rz-i01-root,.rz-s02-root,.rz-h03-root)>h2{font-size:1.125rem;line-height:1.4;font-weight:650;margin:4px 0 12px;color:#173f49}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v15-compact-table td::before{font-size:.75rem;line-height:1.4;letter-spacing:.015em;color:#526c72}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v15-compact-table tbody{gap:8px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v15-compact-table tr{border-radius:10px;box-shadow:none;background:#fff}
+
+/* Simulation-specific work is Priority 1; preserve general session summaries below.
+   These rules never activate hidden tabs or hidden report roots. */
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region{padding:14px;border-radius:14px;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading h2{font-size:1.25rem!important;margin:3px 0!important;line-height:1.35}
+body[data-rz-surface=portal] #rzV13Panestudents:not([hidden]):has(#rzV13SimulationStudentResults>section:not([hidden])),
+body[data-rz-surface=portal] #rzV13Paneinsights:not([hidden]):has(:is(#rzInsightFacultyAnalytics,#rizsimSystemFacultyResults,#rizsimHotelFacultyResults):not([hidden])){display:flex;flex-direction:column;gap:10px}
+body[data-rz-surface=portal] #rzV13Panestudents:has(#rzV13SimulationStudentResults>section:not([hidden]))>*{order:2}
+body[data-rz-surface=portal] #rzV13Panestudents:has(#rzV13SimulationStudentResults>section:not([hidden]))>#rzV13SimulationStudentResults{order:1}
+body[data-rz-surface=portal] #rzV13Paneinsights:has(:is(#rzInsightFacultyAnalytics,#rizsimSystemFacultyResults,#rizsimHotelFacultyResults):not([hidden]))>*{order:2}
+body[data-rz-surface=portal] #rzV13Paneinsights:has(:is(#rzInsightFacultyAnalytics,#rizsimSystemFacultyResults,#rizsimHotelFacultyResults):not([hidden]))>#rzV13InsightsContent{order:1}
+body[data-rz-surface=portal] #rzV13InsightsContent{gap:8px}
+body[data-rz-surface=portal] #rzV13InsightsContent #rzLiveResultsAnchor{gap:8px}
+body[data-rz-surface=portal] #rzV13InsightsContent .rz-v5-results-heading{margin:0;min-height:40px}
+body[data-rz-surface=portal] #rzV13InsightsContent .rz-v5-results-heading h3{font-size:1rem;font-weight:600}
+body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-heading{margin-bottom:8px}
+body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-breadcrumb{margin-bottom:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-card,.rz-s02-result-section,.rz-h03-card)>:is(h3,h4){font-size:1rem;line-height:1.4;font-weight:600;margin:0 0 8px}
+
+@media(min-width:1050px){
+ body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-heading{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:20px;row-gap:3px;align-items:end;margin-bottom:6px}
+ body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-heading>span{grid-column:1;grid-row:1}
+ body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-heading>h1{grid-column:1;grid-row:2;font-size:1.25rem;line-height:1.3;margin:0}
+ body[data-rz-surface=portal] #view-classroom:has(#rzLiveV13Workspace:not([hidden])) .rz-live-heading>p{grid-column:2;grid-row:1/3;text-align:right;font-size:.8125rem;line-height:1.5;margin:0}
+ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 16px;align-items:end}
+ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading>span{grid-column:1;grid-row:1}
+ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading>h2{grid-column:1;grid-row:2}
+ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region-heading>p{grid-column:2;grid-row:1/3;text-align:right;max-width:36rem;justify-self:end}
+ body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-v153-shift-heading>div{flex:1 1 460px;min-width:0}
+ body[data-rz-surface=portal] #rzInsightFacultyAnalytics .rz-v153-shift-sample{flex:0 0 auto}
+}
