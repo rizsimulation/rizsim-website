@@ -1,3 +1,4 @@
+@import url("rizsim-design-code-v12.css");
 /* V14: existing simulation participant UI optical finish only.
    No question displacement, score, event, class-access, or stimulus changes. */
 .panel:not(.dark),.stage,.card{box-shadow:0 11px 29px rgba(12,55,65,.07),0 2px 7px rgba(12,55,65,.026)}

@@ -1,0 +1,108 @@
+name: RizSim Design Code 1.2 sitewide audit
+on:
+  pull_request:
+    branches: [main]
+    paths: ['**.css', 'scripts/test_design_code_v12*.py', 'scripts/test_public_priority_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
+  push:
+    branches: [main]
+    paths: ['**.css', 'scripts/test_design_code_v12*.py', 'scripts/test_public_priority_v12.py', 'scripts/verify_design_code_v12_release.py', '.github/workflows/design-code-v12.yml']
+permissions:
+  contents: read
+concurrency:
+  group: design-code-v12-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  surfaces:
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [faculty, course_lead, student, owner, admin, institution, public]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Inspect every exercised control and active tab
+        env:
+          RIZSIM_V12_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          export RIZSIM_QA_ROLES='${{ matrix.scope }}'
+          export RIZSIM_QA_SKIP_PUBLIC=1
+          if [ '${{ matrix.scope }}' = public ]; then
+            export RIZSIM_QA_ROLES=''
+            unset RIZSIM_QA_SKIP_PUBLIC
+          fi
+          python scripts/test_design_code_v12.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v12-${{ matrix.scope }}
+          path: test-results/design-code-v12/
+          retention-days: 7
+  simulation-resources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated browser dependencies
+        run: |
+          python -m pip install playwright==1.57.0 pillow==11.3.0 zxing-cpp==2.3.0
+          python -m playwright install --with-deps chromium
+      - name: All three Student simulations and Faculty results
+        run: |
+          python scripts/test_insight_student_v1.py
+          python scripts/test_insight_faculty_v1.py
+          python scripts/test_sim02_student_v1.py
+          python scripts/test_sim02_faculty_v1.py
+          python scripts/test_sim03_student_v1.py
+          python scripts/test_sim03_faculty_v1.py
+      - name: Secure and downloadable resources, authoring and touch
+        run: |
+          python scripts/test_public_priority_v12.py
+          python scripts/test_design_code_v12_deep.py
+          python scripts/test_course_environment_v6.py
+          python scripts/test_material_modes_v10.py
+          python scripts/test_course_authoring_v7.py
+          python scripts/test_authoring_touch_v7.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v12-simulations-resources
+          path: test-results/
+          retention-days: 7
+  verify-production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [surfaces, simulation-resources]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify live production assets against released commit
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_design_code_v12_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v12-production
+          path: test-results/design-code-v12-production/
+          retention-days: 7

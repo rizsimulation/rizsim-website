@@ -1,0 +1,32 @@
+/* Design Code 1.2: task-first public browsing and shared About access.
+   Same content, links and handlers. No clipping or forced viewport height. */
+body[data-rz-design-code] .rz-about .rz-about-hero {padding:1.5rem 0 2rem}
+body[data-rz-design-code] .rz-about .rz-about-paper-wrap {margin-bottom:1rem}
+body[data-rz-design-code] .rz-about .rz-about-open-pdf .rz-about-action-arrow {color:currentColor}
+/* Replace the decorative PDF text badge with a drawn document, not the Google artwork. */
+body[data-rz-design-code] .rz-about .rz-about-pdf-icon {width:1.25rem;height:1.5rem;min-width:1.25rem;font-size:0;border:0;border-radius:0;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28' fill='none' stroke='%2379501b' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 2h9l6 6v18H5zM14 2v7h6M8 14h9M8 18h9M8 22h6'/%3E%3C/svg%3E")}
+/* The catalogue is Priority 1. The unchanged explanatory introduction follows it.
+   Explicit public-page scope cannot affect role or permission visibility. */
+body[data-rz-design-code][data-rz-surface=public][data-page=simulations] main.page-content {display:grid;grid-template-columns:minmax(0,1fr)}
+body[data-rz-design-code][data-rz-surface=public][data-page=simulations] main.page-content > .catalogue-section {grid-row:1;padding:1rem 0 2rem}
+body[data-rz-design-code][data-rz-surface=public][data-page=simulations] main.page-content > .sim-hero {grid-row:2}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .rz-catalog-scope {padding:.75rem 1rem;margin-bottom:.75rem;border-radius:.75rem;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .rz-catalog-scope strong {font-size:.9375rem;line-height:1.4}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .rz-catalog-scope small {font-size:.8125rem;line-height:1.4}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .rz-catalog-scope a {font-size:.875rem;font-weight:600;min-height:2.5rem}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .catalogue-heading {margin-bottom:.75rem;gap:1rem;align-items:center}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .catalogue-heading h2 {font-size:1.375rem;line-height:1.3;margin:.25rem 0 0}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .catalogue-heading p {font-size:.875rem;line-height:1.5;max-width:33rem}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .catalogue-filters {margin-bottom:1rem;gap:.5rem}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .simulation-card {min-height:0;padding:1rem;box-shadow:0 3px 14px #173f4907}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .simulation-card h3 {margin:.75rem 0 .5rem}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .faculty-license-area {padding-top:.875rem}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .faculty-license-label {font-size:.75rem;font-weight:600;line-height:1.4}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .simulation-price-wrap {min-height:0;margin-top:.625rem}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .simulation-price-note {font-size:.75rem;line-height:1.4;color:#526c72}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section .simulation-actions {margin-top:.875rem}
+@media(max-width:760px) {
+ body[data-rz-design-code] .rz-about .rz-about-hero {padding:1.25rem 0 1.5rem}
+ body[data-rz-design-code][data-rz-surface=public] .catalogue-section .rz-catalog-scope a,
+ body[data-rz-design-code][data-rz-surface=public] .catalogue-section :is(.catalogue-filter,.faculty-license-option,.simulation-actions .button) {min-height:2.75rem}
+}

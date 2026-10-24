@@ -1,0 +1,157 @@
+/* RizSim Design Code 1.2. Presentation only; explicit component families.
+   No role visibility, content order, assessment choice/stimulus, data or timing changes.
+   Inherits 1.1's approved Classroom Explore reveal. Do not style Google/brand assets. */
+:root,:host{
+ --rz-v12-ready:1;--rz-ui-ink:#173f49;--rz-ui-muted:#526c72;
+ --rz-ui-teal:#086d74;--rz-ui-teal-soft:#eef7f3;--rz-ui-violet:#70528a;
+ --rz-ui-violet-soft:#f6f2fa;--rz-ui-amber:#79501b;--rz-ui-amber-soft:#fff5df;
+ --rz-ui-red:#a63847;--rz-ui-red-soft:#fff3f3;--rz-ui-line:#d5e3df;
+ --rz-ui-shadow:0 3px 14px #173f4907;--rz-ui-ease:cubic-bezier(.2,.75,.25,1);
+}
+/* Action hierarchy: light supporting controls; solid teal reserved for the task. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-action,.small-action,.rz-action,.rz-action-secondary,.rz-author-btn,.rz-runtime-btn,.rz-st-button,.rz-v13-copy,.rz-v13-share-action,.admin-mini-button,.admin-cancel-button,.admin-operation-action,.rz-support-submit,.rz-i01-btn,.rz-s02-btn,.rz-h03-btn,.rz-c155-material button,.rz-dc-section-links a){
+ font-family:inherit;font-size:.875rem;line-height:1.4;font-weight:600;letter-spacing:0;
+ min-height:2.5rem;padding:.5rem .875rem;border-radius:.6rem;border:1px solid var(--rz-ui-line);
+ background:#f8faf9;background-image:none;color:var(--rz-ui-teal);box-shadow:none;
+ text-decoration:none;gap:.45rem;transition:color 160ms,background-color 160ms,border-color 160ms,box-shadow 180ms,transform 180ms;
+}
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-action,.small-action,.rz-action,.rz-action-secondary,.rz-author-btn,.rz-runtime-btn,.rz-st-button,.rz-v13-copy,.rz-v13-share-action,.admin-mini-button,.admin-cancel-button,.admin-operation-action,.rz-support-submit,.rz-i01-btn,.rz-s02-btn,.rz-h03-btn,.rz-c155-material button):hover:not(:disabled){background:#eaf3ef;border-color:#b6cdc3;color:#164f57;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-action,.admin-operation-action,.rz-action:not(.rz-action-secondary),.rz-author-btn.primary,.rz-runtime-btn.primary,.rz-st-button:not(.secondary):not(.quiet),.rz-support-submit,.small-action.primary){background:#087f86;color:#fff;border-color:#087f86;box-shadow:0 3px 9px #087f8612}
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-action,.admin-operation-action,.rz-action:not(.rz-action-secondary),.rz-author-btn.primary,.rz-runtime-btn.primary,.rz-st-button:not(.secondary):not(.quiet),.rz-support-submit,.small-action.primary):hover:not(:disabled){background:#086d74;color:#fff;border-color:#086d74;box-shadow:0 5px 12px #087f861e}
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-action.secondary,.rz-action-secondary,.rz-author-btn:not(.primary),.rz-runtime-btn:not(.primary),.rz-st-button.secondary,.rz-st-button.quiet,.small-action:not(.primary)){background:#f8faf9;color:var(--rz-ui-teal);border-color:var(--rz-ui-line);box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-i01-btn,.rz-s02-btn,.rz-h03-btn,.rz-dc-section-links a,.rz-review-file,.rz-c155-material button){background:var(--rz-ui-violet-soft);color:var(--rz-ui-violet);border-color:#dfd3e8}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-i01-btn,.rz-s02-btn,.rz-h03-btn,.rz-dc-section-links a,.rz-review-file,.rz-c155-material button):hover:not(:disabled){background:#ede4f5;color:#61427b;border-color:#c7b4d7}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-btn.reveal,.rz-author-home-card .rz-author-btn,.rz-author-tile .rz-author-btn:not(.danger)){background:var(--rz-ui-amber-soft);color:var(--rz-ui-amber);border-color:#dec593;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-btn.danger,.rz-runtime-btn.danger,.small-action.danger,.small-action.classroom-end-button,.rz-action-danger,.review-reject,.admin-mini-button.danger){background:var(--rz-ui-red-soft)!important;color:var(--rz-ui-red)!important;border-color:#e7c3c7!important;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-btn.danger,.rz-runtime-btn.danger,.small-action.danger,.small-action.classroom-end-button,.rz-action-danger,.review-reject,.admin-mini-button.danger):hover:not(:disabled){background:#fce6e8!important;color:#8d2937!important}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-btn.text,.rz-v5-crumb){background:transparent;border-color:transparent;box-shadow:none;padding-inline:.25rem;color:#47696f;font-weight:550}
+/* Actual selected state remains owned by the original tabs/filters. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-st-filter,.rz-records-tab,.rz-c155-tab,.learning-tab-button,.institution-tab-button,.admin-tab-button,.rz-v13-subtab,.license-term-button){background:#f7faf8;color:#526c72;border:1px solid transparent;border-radius:.55rem;box-shadow:none;font-size:.875rem;font-weight:550;line-height:1.4;min-height:2.5rem;padding:.5rem .75rem;letter-spacing:0;transition:background-color 180ms,color 180ms,border-color 180ms}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-st-filter,.rz-records-tab,.rz-c155-tab,.learning-tab-button,.institution-tab-button,.admin-tab-button,.rz-v13-subtab,.license-term-button):is(.active,.is-active,.is-selected,[aria-selected=true],[aria-pressed=true]){background:#eaf4f0;color:#086d74;border-color:#c5ded5;box-shadow:inset 0 -2px #087f86;font-weight:650}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-st-filter,.rz-records-tab,.rz-c155-tab,.learning-tab-button,.institution-tab-button,.admin-tab-button,.rz-v13-subtab,.license-term-button):hover{background:#edf5f1;color:#235c62}
+body[data-rz-design-code][data-rz-surface=portal] .rz-v13-tab{font-weight:550;font-size:.875rem;box-shadow:none;transition:background-color 160ms,color 160ms}
+body[data-rz-design-code][data-rz-surface=portal] .rz-v13-tab[aria-selected=true]{font-weight:650}
+/* Repeated content surfaces: a common, quieter material language. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-card,.workspace-card,.account-card,.info-card,.rz-st-history-card,.rz-st-resource-card,.rz-st-library-card,.rz-st-practice-card,.rz-author-card,.rz-author-list-panel,.rz-author-home-card,.rz-author-tile,.rz-course-panel,.rz-licensed-card,.admin-operation-card,.admin-overview-card){background:#fff;border-color:var(--rz-ui-line);border-radius:1rem;box-shadow:var(--rz-ui-shadow);min-width:0}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-st-resource-card,.rz-author-list-panel,.rz-course-panel){border-top:2px solid #c6b5d4;background:linear-gradient(140deg,#faf7fc,#fff 48%)}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-st-practice-card,.rz-st-history-card){border-top:2px solid #accdc1;background:linear-gradient(140deg,#f6faf8,#fff 50%)}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-home-card,.rz-author-tile){background:linear-gradient(145deg,#f8fbf9,#fff 58%);padding:1.125rem;border-top:2px solid #b7d1c6;transition:border-color 180ms,box-shadow 220ms,transform 220ms var(--rz-ui-ease)}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-home-card,.rz-author-tile):focus-within{border-color:#087f86;box-shadow:0 7px 20px #173f4910}
+body[data-rz-design-code][data-rz-surface=portal] :is(.portal-panel,.admin-hub,.institution-hub,.rz-v13-workspace){border-color:var(--rz-ui-line);box-shadow:var(--rz-ui-shadow)}
+body[data-rz-design-code][data-rz-surface=portal] :is(.portal-panel-header,.rz-workspace-section-heading){background:#f6faf8;border-bottom-color:#dce7e2;padding:.75rem 1rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-home-card h3,.rz-author-tile h3,.rz-st-resource-card h3,.rz-st-practice-card h2,.rz-st-history-card h2,.management-card h3,.account-card h3,.admin-operation-card h4){font-weight:650;font-size:1.0625rem;line-height:1.4;letter-spacing:-.02em;color:#173f49}
+body[data-rz-design-code][data-rz-surface=portal] :is(.auth-section-heading,.student-heading,.rz-author-heading,.rz-live-heading,.rz-st-heading,.rz-c155-heading) h1{font-size:1.375rem;font-weight:650;line-height:1.3;letter-spacing:-.025em}
+body[data-rz-design-code][data-rz-surface=portal] :is(.portal-panel-title,.rz-workspace-section-heading h2,.rz-author-card h2,.rz-st-heading h2){font-size:1.125rem;font-weight:650;line-height:1.4}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-home-card p,.rz-author-tile p,.rz-st-resource-card p,.rz-st-practice-card p,.rz-st-history-card p){font-size:.875rem;line-height:1.6;color:#526c72}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-st-meta,.rz-st-timing,.rz-author-meta,.portal-panel-note,.management-help,.admin-boundary,.institution-data-note){font-size:.8125rem;line-height:1.5;color:#526c72}
+/* Forms retain their original labels, required state, error hooks and tab order. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-input,.management-select,.management-textarea,.classroom-input,.classroom-select,.results-filter,.rz-author-field input,.rz-author-field select,.rz-author-field textarea,.rz-runtime-field input,.rz-runtime-field select,.rz-support-category,.rz-support-message){background:#fff;border:1px solid #b7cbc4;border-radius:.6rem;box-shadow:none;color:#173f49;font-size:.9375rem;line-height:1.5}
+body[data-rz-design-code][data-rz-surface=portal] :is(.management-field label,.classroom-field label,.rz-author-field label,.rz-runtime-field label){font-size:.8125rem;font-weight:600;letter-spacing:0;color:#365a61}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-field-invalid,[aria-invalid=true]){border-color:#ac303c!important;background:#fff3f3!important;box-shadow:0 0 0 1px #ac303c30}
+/* Dialog bodies and task controls; original show/open/hidden logic is untouched. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-modal,.rz-runtime-dialog,.rz-st-dialog,.rz-c155-erp,.rz-modal-card,.review-modal-card,.response-modal-card,.product-detail-card){border-radius:1rem;border-color:#d0e0d9;box-shadow:0 20px 65px #153f4929}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-modal,.rz-runtime-dialog,.rz-st-dialog,.rz-c155-erp,.rz-modal-card) h2{font-size:1.25rem;font-weight:650;line-height:1.3;letter-spacing:-.025em}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-dialog-description,.rz-author-modal-description,.rz-st-dialog p){font-size:.875rem;line-height:1.6;color:#526c72}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-close,.rz-dialog-close,.rz-st-close,.rz-modal-x,.response-modal-close,.review-modal-close,.product-detail-close){min-width:2.5rem;min-height:2.5rem;border-radius:.6rem;box-shadow:none;background:#f5f8f6;color:#49686d;border:1px solid #d7e4de}
+/* Class results, all three Faculty analyses, and Owner/Institution records. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.portal-table,.rz-i01-table,.rz-s02-table,.rz-h03-table) th{font-size:.75rem;font-weight:650;letter-spacing:.035em;color:#47666c;background:#f3f8f5;border-color:#dce7e2;padding:.75rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(.portal-table,.rz-i01-table,.rz-s02-table,.rz-h03-table) td{font-size:.8125rem;line-height:1.5;color:#264a54;border-color:#e2ebe6;padding:.75rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(.table-primary,.admin-list-copy strong){font-weight:600;color:#244c56;font-size:.875rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(.table-secondary,.admin-list-copy span){font-size:.8125rem;line-height:1.5;color:#526c72}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-i01-panel,.rz-s02-panel,.rz-h03-panel){border-color:#d5e3df;box-shadow:var(--rz-ui-shadow);border-radius:1rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-i01-actions,.rz-s02-actions,.rz-h03-actions,.rz-author-actions,.rz-dialog-actions){gap:.5rem}
+/* Public catalogue, About, Contact and their existing shared portal content. */
+body[data-rz-design-code][data-rz-surface=public] .sim-hero{padding:1.75rem 0}
+body[data-rz-design-code][data-rz-surface=public] .sim-hero-grid{gap:2rem}
+body[data-rz-design-code][data-rz-surface=public] .sim-hero h1{font-size:clamp(1.75rem,3vw,2.25rem);line-height:1.15;letter-spacing:-.035em;margin:.75rem 0}
+body[data-rz-design-code][data-rz-surface=public] .sim-hero-copy p{font-size:.9375rem;line-height:1.65}
+body[data-rz-design-code][data-rz-surface=public] .sim-experience-card{padding:1.25rem;border-radius:1rem}
+body[data-rz-design-code][data-rz-surface=public] .sim-experience-card h2{font-size:1.125rem;line-height:1.45}
+body[data-rz-design-code][data-rz-surface=public] .catalogue-section{padding-top:1.75rem}
+body[data-rz-design-code][data-rz-surface=public] :is(.catalogue-heading h2,.section-heading h2){font-size:1.5rem;line-height:1.3;letter-spacing:-.025em}
+body[data-rz-design-code][data-rz-surface=public] :is(.simulation-card,.simulation-card-content,.sim-experience-card){box-shadow:var(--rz-ui-shadow)}
+body[data-rz-design-code][data-rz-surface=public] .simulation-card{border-color:#d5e3df;border-radius:1rem;background:#fff}
+body[data-rz-design-code][data-rz-surface=public] .simulation-card h3{font-size:1.125rem;font-weight:650;line-height:1.4}
+body[data-rz-design-code][data-rz-surface=public] .simulation-card-description{font-size:.875rem;line-height:1.6;color:#526c72}
+body[data-rz-design-code][data-rz-surface=public] :is(main,.product-modal-card,.faculty-access-invite-card) .button{font-size:.875rem;font-weight:600;letter-spacing:0;line-height:1.4;min-height:2.5rem;padding:.55rem .875rem;border-radius:.6rem;box-shadow:none;transition:background-color 180ms,color 180ms,border-color 180ms,box-shadow 180ms}
+body[data-rz-design-code][data-rz-surface=public] :is(main,.product-modal-card) .button-primary{background:#087f86;background-image:none;border-color:#087f86;color:#fff}
+body[data-rz-design-code][data-rz-surface=public] :is(main,.product-modal-card) .button-primary:hover{background:#086d74;color:#fff}
+body[data-rz-design-code][data-rz-surface=public] :is(main,.product-modal-card) .button-secondary{background:#f8faf9;background-image:none;border-color:#d5e3df;color:#346471}
+body[data-rz-design-code][data-rz-surface=public] .simulation-actions .product-details{background:#f6f2fa;color:#70528a;border-color:#dfd3e8}
+body[data-rz-design-code][data-rz-surface=public] :is(.catalogue-filter,.faculty-license-option,.modal-license-option){background:#f7faf8;color:#526c72;border-color:#d5e3df;box-shadow:none;font-size:.875rem;line-height:1.4;font-weight:550;min-height:2.5rem;border-radius:.6rem}
+body[data-rz-design-code][data-rz-surface=public] :is(.catalogue-filter,.faculty-license-option,.modal-license-option).is-active{background:#eaf4f0;color:#086d74;border-color:#bed7cc;box-shadow:inset 0 -2px #087f86;font-weight:650}
+body[data-rz-design-code][data-rz-surface=public] .rz-v153-public-contact{padding:2rem 0}
+body[data-rz-design-code][data-rz-surface=public] .rz-v153-public-intro h1{font-size:clamp(1.5rem,3vw,2.125rem);line-height:1.25;margin:.75rem 0}
+body[data-rz-design-code][data-rz-surface=public] .rz-v153-public-intro>p{font-size:.9375rem;line-height:1.65}
+body[data-rz-design-code][data-rz-surface=public] .rz-v153-public-card{padding:1.5rem;border-radius:1rem;box-shadow:var(--rz-ui-shadow)}
+body[data-rz-design-code] .rz-about :is(.rz-about-open-pdf,.rz-about-download-pdf){font-size:.875rem;line-height:1.4;min-height:2.5rem;padding:.55rem .875rem;border-radius:.6rem;font-weight:600;box-shadow:none}
+body[data-rz-design-code] .rz-about .rz-about-open-pdf{color:#79501b;background:#fff5df;border-color:#dec593}
+body[data-rz-design-code] .rz-about .rz-about-download-pdf{color:#70528a;background:#f6f2fa;border-color:#dfd3e8}
+/* Home: also reaches the existing open Shadow DOM through the shared v1.1 import. */
+.bp-home :is(.bp-categories-head h2,.bp-heading h2){font-size:1.5rem;line-height:1.3;letter-spacing:-.025em;font-weight:650}
+.bp-home .bp-categories-head p{font-size:.875rem;line-height:1.55;color:#526c72}
+.bp-home .bp-category-grid .bp-category-tile strong{font-size:1.125rem;line-height:1.35}
+.bp-home .bp-category-grid .bp-category-tile small{font-size:.875rem;line-height:1.6}
+/* Resources: vector file icons remain graphical and the permissions remain untouched. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-file-caption,.rz-author-item,.rz-resource-card){border-color:#d9e3e0;border-radius:.875rem;background:#fff;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-resource-icon,.rz-author-item-icon){color:#70528a;background:#f6f2fa;border-color:#e1d6e9;border-radius:.65rem}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-c155-material-icon,.rz-dc-file-pdf){color:#9e3c4a}
+body[data-rz-design-code][data-rz-surface=portal] .rz-dc-file-slides{color:#925940}
+body[data-rz-design-code][data-rz-surface=portal] .rz-dc-file-document{color:#346b8e}
+body[data-rz-design-code][data-rz-surface=portal] .rz-dc-file-sheet{color:#276b50}
+/* Both document viewers: no touching PDF canvases, images, zoom or protected copy rules. */
+body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-button,.toolbar button){font-family:inherit;font-size:.875rem;line-height:1.4;font-weight:600;letter-spacing:0;min-height:2.5rem;min-width:2.5rem;padding:.5rem .75rem;border:1px solid #d5e3df;border-radius:.6rem;background:#f8faf9;color:#346471;box-shadow:none;transition:background-color 180ms,border-color 180ms,color 180ms}
+body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-button,.toolbar button):hover:not(:disabled){background:#eaf4f0;color:#086d74;border-color:#bbd6ca;box-shadow:none;transform:none}
+body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-toolbar-inner,.toolbar){background:#fff;border-color:#d5e3df;border-radius:.875rem;box-shadow:var(--rz-ui-shadow);gap:.5rem}
+body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-info-card,.viewer-status,.message){border-color:#d5e3df;border-radius:1rem;box-shadow:var(--rz-ui-shadow)}
+body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-resource-copy strong,#materialTitle){font-size:1.25rem;font-weight:650;line-height:1.35;letter-spacing:-.025em}
+body[data-rz-design-code][data-rz-surface=viewer] :is(.counter,.page-counter,.zoom-label,.viewer-resource-copy span,#courseTitle,.privacy){font-size:.8125rem;line-height:1.5}
+body[data-rz-design-code][data-rz-surface=viewer] #downloadButton{background:#f6f2fa;color:#70528a;border-color:#dfd3e8}
+/* Three simulations: task/navigation controls ONLY. Never target options or stimuli. */
+body[data-rz-design-code][data-rz-surface=runner] :is(.btn,.actions>button.primary,.actions>button.secondary,.modal-actions>button.primary,.modal-actions>button.secondary){font-family:inherit;font-size:.875rem;font-weight:600;line-height:1.4;letter-spacing:0;min-height:2.5rem;padding:.55rem .875rem;border-radius:.6rem;box-shadow:none;transition:background-color 180ms,border-color 180ms,box-shadow 180ms}
+body[data-rz-design-code][data-rz-surface=runner] :is(.btn:not(.secondary):not(.danger):not(.gold):not(.ghost),.actions>button.primary,.modal-actions>button.primary){color:#fff;background:#087f86;border-color:#087f86}
+body[data-rz-design-code][data-rz-surface=runner] :is(.btn.secondary,.actions>button.secondary,.modal-actions>button.secondary){color:#346471;background:#f8faf9;border-color:#d5e3df}
+body[data-rz-design-code][data-rz-surface=runner] .btn.danger{color:#a63847;background:#fff3f3;border-color:#e7c3c7}
+body[data-rz-design-code][data-rz-surface=runner] .btn.gold{color:#79501b;background:#fff5df;border-color:#dec593}
+body[data-rz-design-code][data-rz-surface=runner] :is(.btn,.actions>button.primary,.actions>button.secondary):hover:not(:disabled){box-shadow:0 3px 10px #173f4914;filter:none}
+body[data-rz-design-code][data-rz-surface=runner] :is(.rz-v154-shell h1,.rz-v154-header h1,.rz-runner-header h1){font-weight:650;letter-spacing:-.025em}
+/* Brief local motion, never a replaying animation on assessment choices/content. */
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-home-card,.rz-author-tile):hover{border-color:#a5c5b7;transform:translateY(-2px);box-shadow:0 10px 24px #173f4910}
+ body[data-rz-design-code][data-rz-surface=portal] :is(.management-action,.rz-author-btn.primary,.rz-runtime-btn.primary,.admin-operation-action):hover:not(:disabled){transform:translateY(-1px)}
+}
+@media(prefers-reduced-motion:no-preference){
+ body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-modal[open],.rz-runtime-dialog[open],.rz-st-dialog[open],.rz-c155-erp[open]){animation:rzV12DialogEnter 200ms var(--rz-ui-ease) both}
+ body[data-rz-design-code][data-rz-surface=portal] .rz-success-icon svg{animation:rzV12Success 350ms ease-out both}
+}
+@keyframes rzV12DialogEnter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes rzV12Success{from{opacity:.3;stroke-dashoffset:24}to{opacity:1;stroke-dashoffset:0}}
+/* Responsive and accessible rather than artificially shrinking a desktop screenshot. */
+@media(max-width:760px){
+ body[data-rz-design-code][data-rz-surface=public] .sim-hero-grid{grid-template-columns:minmax(0,1fr);gap:1rem}
+ body[data-rz-design-code][data-rz-surface=portal] :is(.management-action,.small-action,.rz-author-btn,.rz-runtime-btn,.rz-st-button,.rz-action,.rz-action-secondary,.admin-mini-button,.admin-cancel-button,.admin-operation-action,.rz-st-filter,.rz-v13-subtab),
+ body[data-rz-design-code][data-rz-surface=runner] :is(.btn,.actions>button),
+ body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-button,.toolbar button){min-height:2.75rem}
+ body[data-rz-design-code][data-rz-surface=portal] :is(.management-input,.management-select,.management-textarea,.classroom-input,.classroom-select,.rz-author-field input,.rz-runtime-field input){font-size:1rem}
+ body[data-rz-design-code][data-rz-surface=viewer] :is(.viewer-toolbar-inner,.toolbar,.controls){flex-wrap:wrap;gap:.5rem}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-rz-design-code][data-rz-surface=portal] :is(.rz-author-home-card,.rz-author-tile,.rz-author-modal,.rz-runtime-dialog,.rz-st-dialog,.rz-c155-erp,.rz-success-icon svg){animation:none!important;transition:none!important;transform:none!important}
+}
+/* Remaining audited action families: report forms, analytics and launch managers. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-run-button,.join-button,.rz-support-send,.rz-support-email-action,.rz-v15-button,.rz-v153-support-copy,.review-approve,.review-reject){font-size:.875rem;font-weight:600;line-height:1.4;letter-spacing:0;min-height:2.5rem;padding:.55rem .875rem;border-radius:.6rem;box-shadow:none;transition:background-color 180ms,border-color 180ms,box-shadow 180ms}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-run-button,.join-button,.review-approve){background:#087f86;color:#fff;border-color:#087f86;box-shadow:0 3px 9px #087f8612}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-v15-button,.rz-v153-support-copy){background:#f8faf9;color:#346471;border-color:#d5e3df}
+body[data-rz-design-code][data-rz-surface=portal] #rzOwnerWebAnalytics :is(.rz-wa-button,select){font-size:.875rem;font-weight:600;line-height:1.4;background:#f6f2fa;color:#70528a;border-color:#dfd3e8;border-radius:.6rem;box-shadow:none}
+body[data-rz-design-code][data-rz-surface=portal] .rz-owner-reports-table :is(th,td){font-size:.8125rem;line-height:1.55;padding:.75rem;color:#264a54}
+body[data-rz-design-code][data-rz-surface=portal] .rz-support-form:has(.rz-support-status:not(:empty)) .rz-support-message:invalid{border-color:#ac303c;background:#fff3f3;box-shadow:0 0 0 1px #ac303c30}
+/* The Faculty premium-tier information stays in Courses, with a quieter action. */
+body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu h1{font-size:clamp(1.75rem,3vw,2.25rem);line-height:1.2;letter-spacing:-.03em;margin:.875rem 0}
+body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-button{font-size:.9375rem;line-height:1.4;min-height:2.875rem;min-width:0;padding:.65rem 1.125rem;border-radius:.7rem;background:#fff5df;border:1px solid #dec593;color:#79501b!important;text-shadow:none;box-shadow:0 4px 14px #0c263b16;animation:none;transform:none}
+body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-button:hover{background:#ffedc4;box-shadow:0 7px 18px #0c263b22;transform:translateY(-1px)}
+body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-shine{animation:none;opacity:0;pointer-events:none}
+@media(max-width:760px){body[data-rz-design-code][data-rz-surface=portal] :is(.rz-run-button,.join-button,.rz-support-send,.rz-support-email-action,.rz-v15-button,.rz-v153-support-copy,.review-approve,.review-reject){min-height:2.75rem}}
+
+/* Contrast corrections found by the rendered control audit. */
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-support-send,.rz-support-email-action){background:#087f86!important;color:#fff!important;border-color:#087f86!important}
+body[data-rz-design-code][data-rz-surface=portal] :is(.rz-support-send,.rz-support-email-action):hover:not(:disabled){background:#086d74!important;border-color:#086d74!important}
