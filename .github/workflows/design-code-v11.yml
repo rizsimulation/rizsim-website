@@ -1,0 +1,55 @@
+name: RizSim Design Code v1.1 visual refinement
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths: ['**.css', 'rizsim-shared-home.js', 'scripts/test_design_code_v11.py', 'scripts/verify_design_code_v11_release.py', '.github/workflows/design-code-v11.yml']
+permissions:
+  contents: read
+jobs:
+  interactions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing pinned browser test dependency
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Actual card hover, keyboard, touch and reduced-motion interactions
+        run: python scripts/test_design_code_v11.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-design-code-v11-visual-evidence
+          path: test-results/design-code-v11/
+          retention-days: 5
+  verify-production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: interactions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify deployed visual assets against this exact commit
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_design_code_v11_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-design-code-v11-production-evidence
+          path: test-results/design-code-v11-production/
+          retention-days: 7
