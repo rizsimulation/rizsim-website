@@ -43,6 +43,9 @@ jobs:
       - name: Offline validation, focus and nested-scroll component regressions
         if: matrix.scope == 'public'
         run: python scripts/test_design_code_validation.py
+      - name: Student real-state labels and ERP validation
+        if: matrix.scope == 'student'
+        run: python scripts/test_design_code_student.py
       - name: Actual role and viewport interactions
         timeout-minutes: 5
         shell: bash
