@@ -1,6 +1,7 @@
 """Actual HTML with existing synthetic fixtures; never signs into production."""
 import http.server
 import json
+import os
 import re
 import subprocess
 import threading
@@ -11,7 +12,9 @@ from test_design_code_v1 import ROOT, Handler, open_page, nav
 OUT = ROOT / 'test-results' / 'design-code-v11'
 OUT.mkdir(parents=True, exist_ok=True)
 CHECKS = []
-BASE = 'f054e9f6dc85b9280fed01549e57840345c06d54'
+# CI supplies the current PR base (or pre-push main). Do not compare unrelated
+# future Backend releases forever against the initial visual-release snapshot.
+BASE = os.environ.get('RIZSIM_VISUAL_BASE') or 'origin/main'
 
 def check(name, passed, detail=None):
     CHECKS.append({'name': name, 'passed': bool(passed), 'detail': detail})
