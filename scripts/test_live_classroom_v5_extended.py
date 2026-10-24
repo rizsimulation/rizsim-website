@@ -24,10 +24,20 @@ def run(browser,url):
     ctx,page,errors=base.page_for(browser,url)
     page.mouse.move(1,1)
     action=page.locator('#rzLiveChoices .rz-v5-card-action').first
-    # Design Code v1 explicitly keeps essential actions visible without hover.
-    base.check('Desktop card CTA visible without hover',float(action.evaluate('n=>getComputedStyle(n).opacity'))==1)
+    # Design Code 1.1 explicitly requests desktop Explore reveal on hover/focus.
+    # Essential Start/Submit controls and all original permission tests stay intact.
+    page.wait_for_timeout(300)
+    base.check('Desktop Explore concealed until hover or focus',float(action.evaluate('n=>getComputedStyle(n).opacity'))==0)
+    page.locator('#rzLiveChoices .rz-v5-card').first.hover()
+    page.wait_for_timeout(300)
+    base.check('Whole-card hover reveals Explore',float(action.evaluate('n=>getComputedStyle(n).opacity'))==1)
+    page.mouse.move(1,1)
     action.focus()
+    page.keyboard.press('Shift+Tab')
+    page.keyboard.press('Tab')
+    page.wait_for_timeout(300)
     base.check('Keyboard focus reveals card CTA',float(action.evaluate('n=>getComputedStyle(n).opacity'))==1)
+    base.check('Keyboard CTA has visible focus',action.evaluate('n=>n===document.activeElement && getComputedStyle(n).outlineStyle!=="none"'))
     page.keyboard.press('Enter')
     page.wait_for_selector('#rzLiveCollection:not([hidden])')
     base.check('Keyboard Enter opens one fresh collection screen','live=simulation-list' in page.url)
@@ -49,7 +59,7 @@ def run(browser,url):
     shot(page,'session-access-contrast.png')
     page.locator('.classroom-created-card:visible [data-close-classroom-session]').click()
     page.locator('#rzEndSessionConfirm').click()
-    page.wait_for_function('__fixture.sessions.find(s=>s.session_id==="existing-1").active===false')
+    page.wait_for_function('__fixture.sessions.find(s=>s.session_id=="existing-1").active===false')
     page.wait_for_selector('#rzLiveSessionNotice:not([hidden])')
     page.locator('#rzV13Tabstudents').click()
     base.check('Ending a session preserves its results in Student Results',page.locator('#resultRows').is_visible())
