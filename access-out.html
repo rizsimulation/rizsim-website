@@ -3643,9 +3643,11 @@ border-color:#315b92;
 <link rel="stylesheet" href="rizsim-v153-focus.css">
 <link rel="stylesheet" href="/rizsim-v154-session-ui.css">
 <link rel="stylesheet" href="/rizsim-owner-web-analytics.css">
+<link rel="stylesheet" href="/rizsim-design-code.css">
+<script src="/rizsim-design-code.js"></script>
 </head>
 
-<body data-rizsim-home-portal="faculty">
+<body data-rz-design-code="1.0" data-rz-surface="portal" data-rizsim-home-portal="faculty">
 
 <header
 class="site-header authenticated-header"
@@ -10025,6 +10027,7 @@ let portalLoadingFailsafeTimer =
 null;
 
 function showLoading() {
+window.RizSimUI?.busyStart("portalLoading", document.getElementById("authenticatedApp")?.classList.contains("show") ? "Updating your workspace" : "Loading your workspace");
 
 const loader =
 document.getElementById(
@@ -10068,6 +10071,8 @@ loader.classList.remove(
 
 portalLoadingFailsafeTimer =
 null;
+window.RizSimUI?.busyEnd("portalLoading");
+window.RizSimUI?.notify("The operation status could not be confirmed. Refresh the workspace before retrying to avoid duplicate changes.", "warning");
 
 console.warn(
 "RizSim released a stale loading overlay after 90 seconds."
@@ -10081,6 +10086,7 @@ console.warn(
 
 
 function hideLoading() {
+window.RizSimUI?.busyEnd("portalLoading");
 
 if(
 portalLoadingFailsafeTimer
@@ -11320,6 +11326,7 @@ function configureRoleNavigation() {
 
 const role =
 currentMembership.role;
+if(document.body)document.body.dataset.rzRole = role;
 window.RizSimSupport?.showOwnerOnly(role);
 // Course Lead promotional workspace is presentation-only for standard Faculty.
 // The authenticated Course Builder and its RPCs remain Course Lead gated.
@@ -15160,6 +15167,7 @@ setManagementMessage(
 "Choose a file to upload.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("courseMaterialFile"),"Choose a file to upload.");
 
 return;
 
@@ -15176,6 +15184,7 @@ setManagementMessage(
 "Files must be 25 MB or smaller.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("courseMaterialFile"),"Files must be 25 MB or smaller.");
 
 return;
 
@@ -15489,6 +15498,7 @@ setManagementMessage(
 "Enter a material title.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("courseMaterialLinkTitle"),"Enter a material title.");
 
 return;
 
@@ -15502,6 +15512,7 @@ setManagementMessage(
 "Enter the external URL.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("courseMaterialExternalUrl"),"Enter the external URL.");
 
 return;
 
@@ -15544,6 +15555,7 @@ setManagementMessage(
 "Enter a valid http or https URL.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("courseMaterialExternalUrl"),"Enter a valid http or https URL.");
 
 return;
 
@@ -15664,7 +15676,7 @@ async function openCourseMaterial(materialId) {
       const target=new URL(String(material.external_url||''));
       if(!['http:','https:'].includes(target.protocol))throw new Error('Invalid link');
       window.open(target.href,'_blank','noopener,noreferrer');
-    }catch{window.alert('This resource contains an invalid external link.');}
+    }catch{window.RizSimUI.notify('This resource contains an invalid external link.', "error");}
     return;
   }
   if(material.source_type!=='file')return;
@@ -15727,7 +15739,7 @@ return;
 
 
 const confirmed =
-window.confirm(
+(await window.RizSimUI.confirm(
 
 "Remove "
 +
@@ -15739,7 +15751,7 @@ material.title
 +
 "Existing Course results and student activity are not affected."
 
-);
+, {"title": "Remove course material?", "action": "Remove material", "danger": true}));
 
 
 if(!confirmed) {
@@ -15786,9 +15798,9 @@ hideLoading();
 courseLoading =
 false;
 
-window.alert(
+window.RizSimUI.notify(
 deleteError.message
-);
+, "error");
 
 return;
 
@@ -16819,6 +16831,7 @@ setManagementMessage(
 "Select a licensed simulation.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("courseSimulationSelect"),"Select a licensed simulation.");
 
 return;
 
@@ -16937,7 +16950,7 @@ return;
 
 
 const confirmed =
-window.confirm(
+(await window.RizSimUI.confirm(
 
 "End "
 +
@@ -16949,7 +16962,7 @@ selectedCourse.title
 +
 "Simulations, activity and results will remain preserved."
 
-);
+, {"title": "End this course?", "action": "End course", "danger": true}));
 
 
 if(!confirmed) {
@@ -16988,9 +17001,9 @@ false;
 
 if(error) {
 
-window.alert(
+window.RizSimUI.notify(
 error.message
-);
+, "error");
 
 return;
 
@@ -17043,7 +17056,7 @@ productId
 
 
 const confirmed =
-window.confirm(
+(await window.RizSimUI.confirm(
 
 "Remove "
 +
@@ -17055,7 +17068,7 @@ simulation?.simulation_title
 +
 " from the Course?"
 
-);
+, {"title": "Remove course simulation?", "action": "Remove simulation", "danger": true}));
 
 
 if(!confirmed) {
@@ -19866,9 +19879,9 @@ error.message
 
 if(!silent) {
 
-window.alert(
+window.RizSimUI.notify(
 classroomRosterError
-);
+, "error");
 
 }
 
@@ -20999,7 +21012,7 @@ return;
 const confirmed =
 window.RizSimSessionConfirmation
 ? await window.RizSimSessionConfirmation.ask(sessionId, true)
-: window.confirm(
+: (await window.RizSimUI.confirm(
 
 "End this Course classroom session?\n\n"
 +
@@ -21007,7 +21020,7 @@ window.RizSimSessionConfirmation
 +
 "The session, student progress and results will remain preserved."
 
-);
+, {"title": "End course classroom?", "action": "End session", "danger": true}));
 
 
 if(!confirmed) {
@@ -21039,9 +21052,9 @@ if(error) {
 
 hideLoading();
 
-window.alert(
+window.RizSimUI.notify(
 error.message
-);
+, "error");
 
 return;
 
@@ -21108,11 +21121,11 @@ return;
 const confirmed =
 window.RizSimSessionConfirmation
 ? await window.RizSimSessionConfirmation.ask(sessionId, false)
-: window.confirm(
+: (await window.RizSimUI.confirm(
 
 "End this classroom session? Student access will stop immediately. The session and student progress will remain available in RizSim history."
 
-);
+, {"title": "End this classroom?", "action": "End session", "danger": true}));
 
 if(!confirmed) {
 
@@ -21140,9 +21153,9 @@ hideLoading();
 
 if(error) {
 
-window.alert(
+window.RizSimUI.notify(
 error.message
-);
+, "error");
 
 return;
 
@@ -23028,6 +23041,7 @@ setManagementMessage(
 "Select an institution.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("institutionWorkspaceSelect"),"Select an institution.");
 
 return;
 
@@ -23042,6 +23056,7 @@ setManagementMessage(
 "Enter the Faculty member's name.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("institutionFacultyName"),"Enter the Faculty member's name.");
 
 return;
 
@@ -23058,6 +23073,7 @@ setManagementMessage(
 "Enter a valid Faculty email address.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("institutionFacultyEmail"),"Enter a valid Faculty email address.");
 
 return;
 
@@ -23896,6 +23912,7 @@ setManagementMessage(
 "Select a simulation.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseProduct"),"Select a simulation.");
 
 return;
 
@@ -23913,6 +23930,7 @@ setManagementMessage(
 "Select a Faculty account.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseFaculty"),"Select a Faculty account.");
 
 return;
 
@@ -23930,6 +23948,7 @@ setManagementMessage(
 "Select an Institution.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseInstitution"),"Select an Institution.");
 
 return;
 
@@ -23944,6 +23963,7 @@ setManagementMessage(
 "Select the licence start date and time.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseStart"),"Select the licence start date and time.");
 
 return;
 
@@ -23961,6 +23981,7 @@ setManagementMessage(
 "Semester licences require an expiry date.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseExpiry"),"Semester licences require an expiry date.");
 
 return;
 
@@ -23982,6 +24003,7 @@ setManagementMessage(
 "The licence start date is invalid.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseStart"),"The licence start date is invalid.");
 
 return;
 
@@ -24014,6 +24036,7 @@ setManagementMessage(
 "Semester expiry must be later than the start date.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerLicenseExpiry"),"Semester expiry must be later than the start date.");
 
 return;
 
@@ -24202,11 +24225,11 @@ return;
 }
 
 const confirmed =
-window.confirm(
+(await window.RizSimUI.confirm(
 
 "Revoke this simulation licence? The record will remain in RizSim history."
 
-);
+, {"title": "Revoke this licence?", "action": "Revoke licence", "danger": true}));
 
 if(!confirmed) {
 
@@ -24215,10 +24238,11 @@ return;
 }
 
 const note =
-window.prompt(
+(await window.RizSimUI.prompt(
 "Optional revocation note:",
 ""
-);
+, {title:"Revocation note",action:"Revoke licence",danger:true}));
+if (note === null) return;
 
 showLoading();
 
@@ -24245,9 +24269,9 @@ hideLoading();
 
 if(error) {
 
-window.alert(
+window.RizSimUI.notify(
 error.message
-);
+, "error");
 
 return;
 
@@ -25052,6 +25076,7 @@ setManagementMessage(
 "Enter the institution name.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerInstitutionName"),"Enter the institution name.");
 
 return;
 
@@ -25168,6 +25193,7 @@ setManagementMessage(
 "Select an institution.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerInstitutionSelect"),"Select an institution.");
 
 return;
 
@@ -25184,6 +25210,7 @@ setManagementMessage(
 "Enter a valid RizSim account email.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("ownerInstitutionAccountEmail"),"Enter a valid RizSim account email.");
 
 return;
 
@@ -25276,7 +25303,7 @@ const nextActive =
 !currentlyActive;
 
 const confirmed =
-window.confirm(
+(await window.RizSimUI.confirm(
 
 `${
 nextActive
@@ -25288,7 +25315,7 @@ institution?.name
 "this institution"
 }?`
 
-);
+, {title:nextActive?"Activate institution?":"Deactivate institution?",action:nextActive?"Activate institution":"Deactivate institution",danger:!nextActive}));
 
 if(!confirmed) {
 
@@ -25319,9 +25346,9 @@ hideLoading();
 
 if(error) {
 
-window.alert(
+window.RizSimUI.notify(
 error.message
-);
+, "error");
 
 return;
 
@@ -29767,16 +29794,8 @@ publish
 "Preparing to return this product to Draft…";
 
 
-document.getElementById(
-"rizsimPublishProgressFill"
-).style.width =
-"8%";
-
-
-document.getElementById(
-"rizsimPublishPercent"
-).textContent =
-"8%";
+window.RizSimUI.busyStart("rizsimPublishOverlay", "Checking publication readiness");
+document.getElementById("rizsimPublishPercent").textContent = "Checking";
 
 
 [
@@ -29831,34 +29850,10 @@ message,
 activeStep
 ) {
 
-const safePercent =
-Math.max(
-0,
-Math.min(
-100,
-percentage
-)
-);
-
-
-document.getElementById(
-"rizsimPublishProgressFill"
-).style.width =
-
-safePercent +
-"%";
-
-
-document.getElementById(
-"rizsimPublishPercent"
-).textContent =
-
-Math.round(
-safePercent
-)
-+
-"%";
-
+// Server-confirmed stage labels only; there is no measured percentage.
+const stageNames = {publishStepCheck:"Checking", publishStepCommit:"Saving", publishStepRefresh:"Refreshing", publishStepComplete:"Complete"};
+document.getElementById("rizsimPublishPercent").textContent = stageNames[activeStep] || "Working";
+document.getElementById("rizsimPublishOverlay").dataset.complete = String(activeStep === "publishStepComplete");
 
 if(message) {
 
@@ -29932,6 +29927,7 @@ el.classList.add(
 
 
 function closeAdminPublishProgress() {
+window.RizSimUI.busyEnd("rizsimPublishOverlay");
 
 const overlay =
 document.getElementById(
@@ -30080,7 +30076,7 @@ return;
 
 
 const confirmed =
-window.confirm(
+(await window.RizSimUI.confirm(
 
 publish
 
@@ -30098,7 +30094,7 @@ item.title
 +
 "”?\n\nIt will return to Draft and no longer be available as a published product."
 
-);
+, {title:publish?"Publish this resource?":"Unpublish this resource?",action:publish?"Publish resource":"Unpublish resource",danger:!publish}));
 
 
 if(!confirmed) {
@@ -30253,13 +30249,7 @@ publish
 );
 
 
-await new Promise(
-resolve =>
-setTimeout(
-resolve,
-650
-)
-);
+// No artificial delay: report the actual operation outcome immediately.
 
 
 setManagementMessage(
@@ -30401,9 +30391,9 @@ hideLoading();
 
 if(error) {
 
-window.alert(
+window.RizSimUI.notify(
 error.message
-);
+, "error");
 
 return;
 
@@ -32902,6 +32892,9 @@ window.RizSimFacultyBridge.runtime=window.createRizSimCourseService({
 <div
 class="rizsim-publish-overlay"
 id="rizsimPublishOverlay"
+role="status"
+aria-live="polite"
+aria-atomic="true"
 aria-hidden="true"
 >
 
@@ -32948,7 +32941,7 @@ id="rizsimPublishProgressFill"
 
 
 <strong id="rizsimPublishPercent">
-0%
+Preparing
 </strong>
 
 </div>

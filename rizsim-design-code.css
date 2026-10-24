@@ -1,0 +1,328 @@
+/* RizSim Design Code 1.0. Shared presentation only; see RIZSIM_DESIGN_CODE.md.
+   Loaded last on current routes. Archived previews and QA fixtures stay frozen.
+   Brand tokens, visibility/authorization hooks and assessment stimuli are not reset. */
+:root {
+  --rz-dc-text: #163746;
+  --rz-dc-muted: #526b77;
+  --rz-dc-line: #cbdeda;
+  --rz-dc-surface: #f7faf9;
+  --rz-dc-success: #216747;
+  --rz-dc-success-soft: #edf7f0;
+  --rz-dc-error: #ac303c;
+  --rz-dc-error-soft: #fff3f3;
+  --rz-dc-warning: #865b16;
+  --rz-dc-warning-soft: #fff7e7;
+  --rz-dc-info: #245d80;
+  --rz-dc-info-soft: #edf5fa;
+  --rz-dc-violet: #655088;
+  --rz-dc-violet-soft: #f5f1fa;
+  --rz-dc-coral: #9b5345;
+  --rz-dc-coral-soft: #fcf2ed;
+  --rz-dc-neutral: #354047;
+  --rz-dc-neutral-soft: #f1f3f4;
+  --rz-dc-font: .9375rem;
+  --rz-dc-small: .8125rem;
+  --rz-dc-label: .75rem;
+  --rz-dc-heading: 1.5rem;
+  --rz-dc-space-1: .25rem;
+  --rz-dc-space-2: .5rem;
+  --rz-dc-space-3: .75rem;
+  --rz-dc-space-4: 1rem;
+  --rz-dc-space-6: 1.5rem;
+  --rz-dc-radius: .875rem;
+  --rz-dc-shadow: 0 6px 20px #103e4b0a;
+  --rz-dc-focus: #167f87;
+  --rz-dc-fast: 140ms;
+  --rz-dc-ease: cubic-bezier(.2,.65,.3,1);
+}
+body[data-rz-design-code] {font-size:var(--rz-dc-font);line-height:1.5}
+body[data-rz-design-code] :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible {outline:3px solid var(--rz-dc-focus);outline-offset:3px}
+body[data-rz-design-code] :is(button,[role=button],a,summary) {touch-action:manipulation}
+body[data-rz-design-code] :is(button,[role=button],summary) {transition:background-color var(--rz-dc-fast),border-color var(--rz-dc-fast),box-shadow var(--rz-dc-fast)}
+body[data-rz-design-code] button:disabled {cursor:not-allowed;opacity:.58;transform:none}
+body[data-rz-design-code] button[aria-busy=true] {cursor:progress}
+body[data-rz-design-code] :is(input,select,textarea) {scroll-margin-block:7rem;font-family:inherit}
+body[data-rz-design-code] :is(.content-shell,.management-card,.portal-panel,.workspace-card,.rz-author-card,.rz-st-history-card,.rz-v5-card,.rz-c155-panel) {min-width:0}
+body[data-rz-design-code] :is(.table-primary,.table-secondary,.management-help,.rz-c155-material-name,.rz-st-resource-card h3) {overflow-wrap:anywhere}
+/* Essential working area: modest headers and proportional vertical rhythm. */
+body[data-rz-surface=portal] :is(.auth-view,.student-view) > .content-shell {padding-top:1.25rem;padding-bottom:2rem}
+body[data-rz-surface=portal] :is(.auth-section-heading,.student-heading,.rz-live-heading,.rz-workspace-hero,.rz-author-heading,.rz-st-heading,.rz-library-hero) {margin-top:0;margin-bottom:1rem}
+body[data-rz-surface=portal] :is(.auth-section-heading,.student-heading,.rz-live-heading,.rz-workspace-hero,.rz-author-heading,.rz-st-heading,.rz-library-hero,.rz-c155-heading,.rz-v153-contact-intro) h1 {font-size:var(--rz-dc-heading);line-height:1.25;letter-spacing:-.025em;margin:.3rem 0 .4rem}
+body[data-rz-surface=portal] :is(.auth-section-heading,.student-heading,.rz-live-heading,.rz-workspace-hero,.rz-author-heading,.rz-st-heading,.rz-library-hero,.rz-v153-contact-intro) p {font-size:var(--rz-dc-font);line-height:1.5;margin:.3rem 0 0;max-width:85ch}
+body[data-rz-surface=portal] :is(.auth-kicker,.student-kicker,.rz-workspace-kicker,.rz-author-eyebrow,.rz-c155-eyebrow,.rz-c156-kicker,.management-card-kicker,.portal-metric-label,.portal-metric-note) {font-size:var(--rz-dc-label);letter-spacing:.055em}
+body[data-rz-surface=portal] :is(.management-card,.workspace-card,.info-card,.account-card,.rz-author-card,.rz-author-list-panel,.rz-course-panel,.rz-st-history-card,.rz-st-resource-card) {padding:1rem;border-radius:var(--rz-dc-radius);box-shadow:var(--rz-dc-shadow)}
+body[data-rz-surface=portal] :is(.management-card,.workspace-card,.info-card,.account-card) > p {font-size:var(--rz-dc-small);line-height:1.55}
+body[data-rz-surface=portal] :is(.portal-panel,.workspace-grid,.account-grid,.portal-simulation-grid,.classroom-grid,.management-grid,.institution-hub,.admin-hub) {margin-top:1rem}
+body[data-rz-surface=portal] :is(.management-grid,.portal-panel-body) {padding:1rem;gap:1rem}
+body[data-rz-surface=portal] :is(.portal-panel-header,.rz-workspace-section-heading) {padding:.875rem 1rem}
+body[data-rz-surface=portal] :is(.management-field,.classroom-field,.form-field) {margin-bottom:.75rem}
+body[data-rz-surface=portal] :is(.management-field label,.classroom-field label,.field-label,.rz-author-field label,.rz-course-field label) {font-size:var(--rz-dc-small);font-weight:650;margin-bottom:.375rem}
+body[data-rz-surface=portal] :is(.management-input,.management-select,.management-textarea,.classroom-input,.classroom-select,.classroom-textarea,.results-filter) {font-size:var(--rz-dc-font);min-height:2.625rem;padding:.625rem .75rem}
+body[data-rz-surface=portal] :is(.management-help,.portal-panel-note,.institution-section-heading p,.admin-section-heading p,.learning-section-heading p,.table-secondary) {font-size:var(--rz-dc-small);line-height:1.5;color:var(--rz-dc-muted)}
+body[data-rz-surface=portal] :is(.table-primary,.portal-table td,.management-action,.small-action,.rz-action,.rz-run-button,.rz-author-button,.rz-st-button,.rz-v5-card-action) {font-size:.875rem}
+body[data-rz-surface=portal] :is(.management-action,.small-action,.rz-action,.rz-run-button,.rz-author-button,.rz-st-button,.rz-v5-card-action) {min-height:2.5rem;padding:.5rem .875rem}
+body[data-rz-surface=portal] :is(.institution-command,.admin-command,.learning-command) {padding:1rem 1.25rem;gap:1rem;margin-top:1rem;border-radius:var(--rz-dc-radius)}
+body[data-rz-surface=portal] :is(.institution-command,.admin-command,.learning-command) h2 {font-size:1.25rem;line-height:1.3;margin:.25rem 0}
+body[data-rz-surface=portal] :is(.institution-command,.admin-command,.learning-command) p {font-size:var(--rz-dc-small);line-height:1.5;margin:.4rem 0 0}
+body[data-rz-surface=portal] :is(.institution-overview-grid,.admin-overview-grid,.portal-metrics,.learning-overview-grid) {gap:.75rem;margin-block:1rem}
+body[data-rz-surface=portal] :is(.institution-overview-metric,.admin-overview-metric,.portal-metric,.learning-overview-card) {padding:.75rem 1rem;min-height:0}
+body[data-rz-surface=portal] :is(.institution-overview-value,.admin-overview-value,.portal-metric-value) {font-size:1.5rem;line-height:1.25;margin:.3rem 0}
+body[data-rz-surface=portal] :is(.institution-tab-nav,.admin-tab-nav,.learning-tab-nav,.rz-records-tabs,.rz-c155-tabs) {gap:.375rem;padding:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+body[data-rz-surface=portal] :is(.institution-tab-button,.admin-tab-button,.learning-tab-button,.rz-records-tab,.rz-c155-tab) {font-size:.875rem;min-height:2.5rem;padding:.5rem .875rem}
+body[data-rz-surface=portal] :is(.institution-tab-panel,.admin-tab-panel) {padding:1rem}
+body[data-rz-surface=portal] :is(.institution-section-heading,.admin-section-heading,.learning-section-heading) {margin-bottom:.75rem;gap:1rem}
+body[data-rz-surface=portal] :is(.institution-section-heading,.admin-section-heading,.learning-section-heading) h3 {font-size:1.125rem;line-height:1.3}
+/* Student: primary join/start and resources, not oversized empty cards. */
+body[data-rz-surface=portal] #view-player :is(.player-entry,.rz-c156-live-panel,.rz-c155-panel) {padding:1.125rem;border-radius:1rem;gap:.75rem;min-height:0}
+body[data-rz-surface=portal] #view-player .player-entry > .rz-st-icon {width:2rem;height:2rem;padding:.35rem;margin-bottom:.5rem}
+body[data-rz-surface=portal] #view-player :is(.player-entry,.rz-c155-panel,.rz-c156-live-panel) h2 {font-size:1.25rem;line-height:1.3}
+body[data-rz-surface=portal] #view-player :is(.player-entry,.rz-c155-panel,.rz-c156-live-panel) p {font-size:.875rem;line-height:1.5}
+body[data-rz-surface=portal] #view-player :is(.rz-c155-empty,.rz-c156-empty) {min-height:8rem;padding:1rem .5rem}
+body[data-rz-surface=portal] #view-player .rz-c155-start {margin-top:1rem}
+body[data-rz-surface=portal] #view-player .rz-c155-resources {max-height:none;overflow:visible}
+body[data-rz-surface=portal] #view-player .rz-st-player-hint {margin-top:1rem;padding-top:.75rem}
+body[data-rz-surface=portal] #view-player :is(.rz-c155-material-name strong,.rz-c156-class-name,.rz-c155-material button) {font-size:.875rem}
+body[data-rz-surface=portal] #view-player :is(.rz-c155-material-name small,.rz-c155-status,.rz-c155-state,.rz-c156-live-state) {font-size:var(--rz-dc-small)}
+body[data-rz-surface=portal] :is(.rz-st-practice-card,.rz-st-empty,.rz-st-library-card) {padding:1.125rem;gap:1rem;min-height:0}
+body[data-rz-surface=portal] .rz-st-summary {margin-block:1rem;gap:.75rem}
+body[data-rz-surface=portal] .rz-st-summary > div {padding:.75rem 1rem}
+body[data-rz-surface=portal] .rz-st-summary strong {font-size:1.5rem}
+body[data-rz-surface=portal] .rz-st-summary span {font-size:var(--rz-dc-small)}
+body[data-rz-surface=portal] :is(.rz-st-history-top h2,.rz-st-practice-card h2,.rz-st-empty h2) {font-size:1.125rem;line-height:1.35}
+body[data-rz-surface=portal] :is(.rz-st-practice-card p,.rz-st-history-card p,.rz-st-empty p,.rz-st-timing) {font-size:.875rem;line-height:1.5}
+/* Faculty/Course Lead: actions are visible to touch and keyboard, not hover-only. */
+body[data-rz-surface=portal] :is(.rz-v5-card,.rz-author-home-card,.rz-author-tile) {padding:1.125rem;min-height:0;gap:.75rem}
+body[data-rz-surface=portal] .rz-v5-card-action {opacity:1;visibility:visible;transform:none;pointer-events:auto}
+body[data-rz-surface=portal] :is(.rz-v5-card,.rz-author-home-card,.rz-author-tile) h3 {font-size:1.125rem;line-height:1.3}
+body[data-rz-surface=portal] :is(.rz-v5-card,.rz-author-home-card,.rz-author-tile) p {font-size:.875rem;line-height:1.5}
+body[data-rz-surface=portal] :is(.rz-live-choice-grid,.rz-live-card-grid,.rz-author-home-grid,.rz-author-card-grid) {gap:1rem;margin-top:1rem}
+body[data-rz-surface=portal] .rz-author-heading h1 {font-size:1.5rem}
+body[data-rz-surface=portal] .rz-author-heading p {font-size:.875rem}
+body[data-rz-surface=portal] .rz-v13-workspace {margin-top:1rem}
+body[data-rz-surface=portal] :is(.rz-v13-heading,.rz-v13-header) {padding:1rem}
+body[data-rz-surface=portal] .rz-v13-heading h2 {font-size:1.25rem}
+body[data-rz-surface=portal] .rz-v153-library-header .rz-st-heading h1 {font-size:1.5rem}
+body[data-rz-surface=portal] .rz-v15-library-countdown {padding:1rem 1.25rem;gap:1rem}
+body[data-rz-surface=portal] .rz-v153-library-category {padding:1rem;gap:.5rem}
+body[data-rz-surface=portal] .rz-v153-library-category p {font-size:.875rem}
+body[data-rz-surface=portal] :is(.rz-v153-library-label,.rz-v153-library-soon,.rz-v153-library-badge) {font-size:.75rem}
+/* Auth and disabled/legacy states retain the exact deployed Google artwork. */
+body[data-rz-design-code] .access-gate {padding:1.75rem 1rem;min-height:calc(100dvh - 6.75rem)}
+body[data-rz-design-code] .gate-card {padding:1.5rem;max-width:31rem}
+body[data-rz-design-code] .gate-card h1 {font-size:1.5rem;line-height:1.3;margin:.5rem 0}
+body[data-rz-design-code] .gate-card p {font-size:.875rem;line-height:1.55}
+body[data-rz-design-code] .gate-status {font-size:.875rem}
+/* Supporting explanations are deliberately scrollable, never clipped. */
+.rz-dc-support {border-top:1px solid var(--rz-dc-line);margin-top:.75rem;padding-top:.5rem;color:var(--rz-dc-muted);font-size:var(--rz-dc-small)}
+.rz-dc-support summary {font-size:var(--rz-dc-small);font-weight:600;cursor:pointer;padding:.375rem 0;min-height:2rem}
+.rz-dc-support[open] > :not(summary) {margin-top:.5rem}
+.rz-dc-section-links {display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+.rz-dc-section-links a {display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--rz-dc-line);background:var(--rz-dc-violet-soft);color:var(--rz-dc-violet);border-radius:.65rem;padding:.5rem .75rem;font-size:.875rem;min-height:2.5rem;text-decoration:none}
+.rz-dc-section-links a:hover {background:#ebe5f5;border-color:#b4a4cb}
+body[data-rz-design-code] [data-rz-priority] {scroll-margin-block-start:7rem}
+/* Shared vector icons: do not target brand logos or assessment diagrams. */
+.rz-dc-icon {width:1.25rem;height:1.25rem;display:inline-block;flex:none;vertical-align:middle;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+body[data-rz-design-code] :is(.rz-c155-material-icon,.rz-c155-empty-icon,.rz-c156-empty-icon,.bp-category-icon,.bp-category-arrow,.empty-state-icon) .rz-dc-icon {width:1.35rem;height:1.35rem}
+.rz-dc-file-pdf {color:var(--rz-dc-coral)}
+.rz-dc-file-slides {color:var(--rz-dc-warning)}
+.rz-dc-file-document {color:var(--rz-dc-info)}
+.rz-dc-file-sheet {color:var(--rz-dc-success)}
+/* Inline validity is not answer correctness. Only explicit form errors get it. */
+body[data-rz-design-code] :is(input,select,textarea).rz-field-invalid,
+body[data-rz-design-code] :is(input,select,textarea)[aria-invalid=true] {border:2px solid var(--rz-dc-error)!important;background:var(--rz-dc-error-soft)!important;box-shadow:0 0 0 2px #ac303c0c}
+body[data-rz-design-code] .rz-inline-error {display:block;color:var(--rz-dc-error);font-size:.8125rem;line-height:1.5;margin:.375rem 0 0}
+body[data-rz-design-code] .rz-inline-error[hidden] {display:none}
+/* Outcome treatment is opt-in to operational message containers; never answers. */
+.rz-dc-feedback:not(:empty) {display:flex;align-items:flex-start;gap:.6rem;padding:.625rem .75rem;border:1px solid var(--rz-dc-line);border-radius:.65rem;background:var(--rz-dc-info-soft);color:var(--rz-dc-info);font-size:.875rem;line-height:1.5}
+.rz-dc-feedback[hidden] {display:none}
+.rz-dc-feedback .rz-dc-outcome {width:1.4rem;height:1.4rem;flex:none;margin-top:.05rem}
+.rz-dc-feedback[data-rz-tone=success] {background:var(--rz-dc-success-soft);color:var(--rz-dc-success);border-color:#b4d3bf}
+.rz-dc-feedback[data-rz-tone=error] {background:var(--rz-dc-error-soft);color:var(--rz-dc-error);border-color:#e5bbc0}
+.rz-dc-feedback[data-rz-tone=warning] {background:var(--rz-dc-warning-soft);color:var(--rz-dc-warning);border-color:#e1cba2}
+.rz-dc-feedback[data-rz-tone=denied] {background:var(--rz-dc-neutral-soft);color:var(--rz-dc-neutral);border-color:#c9cfd2}
+.rz-dc-feedback[data-rz-tone=success] .rz-dc-outcome path,
+.rz-dc-feedback[data-rz-tone=error] .rz-dc-outcome path {stroke-dasharray:30;stroke-dashoffset:0;animation:rzDcDraw 220ms var(--rz-dc-ease) both}
+.rz-dc-feedback[data-rz-tone=denied] .rz-dc-outcome {animation:rzDcNod 240ms ease-out both}
+.rz-dc-feedback[data-rz-tone=loading] .rz-dc-outcome {animation:rzDcSpin 1s linear infinite}
+@keyframes rzDcDraw {from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+@keyframes rzDcNod {0%{transform:rotate(0)}45%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+@keyframes rzDcSpin {to{transform:rotate(360deg)}}
+/* Local operations do not block the full authenticated workspace. */
+body[data-rz-design-code][data-rz-app-ready=true] :is(#portalLoading,#loading).show {inset:auto 1rem 1rem auto;width:auto;height:auto;max-width:min(26rem,calc(100vw - 2rem));padding:.75rem 1rem;background:#fff;border:1px solid var(--rz-dc-line);border-radius:var(--rz-dc-radius);box-shadow:0 6px 22px #0b314424;backdrop-filter:none;pointer-events:none}
+body[data-rz-design-code][data-rz-app-ready=true] :is(#portalLoading,#loading).show :is(.loading-logo,.loading-spinner,.portal-loading-spinner) {width:1.75rem;height:1.75rem}
+.rz-dc-busy-mark {margin-inline-end:.45rem;animation:rzDcSpin 1s linear infinite;width:1rem;height:1rem}
+/* In-site asynchronous dialogs. No JS overrides of browser primitives. */
+.rz-dc-dialog {width:min(30rem,calc(100vw - 2rem));max-height:calc(100dvh - 2rem);overflow:auto;border:1px solid var(--rz-dc-line);border-radius:1rem;padding:1.5rem;color:var(--rz-dc-text);background:#fff;box-shadow:0 24px 70px #052d4538}
+.rz-dc-dialog::backdrop {background:#071f3499;backdrop-filter:blur(3px)}
+.rz-dc-dialog h2 {font-size:1.25rem;line-height:1.3;margin:0 0 .75rem}
+.rz-dc-dialog p {font-size:.9375rem;line-height:1.55;white-space:pre-line;margin:0 0 1rem;overflow-wrap:anywhere}
+.rz-dc-dialog label {display:grid;gap:.5rem;font-size:.875rem}
+.rz-dc-dialog input {font:inherit;width:100%;min-height:2.75rem;padding:.625rem .75rem;border:1px solid #9bb9b5;border-radius:.5rem}
+.rz-dc-dialog-actions {display:flex;justify-content:flex-end;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.rz-dc-dialog-actions button {font:inherit;font-size:.875rem;font-weight:650;padding:.625rem 1rem;min-height:2.75rem;border-radius:.625rem;border:1px solid #a9c7c2;background:#fff;color:var(--rz-dc-text);cursor:pointer}
+.rz-dc-dialog-actions .rz-dc-primary {color:#fff;background:#087f86;border-color:#087f86}
+.rz-dc-dialog-actions .rz-dc-danger {color:#fff;background:var(--rz-dc-error);border-color:var(--rz-dc-error)}
+.rz-dc-dialog-actions button:hover {box-shadow:0 0 0 3px #106f7c15}
+.rz-dc-fallback-scrim {position:fixed;inset:0;z-index:100050;background:#071f3499;display:grid;place-items:center;padding:1rem}
+.rz-dc-fallback-scrim .rz-dc-dialog {display:block;position:relative;margin:0}
+.rz-dc-toast-region {position:fixed;right:1rem;bottom:1rem;z-index:100080;display:grid;gap:.5rem;max-width:min(30rem,calc(100vw - 2rem));pointer-events:none}
+.rz-dc-toast-region > * {pointer-events:auto;box-shadow:var(--rz-dc-shadow)}
+.rz-dc-toast-close {border:0;background:transparent;color:inherit;min-width:2rem;min-height:2rem;margin-left:auto;cursor:pointer}
+/* Public site: same content, brand and navigation, less oversized whitespace. */
+body[data-rz-surface=public] :is(.page-heading,.section-heading,.simulations-heading,.contact-heading) h1 {font-size:clamp(1.5rem,2.5vw,2rem);line-height:1.2}
+body[data-rz-surface=public] :is(.contact-card,.contact-option-card,.simulation-card,.sim-experience-card) {padding:1.25rem;box-shadow:var(--rz-dc-shadow)}
+body[data-rz-design-code] .bp-category-tile {min-height:8rem;padding:1rem 1.25rem;border-radius:1rem}
+body[data-rz-design-code] .bp-category-tile:hover {transform:none;box-shadow:0 8px 20px #0535441a}
+body[data-rz-design-code] .bp-category-tile strong {font-size:1.125rem;margin-top:.75rem}
+body[data-rz-design-code] .bp-category-tile small {font-size:.875rem}
+body[data-rz-design-code] .bp-category-tile .bp-category-icon {width:2.25rem;height:2.25rem}
+/* Viewers: chrome only. PDF pages, watermark, zoom and copy controls untouched. */
+body[data-rz-surface=viewer] :is(.toolbar button,.viewer-toolbar button,.control-button) {min-width:2.5rem;min-height:2.5rem;font-size:.875rem}
+body[data-rz-surface=viewer] :is(.viewer-title,.document-title) {font-size:1.125rem;line-height:1.3}
+/* Runner chrome only: no selectors for choices, correctness or timed stimuli. */
+body[data-rz-surface=runner] :is(.rz-v154-shell,.rz-v154-header,.rz-runner-header) {padding:.75rem 1rem}
+body[data-rz-surface=runner] :is(.rz-v154-shell h1,.rz-v154-header h1,.rz-runner-header h1) {font-size:1.25rem;line-height:1.3}
+@media (min-width:1050px) {
+ body[data-rz-surface=portal] .content-shell {width:min(1280px,calc(100% - 3rem))}
+ body[data-rz-surface=portal] .rz-st-practice-card {grid-template-columns:minmax(0,1fr) minmax(180px,.65fr) auto}
+}
+@media (max-width:760px) {
+ body[data-rz-design-code] :is(.content-shell,.rz-workspace-shell) {width:calc(100% - 1.5rem)}
+ body[data-rz-surface=portal] :is(.auth-view,.student-view) > .content-shell {padding-top:1rem}
+ body[data-rz-surface=portal] :is(.results-filter-grid,.management-grid,.workspace-grid,.account-grid,.classroom-window-grid) {grid-template-columns:minmax(0,1fr)}
+ body[data-rz-surface=portal] :is(.rz-live-choice-grid,.rz-live-card-grid,.rz-st-practice-card) {grid-template-columns:minmax(0,1fr)}
+ body[data-rz-surface=portal] :is(.management-input,.management-select,.management-textarea,input[type=text],input[type=email]) {font-size:1rem}
+ body[data-rz-design-code] :is(.rz-dc-dialog-actions button,.management-action,.small-action,.rz-action,.rz-st-button,.rz-v5-card-action) {min-height:2.75rem}
+ .rz-dc-dialog {padding:1.25rem}
+ .rz-dc-dialog-actions {justify-content:stretch}
+ .rz-dc-dialog-actions button {flex:1 1 auto}
+}
+@media (prefers-reduced-motion:reduce) {
+ body[data-rz-design-code] *,body[data-rz-design-code] *::before,body[data-rz-design-code] *::after {animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+ .rz-dc-feedback .rz-dc-outcome,.rz-dc-busy-mark {animation:none!important;transform:none!important}
+}
+@media print {
+ .rz-dc-toast-region,.rz-dc-fallback-scrim,.rz-dc-dialog {display:none!important}
+}
+/* Shared Home is embedded in every role; retain its composition and assets. */
+body[data-rz-design-code] .bp-home .bp-hero {padding:2rem 0}
+body[data-rz-design-code] .bp-home .bp-hero-layout {gap:2rem;align-items:center}
+body[data-rz-design-code] .bp-home .bp-hero-copy h1 {font-size:clamp(1.75rem,3vw,2.5rem);line-height:1.15;letter-spacing:-.04em;margin:1rem 0}
+body[data-rz-design-code] .bp-home .bp-hero-copy>p {font-size:1rem;line-height:1.6;margin-bottom:1rem}
+body[data-rz-design-code] .bp-home .bp-visual {height:22rem}
+body[data-rz-design-code] .bp-home .bp-visual-core {width:8.5rem;height:8.5rem}
+body[data-rz-design-code] .bp-home .bp-visual-node {width:8.5rem;padding:.75rem}
+body[data-rz-design-code] .bp-home :is(.bp-node-a,.bp-node-b) {top:5rem}
+body[data-rz-design-code] .bp-home .bp-node-c {bottom:3.75rem}
+body[data-rz-design-code] .bp-home .bp-heading {margin-bottom:1.5rem}
+body[data-rz-design-code] .bp-home .bp-heading h2 {font-size:1.5rem;line-height:1.3;margin:.75rem 0}
+body[data-rz-design-code] .bp-home :is(.bp-questions,.bp-journey,.bp-difference,.bp-scenarios) {padding:3rem 0}
+body[data-rz-design-code] .rz-about h1 {font-size:clamp(1.5rem,3vw,2rem);line-height:1.25}
+body[data-rz-design-code] :is(.portal-loading,.loading) {gap:.75rem;color:var(--rz-dc-text)}
+body[data-rz-design-code][data-rz-app-ready=true] :is(.portal-spinner,.spinner) {width:1.75rem;height:1.75rem;flex:none}
+.rz-dc-loading-label {font-size:.875rem;line-height:1.5}
+body[data-rz-design-code] :is(.rz-author-modal,.rz-runtime-dialog,.rz-st-dialog,.rz-c155-erp) h2 {font-size:1.25rem;line-height:1.3}
+@media(max-width:760px){
+ body[data-rz-design-code] .bp-home .bp-hero-layout {grid-template-columns:minmax(0,1fr)}
+ body[data-rz-design-code] .bp-home .bp-visual {height:22rem}
+}
+
+/* Publishing is a local, truthful stage indicator, not a simulated percentage. */
+body[data-rz-design-code] #rizsimPublishOverlay.rz-dc-local-progress{position:static;inset:auto;z-index:auto;background:transparent;backdrop-filter:none;padding:0;margin:10px 0;min-height:0;}
+body[data-rz-design-code] #rizsimPublishOverlay.rz-dc-local-progress.show{display:block;}
+body[data-rz-design-code] .rz-dc-local-progress .rizsim-publish-card{width:100%;max-width:none;padding:12px 14px;box-shadow:none;border-radius:12px;text-align:left;}
+body[data-rz-design-code] .rz-dc-local-progress .rizsim-publish-logo-wrap,body[data-rz-design-code] .rz-dc-local-progress .rizsim-publish-eyebrow{display:none;}
+body[data-rz-design-code] .rz-dc-local-progress h3{font-size:16px;margin:0 0 4px;}
+body[data-rz-design-code] .rz-dc-local-progress p{font-size:14px;margin:0 0 8px;}
+body[data-rz-design-code] .rz-dc-local-progress .rizsim-progress-track{display:none;}
+body[data-rz-design-code] .rz-dc-local-progress .rizsim-progress-row{justify-content:flex-start;gap:8px;margin:6px 0;}
+body[data-rz-design-code] .rz-dc-local-progress .rizsim-progress-row:before{content:"";width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rzDcSpin .8s linear infinite;}
+body[data-rz-design-code] .rz-dc-local-progress[data-complete=true] .rizsim-progress-row:before{animation:none;}
+body[data-rz-design-code] .rz-dc-local-progress .rizsim-publish-steps{justify-content:flex-start;flex-wrap:wrap;}
+@media(prefers-reduced-motion:reduce){body[data-rz-design-code] .rz-dc-local-progress .rizsim-progress-row:before{animation:none;}}
+
+/* Actual content-operation forms: required tasks first; optional context is expandable. */
+.rz-dc-context,.rz-dc-optional-fields{margin:.75rem 0;border:1px solid var(--rz-dc-line);border-radius:.75rem;background:#f5f9f8;min-width:0;}
+.rz-dc-context>summary,.rz-dc-optional-fields>summary{padding:.625rem .875rem;font-size:.8125rem;font-weight:650;cursor:pointer;color:var(--rz-dc-text);}
+.rz-dc-context[open]{padding-bottom:.75rem;}
+.rz-dc-context> :not(summary){margin:.75rem .875rem!important;}
+.rz-dc-optional-fields{grid-column:1/-1;margin:0;}
+.rz-dc-optional-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;padding:.75rem;}
+body[data-rz-surface=portal] :is(.admin-operation-card,.admin-overview-card){padding:1rem;border-radius:var(--rz-dc-radius);min-width:0;}
+body[data-rz-surface=portal] .admin-overview-card{min-height:5rem;}
+body[data-rz-surface=portal] :is(.admin-operation-card h4,.portal-panel-title){font-size:1.125rem;line-height:1.3;margin:.25rem 0;}
+body[data-rz-surface=portal] :is(.admin-operation-card>p,.admin-list-copy span,.admin-empty p,.admin-boundary,.institution-overview-label,.admin-overview-label){font-size:var(--rz-dc-small);line-height:1.5;color:var(--rz-dc-muted);}
+body[data-rz-surface=portal] :is(.admin-operation-card>span,.admin-scope-chip,.admin-command-label,.admin-command-status,.institution-command-label,.institution-command-status){font-size:var(--rz-dc-label);}
+body[data-rz-surface=portal] :is(.admin-list-copy strong,.admin-empty strong){font-size:.9375rem;}
+body[data-rz-surface=portal] :is(.admin-operation-action,.admin-mini-button,.admin-cancel-button,.rz-author-btn){font-size:.875rem;min-height:2.5rem;padding:.5rem .875rem;}
+body[data-rz-surface=portal] .admin-operation-action{margin-top:0;}
+body[data-rz-surface=portal] .admin-category-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.75rem;margin-top:.75rem;}
+body[data-rz-surface=portal] .admin-category-form>.management-field{margin-bottom:0;min-width:0;}
+body[data-rz-surface=portal] .admin-category-form :is(.admin-form-actions,.management-message){grid-column:1/-1;}
+body[data-rz-surface=portal] .admin-category-form-grid{grid-template-columns:1fr;gap:.5rem;align-items:end;}
+body[data-rz-surface=portal] .admin-category-toggle{font-size:.8125rem;min-height:2.625rem;}
+body[data-rz-surface=portal] :is(.admin-category-form,.rz-dc-optional-grid) textarea{min-height:5rem;resize:vertical;}
+body[data-rz-surface=portal] #institutionSelectorPanel{display:grid;grid-template-columns:minmax(170px,.7fr) minmax(0,1.3fr);align-items:center;}
+body[data-rz-surface=portal] #institutionSelectorPanel .portal-panel-header{border-bottom:0;}
+body[data-rz-surface=portal] #institutionSelectorPanel .management-field{margin:0;}
+body[data-rz-surface=portal] .institution-tab-panel .management-card:has(#institutionFacultyName){display:grid;grid-template-columns:1fr 1fr;gap:.75rem;align-content:start;}
+body[data-rz-surface=portal] .institution-tab-panel .management-card:has(#institutionFacultyName)>:not(.management-field){grid-column:1/-1;margin:0;}
+body[data-rz-surface=portal] .institution-tab-panel .management-card:has(#institutionFacultyName) .management-field{margin:0;min-width:0;}
+body[data-rz-surface=portal] .management-field:has(#institutionFacultyNote){grid-column:1/-1;}
+body[data-rz-surface=portal] #institutionFacultyNote{min-height:5rem;}
+body[data-rz-surface=portal] :is(.rz-author-card,.rz-author-item) .reveal{opacity:1;transform:none;pointer-events:auto;}
+body[data-rz-design-code] .rz-v153-contact-intro h1{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;}
+body[data-rz-design-code] .bp-categories-head h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;}
+@media(max-width:760px){
+ body[data-rz-surface=portal] :is(.admin-operation-grid,.admin-category-form,.rz-dc-optional-grid){grid-template-columns:minmax(0,1fr);}
+ body[data-rz-surface=portal] #institutionSelectorPanel{grid-template-columns:minmax(0,1fr);}
+ body[data-rz-surface=portal] .institution-tab-panel .management-card:has(#institutionFacultyName){grid-template-columns:minmax(0,1fr);}
+ body[data-rz-surface=portal] :is(.admin-operation-action,.admin-mini-button,.admin-cancel-button,.rz-author-btn){min-height:2.75rem;}
+}
+
+/* Measured task-first corrections: no essential input/action is collapsed. */
+body[data-rz-surface=portal] :is(.auth-view,.student-view){padding-top:1rem;}
+body[data-rz-surface=portal] :is(.auth-view,.student-view)>.content-shell{padding-top:0;}
+body[data-rz-surface=portal] .admin-category-form-grid{display:contents;}
+body[data-rz-surface=portal] :is(.admin-category-form,.admin-category-form-grid,.management-field,.admin-operation-grid,.admin-form-actions){min-width:0;}
+body[data-rz-surface=portal] .admin-category-form :is(input,select,textarea){min-width:0;max-width:100%;box-sizing:border-box;}
+body[data-rz-surface=portal] :is(.admin-category-form,.admin-list-search,.admin-form-actions) :is(label,button,span){overflow-wrap:anywhere;}
+body[data-rz-surface=portal] .admin-form-actions{flex-wrap:wrap;}
+body[data-rz-surface=portal] .admin-boundary{margin:.75rem;}
+body[data-rz-surface=portal] #institutionRequestPanel{border:0;box-shadow:none;overflow:visible;background:transparent;}
+/* This title/approval note duplicates the immediately preceding Faculty heading. */
+body[data-rz-surface=portal] #institutionRequestPanel>.portal-panel-header{display:none;}
+body[data-rz-surface=portal] #institutionRequestPanel>.management-grid{padding:0;margin:0;grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+body[data-rz-surface=portal] #institutionRequestPanel .management-card-kicker{display:none;}
+body[data-rz-surface=portal] #institutionRequestPanel .rz-dc-optional-fields>:not(summary){margin:.75rem;}
+body[data-rz-surface=portal] .admin-operation-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+body[data-rz-surface=portal] .rz-dc-optional-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+body[data-rz-surface=portal] .rz-dc-section-links{margin:.5rem 0;gap:.375rem;}
+body[data-rz-surface=portal] .rz-dc-section-links a{padding:.375rem .625rem;}
+body[data-rz-surface=portal] .student-view h1{font-size:var(--rz-dc-heading);line-height:1.25;}
+@media(max-width:760px){
+ body[data-rz-surface=portal] :is(.admin-operation-grid,.rz-dc-optional-grid),body[data-rz-surface=portal] #institutionRequestPanel>.management-grid{grid-template-columns:minmax(0,1fr);}
+}
+
+/* Wide create/edit workbench; supporting catalogue remains in this same tab. */
+body[data-rz-surface=portal] .admin-operation-card:has(.admin-category-form){grid-column:1/-1;}
+body[data-rz-surface=portal] .admin-operation-card:has(.admin-category-form)>span{display:none;}
+body[data-rz-surface=portal] .admin-category-form{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;}
+body[data-rz-surface=portal] .admin-category-form .management-field{margin:0;}
+body[data-rz-surface=portal] .admin-category-form .management-help{display:block;font-size:.75rem;font-weight:400;line-height:1.45;letter-spacing:normal;text-transform:none;margin-top:.25rem;}
+body[data-rz-surface=portal] .admin-category-form .admin-boundary{margin:.375rem 0 0;padding:.375rem .5rem;font-size:.75rem;}
+.rz-dc-form-heading{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;}
+.rz-dc-form-heading>a{font-size:.8125rem;color:var(--rz-dc-teal);padding:.5rem;min-height:2.5rem;display:inline-flex;align-items:center;}
+.rz-dc-form-heading>a:hover{text-decoration-thickness:2px;}
+body[data-rz-surface=portal] .admin-tab-nav{grid-template-columns:repeat(auto-fit,minmax(7rem,1fr));}
+body[data-rz-surface=portal] #authenticatedApp .auth-section-heading h1,
+body[data-rz-surface=portal] #studentApp .student-heading h1,
+body[data-rz-surface=portal] #studentApp .rz-c155-heading h2{font-size:var(--rz-dc-heading);line-height:1.25;}
+body[data-rz-surface=portal] :is(.auth-section-heading,.student-heading)>p{max-width:none;}
+/* Enlarged text reflows instead of expanding hidden menus or the main navigation. */
+body[data-rz-surface=portal] .main-nav{flex-wrap:wrap;min-width:0;justify-content:center;}
+body[data-rz-surface=portal] .account-menu :is(.rz-role-switch,.rz-role-switch>* ){min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;}
+body[data-rz-surface=portal] .account-menu .rz-role-switch :is(a,.rz-role-current){flex-wrap:wrap;}
+body[data-rz-surface=portal] .account-menu .rz-role-title{white-space:normal;}
+@media(max-width:1000px){body[data-rz-surface=portal] .admin-category-form{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:760px){body[data-rz-surface=portal] .admin-category-form{grid-template-columns:minmax(0,1fr);}}

@@ -1958,10 +1958,12 @@ animation:none!important;
 <link rel="stylesheet" href="rizsim-v153-focus.css">
 <link rel="stylesheet" href="/rizsim-v154-session-ui.css">
 <link rel="stylesheet" href="/rizsim-student-classroom-v155.css">
+<link rel="stylesheet" href="/rizsim-design-code.css">
+<script src="/rizsim-design-code.js"></script>
 </head>
 
 
-<body data-rizsim-home-portal="student" data-student-workspace="v8">
+<body data-rz-design-code="1.0" data-rz-surface="portal" data-rizsim-home-portal="student" data-student-workspace="v8">
 
 
 <!-- ============================================================
@@ -3311,6 +3313,7 @@ urlParams.get(
    ============================================================ */
 
 function showLoading(){
+window.RizSimUI?.busyStart("loading", document.getElementById("studentApp")?.classList.contains("show") ? "Joining the session" : "Loading your workspace");
 
 document
 .getElementById(
@@ -3324,6 +3327,7 @@ document
 }
 
 function hideLoading(){
+window.RizSimUI?.busyEnd("loading");
 
 document
 .getElementById(
@@ -5772,6 +5776,7 @@ setPlayerMessage(
 "Enter your class code.",
 true
 );
+window.RizSimUI.invalid(document.getElementById("classCodeInput"),"Enter the eight-character class code shared by your Faculty.");
 
 return;
 

@@ -130,7 +130,7 @@ async function loadLibrary(){
    const id=p.product_id||p.id;if(!id)return;
    const article=document.createElement("article");article.className="rz-book";
    const cover=document.createElement("div");cover.className="rz-book-cover";
-   const glyph=document.createElement("span");glyph.textContent=p.product_type==="ebook"?"▤":"✦";cover.append(glyph);
+   const glyph=window.RizSimUI.icon(p.product_type==="ebook"?"book":"file");cover.append(glyph);
    const tag=document.createElement("small");tag.textContent=p.product_type==="ebook"?"DIGITAL EBOOK":"LEARNING RESOURCE";
    const heading=document.createElement("h2");heading.textContent=p.title||"RizSim Resource";
    const description=document.createElement("p");description.textContent=p.short_description||"Protected RizSim learning material.";

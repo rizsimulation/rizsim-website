@@ -26,6 +26,7 @@
  // Only explicitly failed fields trigger navigation. Merely editing or
  // blurring another input must never move the page or open a different tab.
  function reveal(input){
+  if(window.RizSimUI)return window.RizSimUI.reveal(input);
   if(!input||!input.isConnected)return false;
   try{input.focus({preventScroll:true});}catch(_){input.focus();}
   const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
@@ -71,6 +72,7 @@
   return {element:fieldset,value:()=>fieldset.querySelector('input:checked')?.value||'secure_view'};
  }
  document.addEventListener('invalid',event=>{
+  if(window.RizSimUI)return; // Design Code handles native validity across all current routes.
   const input=event.target;
   if(!input.closest?.('#authenticatedApp,.rz-author-modal,.rz-runtime-dialog,.rz-purchased-setup'))return;
   event.preventDefault();

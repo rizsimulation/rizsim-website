@@ -31,10 +31,23 @@ STYLE={
 SIZES={"desktop":(1366,900),"mobile":(390,844)}
 REPORT=[]
 
+def approved_design_code(s):
+ # Explicitly authorized v1 foundation; do not strip arbitrary HTML/CSS/JS.
+ s=s.replace('<link rel="stylesheet" href="/rizsim-design-code.css">'+chr(10),'')
+ s=s.replace('<script src="/rizsim-design-code.js"></script>'+chr(10),'')
+ s=re.sub(r' data-rz-design-code="1\.0" data-rz-surface="(?:public|portal|viewer|runner)"','',s)
+ # Exact two local-record dialogs only. All DATA, grading and lock logic must
+ # still compare byte-for-byte against the approved academic runner below.
+ for new,old in [("async function resumeFile(e){try{const r=validateRecord(await readJSON(e.target.files[0]));if(record&&!(await window.RizSimUI.confirm('Replace this browser’s current record with the imported response?',{title:'Replace local response?',action:'Replace response',danger:true})))return;record=r;personalRGA=null;navIndex={kr:0,kg:0};persist();render(true);toast('Committed responses restored.')}catch(err){toast(err.message)}}", "async function resumeFile(e){try{const r=validateRecord(await readJSON(e.target.files[0]));if(record&&!confirm('Replace this browser’s current record with the imported response?'))return;record=r;personalRGA=null;navIndex={kr:0,kg:0};persist();render(true);toast('Committed responses restored.')}catch(err){toast(err.message)}}"), ("async function resetParticipant(){if(!(await window.RizSimUI.confirm('Clear your local participant record? Export it first to keep a copy.',{title:'Clear local response?',action:'Clear local response',danger:true})))return;record=null;personalRGA=null;navIndex={kr:0,kg:0};try{localStorage.removeItem(STORE)}catch(e){}render(true)}", "function resetParticipant(){if(!confirm('Clear your local participant record? Export it first to keep a copy.'))return;record=null;personalRGA=null;navIndex={kr:0,kg:0};try{localStorage.removeItem(STORE)}catch(e){}render(true)}")]:
+  s=s.replace(new,old)
+ return s
+
 def contract():
  for path,cssfile in STYLE.items():
   current=(ROOT/path).read_text()
   before=subprocess.check_output(["git","show","origin/main:"+path],cwd=ROOT,text=True)
+  current=approved_design_code(current)
+  before=approved_design_code(before)
   link=f'<link rel="stylesheet" href="{cssfile}">\n'
   assert current.count(link)==1,(path,"stylesheet link count")
   # V14's original PR compared to pre-V14 main. Once V14 is deployed,

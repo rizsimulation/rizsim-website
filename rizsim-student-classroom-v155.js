@@ -145,12 +145,13 @@
   if(isJoinedLive(info))heading.append(leaveButton('classroom'));
   root.append(heading);
   const grid=E('div','rz-c155-grid'),left=E('article','rz-c155-panel'),right=E('article','rz-c155-panel');
-  const ltop=E('div','rz-c155-top');ltop.append(E('span','rz-c155-eyebrow','LIVE SIMULATION'));
+  const ltop=E('div','rz-c155-top');ltop.append(E('span','rz-c155-eyebrow','CURRENT SIMULATION'));
   const state=E('span','rz-c155-state'+(room.live_open===true||room.practice_open===true?'':' offline'));
   state.append(E('i','rz-c155-dot'),E('span','',statusText(room)));ltop.append(state);
   left.append(ltop,E('h2','',title),E('p','',desc));
   if(room.class_name && room.class_name!==title)left.append(E('p','',room.class_name));
-  const start=E('button','rz-c155-start',attempt?.attempt_status==='submitted'?'Submitted': 'Start Simulation ↗');
+  const start=E('button','rz-c155-start',attempt?.attempt_status==='submitted'?'Submitted': 'Start Simulation');
+  if(attempt?.attempt_status!=='submitted')start.append(window.RizSimUI.icon('arrow'));
   start.type='button';start.disabled=!enabled||launching;
   start.addEventListener('click',onStart);left.append(start);
   const status=E('p','rz-c155-status');status.id='rzC155Status';status.setAttribute('role','status');if(statusError){status.textContent=statusError;status.dataset.error='true';}
@@ -160,7 +161,8 @@
   const list=E('div','rz-c155-resources');list.id='rzC155Resources';
   if(!resources.length){const e=E('div','rz-c155-empty');e.append(E('div','rz-c155-empty-icon','▤'),E('strong','','No resources shared yet'),E('p','','Resources published by your presenter will appear here.'));list.append(e);}
   else for(const m of resources){
-   const row=E('article','rz-c155-material'),icon=E('span','rz-c155-material-icon',m.source_type==='file'?(m.mime_type==='application/pdf'?'PDF':'FILE'):'↗');
+   const row=E('article','rz-c155-material'),icon=E('span','rz-c155-material-icon');
+   icon.append(window.RizSimUI.fileIcon(m));icon.setAttribute('role','img');icon.setAttribute('aria-label',m.source_type==='link'?'Web link':m.mime_type==='application/pdf'?'PDF document':'File resource');
    const meta=E('div','rz-c155-material-name');meta.append(E('strong','',m.title||'Class resource'),E('small','',m.description||m.file_name||'Published by your presenter'));
    const action=E('button','','Open');action.type='button';action.addEventListener('click',()=>{markSeen(false,id(m.material_id));void openMaterial(m);});
    row.append(icon,meta,action);list.append(row);
@@ -205,10 +207,14 @@
   const label=E('label','','ERP number'),input=E('input');input.type='text';input.maxLength=40;input.required=true;input.autocomplete='off';input.placeholder='Your ERP number';input.value=String(saved?.erp_number||'');label.append(input);form.append(label);
   const option=E('label','rz-c155-remember'),remember=E('input');remember.type='checkbox';option.append(remember,E('span','','Do not ask again on future launches'));form.append(option);
   const err=E('p','rz-c155-error');err.setAttribute('role','alert');form.append(err);
-  const buttons=E('div','rz-c155-actions'),cancel=E('button','','Cancel'),launch=E('button','primary','Continue ↗');
+  const buttons=E('div','rz-c155-actions'),cancel=E('button','','Cancel'),launch=E('button','primary','Continue');
+  launch.append(window.RizSimUI.icon('arrow'));
   cancel.type='button';launch.type='submit';cancel.addEventListener('click',()=>{if(!launching)n.close();});buttons.append(cancel,launch);form.append(buttons);n.append(form);document.body.append(n);
   n.addEventListener('close',()=>n.remove(),{once:true});
-  form.addEventListener('submit',e=>{e.preventDefault();const val=input.value.trim();if(!safeERP(val)){err.textContent='Enter a valid ERP number (2–40 letters, digits or . _ / -).';input.focus();return;}void launchWithERP(val,remember.checked,false,n,launch);});
+  const erpMessage='Enter a valid ERP number (2–40 letters, digits or . _ / -).';
+  let erpHasError=false;
+  input.addEventListener('input',()=>{if(erpHasError){erpHasError=!safeERP(input.value);window.RizSimUI.fieldError(input,erpHasError?erpMessage:'');}});
+  form.addEventListener('submit',e=>{e.preventDefault();const val=input.value.trim();if(!safeERP(val)){erpHasError=true;err.textContent='';window.RizSimUI.invalid(input,erpMessage);return;}void launchWithERP(val,remember.checked,false,n,launch);});
   n.showModal();input.focus({preventScroll:true});
  }
  async function openMaterial(m){

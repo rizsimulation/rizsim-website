@@ -26,7 +26,7 @@ REPORT = []
 
 
 def source_contracts():
-    """Compare against the now-approved login design; V14 adds a CSS link only."""
+    """Preserve the original sign-in contract while permitting Design Code compactness."""
     for name in PAGES:
         baseline = subprocess.check_output(["git", "show", "origin/main:" + name], cwd=ROOT, text=True)
         actual = (ROOT / name).read_text()
@@ -45,11 +45,13 @@ def source_contracts():
     icon = (ROOT / "google-g.svg").read_text()
     for color in ("#EA4335", "#4285F4", "#FBBC05", "#34A853"):
         assert color in icon, f"Missing official Google color {color}"
+    baseline_icon = subprocess.check_output(["git", "show", "3492836608c456fd7f1cab2df235c6e8bbe88e33:google-g.svg"], cwd=ROOT)
+    assert (ROOT / "google-g.svg").read_bytes() == baseline_icon, "Google artwork changed"
     assert "<script" not in icon and "href=" not in icon and "<foreignObject" not in icon
     css = (ROOT / "rizsim-login-polish.css").read_text()
     assert "#authGate" in css and ":focus-visible" in css and "prefers-reduced-motion" in css
     assert not re.search(r"(^|\n)\s*(body|html|button|\*)\s*\{", css), "No global CSS modifications"
-    print("PASS: HTML differs from production only by approved design additions", flush=True)
+    print("PASS: approved sign-in markup, copy, hooks and exact Google artwork preserved", flush=True)
 
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
@@ -85,7 +87,9 @@ def test_visual(browser, base, label, viewport, page_name):
     cardbox = card.bounding_box()
     assert box and cardbox
     assert box["width"] >= 240 and box["height"] >= 44
-    assert cardbox["width"] <= viewport[0] + 2
+    assert cardbox["width"] <= viewport[0] - 16, "Gate must retain viewport gutters"
+    assert cardbox["x"] >= 0 and cardbox["x"] + cardbox["width"] <= viewport[0], "Gate clips horizontally"
+    assert box["x"] >= cardbox["x"] and box["x"] + box["width"] <= cardbox["x"] + cardbox["width"], "Sign-in button escaped its card"
     metrics = page.evaluate("""() => ({
         scrollWidth: document.documentElement.scrollWidth,
         viewportWidth: innerWidth,
@@ -96,6 +100,8 @@ def test_visual(browser, base, label, viewport, page_name):
         reducedMatches: matchMedia('(prefers-reduced-motion: reduce)').matches,
         logoOk: !!document.querySelector('#authGate img.gate-logo')?.naturalWidth,
         googleLogoOk: !!document.querySelector('#authGate img.google-mark')?.naturalWidth,
+        googleLogo: (() => {const r=document.querySelector("#googleLogin .google-mark").getBoundingClientRect();return {width:r.width,height:r.height}})(),
+        buttonFont: parseFloat(getComputedStyle(document.querySelector("#googleLogin")).fontSize),
     })""")
     assert metrics["logoOk"], "Approved RizSim brand logo failed to load"
     print(f"STYLE METRICS {page_name} {label}: reduced={metrics['reducedMatches']}, transition={metrics['transition']}", flush=True)
@@ -131,8 +137,13 @@ def run():
                         for device, size in SIZES.items():
                             a = test_visual(browser, base, "before", size, "__login_baseline/" + name)
                             b = test_visual(browser, base, "after", size, name)
-                            assert abs(a["card"]["width"] - b["card"]["width"]) < 2, "Card width changed"
-                            assert abs(a["button"]["width"] - b["button"]["width"]) < 2, "Button placement/width changed"
+                            # Card/button widths may shrink under the approved compact design.
+                            # Retain real readability, centering, logo size and viewport constraints.
+                            assert b["card"]["width"] >= min(320, size[0] - 40), "Card is excessively narrow"
+                            assert abs(b["card"]["x"] + b["card"]["width"] / 2 - size[0] / 2) < 2, "Sign-in card not centered"
+                            assert abs(b["button"]["x"] + b["button"]["width"] / 2 - size[0] / 2) < 2, "Google button not centered"
+                            assert b["buttonFont"] >= 14, "Google label too small"
+                            assert a["googleLogo"] == b["googleLogo"] == {"width":20,"height":20}, "Google artwork display size changed"
                             assert b["scrollWidth"] <= max(size[0] + 2, a["scrollWidth"] + 1), "New horizontal overflow introduced"
                             print(f"VISUAL WIDTH {name} {device}: viewport={size[0]}, before={a['scrollWidth']}, after={b['scrollWidth']}", flush=True)
                             assert a["label"] == b["label"] == "Continue with Google", "Approved Google login copy preserved"

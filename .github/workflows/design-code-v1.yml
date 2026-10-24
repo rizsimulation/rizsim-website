@@ -1,0 +1,92 @@
+name: RizSim Design Code v1
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'RIZSIM_DESIGN_CODE.md', 'AGENTS.md', '.github/workflows/design-code-v1.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: design-code-v1-matrix-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [faculty, course_lead, student, owner, admin, institution, public]
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preserve source, role and security contracts
+        run: |
+          node scripts/validate_design_code_v1.cjs
+          node scripts/validate_v155_release.cjs
+          node scripts/validate_faculty_course_lead_upgrade.js
+          node scripts/test_insight_core_v1.js
+      - name: Install pinned isolated browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Offline validation, focus and nested-scroll component regressions
+        if: matrix.scope == 'public'
+        run: python scripts/test_design_code_validation.py
+      - name: Student real-state labels and ERP validation
+        if: matrix.scope == 'student'
+        run: python scripts/test_design_code_student.py
+      - name: Actual role and viewport interactions
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          export RIZSIM_QA_ROLES='${{ matrix.scope }}'
+          export RIZSIM_QA_SKIP_PUBLIC=1
+          if [ '${{ matrix.scope }}' = public ]; then
+            export RIZSIM_QA_ROLES=''
+            unset RIZSIM_QA_SKIP_PUBLIC
+          fi
+          python scripts/test_design_code_v1.py
+      - name: Record exact tested commit
+        if: always()
+        run: |
+          mkdir -p test-results/design-code-source
+          git rev-parse HEAD > test-results/design-code-source/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-design-code-v1-${{ matrix.scope }}
+          path: test-results/
+          retention-days: 5
+  verify-production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: browser-matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact live Pages assets and unchanged Google artwork
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_design_code_v1_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-design-code-production-evidence
+          path: test-results/design-code-production/
+          retention-days: 7
