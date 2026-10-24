@@ -179,7 +179,7 @@
   // Context is secondary to the selected task. Keep every original node and listener.
   const admin=document.getElementById('view-administration'),institution=document.getElementById('view-institution');
   const adminContext=supportGroup([document.getElementById('administrationMetrics'),admin?.querySelector('.admin-command')],'Workspace overview and access boundaries');
-  if(adminContext)admin?.querySelector('.admin-hub')?.after(adminContext);
+  if(adminContext){admin?.querySelector('.admin-hub')?.after(adminContext);const copy=admin?.querySelector('.auth-section-heading>p');if(copy)adminContext.append(copy);}
   const institutionContext=supportGroup([institution?.querySelector('.institution-command'),institution?.querySelector('.institution-overview-grid')],'Institution summary and activity totals');
   if(institutionContext)institution?.querySelector('.institution-hub')?.after(institutionContext);
   // Slugs are auto-generated; descriptions are optional. Required fields stay open.
@@ -187,13 +187,15 @@
    const ids=['Slug','Description','ShortDescription','FullDescription'].map(suffix=>prefix+suffix);
    const fields=ids.map(id=>document.getElementById(id)?.closest('.management-field')).filter(Boolean);
    const form=fields[0]?.closest('.admin-category-form');if(!form||form.querySelector('.rz-dc-optional-fields'))continue;
-   const details=node('details','rz-dc-optional-fields');details.append(node('summary','','Optional description and URL slug'));
+   const details=node('details','rz-dc-optional-fields');details.append(node('summary','','Optional details and guidance'));
    const content=node('div','rz-dc-optional-grid');fields.forEach(x=>content.append(x));details.append(content);
    const actions=form.querySelector('.admin-form-actions');if(actions)actions.after(details);else form.append(details);
    const guidance=form.querySelector('.admin-boundary');
    const fileField=form.querySelector('#adminResourceFile')?.closest('.management-field');
    if(guidance&&fileField)fileField.append(guidance);else if(guidance)details.append(guidance);
    const card=form.closest('.admin-operation-card'),copy=card?.querySelector(':scope>p');if(copy)details.append(copy);
+   const section=card?.closest('.admin-tab-panel')?.querySelector('.admin-section-heading>div');
+   if(section)for(const copy of section.querySelectorAll(':scope>p,:scope>span'))details.append(copy);
    const heading=card?.querySelector(':scope>h4'),list=document.getElementById(prefix+'List');
    if(heading&&list){
     const bar=node('div','rz-dc-form-heading'),link=node('a','','Browse existing records');link.href='#'+list.id;
