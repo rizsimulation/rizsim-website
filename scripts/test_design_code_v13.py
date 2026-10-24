@@ -193,12 +193,18 @@ def faculty(browser,url,kind,size,role='faculty'):
    p.evaluate('window.__hotel03Closed=true;window.RizSimHotelFaculty.refresh()');p.wait_for_function('RizSimHotelFaculty.state().revealed')
   p.locator('#rzV13Panestudents').get_by_role('button',name='View student result').first.click();p.wait_for_timeout(100)
   capture(p,label+'-individual')
+  report=p.locator('#rzV13Panestudents '+{'insight':'#rizsimInsightIndividualResult','systems':'#rizsimSystemIndividualResult','hotel':'#rizsimHotelIndividual'}[kind])
+  report.wait_for(state='visible')
+  report.screenshot(path=str(OUT/(label+'-individual-detail.png')),animations='disabled')
+  check(label+' individual report remains readable',report.locator('h3').first.is_visible())
   close=p.locator('#rzV13Panestudents').get_by_role('button',name=re.compile('Close (student|result)|Back to'))
   if close.count():close.first.click()
   tab('insights');p.locator(rootid).wait_for(state='visible')
   capture(p,label+'-presenter',[rootid+' h2',rootid+' '+{'insight':'.rz-i01-stat-grid','systems':'.rz-s02-metrics','hotel':'.rz-h03-metrics'}[kind]])
+  p.locator('#rzV15insightsMetrics').wait_for(state='visible',timeout=7000)
   check(label+' general session summary remains available',p.locator('#rzV15insightsMetrics').count()==1 and p.locator('#rzV15insightsMetrics').is_visible())
   check(label+' simulation report precedes supporting summary',p.locator(rootid).bounding_box()['y']<p.locator('#rzV15insightsMetrics').bounding_box()['y'])
+  p.locator(rootid).screenshot(path=str(OUT/(label+'-presenter-detail.png')),animations='disabled')
   before=p.locator(rootid).inner_text();p.locator(rootid).get_by_role('button',name=re.compile('Refresh')).first.click();p.wait_for_timeout(200)
   check(label+' refresh remains functional',p.locator(rootid+' h2').is_visible())
   p.evaluate('window.__v13Fail=true;window.'+module+'.refresh()');p.wait_for_selector(rootid+' '+{'insight':'.rz-i01-error','systems':'.rz-s02-error','hotel':'.rz-h03-error'}[kind]);capture(p,label+'-error')
@@ -241,6 +247,11 @@ def main():
     for access,correct in [('live',False),('practice',True)]:
      try:insight(b,url,(1366,768),access,correct)
      except Exception:check('feedback control '+access,False,traceback.format_exc())
+   if scope in ['all','faculty']:
+    for role in ['course_lead','owner']:
+     for kind in ['insight','systems','hotel']:
+      try:faculty(b,url,kind,(1366,768),role)
+      except Exception:check(role+' '+kind+' mounted flow',False,traceback.format_exc())
    b.close()
  finally:srv.shutdown()
  (OUT/'report.json').write_text(json.dumps({'checks':CHECKS,'states':STATES,'scope':'Actual production HTML and mounted tabs; synthetic data and Chromium only'},indent=2))
