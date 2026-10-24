@@ -1,47 +1,122 @@
 name: RizSim Design Code v1
-
 on:
   push:
     branches: [frontend/design-code-v1-20261024]
+    paths: ['.design-code-transfer/ready.json', '.github/workflows/design-code-v1.yml', 'rizsim-design-code.*', 'scripts/**', '**.html']
   pull_request:
-    paths:
-      - '**.html'
-      - '**.css'
-      - '**.js'
-      - 'scripts/**'
-      - 'RIZSIM_DESIGN_CODE.md'
-      - '.github/workflows/design-code-v1.yml'
+    branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: design-code-v1-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
-  source-and-verification:
+  ingest-reviewed-source:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/frontend/design-code-v1-20261024'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.ingest.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
-      - name: Snapshot reviewed source (no credentials, no database access)
+          ref: frontend/design-code-v1-20261024
+          fetch-depth: 0
+      - id: ingest
+        name: Apply exact reviewed source only to the isolated frontend branch
+        shell: bash
         run: |
-          mkdir -p /tmp/rizsim-design-code
-          git archive --format=zip HEAD > /tmp/rizsim-design-code/source.zip
-          git rev-parse HEAD > /tmp/rizsim-design-code/commit.txt
-      - name: Run Design Code verification when implemented
-        run: |
-          if [ -f scripts/validate_design_code_v1.cjs ]; then
-            node scripts/validate_design_code_v1.cjs
-          else
-            echo 'Initial inventory checkpoint; implementation tests not yet present.'
+          if [ -f .design-code-transfer/ready.json ]; then
+            python - <<'PY'
+          import base64,hashlib,json,pathlib,subprocess,zlib
+          root=pathlib.Path.cwd(); folder=root/'.design-code-transfer'
+          meta=json.loads((folder/'ready.json').read_text())
+          encoded=''.join((folder/('part-'+str(i)+'.b64')).read_text().strip() for i in range(meta['parts']))
+          raw=zlib.decompress(base64.b64decode(encoded,validate=True))
+          assert hashlib.sha256(raw).hexdigest()==meta['sha256'], 'Transfer integrity mismatch'
+          pack=json.loads(raw)
+          assert pack['version']==1 and pack['baseline']=='3492836608c456fd7f1cab2df235c6e8bbe88e33'
+          allowed={'AGENTS.md','RIZSIM_DESIGN_CODE.md','about.html','access-in.html','access-out.html','contact.html','course-material-viewer.html','docs/design-code-v1-coverage.md','index.html','resource-viewer.html','rizsim-design-code.css','rizsim-design-code.js','rizsim-refinements-v10.js','rizsim-roles-library.js','rizsim-session-confirmation.js','rizsim-student-classroom-v155.js','scripts/test_design_code_v1.py','scripts/test_sitewide_design_v14.py','scripts/validate_design_code_v1.cjs','simulation-hotel-judgment.html','simulation-insight-to-implication.html','simulation-system-1-system-2.html','simulations.html'}
+          pending=[]
+          for item in pack['files']:
+            path=item['path']; assert path in allowed, 'Out-of-scope file'
+            file=root/path; old=file.read_bytes() if file.exists() else b''
+            assert hashlib.sha256(old).hexdigest()==item['before'], 'Baseline changed: '+path
+            new=old
+            for start,end,text in reversed(item['edits']):
+              assert 0<=start<=end<=len(old)
+              new=new[:start]+text.encode('latin1')+new[end:]
+            assert hashlib.sha256(new).hexdigest()==item['after'], 'Output hash mismatch: '+path
+            pending.append((file,new))
+          for file,new in pending:
+            file.parent.mkdir(parents=True,exist_ok=True);file.write_bytes(new)
+          subprocess.run(['git','add','--',*[i['path'] for i in pack['files']]],check=True)
+          for file in folder.glob('*'):file.unlink()
+          subprocess.run(['git','add','-u','--','.design-code-transfer'],check=True)
+          PY
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(frontend): implement RizSim Design Code v1 across current role interfaces'
+            git push origin HEAD:refs/heads/frontend/design-code-v1-20261024
           fi
-      - uses: actions/upload-artifact@v4
+          if [ -f scripts/test_design_code_v1.py ]; then
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+  browser-and-regressions:
+    needs: ingest-reviewed-source
+    if: always() && (needs.ingest-reviewed-source.outputs.sha != '' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
         with:
-          name: rizsim-design-code-source
-          path: /tmp/rizsim-design-code/
-          retention-days: 2
+          ref: ${{ needs.ingest-reviewed-source.outputs.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Shared-code and locked-source contracts
+        run: |
+          node scripts/validate_design_code_v1.cjs
+          node scripts/validate_v155_release.cjs
+          node scripts/test_insight_core_v1.js
+          for file in rizsim-*.js; do node --check "$file"; done
+      - name: Install isolated Chromium
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Real role, viewport and interaction matrix
+        run: python scripts/test_design_code_v1.py
+      - name: Existing classroom, Practice and completion regressions
+        if: always()
+        run: |
+          python scripts/test_v1553_find_class_live_leave.py
+          python scripts/test_v1552_review_fixes.py
+          python scripts/test_practice_code_v155.py
+          python scripts/test_student_workspace_v8.py
+          python scripts/test_student_completion_v9.py
+      - name: Existing simulation and academic-source contracts
+        if: always()
+        run: |
+          python scripts/test_sim02_student_v1.py
+          python scripts/test_sim03_student_v1.py
+          python scripts/test_sitewide_design_v14.py
+      - name: Save precise reviewed branch source
+        if: always()
+        run: |
+          mkdir -p test-results/design-code-source
+          git archive --format=zip HEAD > test-results/design-code-source/source.zip
+          git rev-parse HEAD > test-results/design-code-source/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rizsim-design-code-v1-evidence
+          path: test-results/
+          retention-days: 5
