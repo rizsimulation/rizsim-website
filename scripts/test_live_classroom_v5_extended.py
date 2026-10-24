@@ -24,7 +24,8 @@ def run(browser,url):
     ctx,page,errors=base.page_for(browser,url)
     page.mouse.move(1,1)
     action=page.locator('#rzLiveChoices .rz-v5-card-action').first
-    base.check('Desktop card CTA hidden until hover or focus',float(action.evaluate('n=>getComputedStyle(n).opacity'))==0)
+    # Design Code v1 explicitly keeps essential actions visible without hover.
+    base.check('Desktop card CTA visible without hover',float(action.evaluate('n=>getComputedStyle(n).opacity'))==1)
     action.focus()
     base.check('Keyboard focus reveals card CTA',float(action.evaluate('n=>getComputedStyle(n).opacity'))==1)
     page.keyboard.press('Enter')

@@ -2,7 +2,7 @@
 All external requests are intercepted or blocked. No production identities/data.
 Reports every measured state; FAIL is never silently converted to an exemption.
 """
-import http.server,json,re,threading,traceback
+import http.server,json,re,threading,traceback,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,6 +15,7 @@ CHECKS=[];STATES=[];ERRORS=[]
 def check(name,ok=True,detail=None):
  CHECKS.append({'name':name,'passed':bool(ok),'detail':detail})
  print(('PASS ' if ok else 'FAIL ')+name+((' '+str(detail)) if not ok and detail is not None else ''),flush=True)
+ (OUT/'report.json').write_text(json.dumps({'checks':CHECKS,'states':STATES,'errors':ERRORS,'scope':'synthetic browser evidence, not authenticated production acceptance'},indent=2))
 def slug(s):return re.sub('[^a-zA-Z0-9_-]+','-',s)
 class Handler(http.server.SimpleHTTPRequestHandler):
  def __init__(self,*a,**k):super().__init__(*a,directory=str(ROOT),**k)
@@ -25,18 +26,20 @@ def open_page(browser,base,path,role=None,size=(1366,768),extra=''):
  ctx.add_init_script("sessionStorage.setItem('rizsimSplashSeen','true');window.__testRole="+json.dumps(role)+";"+extra)
  def route(r):
   u=r.request.url
-  if u=='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm' and role:
-   r.fulfill(content_type='text/javascript',body=STU if role=='student' else FAC)
+  if u=='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm':
+   body=STU if role=='student' else FAC
+   if not role:body=body.replace('return ok({user})','return ok({user:null})').replace('return ok({session:{user}})','return ok({session:null})')
+   r.fulfill(content_type='text/javascript',body=body)
   elif u.startswith(base+'/'):r.continue_()
   elif 'fonts.googleapis.com' in u:r.fulfill(content_type='text/css',body='')
   else:r.abort()
- ctx.route('**/*',route);p=ctx.new_page();errors=[]
+ ctx.route('**/*',route);p=ctx.new_page();p.set_default_timeout(7000);errors=[]
  p.on('pageerror',lambda e:errors.append(str(e)))
  p.on('dialog',lambda d:(check('No native app dialog: '+d.message,False),d.dismiss()))
- p.goto(base+'/'+path,wait_until='networkidle',timeout=30000)
+ p.goto(base+'/'+path,wait_until='domcontentloaded',timeout=15000)
  if role=='student':p.wait_for_selector('#studentApp.show',timeout=20000)
  elif role in ['owner','admin','institution','faculty','course_lead']:p.wait_for_selector('#authenticatedApp.show',timeout=20000)
- p.wait_for_function('!!window.RizSimUI')
+ p.wait_for_function('!!window.RizSimUI');p.wait_for_timeout(200)
  return ctx,p,errors
 
 def measure(p,label,targets=(),screenshot=True,require_p1=True):
@@ -58,12 +61,24 @@ def measure(p,label,targets=(),screenshot=True,require_p1=True):
  if screenshot:p.screenshot(path=str(OUT/(slug(label)+'.png')),full_page=False,animations='disabled')
  STATES.append(m);return m
 
+def open_menu(p):
+ button=p.locator('#mobileMenuButton')
+ if button.count() and button.is_visible() and button.get_attribute('aria-expanded')!='true':button.click()
+
 def nav(p,role,view):
- if role=='student':p.evaluate('(v)=>RizSimStudentBridge.navigate(v)',view)
+ # Exercise the deployed navigation, including the mobile drawer and My Account.
+ if view=='account':
+  p.locator('#accountButton').click()
+  p.locator('#accountMenuAccount' if role=='student' else '#accountMenuAccountButton').click()
  else:
-  p.locator('#mainNav [data-auth-view="'+view+'"]').evaluate('(n)=>n.click()')
- p.wait_for_selector('#view-'+view+'.active',timeout=12000)
- p.wait_for_timeout(120)
+  open_menu(p)
+  attr='data-student-view' if role=='student' else 'data-auth-view'
+  link=p.locator('#mainNav ['+attr+'="'+view+'"]')
+  if link.count() and link.first.is_visible():link.first.click()
+  elif role=='student':p.evaluate('(v)=>RizSimStudentBridge.navigate(v)',view)
+  else:raise AssertionError('Requested role navigation is unavailable: '+view)
+ p.wait_for_selector('#view-'+view+'.active',timeout=7000)
+ p.wait_for_timeout(150)
 
 def shared_interactions(p):
  # Genuine DOM controls: dialog focus, keyboard containment, Escape and state.
@@ -76,6 +91,14 @@ def shared_interactions(p):
  p.evaluate("window.__note='waiting';RizSimUI.prompt('Optional note:','kept value',{action:'Save note'}).then(x=>__note=x)")
  p.locator('.rz-dc-dialog input').fill('Edited note');p.locator('.rz-dc-dialog button').filter(has_text='Save note').click();p.wait_for_function("__note==='Edited note'")
  check('Prompt preserves entered note and resolves asynchronously')
+ p.locator('#dcTestTrigger').focus()
+ p.evaluate("window.__twice=[];RizSimUI.confirm('Same intent',{action:'Proceed'}).then(x=>__twice.push(x));RizSimUI.confirm('Same intent',{action:'Proceed'}).then(x=>__twice.push(x))")
+ p.locator('.rz-dc-dialog').get_by_role('button',name='Proceed').click()
+ p.wait_for_function('__twice.length===2')
+ check('Double activation yields only one accepted operation',p.evaluate('__twice.filter(Boolean).length===1'))
+ p.evaluate("const d=document.createElement('details');d.id='dcClosedDetails';d.innerHTML='<summary>Supporting field</summary><label>Reference<input id=dcHiddenField></label>';document.body.append(d);RizSimUI.invalid(document.getElementById('dcHiddenField'),'Check reference')")
+ check('Invalid supporting field opens its section and receives focus',p.evaluate("document.getElementById('dcClosedDetails').open&&document.activeElement.id==='dcHiddenField'"))
+ p.evaluate("document.getElementById('dcClosedDetails').remove()")
  # Test the website-native fallback without touching browser security prompts.
  p.evaluate("window.__oldDialog=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=undefined;window.__fallback=null;RizSimUI.confirm('Fallback synthetic task',{action:'Proceed'}).then(x=>__fallback=x)")
  p.locator('.rz-dc-fallback-scrim [role=dialog]').wait_for()
@@ -97,7 +120,7 @@ def shared_interactions(p):
  check('Reduced motion stops feedback animations',p.locator('#rzDcToasts [data-rz-tone=denied] .rz-dc-outcome').evaluate('(n)=>getComputedStyle(n).animationName')=='none')
  p.evaluate("document.getElementById('dcTestForm').remove();document.getElementById('dcTestTrigger').remove();document.getElementById('rzDcToasts').remove()")
 
-ADMIN_TARGETS={'overview':[], 'categories':['#adminCategoryName','#saveAdminCategoryButton'],'simulations':['#adminSimulationTitle','#saveAdminSimulationButton'],'materials':['#adminResourceTitle','#saveAdminResourceButton'],'publishing':['#adminPublishingRows']}
+ADMIN_TARGETS={'overview':[], 'categories':['#adminCategoryName','#saveAdminCategoryButton'],'simulations':['#adminSimulationTitle','#saveAdminSimulationButton'],'materials':['#adminResourceTitle','#saveAdminResourceButton'],'publishing':['#adminPublishingMessage']}
 INST_TARGETS={'overview':['#institutionWorkspaceSelect'],'faculty':['#institutionFacultyName','#submitInstitutionFacultyRequest'],'classes':['#institutionClassesContent'],'simulations':['#institutionLicenceContent'],'analytics':['#institutionAnalyticsContent']}
 
 def role_pass(browser,base,role,size):
@@ -106,7 +129,7 @@ def role_pass(browser,base,role,size):
  try:
   check(label+' shared design available',p.evaluate("RizSimUI.version==='1.0'"))
   if role=='student':
-   for view in ['home','resources','practice','learning','player','about','contact']:
+   for view in ['home','resources','practice','learning','player','about','contact','account']:
     nav(p,role,view)
     targets=['#classCodeInput','#findClassButton'] if view=='player' else []
     measure(p,label+'-'+view,targets,screenshot=view in ['home','player','learning','practice'])
@@ -117,10 +140,15 @@ def role_pass(browser,base,role,size):
    check(label+' classroom file icons are graphical',p.locator('.rz-c155-material-icon svg').count()>0)
    p.locator('.rz-c155-start').click();p.locator('.rz-c155-erp[open]').wait_for();check(label+' original ERP consent dialog remains',p.locator('.rz-c155-erp input[type=checkbox]').count()==1);p.keyboard.press('Escape')
   else:
+   open_menu(p)
    views=p.locator('#mainNav [data-auth-view]').evaluate_all("ns=>ns.filter(n=>n.getClientRects().length && !n.classList.contains('hidden')).map(n=>n.dataset.authView).filter(v=>v!=='account')")
    check(label+' role navigation exists',len(views)>0,views)
-   for view in views:
-    nav(p,role,view);measure(p,label+'-'+view,screenshot=view in ['home','classroom','institution','administration','courses'])
+   if p.locator('#mobileMenuButton').is_visible() and p.locator('#mobileMenuButton').get_attribute('aria-expanded')=='true':p.locator('#mobileMenuButton').click()
+   for view in [*views,'account']:
+    nav(p,role,view)
+    targets={'classroom':['#rzLiveChoices button'], 'records':['#rzSearchStudents','#rzClearRecords'], 'courses':['.rz-author-paths .rz-author-btn'], 'account':[]}.get(view,[])
+    targets=[x for x in targets if p.locator(x).count() and p.locator(x).first.is_visible()]
+    measure(p,label+'-'+view,targets,screenshot=view in ['home','classroom','institution','administration','courses','account'])
    if role in ['owner','admin']:
     nav(p,role,'administration')
     for tab,targets in ADMIN_TARGETS.items():
@@ -142,6 +170,9 @@ def role_pass(browser,base,role,size):
     check(label+' institution form identifies first missing input',p.evaluate("document.activeElement.id==='institutionFacultyName'"))
     check(label+' Institution has no content/governance tab',not p.locator('#mainNav [data-auth-view=administration]').is_visible())
    if role=='faculty' and size==(1366,768):shared_interactions(p)
+  if size==(1366,768):
+   p.add_style_tag(content='html{font-size:200% !important;}')
+   measure(p,label+'-text200',require_p1=False)
   check(label+' no unhandled script errors',not errors,errors)
  finally:
   ctx.close()
@@ -151,11 +182,11 @@ def main():
  try:
   with sync_playwright() as pw:
    browser=pw.chromium.launch(headless=True,args=['--disable-dev-shm-usage'])
-   for role in ['faculty','course_lead','student','owner','admin','institution']:
+   for role in filter(None,os.getenv('RIZSIM_QA_ROLES','faculty,course_lead,student,owner,admin,institution').split(',')):
     for size in [(1366,768),(1440,900),(390,844)]:
      try:role_pass(browser,base,role,size)
      except Exception as e:check(role+' '+str(size)+' flow completed',False,str(e));ERRORS.append(traceback.format_exc())
-   for path in ['index.html','simulations.html','about.html','contact.html','access-in.html','access-out.html','course-material-viewer.html','resource-viewer.html','simulation-insight-to-implication.html','simulation-system-1-system-2.html','simulation-hotel-judgment.html']:
+   for path in ([] if os.getenv('RIZSIM_QA_SKIP_PUBLIC') else ['index.html','simulations.html','about.html','contact.html','access-in.html','access-out.html','course-material-viewer.html','resource-viewer.html','simulation-insight-to-implication.html','simulation-system-1-system-2.html','simulation-hotel-judgment.html']):
     for size in [(1366,768),(1440,900),(390,844)]:
      ctx=None
      try:

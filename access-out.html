@@ -11326,7 +11326,7 @@ function configureRoleNavigation() {
 
 const role =
 currentMembership.role;
-document.body.dataset.rzRole = role;
+if(document.body)document.body.dataset.rzRole = role;
 window.RizSimSupport?.showOwnerOnly(role);
 // Course Lead promotional workspace is presentation-only for standard Faculty.
 // The authenticated Course Builder and its RPCs remain Course Lead gated.

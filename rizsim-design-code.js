@@ -27,7 +27,7 @@
   clock:'M12 7v5l4 2',institution:'M3 9l9-6 9 6M4 10h16M6 10v8M12 10v8M18 10v8M3 21h18',
   download:'M12 3v12M7 10l5 5 5-5M4 16v5h16v-5'
  };
- let serial=0, dialogQueue=Promise.resolve(), busy=new Map();
+ let serial=0, dialogQueue=Promise.resolve(), busy=new Map(), pendingIntents=new WeakSet();
  function node(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;}
  function icon(name,extra='') {
   const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('class','rz-dc-icon '+extra);
@@ -52,8 +52,12 @@
   return !text;
  }
  function reveal(input){
-  if(!input?.isConnected)return false;input.focus({preventScroll:true});
-  const r=input.getBoundingClientRect();if(r.top<112||r.bottom>innerHeight-16)input.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'});
+  if(!input?.isConnected)return false;
+  for(let parent=input.parentElement;parent;parent=parent.parentElement){if(parent.tagName==='DETAILS')parent.open=true;}
+  input.focus({preventScroll:true});
+  const headers=[...document.querySelectorAll('header,.site-header,.auth-header,.student-header')].filter(n=>['fixed','sticky'].includes(getComputedStyle(n).position));
+  const top=Math.max(0,...headers.map(n=>n.getBoundingClientRect().bottom));
+  const r=input.getBoundingClientRect();if(r.top<top+12||r.bottom>innerHeight-16)input.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'});
   return true;
  }
  function invalid(input,message){fieldError(input,message);reveal(input);return false;}
@@ -89,6 +93,9 @@
  }
  function dialog(message,options={}){
   const previous=document.activeElement;
+  // An asynchronous modal must not turn a double click into two server actions.
+  if(previous && pendingIntents.has(previous))return Promise.resolve(options.input?null:false);
+  if(previous)pendingIntents.add(previous);
   const task=()=>new Promise(resolve=>{
    const id='rzDcDialog'+(++serial),d=node('dialog','rz-dc-dialog');d.id=id;d.setAttribute('aria-labelledby',id+'Title');d.setAttribute('aria-describedby',id+'Message');
    const title=node('h2','',options.title||'Confirm action');title.id=id+'Title';
@@ -117,7 +124,7 @@
    }
    (input||cancel).focus({preventScroll:true});
   });
-  const result=dialogQueue.then(task,task);dialogQueue=result.catch(()=>false);return result;
+  const result=dialogQueue.then(task,task).finally(()=>{if(previous)pendingIntents.delete(previous);});dialogQueue=result.catch(()=>false);return result;
  }
  function confirmAction(message,options={}){return dialog(message,options);}
  function promptNote(message,value='',options={}){return dialog(message,{title:'Add a note',action:'Continue',...options,input:true,value});}
@@ -164,7 +171,27 @@
   document.querySelectorAll('.auth-section-heading,.student-heading,.rz-author-heading,.rz-live-heading,.rz-c155-heading,.institution-tab-nav,.admin-tab-nav').forEach(n=>{if(!n.dataset.rzPriority)n.dataset.rzPriority='1';});
   ownerLinks();
  }
+ function supportGroup(elements,label){
+  const items=elements.filter(Boolean);if(!items.length||items[0].closest('.rz-dc-context'))return;
+  const d=node('details','rz-dc-context'),summary=node('summary','',label);d.append(summary);items[0].before(d);items.forEach(x=>d.append(x));
+ }
+ function organizeWorkspaceContext(){
+  // Context is secondary to the selected task. Keep every original node and listener.
+  const admin=document.getElementById('view-administration'),institution=document.getElementById('view-institution');
+  supportGroup([document.getElementById('administrationMetrics'),admin?.querySelector('.admin-command')],'Workspace overview and access boundaries');
+  supportGroup([institution?.querySelector('.institution-command'),institution?.querySelector('.institution-overview-grid')],'Institution summary and activity totals');
+  // Slugs are auto-generated; descriptions are optional. Required fields stay open.
+  for(const prefix of ['adminCategory','adminSimulation','adminResource']){
+   const ids=[prefix+'Slug',prefix+'Description'];
+   const fields=ids.map(id=>document.getElementById(id)?.closest('.management-field')).filter(Boolean);
+   const form=fields[0]?.closest('.admin-category-form');if(!form||form.querySelector('.rz-dc-optional-fields'))continue;
+   const details=node('details','rz-dc-optional-fields');details.append(node('summary','','Optional description and URL slug'));
+   const content=node('div','rz-dc-optional-grid');fields.forEach(x=>content.append(x));details.append(content);
+   const actions=form.querySelector('.admin-form-actions');if(actions)actions.before(details);else form.append(details);
+  }
+ }
  function init(){
+  organizeWorkspaceContext();
   /* Supplemental prose only; all task controls remain in their original panels. */
   document.querySelectorAll('.admin-command p').forEach(p=>supportText(p,'About content operations'));
   document.querySelectorAll('.institution-command p').forEach(p=>supportText(p,'About this institution workspace'));
