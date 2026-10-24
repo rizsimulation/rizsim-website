@@ -127,6 +127,9 @@
       const experienceStylesheet = document.createElement("link");
       experienceStylesheet.rel = "stylesheet";
       experienceStylesheet.href = "rizsim-experiences.css";
+      const refinementStylesheet = document.createElement("link");
+      refinementStylesheet.rel = "stylesheet";
+      refinementStylesheet.href = "rizsim-visual-refinement-v11.css";
 
       const page = document.createElement("div");
       page.className = "page-content bp-home";
@@ -139,6 +142,7 @@
       homeStyles.forEach(function (style) {
         shadow.appendChild(addStyle(style.textContent));
       });
+      shadow.appendChild(refinementStylesheet);
       shadow.appendChild(page);
       bindPortalNavigation(shadow);
       // Match the official Home icons inside the dashboard Shadow DOM.
@@ -148,12 +152,13 @@
       // If styles do not load, retain the original working dashboard Home.
       function awaitStylesheet(sheet) {
         return new Promise(function (resolve) {
+          if (sheet.sheet) { resolve(true); return; }
           sheet.addEventListener("load", function () { resolve(true); }, { once: true });
           sheet.addEventListener("error", function () { resolve(false); }, { once: true });
         });
       }
       const loaded = await Promise.race([
-        Promise.all([awaitStylesheet(stylesheet), awaitStylesheet(experienceStylesheet)])
+        Promise.all([awaitStylesheet(stylesheet), awaitStylesheet(experienceStylesheet), awaitStylesheet(refinementStylesheet)])
           .then(function (results) { return results.every(Boolean); }),
         new Promise(function (resolve) { window.setTimeout(function () { resolve(false); }, 3500); })
       ]);
