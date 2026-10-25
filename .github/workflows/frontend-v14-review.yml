@@ -1,0 +1,94 @@
+name: Frontend 1.4 candidate review
+on:
+  push:
+    branches: [frontend/design-code-1-4-analytics-1-0]
+    paths: [scripts/.v14-review-fix.py, .github/workflows/frontend-v14-review.yml]
+permissions:
+  contents: read
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: frontend/design-code-1-4-analytics-1-0
+          fetch-depth: 0
+      - name: Apply explicit Frontend-only review corrections
+        run: |
+          test "$GITHUB_REF" = refs/heads/frontend/design-code-1-4-analytics-1-0
+          python scripts/.v14-review-fix.py
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          allowed={'rizsim-analytics-v1.css','rizsim-student-classroom-v155.css','rizsim-student-workspace.js','rizsim-v154-runner-shell.js','scripts/frontend_v14_scope.py','scripts/test_design_code_v14.py','scripts/test_v15_3_focus.py','scripts/test_v13_step4_owner_combined.py'}
+          changed=set(subprocess.check_output(['git','diff','--name-only']).decode().splitlines())
+          assert changed <= allowed,changed-allowed
+          sys.path.insert(0,'scripts')
+          from frontend_v14_scope import presentation_equivalent,runner_suffix_equivalent
+          old=subprocess.check_output(['git','show','997c064:rizsim-student-workspace.js'])
+          assert presentation_equivalent(old,Path('rizsim-student-workspace.js').read_bytes(),'rizsim-student-workspace.js')
+          old=subprocess.check_output(['git','show','997c064:rizsim-v154-runner-shell.js']).decode()
+          assert runner_suffix_equivalent(old,Path('rizsim-v154-runner-shell.js').read_text())
+          PY
+          node scripts/test_analytics_v1.cjs
+          node --check rizsim-student-workspace.js
+          node --check rizsim-v154-runner-shell.js
+          python -m py_compile scripts/test_design_code_v14.py
+          git diff --check
+      - name: Commit scoped corrections
+        id: commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add rizsim-analytics-v1.css rizsim-student-classroom-v155.css rizsim-student-workspace.js rizsim-v154-runner-shell.js scripts/frontend_v14_scope.py scripts/test_design_code_v14.py scripts/test_v15_3_focus.py scripts/test_v13_step4_owner_combined.py
+          git commit -m 'Fix mounted review findings: durable input focus, compact analytics and explicit tab recovery'
+          git push origin HEAD:frontend/design-code-1-4-analytics-1-0
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Source evidence
+        if: always()
+        run: |
+          mkdir -p test-results/source
+          git bundle create test-results/source/source.bundle --all
+          git rev-parse HEAD > test-results/source/head.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-review-source
+          path: test-results/source/
+          retention-days: 3
+  mounted:
+    needs: apply
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [navigation, analytics]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.apply.outputs.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Repeat real mounted browser tests
+        env:
+          RIZSIM_HEADED: '1'
+          RIZSIM_V14_SCOPE: ${{ matrix.scope }}
+        run: xvfb-run -a python scripts/test_design_code_v14.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-review-${{ matrix.scope }}
+          path: test-results/design-code-v14/
+          retention-days: 7
