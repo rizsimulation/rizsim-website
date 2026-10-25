@@ -59,14 +59,14 @@ def student_library(browser,base):
         assert 'Practice seminar' not in text and 'Decision Lab' not in text
         assert page.locator('#rzLibraryGrid').count()==1 and page.locator('#rzLibraryGrid').is_hidden()
         assert not page.locator('#rzStudentLibraryMaterials').count()
-        page.wait_for_selector('#rzV15LibraryLaunch')
-        assert page.locator('#rzV15LibraryTime').inner_text().strip()
-        page.clock.set_fixed_time(datetime(2026,10,24,0,0,tzinfo=timezone.utc))
-        page.wait_for_function("document.querySelector('#rzV15LibraryLaunch').textContent.includes('Sunday 25 October 2026')")
-        assert 'Sunday 25 October 2026' in page.locator('#rzV15LibraryLaunch').inner_text()
+        # The fixed Library publication date is in the past; its announcement banner
+        # must now stay retired while the genuine catalogue and entry controls remain.
+        assert page.locator('#rzV15LibraryLaunch').count()==0
+        assert page.locator('#rzV15LibraryTime').count()==0
         page.clock.set_fixed_time(datetime(2026,10,26,0,0,tzinfo=timezone.utc))
-        page.wait_for_function("document.querySelector('#rzV15LibraryTime').textContent==='Launch date reached'")
-        assert 'Publication Update' in page.locator('#rzV15LibraryLaunch').inner_text()
+        page.evaluate("window.dispatchEvent(new Event('focus'))")
+        page.wait_for_timeout(120)
+        assert page.locator('#rzV15LibraryLaunch').count()==0
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+3'),'Mobile Student Library has horizontal overflow'
         page.locator('#rzStudentSimulationLibrary').get_by_role('button',name='Open RizSimulation Player').click()
         page.wait_for_selector('#view-player.active')
