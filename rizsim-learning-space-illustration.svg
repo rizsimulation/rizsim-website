@@ -21,10 +21,10 @@
    @media(prefers-reduced-motion:reduce){*{animation:none!important}}
   ]]></style>
 </defs>
-<rect x="0" y="45" width="1440" height="605" fill="#FFFFFF"/>
+<!-- Transparent artboard: the motif blends into the underlying RizSim surface. -->
 <!-- A generous atmospheric shape: no decorative paint splat, only quiet soft geometry. -->
-<ellipse cx="719" cy="356" rx="525" ry="278" fill="#EBF8F6"/>
-<ellipse cx="722" cy="342" rx="416" ry="224" fill="#F6FCFB"/>
+<ellipse cx="719" cy="356" rx="525" ry="278" fill="#EBF8F6" opacity=".69"/>
+<ellipse cx="722" cy="342" rx="416" ry="224" fill="#F6FCFB" opacity=".62"/>
 <ellipse cx="1055" cy="215" rx="169" ry="127" fill="#F1EEFA" opacity="0.92"/>
 <ellipse cx="371" cy="425" rx="144" ry="115" fill="#EDF4FC" opacity="0.9"/>
 <path d="M327 380 C452 176 937 92 1122 328" fill="none" stroke="#C9DFDF" stroke-width="2" stroke-dasharray="4 13" stroke-linecap="round" opacity=".8"/>

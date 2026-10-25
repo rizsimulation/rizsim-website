@@ -217,3 +217,19 @@
 #rzCourseAuthoring .rz-author-course-grid>.rz-author-empty::before{content:'';display:block;width:min(100%,280px);height:135px;margin:0 auto 5px;background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat}
 #rzCourseAuthoring .rz-author-columns .rz-author-empty::before{content:'';display:block;width:min(100%,190px);height:92px;margin:0 auto 5px;background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat}
 @media(hover:none),(pointer:coarse){#rzCourseAuthoring .rz-author-add-grid .rz-author-card.compact .rz-author-btn{opacity:1;pointer-events:auto;transform:none}}
+
+
+/* Frontend 1.6.1: calm course empty states carry a translucent corner watermark. */
+#rzCourseAuthoring .rz-author-empty{position:relative;isolation:isolate;overflow:hidden;min-height:112px}
+#rzCourseAuthoring .rz-author-course-grid>.rz-author-empty::before,
+#rzCourseAuthoring .rz-author-columns .rz-author-empty::before{
+  content:'';display:block;position:absolute;right:0;top:0;width:min(37%,235px);height:100%;
+  margin:0;pointer-events:none;z-index:0;opacity:.25;
+  background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat;
+}
+#rzCourseAuthoring .rz-author-columns .rz-author-empty::before{width:min(38%,165px);opacity:.19}
+#rzCourseAuthoring .rz-author-empty>*{position:relative;z-index:1}
+@media(max-width:600px){
+  #rzCourseAuthoring .rz-author-course-grid>.rz-author-empty::before,
+  #rzCourseAuthoring .rz-author-columns .rz-author-empty::before{width:120px;right:-16px;opacity:.11}
+}

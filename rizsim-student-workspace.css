@@ -58,3 +58,34 @@ body[data-student-workspace="v8"] .session-card{border-radius:22px;background:#f
 .rz-st-empty.calm::before{content:'';display:block;width:min(100%,255px);height:108px;margin:0 auto 8px;background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat}
 .rz-st-empty.calm>.rz-st-icon{display:none}
 @media(max-width:600px){#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead::after{height:115px;width:min(100%,280px)}.rz-st-empty.calm::before{height:90px}}
+
+
+/* Frontend 1.6.1: artwork is part of the page surface, never a separate image panel. */
+#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead{
+  position:relative;isolation:isolate;min-height:156px;overflow:hidden;
+  padding:18px clamp(16px,2.4vw,28px) 20px;border:1px solid rgba(29,129,125,.13);
+  border-radius:18px;background:radial-gradient(ellipse at 86% 47%,rgba(97,188,174,.13),transparent 49%),linear-gradient(115deg,rgba(232,248,246,.66),rgba(248,249,253,.44));
+}
+#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead::after{
+  content:'';display:block;position:absolute;top:50%;right:clamp(5px,2.5%,30px);transform:translateY(-50%);
+  width:min(35%,350px);height:151px;margin:0;pointer-events:none;z-index:0;opacity:.76;
+  background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat;
+}
+#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead>*{position:relative;z-index:1}
+#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead h2{max-width:72%}
+#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead p{max-width:66%}
+.rz-st-empty.calm{position:relative;isolation:isolate;overflow:hidden;min-height:210px}
+.rz-st-empty.calm::before{
+  content:'';display:block;position:absolute;right:1%;top:0;width:min(38%,230px);height:100%;margin:0;
+  pointer-events:none;z-index:0;opacity:.23;background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat;
+}
+.rz-st-empty.calm>*{position:relative;z-index:1}
+@media(max-width:720px){
+  #view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead{min-height:0;padding:17px 16px 21px}
+  #view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead h2,
+  #view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead p{max-width:100%}
+  #view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead::after{
+    top:auto;bottom:-23px;right:-10px;transform:none;width:min(38%,140px);height:105px;opacity:.13;
+  }
+  .rz-st-empty.calm::before{width:125px;right:-14px;opacity:.12}
+}
