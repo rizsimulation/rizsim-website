@@ -1,0 +1,95 @@
+name: Frontend 1.6.1 integrated learning artwork
+on:
+  pull_request:
+    branches: [main]
+    paths: ['rizsim-learning-space-illustration.svg', 'rizsim-student-workspace.css', 'rizsim-experiences.css', 'rizsim-course-authoring.css', 'scripts/test_frontend_v161_illustration.py', 'RIZSIM_DESIGN_CODE.md', '.github/workflows/frontend-v161-integrated-art.yml']
+  push:
+    branches: [main]
+    paths: ['rizsim-learning-space-illustration.svg', 'rizsim-student-workspace.css', 'rizsim-experiences.css', 'rizsim-course-authoring.css', 'scripts/test_frontend_v161_illustration.py', 'RIZSIM_DESIGN_CODE.md', '.github/workflows/frontend-v161-integrated-art.yml']
+permissions:
+  contents: read
+concurrency:
+  group: frontend-v161-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Check transparent asset, scoped styling and unchanged academic contracts
+        run: |
+          python -m py_compile scripts/test_frontend_v161_illustration.py
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          root=ET.parse('rizsim-learning-space-illustration.svg').getroot()
+          rects=root.findall('.//{http://www.w3.org/2000/svg}rect')
+          assert not any(r.get('width')=='1440' and r.get('fill')=='#FFFFFF' for r in rects)
+          for p in ['rizsim-student-workspace.css','rizsim-experiences.css','rizsim-course-authoring.css']:
+              t=Path(p).read_text()
+              assert 'Frontend 1.6.1' in t and 'rizsim-learning-space-illustration.svg' in t
+          print('PASS transparent artboard and scoped design-only additions')
+          PY
+          python scripts/validate_greenwashing_source.py
+          python scripts/validate_big_five_source.py
+          git diff --check
+  mounted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [student, faculty, catalogue]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install Playwright Chromium
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Test actual mounted Student, Faculty and public pages with synthetic adapters
+        env:
+          RIZSIM_V161_SCOPE: ${{ matrix.scope }}
+          RIZSIM_HEADED: '1'
+        run: xvfb-run -a python scripts/test_frontend_v161_illustration.py
+      - name: Save tested SHA
+        if: always()
+        run: |
+          mkdir -p test-results/frontend-v161
+          git rev-parse HEAD > test-results/frontend-v161/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-v161-${{ matrix.scope }}
+          path: test-results/frontend-v161/
+          retention-days: 12
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [source,mounted]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Match all active site assets at rizsim.com against exact commit
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_design_code_v14_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-v161-production
+          path: test-results/design-code-v14-production/
+          retention-days: 12
