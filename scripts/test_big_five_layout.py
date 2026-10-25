@@ -8,7 +8,7 @@ original_shot = suite.shot
 def reviewed_shot(page, label):
     if label.startswith('faculty-'):
         dashboard = page.locator('#rzBigFiveFacultyAnalytics .bf-dashboard')
-        live = page.locator('#rzBigFiveStudentResults .bf-live')
+        live = page.locator('#rzBigFiveStudentResults')
         if dashboard.count() and dashboard.is_visible():
             page.locator('#rzV15insightsMetrics').wait_for(state='attached')
             page.locator('#rzV151PresenterProgress').wait_for(state='attached')
