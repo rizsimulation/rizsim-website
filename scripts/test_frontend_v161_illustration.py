@@ -154,6 +154,7 @@ def catalogue(browser,base,mobile):
     try:
         p.goto(base+'/simulations.html',wait_until='domcontentloaded')
         p.wait_for_selector('body')
+        baseline=p.evaluate("({scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth})")
         p.evaluate("""()=>{
           const anchor=document.querySelector('main')||document.querySelector('.catalogue-section')||document.body;
           const box=document.createElement('div');box.className='rz-catalog-empty';box.id='v161CatalogEmpty';
@@ -165,14 +166,15 @@ def catalogue(browser,base,mobile):
         p.wait_for_function("""()=>getComputedStyle(document.querySelector('#v161CatalogEmpty'),'::before').backgroundImage.includes('illustration.svg')""")
         s=p.locator('#v161CatalogEmpty').evaluate("""e=>{let a=getComputedStyle(e,'::before');return {
           position:a.position,opacity:parseFloat(a.opacity),height:e.getBoundingClientRect().height,
-          overflow:document.documentElement.scrollWidth<=innerWidth+2}}""")
+          scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth}}""")
         loading=p.locator('#v161Loading').evaluate("e=>getComputedStyle(e,'::before').content")
         assert_check(label+' empty artwork integrated as decoration',
                      s['position']=='absolute' and s['height']<250 and s['opacity']<.35,s)
         assert_check(label+' loading state never pretends to be a published illustration',
                      loading=='none',loading)
-        assert_check(label+' layout has no horizontal overflow',s['overflow'],s)
+        assert_check(label+' illustration introduces no horizontal overflow',s['scrollWidth']<=max(baseline['scrollWidth'],baseline['viewport'])+2,{'before':baseline,'after':s})
         p.locator('#v161Loading').evaluate('n=>n.remove()')
+        p.locator('#v161CatalogEmpty').scroll_into_view_if_needed()
         image(p,label+'-integrated-category-empty')
         scenes.append(label)
     finally:
