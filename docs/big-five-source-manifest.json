@@ -1,0 +1,21 @@
+{
+  "student": {
+    "name": "Student Big Five Personality.html",
+    "sha256": "92fe572a8e8dcd27419021b4eb868dd3820e54f2e603930caca8614ff5c92bbf"
+  },
+  "faculty": {
+    "name": "Faculty Big Five Personality.html",
+    "sha256": "dc365a0fb924675541b79589a747deedf50d00b8482af199e6df94fcc9d30f11"
+  },
+  "constants": {
+    "DATA": "b4202bfdc0dc584f948357e16c99bdc0b5f55053fbb35df253a5aca05983de13",
+    "SCORE_KEY": "ffec3a6cc86017540683a7164c1c8c5c433ebfed4981043475b32ae94f7efc40",
+    "REMEDIATION": "502d47cc70f59c090c843d787e60db3fa03dfe31444ce9e4003f9491ce022532",
+    "DIMS": "f6825f5ee07ca659186e6364f148f44321a973eab98015d5aff5ecb1c20281fb"
+  },
+  "faculty_key_sha256": "69bd0eb47fd2829bf0c86ea763d42be8c10cca759437b6f3ad39421a4e3e66f9",
+  "review_items": 10,
+  "lt_pairs": 5,
+  "total_decisions": 30,
+  "semantics": "Concept learning, not a personality inventory. Source questions, keys, feedback, remediation, bibliography, repeated-review order and independent first judgments retained."
+}
