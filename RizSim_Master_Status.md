@@ -1,87 +1,86 @@
 # RizSim Master Status
 
-**Version:** 1.2 - Greenwashing deployment and catalogue publication verified
+**Version:** 1.3 - verified Big Five deployment and requested Course Lead access  
 **As of:** 25 October 2026 (Asia/Karachi)  
-**Scope:** RizSim Frontend + Backend coordination; not a production security or recovery certificate.
+**Scope:** Frontend release and existing account/catalogue operations; not a Backend security or recovery certificate.
 
-GitHub main, merged PRs and verified deployment artifacts are authoritative. Historical conversation handoffs do not override repository evidence or prove that deferred Backend gates have passed.
+GitHub main, merged PRs and verified deployment evidence are authoritative. Historical handoffs do not override current repository evidence. Recheck current main before every new implementation.
 
 ## 1. Latest verified application release
-
-**Greenwashing is deployed as the fourth native simulation**, under the existing Design Code 1.4 and Analytics Dashboard Code 1.0. Both uploaded Student/Faculty dashboards were previewed; redundant standalone UI was removed without changing the 24 source questions, options, keys, explanations or teaching/debrief content.
 
 | Item | Verified state |
 |---|---|
 | Production | https://rizsim.com |
-| Application pull request | [#63](https://github.com/rizsimulation/rizsim-website/pull/63), merged 25 October 2026 |
-| Application release commit | `d6b8facc184651a28927654029f5197233cf7506` |
-| Reviewed head | `afdeea1cec23c553e17fb0316f4292514880750e` |
-| Released application tree | `dc105257cd6db662fba83635658bf5ff1c3a4dfb`, identical to the reviewed and tested PR tree |
-| Final-head application workflows | **32/32 successful** |
-| New mounted acceptance | **88 Student + 79 Faculty checks passed**, 31 screenshot states |
-| Core/source invariants | **42 Greenwashing checks**, 74 Design Code and 36 V15.5 invariants passed |
-| Pages | [Run 40176708612](https://github.com/rizsimulation/rizsim-website/actions/runs/40176708612): build and deployment successful |
-| Production verification | [Run 40176708382](https://github.com/rizsimulation/rizsim-website/actions/runs/40176708382): **105/105 HTTP 200 runtime files with exact SHA-256 equality** |
-| Verification artifact | `greenwashing-production`, ID 12593075999, generated 25 October at 13:29:51 PKT; hashes independently reconciled with reviewed source |
-| Catalogue | `seven-sins-greenwashing`, published **restricted**, Learning category, route `/simulation-greenwashing.html` |
-| Catalogue publication | 25 October 2026 at **14:02:52 PKT**; read-only verification at 14:03:11 PKT |
-| Product / publication event | `fe78d177-08a7-40b1-8529-18f78960b3dc` / `178ee665-82ef-46eb-a98c-0b645e63262e` |
+| Frontend standard | Design Code 1.4 + Analytics Dashboard Code 1.0 |
+| Latest simulation | **Big Five Personality**, fifth native simulation, published restricted |
+| Application PR | [#65](https://github.com/rizsimulation/rizsim-website/pull/65) |
+| Application commit | **`33fddd531220ec943bbc1ec7f264dc050cc35b34`** |
+| Reviewed head | `587e539b7ff27ea46b5ca9906c1c05e033db83fd` |
+| Tested PR merge | `bf5a498dc465b4bf149b75762dcec48a970317f1` |
+| Identical application tree | `2e29d916aed5841e2b3f2258cdae54adb80ab6f2` |
+| Final-head workflows | **33/33 successful** |
+| Big Five mounted acceptance | **117 Student +129 Faculty checks**, 39 states, run40186667242 |
+| Additional regressions | Greenwashing Student/Faculty passed, including96 Faculty checks; all existing simulation/site/course/session/role gates passed |
+| Core/invariants | 36 Big Five;42 Greenwashing;74 Design Code;36 V15.5; source-contract guards passed |
+| Pages | [40187169798](https://github.com/rizsimulation/rizsim-website/actions/runs/40187169798): build/deploy successful |
+| Production verification | [40187170109](https://github.com/rizsimulation/rizsim-website/actions/runs/40187170109), artifact12596329479: **114/114 HTTP200 runtime files, exact SHA-256 equality**, independently matched to reviewed source |
+| Catalogue | `big-five-personality`, `/simulation-big-five.html`, published/restricted in active Learning category; publication/read-back verified25Oct2026 at16:05PKT |
+| Requested account access | Two existing semester licenses and product-scoped submitted-report reads for the verified Course Lead account: Big Five and Greenwashing. Both active and both products published; expiry **18April2027 04:12PKT**, aligned to existing semester access. |
 
-Catalogue publication is not a license grant or public-free access. Existing Faculty/Institution licensing and session rules remain authoritative. A direct runner URL without an authorized attempt/session fails closed. No production learner account or response was used for acceptance testing.
+A subsequent documentation-only main commit may record this evidence without changing application bytes. The application SHA above is not a prediction of that documentation commit. Final follow-up deployment evidence belongs in its associated PR and release packet.
 
-The SHA above identifies the released application. A subsequent documentation-only main commit may record this evidence without changing any runtime bytes. Recheck current main and deployment when resuming work. Detailed evidence, academic-source hashes and limitations are in `docs/greenwashing-integration.md` and `docs/greenwashing-source-manifest.json`.
+## 2. Completed simulation and interface scope
 
-## 2. Completed Frontend scope
+**Big Five:** Both supplied dashboards were previewed. Preserve10 KR decisions,5 source/new-case transfer pairs and10 matched KG decisions, source wording/options/key/rationales/remediation, confidence25/50/75/100, one-time order, committed-answer history, conceptual-review checkpoints and JSON/key-control identities. This is a **concept-learning simulation, not a personality test of the learner**. Remove redundant identity forms, oversized banner/footer and standalone restart. Reuse authenticated identity/ERP/Classroom/Live/Practice, Class Resources, retry/save/resume and confirmed submission.
 
-**Class Resources:** targets the originating same-origin Student Classroom tab when browser policy allows. The simulation stays open with its answers/progress. One compact retry/reopen fallback replaces repeated large notices; recovery does not silently open another Classroom. Actual separate tabs, blocked focus and missing/closed opener scenarios passed.
+Native Presenter and private Live Responses report progress and submitted-only detailed results under existing permissions. Paired KR/KG means, percentage-point change, matched transitions, concept mastery, four transfer pathways, confidence calibration, score-change histogram, paired scatter, item/choice distributions and recorded-section comparisons use explicit denominators. Default projection-safe mode hides scores while learners are working. Source-compatible answer-key release/revocation uses per-attempt files; exporting a file does not remotely notify or unlock a learner. Optional imported archives are separate local review, never live-record writes. Details: `docs/big-five-integration.md`.
 
-**Practice codes:** a complete unknown eight-character code displays `Session not found`, full-field red styling and brief circled-cross feedback. Submitted text, focus and selection persist through asynchronous refresh; editing clears the error. Incomplete, closed, expired, Live-only and authorization cases keep their existing distinct behavior and secure permission checks.
+**Greenwashing:** PR63 introduced10 baseline audit,7 diagnosis and7 transfer cases with preserved keys/explanations/Ladder and teaching note. Native workflow replaces duplicate standalone setup. Detailed analytics remain submitted-only. Source requires successful correction before completion, so final100% is not independent learning proof. This latest release fixes a delayed generic participation-card duplication through narrowly scoped shared CSS and adds delayed-mount regression coverage; its academic assets are unchanged. Details: `docs/greenwashing-integration.md`.
 
-**Prior simulation analytics:** the three previously integrated Presenter Dashboard / Live Responses interfaces retain the shared extension: Insight to Implication, System 1 & System 2, and Hotel Judgment. Paired KR/KG and percentage-point change, matched transitions, transfer paths and choices, participant distributions and session-scoped organization/class comparisons use existing authorized records. Sample sizes, denominators, empty states and small-sample cautions are explicit. Hotel private responses/prices remain sealed until the original authorized release condition permits them. Original reports, presenter controls and live synchronization remain available.
+**Design Code1.4:** Class Resources targets the original same-origin Classroom tab without replacing the running simulation. Browser-policy fallback is compact and explicit. Practice unknown complete codes show `Session not found`, red whole-field styling and a brief circled cross; editing clears the error and text/focus survive refresh. Existing distinct server errors and permissions remain. Insight, Systems and Hotel analytics retain authorized calculations and original detail reports; Hotel responses remain sealed until the existing release condition permits them.
 
-**Greenwashing:** the 10-item baseline audit locks before feedback, followed by seven diagnosis and seven transfer challenges. Existing identity, ERP handoff, Classroom, Live/Practice, save/resume, first-response history, submission and Class Resources are integrated. Native Faculty screens show live roster/progress and submitted-response statistics, with accessible charts, per-item details and recorded section comparisons. Optional JSON review remains local-only and separate from live session data. Student and Faculty print reports are retained.
-
-Permanent standards: `RIZSIM_DESIGN_CODE.md`, `RIZSIM_ANALYTICS_DASHBOARD_CODE.md`. Earlier Design 1.4 release evidence remains in `docs/design-code-v1.4-analytics.md`; Greenwashing evidence is in `docs/greenwashing-integration.md`.
+Permanent standards: `RIZSIM_DESIGN_CODE.md`, `RIZSIM_ANALYTICS_DASHBOARD_CODE.md`, `AGENTS.md`.
 
 ## 3. Workstreams and protected boundaries
 
-Frontend owns presentation, usability, navigation, responsive and accessible interfaces. Backend owns database integrity, authentication, authorization/RLS, privileged functions, payments, recovery and security certification. Cross-workstream changes require an agreed contract and explicit approval before implementation.
+Frontend owns presentation, accessibility, responsive interfaces and learner/faculty navigation. Backend owns schemas, RLS, authentication/authorization mechanisms, server functions, payments, recovery and security certification. Cross-boundary changes require an explicit agreed contract.
 
-Greenwashing adds its own source-preserving simulation engine and UI, plus narrow native hooks. It changes no existing simulation engine or academic asset, schema, RLS, authentication, payment infrastructure or server function. The only production database writes were the specifically requested new catalogue content registration/publication and its journal event; no licenses, entitlements or learner records were changed. No production learner record was accessed or changed. The official logo, splash, sea-glass navigation, teal actions and published resources remain protected. Course Lead remains a premium Faculty tier. No TinyFish was used.
+The user explicitly requested two own-account simulation access grants in this task. Only existing semester-license records and product-scoped `view_submissions` reads were added for that verified Course Lead; no role elevation, all/category permission, management permission or other-account grant. Existing response RLS is product-scoped, not a newly created server-enforced session-only raw-data boundary. The native UI additionally restricts detailed queries to submitted IDs returned by its authorized session roster. Private account identifiers/receipts are kept out of this public repository.
 
-Analytics receive only each native module's existing authorized session result. No broad data query or institution-wide access was added. Comparisons across sessions or institutions need a separately authorized Backend contract.
+No schema, RLS, authentication mechanism, payment infrastructure, privileged server function, existing academic engine or learner record was changed. Only requested catalogue metadata/publication journal and account access records were written. Original branding, splash, sea-glass navigation, teal actions and published resources remain protected. Course Lead is the premium Faculty tier. No TinyFish.
 
-## 4. Backend gate register - not re-certified here
+## 4. Backend gate register - not re-certified
 
-The shared 21 October snapshot recorded Phase 9F Gate 4B and Gate 5 as incomplete. This Frontend task has not rerun them or resolved historic Backend draft PRs.
+The21October snapshot recorded Phase9F Gate4B/Gate5 incomplete. These Frontend releases did not rerun or certify them; historic Backend draft PRs must be inspected independently.
 
-| Gate | Evidence retained / next action |
+| Gate | Retained qualification / next action |
 |---|---|
-| Gate 1 - identity/MFA | Historical staging partial pass; backup-factor recovery and present production safeguards require Backend verification. |
-| Gate 2 - authorization | Historical mixed findings; establish current remediation and rerun negative access tests. Frontend CI does not replace this certification. |
-| Gate 3 - protected resources | Historical staging pass; current security certification remains a Backend responsibility. |
-| Gate 4A - backup integrity | Historical archive/USB integrity checks, not proof of a successful restore. |
-| Gate 4B - recovery rehearsal | No new verified completion. Inspect effective local Docker port bindings before handling confidential restoration; do not assume the historical warning proved public exposure or has been resolved. |
-| Gate 5 - security/release | No new verified completion. Requires independent Backend review of recovery, MFA, permissions, privileged functions, monitoring and approvals. |
+| Gate1 identity/MFA | Historical staging partial pass; verify current safeguards and backup-factor recovery. |
+| Gate2 authorization | Historical mixed findings; establish current remediation and rerun negative-access tests. Frontend CI is not certification. |
+| Gate3 protected resources | Historical staging pass; current security certification remains Backend-owned. |
+| Gate4A backup integrity | Historical archive/USB checks, not proof of restore. |
+| Gate4B recovery rehearsal | No newly verified completion. Inspect effective Docker bindings before confidential restoration; do not assume an old warning proved public exposure or has been resolved. |
+| Gate5 security/release | No newly verified completion. Requires independent review of recovery, MFA, permissions, privileged functions, monitoring and approvals. |
 
-Do not expose keys, MFA seeds, private backups or learner records. Do not run production migrations/restores as a shortcut. Payment expansion and advanced institution management remain separately authorized work, not implied by this Frontend release.
+Do not expose keys, MFA seeds, private backups or learner records. Do not run production migrations/restores as shortcuts. Payment expansion and institution-wide data access remain separately authorized work.
 
 ## 5. Release ledger
 
-| Date (PKT) | Workstream | Change | PR / application commit | Verification | Other-stream impact / remaining |
-|---|---|---|---|---|---|
-| 20 Oct 2026 | Frontend | V15.5.3, historical | #56 / `3492836` | Previously recorded Pages and production checks | Backend gates remained separate |
-| 25 Oct 2026 | Frontend | Fresh Design Code 1.3 baseline | `997c064` | Pages 40118384152; fresh run 40160034789, 21/21 assets | No Backend writes |
-| 25 Oct 2026 | Frontend | Design Code 1.4 / Analytics 1.0 | **#61 / `154e3d1`** | 31 successful PR workflows; 357 new mounted checks; Pages + 96/96 exact production assets | Existing secure contracts preserved; limitations below |
-| 25 Oct 2026 | Frontend record / QA | Design 1.4 final record | #62 / `4d1ccaf` | 14 successful follow-up workflows; final Pages and 96/96 runtime assets verified | Two documentation files and two test-only lines; no runtime change |
-| 25 Oct 2026 | Frontend + catalogue content | Greenwashing native integration | **#63 / `d6b8fac`** | 32 successful PR workflows; 167 new mounted checks; Pages + 105/105 runtime hashes | Restricted publication verified; existing licenses unchanged; no Backend contract change |
+| Date(PKT) | Workstream | Release | PR / application commit | Evidence / impact |
+|---|---|---|---|---|
+|20Oct2026|Frontend|Historical V15.5.3|#56 / `3492836`|Previously recorded production checks; Backend gates separate|
+|25Oct2026|Frontend|Fresh Design1.3 baseline|`997c064`|run40160034789,21 exact assets|
+|25Oct2026|Frontend|Design1.4 / Analytics1.0|#61 / `154e3d1`; record#62 / `4d1ccaf`|31 successful application workflows;357 new mounted checks;96 exact runtime assets|
+|25Oct2026|Frontend|Greenwashing|#63 / `d6b8fac`; record#64 / `bd161b3`|32 workflows;88 Student+79 Faculty;42 core;Pages40176708612;105 exact assets40176708382;restricted catalogue verified|
+|25Oct2026|Frontend + requested existing access records|**Big Five**|**#65 / `33fddd5`**|33 workflows;117 Student+129 Faculty;Pages40187169798;114 exact assets40187170109;restricted publication and both own-account grants verified|
+|25Oct2026|Frontend documentation|Big Five verified release record|`frontend/big-five-release-record`|Two Markdown files only; associated PR records follow-up checks and deployment|
 
-## 6. Remaining limitations and acceptance boundaries
+## 6. Acceptance boundaries and remaining limitations
 
-Browser foreground switching remains controlled by browser policy; an acknowledgement does not prove focus. The compact fallback is intentional. Automated acceptance used headed Chromium with synthetic authorized/denied data at desktop/tablet/mobile sizes, not independent real-account production classroom acceptance or Safari/Firefox certification.
+Automatic tab foreground switching is controlled by browser policy. A ready acknowledgement is not proof of focus; compact recovery is intentional. Browser acceptance used actual mounted interfaces and synthetic authorized/denied adapters in headed Chromium at1366x768,768x1024,390x844; source previews used a headless compositor. This is not independent logged-in production classroom, physical-device or Safari/Firefox acceptance. Source and visual review were assistant-performed, not independent human approval.
 
-Group comparisons are within the currently authorized session. Greenwashing live progress is available before submission, but detailed response analytics use only submitted records allowed by existing RLS. Source-required final mastery is not an independent post-test or durable-learning estimate. Academic-stage/first-response checks are formative client-side rules, not new tamper-proof server grading; stronger summative safeguards or pre-submission answer analytics need separate Backend approval.
+Big Five source decisions and key-file release are formative client behavior, not new tamper-proof summative grading or a server-broadcast key service. Detailed pre-submission answer analytics and authenticated remote answer release require a separately authorized Backend contract. Group comparisons use recorded labels within authorized session data; no unsupported causal or lasting-learning claims.
 
-No licenses were automatically assigned to the new simulation. The existing licensing workflow is required where an account lacks access. The historical Design 1.4 mockup-image limitation remains recorded in its release note; the two supplied Greenwashing HTML dashboards were available, previewed and source-verified. Source and visual review were assistant-performed, not independent human approval.
+Both newly supplied Big Five dashboards and the prior Greenwashing uploads were available and previewed. The unavailable-image qualification from the earlier Design1.4 project applies only to that older mockup/three screenshots, not these uploads.
 
-The repository Master Status is updated here. Updating it does **not** automatically replace the older attachment in the ChatGPT Project sources; the updated downloadable copy must be attached separately. No release permission beyond the explicitly requested work is implied.
+Repository Master Status updates do not automatically replace the older ChatGPT Project attachment. A verified downloadable replacement is supplied with the release evidence package. No authorization beyond the explicitly requested work is implied.
