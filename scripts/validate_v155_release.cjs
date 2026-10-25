@@ -26,7 +26,7 @@ for(const path of ['access-in.html','course-material-viewer.html','resource-view
  }
 }
 ok('Single official RizSim runner logo',runner.includes('RizSim%20finalized%20logo.png')&&runner.includes('header.topbar>.brand')&&runner.includes('.hero .riz-logo-row'));
-ok('No runner-created RizSim tab on resource click',runner.includes('original.RizSimStudentClassroom?.openResources')&&runner.includes('original.focus()')&&!runner.includes("window.open('','_blank')"));
+ok('Original/named tab return; empty tab cleanup; recovery requires explicit action',runner.includes('w.RizSimStudentClassroom.openResources(session)')&&runner.includes('w.focus()')&&runner.includes("w.location.href==='about:blank')w.close()")&&!runner.includes("window.open('','_blank')"));
 ok('Class Resources unseen red count',runner.includes('rz-v155-count')&&runner.includes("resources-count")&&runner.includes("Class Resources"));
 ok('Option selected before async fetch',insight.indexOf("b.classList.toggle('selected'")<insight.indexOf("queuedChoice=C.clone(next)"));
 ok('Insight serializes persistence',insight.includes('choiceSave=choiceSave.catch(()=>{}).then(')&&insight.includes('await flushChoices()'));
@@ -39,7 +39,7 @@ ok('No redundant Student Name and Institution join inputs',!page.includes('id="r
 ok('ERP is checked exclusively on launch',cls.includes('onStart')&&cls.includes('Do not ask again')&&page.includes('Confirm your ERP number in Classroom'));
 ok('ERP only stored with remember consent',cls.includes('if(!stored && remember)await bridge().saveERP(erp,true)'));
 ok('Private ERP via user-owned RLS and no URL',migration.includes('row level security')&&migration.includes('auth.uid()')&&!page.includes('destination.searchParams.set("erp"'));
-ok('Origin tab stays connected',runner.includes('original.focus()')&&runner.includes("kind:'open-resources'")&&!page.includes('popup.opener=null'));
+ok('Origin tab stays connected',runner.includes('w.focus()')&&runner.includes("kind:'open-resources'")&&!page.includes('popup.opener=null'));
 ok('Class materials scoped by session/course',cls.includes('window.RizSimStudentWorkspace?.classroomResources')&&student.includes('joined?.course_id')&&cls.includes("localStorage.setItem(seenStorage(info)"));
 ok('Private resources fetch through existing bridge',cls.includes('bridge().material(m.material_id)')&&page.includes("get_rizsim_course_material_view_context"));
 ok('Secure PDF touchpad pinch + natural wheel',viewer.includes("event.ctrlKey||event.metaKey")&&viewer.includes("passive:false")&&viewer.includes("pinchStart=distance(event.touches)"));

@@ -86,23 +86,30 @@
   return false;
  }
  function toolbarRefresh(){const b=btn('Refresh',()=>refresh(true),'rz-st-button quiet','refresh');b.disabled=!!inFlight;return b;}
+ let practiceInvalid=false,practiceErrorFresh=false;
  function renderPractice(){
   const target=$('rzStudentPractice');if(!target)return;target.replaceChildren();
   const h=heading(target,'PRACTICE','A little practice. A lasting difference.','Practice from classes you have joined. Availability is checked again before you continue.','clock');h.append(toolbarRefresh());
   // Persistent entry form: adding one class never removes the ability to add another.
   const joinForm=el('form','rz-v15-practice-join'),label=el('label','','ADD A PRACTICE CLASS'),input=el('input');
-  input.type='text';input.maxLength=8;input.autocomplete='off';input.placeholder='Enter Faculty code';input.setAttribute('aria-label','Faculty Practice class code');input.value=practiceCode;
-  input.addEventListener('input',()=>{practiceCode=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);input.value=practiceCode;});
+  input.id='rzPracticeCode';label.htmlFor=input.id;input.type='text';input.maxLength=8;input.autocomplete='off';input.placeholder='Enter Faculty code';input.setAttribute('aria-label','Faculty Practice class code');input.value=practiceCode;input.readOnly=practiceJoinBusy;input.setAttribute('aria-describedby','rzPracticeCodeMessage');input.setAttribute('aria-invalid',String(practiceInvalid));
+  input.addEventListener('input',()=>{practiceCode=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);input.value=practiceCode;if(practiceInvalid){practiceInvalid=false;practiceMessage='';practiceErrorFresh=false;input.setAttribute('aria-invalid','false');note.replaceChildren();note.className='rz-v15-practice-message';note.setAttribute('role','status');}});
   const join=btn(practiceJoinBusy?'Joining…':'Add Practice',null,'rz-st-button secondary','join');join.type='submit';join.disabled=practiceJoinBusy;
-  const note=el('p','rz-v15-practice-message',practiceMessage);note.setAttribute('role','status');
+  const note=el('p','rz-v15-practice-message',practiceMessage);note.id='rzPracticeCodeMessage';note.setAttribute('role','status');
+  if(practiceInvalid){window.RizSimUI?.feedback(note,practiceMessage,'error');if(!practiceErrorFresh)note.classList.add('rz-practice-error-settled');}
   joinForm.append(label,input,join,note);
   joinForm.addEventListener('submit',async e=>{
-    e.preventDefault();if(practiceJoinBusy)return;practiceJoinBusy=true;practiceMessage='Verifying your class…';renderPractice();
+    e.preventDefault();if(practiceJoinBusy)return;practiceJoinBusy=true;practiceInvalid=false;practiceMessage='Verifying your class…';renderPractice();
     try{const result=await bridge().joinPracticeCode(practiceCode);
       if(!result?.attempt_id)throw Error('This Practice assignment was not verified.');
       practiceCode='';practiceMessage='Practice added. Enter another code whenever you like.';await refresh(true);
-    }catch(err){practiceMessage=err?.message||'This code could not be joined. Please retry.';}
-    finally{practiceJoinBusy=false;renderPractice();}
+    }catch(err){
+      const raw=err?.message||'This code could not be joined. Please retry.';
+      practiceMessage=practiceCode.length===8&&/^(Classroom session not found\.|This Faculty class code was not found\.( Check the code and try again\.)?)$/i.test(raw)?'Session not found':raw;
+      practiceInvalid=true;practiceErrorFresh=true;
+    }
+    finally{practiceJoinBusy=false;renderPractice();if(practiceInvalid){const field=$('rzPracticeCode');field?.focus({preventScroll:true});field?.scrollIntoView({block:'nearest'});practiceErrorFresh=false;}}
+
   });
   target.append(joinForm);
   if(stateGate(target))return;
@@ -352,7 +359,7 @@
   finally{if(myEpoch===epoch){inFlight=null;render();if(refreshQueued){refreshQueued=false;queueMicrotask(()=>refresh(true));}}}})();
   render();return inFlight;
  }
- function clear(){epoch++;refreshQueued=false;identity='';data=null;inFlight=null;error='';lastFetched=0;baseServer=0;baseMonotonic=0;historySearch='';historyFilter='all';lastPhase='';actionBusy=false;practiceCode='';practiceMessage='';practiceJoinBusy=false;
+ function clear(){epoch++;refreshQueued=false;identity='';data=null;inFlight=null;error='';lastFetched=0;baseServer=0;baseMonotonic=0;historySearch='';historyFilter='all';lastPhase='';actionBusy=false;practiceCode='';practiceMessage='';practiceInvalid=false;practiceErrorFresh=false;practiceJoinBusy=false;
   document.querySelectorAll('.rz-st-dialog[open]').forEach(n=>n.close());
   for(const id of ['rzStudentPractice','rzStudentHistory','rzStudentSimulationLibrary','rzStudentLibraryMaterials','rzStudentPlayerMaterials'])$(id)?.replaceChildren();
  }

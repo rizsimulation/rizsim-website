@@ -40,3 +40,7 @@ data and security invariants. At release record workstream, PR, exact deployed
 SHA, test evidence, limitations, other-stream impact and remaining items. Keep
 shared Master Status current after verification; project-source files are
 snapshots, not automatically synchronized.
+
+### Analytics and learner UI extension
+
+Read `RIZSIM_ANALYTICS_DASHBOARD_CODE.md` before changing Presenter or Live Responses screens. Preserve its session-scoped data contracts, paired denominators, Hotel sealing, chart scales and accessible empty states. Read `RizSim_Master_Status.md` for evidence, then recheck current main. Design Code 1.4 source exceptions are narrow UI-only insertions; do not relax academic, authorization or backend preservation tests.

@@ -6606,6 +6606,7 @@ connected to a launch URL in RizSim.
 // Every hosted runner rechecks the signed-in Student and saved attempt.
 function handoffIdentityToTab(tab,attemptId,sessionId){
  if(!tab||tab.closed||!currentUser?.id)return;
+ window.RizSimStudentClassroom?.prepareRunner?.(tab,sessionId);
  try{
   const name=String(currentProfile?.display_name||currentUser.user_metadata?.full_name||'RizSim Learner').trim();
   const institution=String(resolvedSession?.institution_name||'RizSim classroom').trim();

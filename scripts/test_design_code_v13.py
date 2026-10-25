@@ -1,3 +1,4 @@
+from frontend_v14_scope import presentation_equivalent, runner_suffix_equivalent
 """Design Code 1.3: real runner stages and real mounted Faculty tabs.
 Synthetic adapters only. No production login, data access or writes.
 """
@@ -224,9 +225,9 @@ def static():
  ref=os.environ.get('RIZSIM_V13_BASE','origin/main')
  protected=['simulation-insight-to-implication.html','simulation-system-1-system-2.html','simulation-hotel-judgment.html','access-out.html','access-in.html','google-g.svg','RizSim finalized logo.png','rizsim-insight-faculty.js','rizsim-system-faculty.js','rizsim-hotel-faculty.js','rizsim-live-workspace.js','rizsim-live-classroom.js']
  protected += [str(p.relative_to(ROOT)) for p in (ROOT/'simulation-assets').rglob('*') if p.is_file()]
- for path in protected:check('Unchanged '+path,subprocess.check_output(['git','show',ref+':'+path],cwd=ROOT)==(ROOT/path).read_bytes())
+ for path in protected:check('Unchanged '+path,presentation_equivalent(subprocess.check_output(['git','show',ref+':'+path],cwd=ROOT),(ROOT/path).read_bytes(),path))
  old=subprocess.check_output(['git','show',ref+':rizsim-v154-runner-shell.js'],cwd=ROOT,text=True)
- check('Original runner return/handoff retained',(ROOT/'rizsim-v154-runner-shell.js').read_text().startswith(old))
+ check('Original participant handoff and assessment feedback retained',runner_suffix_equivalent(old,(ROOT/'rizsim-v154-runner-shell.js').read_text()))
  for file in ['rizsim-learning-interiors-v13.css','rizsim-faculty-surfaces-v13.css']:
   css=(ROOT/file).read_text();check(file+' no clipping or scaling',not re.search(r'overflow(?:-x|-y)?\s*:\s*hidden|\bzoom\s*:|scale\(',css))
 

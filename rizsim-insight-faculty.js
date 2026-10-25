@@ -478,6 +478,7 @@
     if(studentHost)studentHost.append(named('h2','','Insight to Implication · Live Responses'),activity);
     else wrap.append(activity);
     host.append(wrap,named('p','rz-i01-note','Source: committed responses saved in the current authorized RizSim classroom. No sample records or unpublished cohort statistics are displayed. Last refreshed: '+(fetchedAt?date(fetchedAt):'not yet loaded')+'.'));
+    root.RizSimAnalytics?.upgrade('insight',host,studentHost,{sessionId,rows,core:C});
   }
   root.RizSimInsightFaculty=Object.freeze({draw,refresh:()=>refresh(true),
     state:()=>({sessionId,joined:rows.length,records:valid().length,error,loading})});

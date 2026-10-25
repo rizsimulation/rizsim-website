@@ -386,6 +386,7 @@
    else main.append(recordSection);
    items(main);groups(main);
    host.append(main,elem('p','rz-s02-footer','All scores computed by restricted RizSim server functions from actual locked Student choices. No public answer keys or sample class records. Last updated: '+(loadedAt?new Date(loadedAt).toLocaleString():'waiting')));
+   root.RizSimAnalytics?.upgrade('systems',host,studentHost,{sessionId,rows});
  }
  root.RizSimSystemFaculty=Object.freeze({draw,refresh:()=>refresh(true),
    state:()=>({sessionId,students:rows.length,graded:fullRows().length,

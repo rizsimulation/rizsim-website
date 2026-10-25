@@ -5,6 +5,13 @@
  const E=(tag,cls,copy)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(copy!==undefined)x.textContent=String(copy??'');return x};
  const id=v=>String(v||''),safeERP=v=>/^[A-Za-z0-9][A-Za-z0-9._/-]{1,39}$/.test(String(v||'').trim());
  let lastLiveSignature='',mode='join',lastRoom='',lastSignature='',ready=false,launching=false,currentUser='',channel=null,erpPreference=null,erpUser='',lastCount=-1,statusError='',resourceRefreshBusy=null;
+ // Stable first-party tab identity. It never grants access or contains learner data.
+ const tabName=/^rz-classroom-[a-z0-9-]{8,80}$/i.test(window.name)?window.name:'rz-classroom-'+crypto.randomUUID();
+ window.name=tabName;
+ function prepareRunner(tab,session){
+  if(!tab||tab.closed)return;
+  try{tab.sessionStorage.setItem('rizsim:classroom-return',JSON.stringify({name:tabName,session:String(session)}));}catch(_){}
+ }
  const element=id=>$(id);
  const snap=()=>bridge()?.snapshot?.()||null;
  function initialize(){
@@ -99,10 +106,12 @@
   channel?.close();channel=null;lastRoom=room;lastCount=-1;
   if(room&&typeof BroadcastChannel==='function'){
    try{channel=new BroadcastChannel('rizsim:classroom:'+room);channel.onmessage=e=>{
+    const m=e.data;if(m?.session&&String(m.session)!==room)return;
+    if(m?.target&&m.target!==tabName)return;
     if(e.data?.kind==='resources-request'){void refreshResources().then(()=>broadcastCount(true));}
     if(e.data?.kind==='open-resources'){
      const done=openResources(room);
-     try{channel?.postMessage({kind:'resources-return-ack',session:room,accepted:done});}catch(_){}
+     try{channel?.postMessage({kind:'resources-return-ack',session:room,tabName,request:e.data.request,accepted:done});}catch(_){}
     }
    }}catch(_){}
   }
@@ -111,7 +120,7 @@
   const info=sourceInfo();if(!info||!channel)return;
   const count=unreadCount(info);
   if(!force&&count===lastCount)return;
-  lastCount=count;try{channel.postMessage({kind:'resources-count',session:id(info.room.session_id),count});}catch(_){}
+  lastCount=count;try{channel.postMessage({kind:'resources-count',session:id(info.room.session_id),tabName,count});}catch(_){}
  }
  async function refreshResources(){const info=sourceInfo();if(!info||mode!=='classroom'||!$('view-player')?.classList.contains('active'))return;
   if(resourceRefreshBusy)return resourceRefreshBusy;
@@ -240,6 +249,6 @@
   mode='join';lastSignature='';lastLiveSignature='';currentUser='';lastRoom='';lastCount=-1;erpPreference=null;erpUser='';statusError='';channel?.close();channel=null;
   $('view-player')?.classList.remove('rz-c155-classroom');$('rzC155Classroom')?.replaceChildren();
  }
- window.RizSimStudentClassroom=Object.freeze({openResources,render,unread:()=>{const i=sourceInfo();return i?unreadCount(i):0;}});
+ window.RizSimStudentClassroom=Object.freeze({openResources,prepareRunner,tabName,render,unread:()=>{const i=sourceInfo();return i?unreadCount(i):0;}});
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});else initialize();
 })();

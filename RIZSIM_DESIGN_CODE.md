@@ -345,3 +345,15 @@ Never use TinyFish. Consult this file before future UI changes.
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-10-24 | Initial approved Design Code; shared foundation and role-specific adoption. Actual acceptance evidence is recorded with the release, not assumed by this document. |
+
+## Design Code 1.4 - learner return, code errors and analytical surfaces
+
+The 25 October 2026 Frontend extension is defined by `RIZSIM_ANALYTICS_DASHBOARD_CODE.md` and `docs/design-code-v1.4-analytics.md`. Existing primitive API and `data-rz-design-code="1.0"` opt-in remain compatible; the extension does not rename or remove them.
+
+Original-tab return must preserve the simulation and saved choices. Request focus synchronously from a learner action, target only the original same-origin Classroom, and treat browser focus as best-effort. Use one compact inline status with an explicit retry/reopen action. Do not automatically open another Classroom or claim a messaging acknowledgement proves foreground focus.
+
+A complete unrecognized eight-character Practice code uses exactly **Session not found**, the whole input in red, the shared brief circled-cross animation, retained input text and restored keyboard focus. Editing clears the error. Incomplete codes, closed/scheduled sessions, expired/revoked access, Live-only sessions and authorization failures retain their distinct existing meanings. Never change permission checks to simplify an error screen.
+
+Analytics Dashboard Code 1.0 applies to every currently integrated simulation Presenter Dashboard and Live Responses interface. Prioritize live participation and presenter decisions, paired learning change, supported transfer pathways and honest denominators. Deeper distributions, comparisons and existing native detail reports follow below. No fabricated example values, private keys, new backend queries or unsupported causal claims are allowed. Empty and small-sample states are part of the design, not a reason to insert mock data.
+
+Release completion requires actual mounted-interface regression tests, source review, a scoped PR, main reconciliation and exact production-asset verification. See the Master Status and release evidence for the tested state; documentation alone is not deployment proof.
