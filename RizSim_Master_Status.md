@@ -1,12 +1,27 @@
 # RizSim Master Status
 
-**Version:** 1.5 - verified Frontend 1.6.1 integrated learning illustration  
+**Version:** 1.6 - verified Course Lead glow restoration  
 **As of:** 25 October 2026 (Asia/Karachi)  
 **Scope:** Frontend release and existing account/catalogue operations; not a Backend security or recovery certificate.
 
 GitHub main, merged PRs and verified deployment evidence are authoritative. Historical handoffs do not override current repository evidence. Recheck current main before every new implementation.
 
-## 0. Latest verified Frontend 1.6.1 integrated-artwork correction
+## 0. Latest verified Course Lead animated glow restoration
+
+| Item | Verified evidence |
+|---|---|
+| Workstream | Frontend CSS appearance only |
+| User request | Restore the original animated glow upgrade button |
+| Root cause | Higher-specificity `rizsim-design-code-v12.css` override had set `animation:none` and hidden the button shine |
+| Reviewed application PR | [#72](https://github.com/rizsimulation/rizsim-website/pull/72), final PR head `ef431e651a593327ee9c720abd8022a3731e55b6` |
+| Merged/deployed application commit | `a30df5c8b41e1c6b4645fe3d20381626be99eb7b` |
+| PR tests | **21/21 successful workflows**, including rerun of an infrastructure-cancelled browser job; dedicated synthetic mounted desktop/mobile Faculty glow, shine and reduced-motion check passed |
+| GitHub Pages | [40214993243](https://github.com/rizsimulation/rizsim-website/actions/runs/40214993243): successful deployment |
+| Production asset verification | [40214993395](https://github.com/rizsimulation/rizsim-website/actions/runs/40214993395): **115/115 exact runtime hashes on attempt 1** |
+
+Only the original Faculty Course Lead upgrade CTA's approved glowing animated gradient and sweeping shine are restored. Its action/authorization, upgrade availability, existing brand, logo, payment access, Supabase and other button designs remain unchanged. `prefers-reduced-motion: reduce` disables animation. Original source markup and launch action were not edited. QA used mounted Chromium with synthetic Faculty adapters, not independent live-account Safari/Firefox certification.
+
+## 0A. Prior verified Frontend 1.6.1 integrated-artwork correction
 
 | Item | Verified evidence |
 |---|---|
@@ -109,6 +124,7 @@ Do not expose keys, MFA seeds, private backups or learner records. Do not run pr
 |25Oct2026|Frontend documentation|Big Five verified release record|`frontend/big-five-release-record`|Two Markdown files only; associated PR records follow-up checks and deployment|
 |25Oct2026|Frontend|**Design Code 1.6 (UI/empty states)**|**#67 / `b924852`**|Source/visual checks 40196475993; Pages 40196917425; production hashes 40196917666; Backend unaffected|
 |25Oct2026|Frontend|**Design Code 1.6.1 (integrated transparent illustration)**|**#69 / `065d13b`**|23/23 PR workflows, 39/39 dedicated visual assertions across 8 scenes; Pages 40208953245; 115/115 exact live assets 40208953319; no Backend impact|
+|25Oct2026|Frontend|**Course Lead animated glow restored**|**#72 / `a30df5c`**|21/21 final PR workflows; mounted desktop/mobile plus reduced-motion; Pages 40214993243; 115/115 runtime files exact 40214993395; CSS only|
 
 ## 6. Acceptance boundaries and remaining limitations
 
