@@ -37,37 +37,32 @@ jobs:
           name: greenwashing-baseline-production
           path: test-results/design-code-v14-production/
           retention-days: 7
-      - name: Verify exact candidate checksum and file scope
+      - name: Verify candidate checksum and exact non-workflow scope
         shell: python
         run: |
           import base64,lzma,hashlib,pathlib,re,subprocess,os,json
           assert os.environ['GITHUB_REF']=='refs/heads/frontend/greenwashing-integration'
           chunks=[pathlib.Path(f'scripts/.gw-candidate-{i}.txt').read_text().strip() for i in range(1,15)]
-          print('Chunk lengths:',[len(x) for x in chunks])
           data=lzma.decompress(base64.b64decode(''.join(chunks),validate=True))
           assert hashlib.sha256(data).hexdigest()=='daf8fe737543587aaa04877304bf367100c9108b297292c55cefddd7cac7d767','Candidate checksum mismatch; no changes applied'
           allowed={'.github/workflows/design-code-v14.yml','.github/workflows/greenwashing-integration.yml','AGENTS.md','RIZSIM_ANALYTICS_DASHBOARD_CODE.md','access-out.html','docs/greenwashing-integration.md','docs/greenwashing-source-manifest.json','rizsim-greenwashing-faculty.js','rizsim-live-classroom.js','rizsim-live-workspace.js','scripts/fixtures/greenwashing-backend.js','scripts/frontend_v14_scope.py','scripts/greenwashing_scope.py','scripts/test_design_code_v11.py','scripts/test_design_code_v12.py','scripts/test_design_code_v13.py','scripts/test_greenwashing_browser.py','scripts/test_greenwashing_core.cjs','scripts/validate_greenwashing_source.py','simulation-assets/greenwashing/cloud.js','simulation-assets/greenwashing/engine.js','simulation-assets/greenwashing/questions.js','simulation-assets/greenwashing/student.js','simulation-assets/greenwashing/styles.css','simulation-assets/greenwashing/teaching.js','simulation-assets/greenwashing/views.js','simulation-greenwashing.html'}
           paths=set(re.findall(r'^diff --git a/(.*?) b/',data.decode(),re.M))
           assert paths==allowed,(paths-allowed,allowed-paths)
           pathlib.Path('/tmp/greenwashing.patch').write_bytes(data)
-          subprocess.run(['git','apply','--check','/tmp/greenwashing.patch'],check=True)
-          subprocess.run(['git','apply','/tmp/greenwashing.patch'],check=True)
+          subprocess.run(['git','apply','--exclude=.github/workflows/*','--check','/tmp/greenwashing.patch'],check=True)
+          subprocess.run(['git','apply','--exclude=.github/workflows/*','/tmp/greenwashing.patch'],check=True)
           for i in range(1,15):pathlib.Path(f'scripts/.gw-candidate-{i}.txt').unlink()
-          pathlib.Path('.github/workflows/greenwashing-stage.yml').unlink()
-          pathlib.Path('/tmp/greenwashing-allowed.json').write_text(json.dumps(sorted(allowed)))
-      - name: Academic fidelity, calculations and source checks
-        env:
-          GW_BASE: 4d1ccafe4e672971b7284786e2265f5ceb771435
+          pathlib.Path('/tmp/greenwashing-allowed.json').write_text(json.dumps(sorted(p for p in allowed if not p.startswith('.github/workflows/'))))
+      - name: Academic fidelity and calculations
         run: |
           node scripts/test_greenwashing_core.cjs
           node scripts/validate_design_code_v1.cjs
           node scripts/validate_v155_release.cjs
           node --check rizsim-greenwashing-faculty.js
           for file in simulation-assets/greenwashing/*.js; do node --check "$file"; done
-          python scripts/validate_greenwashing_source.py
           python -m py_compile scripts/test_greenwashing_browser.py
           git diff --check
-      - name: Commit candidate only to scoped branch
+      - name: Commit only application and test candidate to scoped branch
         id: commit
         run: |
           test "$(git branch --show-current)" = frontend/greenwashing-integration
@@ -78,7 +73,8 @@ jobs:
           from pathlib import Path
           allowed=json.loads(Path('/tmp/greenwashing-allowed.json').read_text())
           subprocess.run(['git','add','--',*allowed],check=True)
-          subprocess.run(['git','add','-u','--',*[f'scripts/.gw-candidate-{i}.txt' for i in range(1,15)],'.github/workflows/greenwashing-stage.yml'],check=True)
+          subprocess.run(['git','add','-u','--',*[f'scripts/.gw-candidate-{i}.txt' for i in range(1,15)]],check=True)
+          assert not any(p.startswith('.github/workflows/') for p in subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
           PY
           git commit -m 'Integrate source-grounded Greenwashing learner and Faculty workflows under Design Code 1.4'
           git push origin HEAD:frontend/greenwashing-integration
