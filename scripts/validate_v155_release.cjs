@@ -26,7 +26,7 @@ for(const path of ['access-in.html','course-material-viewer.html','resource-view
  }
 }
 ok('Single official RizSim runner logo',runner.includes('RizSim%20finalized%20logo.png')&&runner.includes('header.topbar>.brand')&&runner.includes('.hero .riz-logo-row'));
-ok('Original/named tab return; empty tab cleanup; recovery requires explicit action',runner.includes('w.RizSimStudentClassroom.openResources(session)')&&runner.includes('w.focus()')&&runner.includes("w.location.href==='about:blank')w.close()")&&!runner.includes("window.open('','_blank')"));
+ok('Original/named tab return; empty tab cleanup; recovery requires explicit action',runner.includes('w.RizSimStudentClassroom.openResources(session)')&&runner.includes('w.focus()')&&runner.includes("w.location.href==='about:blank'){w.close();originalLookupMissing=true;}")&&!runner.includes("window.open('','_blank')"));
 ok('Class Resources unseen red count',runner.includes('rz-v155-count')&&runner.includes("resources-count")&&runner.includes("Class Resources"));
 ok('Option selected before async fetch',insight.indexOf("b.classList.toggle('selected'")<insight.indexOf("queuedChoice=C.clone(next)"));
 ok('Insight serializes persistence',insight.includes('choiceSave=choiceSave.catch(()=>{}).then(')&&insight.includes('await flushChoices()'));
