@@ -202,3 +202,20 @@ body:has(.rz-v15-manager:not([hidden]).is-minimized) #authenticatedApp{padding-b
 .rz-i01-learning-shift>.rz-i01-shift-caveat{margin:12px 0 0!important;font-size:10.5px;color:#566b74}
 @media(max-width:850px){.rz-i01-shift-kpis,.rz-i01-shift-paths{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:430px){.rz-i01-learning-shift{padding:11px}.rz-i01-shift-kpis,.rz-i01-shift-paths{gap:6px}.rz-i01-shift-metric,.rz-i01-shift-path{padding:8px}.rz-i01-shift-metric>strong{font-size:19px}}
+
+/* RizSim Frontend 1.6 - presentation-only refinement */
+
+.rz-v15-choice{width:min(440px,calc(100vw - 26px));padding:22px 24px;background:linear-gradient(150deg,#fff,#f3faf8 64%,#f6f3fc);border-color:#bddad6}
+.rz-v15-choice h2{font-size:20px;letter-spacing:-.025em}.rz-v15-choice>p{margin-bottom:17px}
+.rz-v15-choices{gap:12px}.rz-v15-choice-option{min-height:100px;padding:15px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;line-height:1.3;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.rz-v15-choice-option.is-live{background:linear-gradient(142deg,#0d7a81,#115f73);border:1px solid #106773;color:#fff;box-shadow:0 8px 19px #0d62741e}
+.rz-v15-choice-option.is-practice{background:linear-gradient(140deg,#eeeaf9,#f4f0fc);border:1px solid #beb1db;color:#4d3c75;box-shadow:0 7px 17px #54418112}
+.rz-v15-choice-option .rz-v16-session-icon{display:block;width:31px;height:31px;flex:none}
+.rz-v15-choice-option .rz-v16-session-label{font-size:14px;font-weight:800;letter-spacing:-.01em}
+.rz-v15-choice-option:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 24px #183c4a25}
+.rz-v15-choice-option:focus-visible{outline:3px solid #cb9e50;outline-offset:3px}
+.rz-v15-manager-qr{background:linear-gradient(145deg,#fff,#f4faf8);border-color:#c8e1db}
+.rz-v15-manager-share .rz-v15-share-line:first-child{background:#eaf7f3;border-color:#c6e3d9}
+.rz-v15-manager-share .rz-v15-share-line:last-child{background:#f3f0fa;border-color:#ded5ee}
+@media(max-width:410px){.rz-v15-choice{padding:17px}.rz-v15-choice-option{min-height:91px}.rz-v15-choices{gap:9px}}
+@media(prefers-reduced-motion:reduce){.rz-v15-choice-option{transition:none}.rz-v15-choice-option:hover:not(:disabled){transform:none}}

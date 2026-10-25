@@ -71,8 +71,20 @@
    }catch(e){feedback.textContent=e?.message||'This session could not be created. Please retry.';options.querySelectorAll('button').forEach(b=>b.disabled=false);}
    finally{changing=false;}
   }
-  options.append(action('◉  Live Class',()=>start('live'),'rz-v15-choice-option is-live'),
-                 action('◇  Practice',()=>start('practice'),'rz-v15-choice-option is-practice'));
+  // Real, consistent line icons replace the temporary Unicode symbols.
+  function sessionIcon(kind){
+   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+   svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.8');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');svg.classList.add('rz-v16-session-icon');
+   const shapes=kind==='live'?
+    ['<rect x="3" y="5" width="18" height="13" rx="3"/>','<path d="M8 21h8M12 18v3M9.5 9l5 3-5 3z"/>']:
+    ['<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>','<path d="M14 3v6h6M8 13h4M8 17h4M15 16l3-3 2 2-3 3-2 1z"/>'];
+   svg.innerHTML=shapes.join('');return svg;
+  }
+  for(const [kind,label] of [['live','Live Session'],['practice','Practice Session']]){
+   const choice=action('',()=>start(kind),'rz-v15-choice-option is-'+kind);
+   choice.append(sessionIcon(kind),node('span','rz-v16-session-label',label));
+   choice.setAttribute('aria-label',label);options.append(choice);
+  }
   modal.append(head,title,p,options,feedback);document.body.append(modal);
   const thisModal=modal;modal.addEventListener('close',()=>{thisModal.remove();if(modal===thisModal)modal=null;},{once:true});
   modal.showModal();modal.querySelector('.is-live')?.focus({preventScroll:true});

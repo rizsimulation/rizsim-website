@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="650" viewBox="0 45 1440 605" role="img" aria-labelledby="title desc">
+<title id="title">A growing collection of learning experiences</title>
+<desc id="desc">An open learning book at the heart of a soft sea-glass learning workspace, with reading, simulation, and insight cards gently orbiting it.</desc>
+<defs>
+  <linearGradient id="sea" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#CDEFE9"/><stop offset="1" stop-color="#E9F5FC"/></linearGradient>
+  <linearGradient id="surface" x1="0" x2="0.6" y1="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#F5FAFA"/></linearGradient>
+  <linearGradient id="deep" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#143C5E"/><stop offset="1" stop-color="#0B7B83"/></linearGradient>
+  <linearGradient id="read" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#F7F5FF"/><stop offset="1" stop-color="#EAE7F8"/></linearGradient>
+  <linearGradient id="try" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#F0FBF7"/><stop offset="1" stop-color="#D9F3EA"/></linearGradient>
+  <linearGradient id="pageL" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#E8F2F5"/></linearGradient>
+  <linearGradient id="pageR" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#F3FCF9"/><stop offset="1" stop-color="#C9EDE2"/></linearGradient>
+  <filter id="shadow" x="-40%" y="-45%" width="190%" height="220%"><feDropShadow dx="0" dy="13" stdDeviation="19" flood-color="#244E65" flood-opacity="0.12"/></filter>
+  <filter id="subshadow" x="-40%" y="-40%" width="190%" height="200%"><feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#174F5A" flood-opacity="0.10"/></filter>
+  <filter id="bookshadow" x="-50%" y="-60%" width="200%" height="200%"><feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#15464D" flood-opacity="0.12"/></filter>
+  <style><![CDATA[
+   .float-left{animation:gentle1 6s ease-in-out infinite}.float-right{animation:gentle2 6.5s ease-in-out infinite}.float-top{animation:gentle3 7s ease-in-out infinite}.twinkle{animation:glow 4s ease-in-out infinite;transform-origin:center}
+   @keyframes gentle1{0%,100%{transform:translateY(0px)}50%{transform:translateY(-7px)}}
+   @keyframes gentle2{0%,100%{transform:translateY(0px)}50%{transform:translateY(6px)}}
+   @keyframes gentle3{0%,100%{transform:translateY(0px)}50%{transform:translateY(-6px)}}
+   @keyframes glow{0%,100%{opacity:.75}50%{opacity:1}}
+   @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+  ]]></style>
+</defs>
+<rect x="0" y="45" width="1440" height="605" fill="#FFFFFF"/>
+<!-- A generous atmospheric shape: no decorative paint splat, only quiet soft geometry. -->
+<ellipse cx="719" cy="356" rx="525" ry="278" fill="#EBF8F6"/>
+<ellipse cx="722" cy="342" rx="416" ry="224" fill="#F6FCFB"/>
+<ellipse cx="1055" cy="215" rx="169" ry="127" fill="#F1EEFA" opacity="0.92"/>
+<ellipse cx="371" cy="425" rx="144" ry="115" fill="#EDF4FC" opacity="0.9"/>
+<path d="M327 380 C452 176 937 92 1122 328" fill="none" stroke="#C9DFDF" stroke-width="2" stroke-dasharray="4 13" stroke-linecap="round" opacity=".8"/>
+<path d="M344 451 C506 601 981 624 1115 404" fill="none" stroke="#C9DFDF" stroke-width="2" stroke-dasharray="4 14" stroke-linecap="round" opacity=".7"/>
+<!-- A subtle perspective ground that makes the elements feel like a cohesive set. -->
+<ellipse cx="719" cy="586" rx="360" ry="24" fill="#C8DEDB" opacity=".34"/>
+<!-- Central learning workspace: a single main plane. -->
+<g filter="url(#shadow)">
+ <rect x="452" y="134" width="536" height="421" rx="30" fill="url(#surface)" stroke="#CFE2E3" stroke-width="2"/>
+ <path d="M481 134 H958 Q988 134 988 164 V202 H452 V164 Q452 134 481 134Z" fill="#EFF9F7"/>
+ <path d="M452 202H988" stroke="#D2E7E4" stroke-width="2"/>
+ <circle cx="486" cy="170" r="7" fill="#ADDAD3"/><circle cx="509" cy="170" r="7" fill="#D0CFEC"/><circle cx="532" cy="170" r="7" fill="#E8D7AF"/>
+ <rect x="611" y="158" width="218" height="24" rx="12" fill="#FFFFFF" stroke="#DEEDEB"/>
+ <rect x="649" y="167" width="112" height="6" rx="3" fill="#C7E0DF"/>
+ <rect x="772" y="167" width="24" height="6" rx="3" fill="#E5EEF1"/>
+</g>
+<!-- A bright insight motif: not a logo; a new idea arising from a shared book. -->
+<g class="twinkle"><circle cx="720" cy="280" r="47" fill="#E7F7F1" opacity="0.88"/>
+ <path d="M720 236v14M720 310v14M675 280h14M751 280h14M688 248l10 10M742 302l10 10M752 248l-10 10M698 302l-10 10" fill="none" stroke="#3FAE9F" stroke-width="3.8" stroke-linecap="round" opacity=".85"/>
+ <path d="M720 258C706 258 700 266 700 278C700 288 711 292 713 302H727C729 292 740 288 740 278C740 266 732 258 720 258Z" fill="#F5FCF9" stroke="#178D86" stroke-width="3"/>
+ <path d="M715 307H725M716 314H724" fill="none" stroke="#178D86" stroke-width="3" stroke-linecap="round"/>
+</g>
+<!-- open reading book, the emotional focal object -->
+<g filter="url(#bookshadow)">
+ <path d="M720 466C657 437 612 440 563 453L563 335C625 315 669 326 720 352Z" fill="url(#pageL)" stroke="#76AEB0" stroke-width="2.5" stroke-linejoin="round"/>
+ <path d="M720 466C782 436 833 440 881 453L881 335C818 315 771 326 720 352Z" fill="url(#pageR)" stroke="#76AEB0" stroke-width="2.5" stroke-linejoin="round"/>
+ <path d="M720 355V466" fill="none" stroke="#1C7E85" stroke-width="3.5"/>
+ <path d="M582 351C636 337 669 344 704 362M582 376C636 362 669 369 704 386M582 401C636 387 669 394 704 412" fill="none" stroke="#A6C9D0" stroke-width="5" stroke-linecap="round"/>
+ <path d="M737 362C777 342 816 339 860 351M737 387C777 367 816 364 860 376M737 412C777 392 816 389 860 401" fill="none" stroke="#A3D6C9" stroke-width="5" stroke-linecap="round"/>
+ <path d="M555 462C612 451 662 452 718 480C770 452 821 451 889 462" fill="none" stroke="#1D6E7C" stroke-width="6" stroke-linecap="round"/>
+</g>
+<!-- subtle bottom portal accents -->
+<rect x="638" y="509" width="45" height="6" rx="3" fill="#B9D9D5"/><rect x="691" y="509" width="75" height="6" rx="3" fill="#167F82"/><rect x="774" y="509" width="35" height="6" rx="3" fill="#C4DAE6"/>
+<!-- Left reading module (light violet), overlay is intentionally restrained. -->
+<g class="float-left">
+ <g transform="rotate(-7 354 356)" filter="url(#subshadow)">
+  <rect x="248" y="285" width="207" height="177" rx="22" fill="url(#read)" stroke="#D7D0F1" stroke-width="2"/>
+  <circle cx="298" cy="335" r="25" fill="#FFFFFF" opacity=".95"/>
+  <rect x="291" y="319" width="19" height="28" rx="3" fill="none" stroke="#7464AF" stroke-width="2.8"/>
+  <path d="M295 326h10M295 332h10M295 338h7" stroke="#978BC6" stroke-width="2.3" stroke-linecap="round"/>
+  <rect x="287" y="378" width="126" height="8" rx="4" fill="#B9B0DB"/>
+  <rect x="287" y="397" width="102" height="7" rx="3.5" fill="#D6D1E9"/>
+  <rect x="287" y="416" width="69" height="7" rx="3.5" fill="#D6D1E9"/>
+ </g>
+</g>
+<!-- Right session module, dedicated to the live/practice experience. -->
+<g class="float-right">
+ <g transform="rotate(6 1083 364)" filter="url(#subshadow)">
+  <rect x="992" y="275" width="218" height="186" rx="23" fill="url(#try)" stroke="#BEE5DD" stroke-width="2"/>
+  <rect x="1024" y="307" width="152" height="92" rx="14" fill="#FFFFFF" stroke="#B7DCD5"/>
+  <circle cx="1100" cy="353" r="29" fill="#D7F1EA"/>
+  <path d="M1093 337L1116 353L1093 369Z" fill="#108880"/>
+  <rect x="1032" y="413" width="102" height="8" rx="4" fill="#84CFC1"/>
+  <rect x="1032" y="430" width="71" height="7" rx="3.5" fill="#BADFD6"/>
+ </g>
+</g>
+<!-- insight module, placed higher, kept small -->
+<g class="float-top">
+ <g transform="rotate(9 1085 168)" filter="url(#subshadow)">
+  <rect x="1023" y="125" width="158" height="111" rx="20" fill="#FFFFFF" stroke="#D8E7EA" stroke-width="2"/>
+  <path d="M1055 205V180M1083 205V164M1111 205V186M1139 205V151" stroke="#A7CDD2" stroke-width="12" stroke-linecap="round"/>
+  <path d="M1055 180l28-16 28 22 28-35" fill="none" stroke="#0B8A85" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </g>
+</g>
+<!-- Nonliteral small markers for growth. -->
+<circle cx="399" cy="206" r="11" fill="#D6CCF0" opacity=".75"/>
+<circle cx="1150" cy="515" r="11" fill="#8ED4C8" opacity=".7"/>
+<circle cx="347" cy="532" r="7" fill="#E6C989" opacity=".75"/>
+<path d="M368 251l0-22M357 240h22" stroke="#7EBCB5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1193 234v-17M1184 225h18" stroke="#B2A6DA" stroke-width="2.8" stroke-linecap="round"/>
+</svg>

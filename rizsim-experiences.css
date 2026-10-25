@@ -152,3 +152,11 @@
 @media(max-width:1140px){.rz-v3-environment{font-size:.95rem;gap:6px;margin-right:0}}
 @media(max-width:690px){.rz-side-v3{padding:17px 14px}.rz-v3-environment{font-size:.77rem}.rz-profile-email{display:none}}
 @media(max-height:610px){.rz-side-v3{padding-block:10px;gap:5px}.rz-library-entry{min-height:64px;padding:10px}.rz-side-v3 .rz-side-bottom{padding-top:8px}.rz-profile-button{padding:8px}.rz-profile-avatar{width:34px;height:34px;flex-basis:34px}}
+
+/* RizSim Frontend 1.6 - presentation-only refinement */
+
+/* Used only when no published simulations or library resources exist. */
+.rz-catalog-empty{background:#fff;border-color:#d4e5e4;padding:18px 18px 25px;margin:10px 0 20px;min-height:220px}
+.rz-catalog-empty::before{content:'';display:block;width:min(100%,330px);height:158px;margin:0 auto 5px;background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat}
+.rz-catalog-empty strong{font-size:1rem}.rz-catalog-empty p{font-size:.84rem;max-width:430px;margin:6px auto;line-height:1.5}
+@media(max-width:600px){.rz-catalog-empty::before{width:min(100%,260px);height:124px}.rz-catalog-empty{min-height:190px;padding:13px 12px 20px}}
