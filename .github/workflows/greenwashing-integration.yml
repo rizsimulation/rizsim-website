@@ -2,10 +2,10 @@ name: Greenwashing native simulation integration
 on:
   pull_request:
     branches: [main]
-    paths: ['simulation-greenwashing.html', 'simulation-assets/greenwashing/**', 'rizsim-greenwashing-faculty.js', 'access-out.html', 'rizsim-live-*.js', 'scripts/**', '.github/workflows/greenwashing-integration.yml', 'docs/greenwashing*', 'RizSim_Master_Status.md']
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'docs/greenwashing*', 'AGENTS.md', 'RIZSIM*CODE.md', 'RizSim_Master_Status.md', '.github/workflows/greenwashing-integration.yml']
   push:
     branches: [main]
-    paths: ['simulation-greenwashing.html', 'simulation-assets/greenwashing/**', 'rizsim-greenwashing-faculty.js', 'access-out.html', 'rizsim-live-*.js', 'scripts/**', '.github/workflows/greenwashing-integration.yml', 'docs/greenwashing*', 'RizSim_Master_Status.md']
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'docs/greenwashing*', 'AGENTS.md', 'RIZSIM*CODE.md', 'RizSim_Master_Status.md', '.github/workflows/greenwashing-integration.yml']
 permissions:
   contents: read
 concurrency:
@@ -30,13 +30,13 @@ jobs:
         env:
           GW_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          mkdir -p test-results/greenwashing-source
-          node scripts/test_greenwashing_core.cjs | tee test-results/greenwashing-source/core.txt
+          node scripts/test_greenwashing_core.cjs
           node scripts/validate_design_code_v1.cjs
           node scripts/validate_v155_release.cjs
           node --check rizsim-greenwashing-faculty.js
           for file in simulation-assets/greenwashing/*.js; do node --check "$file"; done
           python scripts/validate_greenwashing_source.py
+          python -m py_compile scripts/test_greenwashing_browser.py scripts/test_greenwashing_layout.py
           git diff --check
       - name: Source evidence
         if: always()
@@ -73,7 +73,7 @@ jobs:
         env:
           GW_SCOPE: ${{ matrix.scope }}
           RIZSIM_HEADED: '1'
-        run: xvfb-run -a python scripts/test_greenwashing_browser.py
+        run: xvfb-run -a python scripts/test_greenwashing_layout.py
       - name: Record exact test commit
         if: always()
         run: |

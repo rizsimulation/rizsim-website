@@ -73,3 +73,18 @@ submission. Omit duplicate registration, oversized branding, restart and destruc
 server-data buttons. Retain private learner JSON/print exports and original Faculty
 teaching note/debrief below priority analytics. No new summative-security claim:
 this Frontend module does not add server-enforced stage/key protection.
+
+## Big Five concept-learning integration
+
+The Big Five instrument measures conceptual understanding, not personality traits.
+Keep KR/KG matched by stable review IDs, five source/transfer pairs distinct from
+review change, confidence on its original percent scale and missing outcomes absent.
+Use the paired completed cohort for means and distributions; one review point is
+10 percentage points. Case-pair pathway denominators are five times the complete
+learner count. Incorrect transfer can require conceptual review, but acknowledgments
+must not replace the first judgment or create artificial improvement.
+
+Presentation-safe mode hides scores while the visible session still has unfinished
+learners. Final key control is separate from automatic RGA. Native authorization and
+source-compatible per-attempt key file controls must not be represented as a new
+server-enforced release service. See `docs/big-five-integration.md`.

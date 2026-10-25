@@ -1,0 +1,110 @@
+name: Big Five native simulation integration
+on:
+  pull_request:
+    branches: [main]
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'docs/big-five*', 'AGENTS.md', 'RIZSIM*CODE.md', 'RizSim_Master_Status.md', '.github/workflows/big-five-integration.yml']
+  push:
+    branches: [main]
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'docs/big-five*', 'AGENTS.md', 'RIZSIM*CODE.md', 'RizSim_Master_Status.md', '.github/workflows/big-five-integration.yml']
+permissions:
+  contents: read
+concurrency:
+  group: big-five-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Academic fidelity, calculations and unchanged contracts
+        env:
+          BF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          node scripts/test_big_five_core.cjs
+          node scripts/test_greenwashing_core.cjs
+          node scripts/validate_design_code_v1.cjs
+          node scripts/validate_v155_release.cjs
+          node --check rizsim-big-five-faculty.js
+          for file in simulation-assets/big-five/*.js; do node --check "$file"; done
+          python scripts/validate_big_five_source.py
+          python -m py_compile scripts/test_big_five_browser.py scripts/test_big_five_layout.py
+          git diff --check
+      - name: Source evidence
+        if: always()
+        run: |
+          mkdir -p test-results/big-five-source
+          git rev-parse HEAD > test-results/big-five-source/commit.txt
+          git bundle create test-results/big-five-source/source.bundle --all
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: big-five-source
+          path: test-results/big-five-source/
+          retention-days: 7
+  mounted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [student, faculty]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned test browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Actual mounted learner and Faculty workflows with synthetic data
+        env:
+          BF_SCOPE: ${{ matrix.scope }}
+          RIZSIM_HEADED: '1'
+        run: xvfb-run -a python scripts/test_big_five_layout.py
+      - name: Record exact test commit
+        if: always()
+        run: |
+          mkdir -p test-results/big-five
+          git rev-parse HEAD > test-results/big-five/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: big-five-${{ matrix.scope }}
+          path: test-results/big-five/
+          retention-days: 7
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [source, mounted]
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read-only exact deployed runtime hashes
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_design_code_v14_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: big-five-production
+          path: test-results/design-code-v14-production/
+          retention-days: 14

@@ -53,3 +53,12 @@ Run `scripts/test_greenwashing_core.cjs`, `scripts/validate_greenwashing_source.
 and the mounted `scripts/test_greenwashing_browser.py`. Existing assessments remain
 protected by the old guards; the narrow new-asset allowance is not permission to
 change old engines, permissions or scoring.
+
+## Big Five native module
+
+For `big-five-personality`, preserve `docs/big-five-source-manifest.json` and the
+source learning contract in `docs/big-five-integration.md`. Concept scores are not
+personality measurements. RGA is automatic; final-key control is separately scoped.
+Retain KR locks, source/transfer sequence, confidence, adaptive-review acknowledgment,
+submitted-only native Faculty access and the projection-safe unfinished-group rule.
+Run Big Five core, exact-source and mounted browser checks with existing regressions.
