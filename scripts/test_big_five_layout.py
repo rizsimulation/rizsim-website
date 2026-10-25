@@ -27,6 +27,15 @@ def reviewed_shot(page, label):
             suite.check(label + ' Live Responses has one participation summary',
                         page.locator('#rzV15studentsMetrics').is_hidden())
     original_shot(page, label)
+    if label.startswith('faculty-') and label.endswith('-text200'):
+        # Leaving this module must release the shared UI for other simulations.
+        page.evaluate('RizSimBigFiveFaculty.draw({}, {})')
+        suite.check(label + ' teardown restores shared participation widgets',
+                    page.locator('#rzV15insightsMetrics').is_visible()
+                    and page.locator('#rzV151PresenterProgress').is_visible())
+        suite.check(label + ' teardown clears native session records',
+                    page.evaluate('RizSimBigFiveFaculty.state().records === 0')
+                    and page.locator('#rzBigFiveStudentResults').is_hidden())
 
 if __name__ == '__main__':
     suite.shot = reviewed_shot
