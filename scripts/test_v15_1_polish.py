@@ -96,18 +96,18 @@ def test_delayed_library(browser,base_url):
           library.id='rzStudentSimulationLibrary';
           document.getElementById('studentApp').append(library);
         }""")
-        p.wait_for_selector('#rzV15LibraryLaunch')
-        assert p.locator('#rzV15LibraryLaunch').count()==1,'Exactly one clock should mount after the Library'
-        assert p.locator('#rzV15LibraryTime').inner_text().strip(),'The publication countdown must be populated'
+        p.wait_for_timeout(150)
+        assert p.locator('#rzV15LibraryLaunch').count()==0,'Expired publication banner must remain absent after delayed mount'
+        assert p.locator('#rzV15LibraryTime').count()==0,'Expired launch date must not be shown'
         p.evaluate("""()=>{
           document.getElementById('studentApp').replaceChildren();
           const library=document.createElement('div');library.id='rzStudentSimulationLibrary';
           document.getElementById('studentApp').append(library);
           window.dispatchEvent(new Event('focus'));
         }""")
-        p.wait_for_selector('#rzV15LibraryLaunch')
-        assert p.locator('#rzV15LibraryLaunch').count()==1,'Clock must recover after dashboard reconstruction without duplicating'
-        print('PASS V15.1: Six-day Library clock mounts after delayed Student dashboard and after reconstruction.')
+        p.wait_for_timeout(150)
+        assert p.locator('#rzV15LibraryLaunch').count()==0,'Expired banner must not reappear after dashboard reconstruction'
+        print('PASS V15.1: Expired Library announcement stays retired after delayed mount and reconstruction.')
     finally:
         ctx.close()
 
