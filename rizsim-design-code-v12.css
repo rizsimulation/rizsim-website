@@ -155,3 +155,36 @@ body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=facu
 /* Contrast corrections found by the rendered control audit. */
 body[data-rz-design-code][data-rz-surface=portal] :is(.rz-support-send,.rz-support-email-action){background:#087f86!important;color:#fff!important;border-color:#087f86!important}
 body[data-rz-design-code][data-rz-surface=portal] :is(.rz-support-send,.rz-support-email-action):hover:not(:disabled){background:#086d74!important;border-color:#086d74!important}
+
+
+/* Frontend restoration: retain the approved Course Lead upgrade glow.
+   The prior shared Design Code subdued-action override unintentionally disabled it.
+   This exception affects only the existing upgrade CTA, not other controls. */
+@media (prefers-reduced-motion: no-preference) {
+ body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-button {
+  border-radius:100px;
+  border:2px solid rgba(255,235,190,.94);
+  background:linear-gradient(105deg,#b25691 0%,#f0c16d 29%,#f09c85 58%,#78dba7 80%,#b25691 100%);
+  background-size:260% 100%;
+  color:#482b42!important;
+  text-shadow:0 1px rgba(255,248,222,.15);
+  box-shadow:0 9px 35px rgba(238,160,105,.42),0 0 24px rgba(250,223,148,.39),0 0 50px rgba(238,125,172,.29);
+  animation:rzCluFlow 7s linear infinite,rzCluGlow 3.5s ease-in-out infinite;
+ }
+ body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-button:hover {
+  transform:translateY(-3px);
+  box-shadow:0 14px 50px rgba(238,160,105,.52),0 0 38px rgba(250,223,148,.64),0 0 75px rgba(238,125,172,.4);
+ }
+ body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-shine {
+  animation:rzCluShine 4.6s ease-in-out infinite;
+  opacity:1;
+ }
+}
+@media (prefers-reduced-motion: reduce) {
+ body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-button {
+  animation:none!important;transform:none!important;
+ }
+ body[data-rz-design-code][data-rz-surface=portal] #view-courses[data-rz-clu=faculty] .rz-clu-upgrade-shine {
+  animation:none!important;opacity:0;
+ }
+}
