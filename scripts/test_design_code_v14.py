@@ -38,6 +38,8 @@ def practice(browser,url):
    check(label+' accessible invalid field',field.get_attribute('aria-invalid')=='true' and field.get_attribute('aria-describedby')=='rzPracticeCodeMessage')
    check(label+' entire border red',field.evaluate('n=>getComputedStyle(n).borderTopColor')=='rgb(180, 35, 58)')
    check(label+' circled cross present',note.locator('svg.rz-dc-outcome').count()==1 and note.locator('svg circle').count()>0)
+   # DOM readiness can precede animationstart by one rendering frame.
+   p.wait_for_function('window.__practiceAnimated === true', timeout=1500)
    check(label+' error path animated',p.evaluate('window.__practiceAnimated'))
    check(label+' no unauthorized join',p.evaluate("!__studentFixture.calls.some(c=>c.name==='join_rizsim_classroom_session')"))
    p.wait_for_timeout(1200);check(label+' focus survives async refresh',field.evaluate('n=>n===document.activeElement'))
