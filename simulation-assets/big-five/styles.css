@@ -26,7 +26,7 @@
 .bf-roster-toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0}.bf-roster-toolbar input,.bf-roster-toolbar select,.bf-filters select{font:inherit;font-size:13px;min-height:38px;border:1px solid #c8d9db;border-radius:8px;padding:7px 9px;background:#fff;color:#263e48;max-width:100%}.bf-roster-toolbar label{display:flex;gap:8px;align-items:center}.bf-filters{display:flex;gap:15px;align-items:center;flex-wrap:wrap;font-size:12px;margin:8px 0 12px}.bf-filters label{display:flex;gap:7px;align-items:center}.bf-filters input{accent-color:#176f6d}.bf-key-item{padding:12px 0;border-bottom:1px solid #dce5e7}.bf-key-item p{font-size:13px}.bf-key-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.bf-faculty .rz-a-table-wrap table{min-width:560px}.bf-faculty tr[hidden]{display:none!important}.bf-print{display:none}
 .bf-app :is(button,input,textarea,select,summary,a):focus-visible,.bf-faculty :is(button,input,textarea,select,summary,a):focus-visible{outline:3px solid #287f85;outline-offset:3px}
 body[data-rz-surface=portal] #rzLiveV13Workspace #rzV13InsightsContent:has(.bf-dashboard)>.rz-v5-results-heading{order:2}
-@media(min-width:1050px){body[data-rz-surface=portal]:has(#view-classroom.active .rz-v13-pane:not([hidden]) .bf-dashboard) .rz-v15-manager.is-minimized{top:135px;bottom:auto;right:max(18px,calc((100vw - 1180px)/2))}}
+@media(min-width:1050px){body[data-rz-surface=portal]:has(#view-classroom.active .rz-v13-pane:not([hidden]) :is(.bf-dashboard,.bf-live)) .rz-v15-manager.is-minimized{top:135px;bottom:auto;right:max(18px,calc((100vw - 1180px)/2))}}
 @media(max-width:1000px){.bf-workspace{grid-template-columns:minmax(0,1fr) 180px;gap:12px}.bf-card{padding:15px}.bf-app{padding:14px 18px}.bf-heading{align-items:flex-start}.bf-status-row{max-width:310px}}
 @media(max-width:760px){.bf-workspace{grid-template-columns:1fr}.bf-side{display:none}.bf-options{grid-template-columns:1fr}.bf-option{min-height:70px;font-size:15px}.bf-heading{flex-wrap:wrap;gap:7px}.bf-status-row{max-width:100%;width:100%}.bf-app{padding:12px}.bf-journey>div{flex-direction:column;gap:3px;text-align:center;padding:7px 4px;font-size:10px}.bf-intro-steps{grid-template-columns:1fr}.bf-donut{grid-template-columns:120px minmax(0,1fr)}.bf-transitions{grid-template-columns:repeat(2,minmax(0,1fr))}.bf-personal-paths{grid-template-columns:1fr}.bf-filters{align-items:flex-start}.bf-filters>label{flex-wrap:wrap}.bf-roster-toolbar>label{width:100%;flex-wrap:wrap}.bf-roster-toolbar input{width:100%;font-size:16px}.bf-faculty .bf-actions .bf-btn{flex:1}.bf-priority .rz-a-metric strong{font-size:18px!important}.bf-faculty input[type=file]{width:100%;max-width:100%}}
 @media(prefers-reduced-motion:reduce){.bf-app *,.bf-faculty *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -38,4 +38,12 @@ body[data-rz-surface=portal] #rzLiveV13Workspace #rzV13InsightsContent:has(.bf-d
 
 /* Native Big Five title replaces the generic duplicate Presenter headings. */
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-pane:has(.bf-dashboard)>.rz-v13-pane-note{display:none}
-body[data-rz-surface=portal] #rzLiveV13Workspace:has(.rz-v13-pane:not([hidden]) .bf-dashboard) .rz-v13-region-heading{display:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace:has(.rz-v13-pane:not([hidden]) :is(.bf-dashboard,.bf-live)) .rz-v13-region-heading{display:none}
+
+/* The module already reports the authorized roster; delayed shared cards must not duplicate it. */
+body[data-rz-surface=portal] #rzV13Paneinsights:has(.bf-dashboard)>:is(#rzV15insightsMetrics,#rzV151PresenterProgress),
+body[data-rz-surface=portal] #rzV13Panestudents:has(.bf-live)>:is(#rzV15studentsMetrics,.rz-v13-pane-note){display:none!important}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .bf-live) .rz-live-heading>:is(span,p){display:none}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .bf-live) .rz-live-heading>h1{font-size:17px!important;line-height:1.4;margin:0}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .bf-live) .rz-live-heading{margin:0 0 4px}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .bf-live) .rz-live-breadcrumb{margin:0 0 6px;padding:0;font-size:12px}
