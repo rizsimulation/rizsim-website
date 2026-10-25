@@ -105,6 +105,7 @@ def safety(browser,base):
   p.get_by_role('button',name='Start audit',exact=True).click();saved(p)
   p.evaluate('__gw.failSave=true');p.locator('input[name=auditAns][value="1"]').check();p.locator('#gwRetry').wait_for()
   check('save failure freezes advance and retains retry',p.get_by_role('button',name='Save & next').is_disabled())
+  check('failed save keeps selected answer visible',p.locator('input[name=auditAns][value="1"]').is_checked())
   p.locator('#gwRetry').click();saved(p);check('retry persists retained choice once',p.evaluate('Object.values(__gw.row.response_data.record.auditSelections)[0]')==1)
   p.evaluate('__gw.stale=true');p.locator('input[name=auditAns][value="2"]').check();p.wait_for_function("document.querySelector('#gwSaveStatus').textContent.includes('another tab')")
   check('optimistic conflict does not overwrite newer response',p.evaluate('Object.values(__gw.row.response_data.record.auditSelections)[0]')==1)
@@ -148,6 +149,8 @@ def faculty(browser,base,size):
   check(label+' only roster-submitted IDs queried',p.evaluate("__gwQueries.every(q=>q.some(([k,ids])=>k==='attempt_id'&&ids.length===8&&!ids.includes('draft-1')))") )
   check(label+' distinct source graphs',p.locator(root+' svg[role=img]').count()==3)
   check(label+' source cautions visible','100%' in p.locator(root).inner_text() and 'first' in p.locator(root).inner_text().lower());shot(p,label+'-presenter')
+  if size[0]>=1050:
+   b=p.locator(root+' .gw-priority').bounding_box();check(label+' priority charts complete in first screen',b['y']>=0 and b['y']+b['height']<=size[1]+2,b)
   summary=p.locator(root+' .rz-a-data summary').first;summary.focus();summary.press('Enter');check(label+' data tables keyboard accessible',summary.locator('..').get_attribute('open') is not None);summary.press('Enter')
   p.locator(root+' .gw-notes summary').click();check(label+' original faculty source note retained','TerraChoice' in p.locator(root+' .gw-notes').inner_text());p.locator(root+' .gw-notes summary').click()
   tab('students');p.locator(live+' tbody tr').first.wait_for();search=p.locator(live+' input[type=search]');search.fill('no match');check(label+' real live filter hides all rows',p.locator(live+' tbody tr:visible').count()==0)

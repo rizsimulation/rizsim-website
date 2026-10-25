@@ -44,3 +44,14 @@ body[data-rz-learning=greenwashing]{margin:0;background:#f4f8f8;color:#263e48}
 @media(max-width:550px){.gw-app{width:calc(100% - 20px);margin-top:9px}.gw-heading{flex-direction:column;gap:6px}.gw-heading h1{font-size:1.125rem!important}.gw-card{padding:13px}.gw-case{padding:11px;font-size:.875rem}.gw-ladder{gap:5px}.gw-actions .gw-btn{flex:1}.gw-mastery{grid-template-columns:repeat(3,minmax(0,1fr))}.gw-roster-table{min-width:580px}.gw-faculty .gw-heading{flex-direction:column}.gw-faculty .gw-heading .gw-actions{margin:0}}
 @media(prefers-reduced-motion:reduce){.gw-app *,.gw-faculty *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.gw-feedback path{stroke-dashoffset:0!important}}
 @media print{body[data-rz-learning=greenwashing]{background:white}.gw-no-print,.rz-v154-runner-brand{display:none!important}.gw-app{width:100%;margin:0}.gw-card,.gw-panel{break-inside:avoid;box-shadow:none}.gw-print{display:block!important}.gw-dashboard .rz-a-grid{display:block}.gw-dashboard .rz-a-panel{margin:10px 0}.gw-options,.gw-lens{display:none!important}}
+
+/* Native workspace: replace duplicated pane introduction with the simulation report. */
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-pane:has(.gw-faculty:not([hidden]))>.rz-v13-pane-note{display:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-faculty .gw-heading{margin-top:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region:has(.rz-v13-pane:not([hidden]) .gw-faculty:not([hidden]))>.rz-v13-region-heading{display:none}
+@media(min-width:1050px){
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority>.rz-a-panel{padding:10px 12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-note{margin-bottom:6px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-chart{margin:5px auto}
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-bars{gap:6px}
+}
