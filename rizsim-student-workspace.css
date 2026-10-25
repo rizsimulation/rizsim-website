@@ -72,7 +72,7 @@ body[data-student-workspace="v8"] .session-card{border-radius:22px;background:#f
   background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat;
 }
 #view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead>*{position:relative;z-index:1}
-#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead h2,
+#view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead h2{max-width:72%}
 #view-resources.student-view #rzStudentSimulationLibrary .rz-v153-library-lead p{max-width:66%}
 .rz-st-empty.calm{position:relative;isolation:isolate;overflow:hidden;min-height:210px}
 .rz-st-empty.calm::before{
