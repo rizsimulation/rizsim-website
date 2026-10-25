@@ -28,7 +28,7 @@
   resources.append(count);bar.append(image,label,resources);document.body.prepend(bar);
   // This hint identifies a browsing context, not an authorization credential.
   const validName=n=>/^rz-classroom-[a-z0-9-]{8,80}$/i.test(n||'');
-  let originalName='',original=null,channel=null,request='',ack=false,settleTimer=0;
+  let originalName='',original=null,channel=null,request='',ack=false,settleTimer=0,originalLookupMissing=false;
   try{const h=JSON.parse(sessionStorage.getItem('rizsim:classroom-return')||'null');
    if(h&&String(h.session)===session&&validName(h.name))originalName=h.name;
   }catch(_){}
@@ -42,7 +42,7 @@
    if(!alive(w))return false;
    const n=w.RizSimStudentClassroom.tabName;
    if(validName(n)){originalName=n;try{sessionStorage.setItem('rizsim:classroom-return',JSON.stringify({name:n,session}));}catch(_){}}
-   original=w;return true;
+   original=w;originalLookupMissing=false;return true;
   }
   remember(window.opener);
   function compact(ready){
@@ -52,9 +52,9 @@
   function namedOriginal(){
    // No URL is supplied: never navigate/reload an existing Classroom.
    // A severed browsing-context group may yield an empty new tab; close ONLY that empty tab.
-   if(!validName(originalName))return null;
+   if(originalLookupMissing||!validName(originalName))return null;
    let w;try{w=window.open('',originalName);if(alive(w)&&w.RizSimStudentClassroom.tabName===originalName)return w;
-    if(w&&w!==window&&!w.closed&&w.location.href==='about:blank')w.close();
+    if(w&&w!==window&&!w.closed&&w.location.href==='about:blank'){w.close();originalLookupMissing=true;}
    }catch(_){}return null;
   }
   function requestReturn(){

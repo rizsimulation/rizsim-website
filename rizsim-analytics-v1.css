@@ -40,3 +40,21 @@ tr.rz-a-filtered{display:none!important}
 @media(max-width:550px){.rz-a-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rz-a-priority .rz-a-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}.rz-a-metric strong{font-size:22px!important}.rz-a-priority .rz-a-metric strong{font-size:17px!important}.rz-a-priority .rz-a-metric small{font-size:10px!important}.rz-a-donut-layout{grid-template-columns:105px minmax(0,1fr)}.rz-a-panel{padding:12px}.rz-a-bar-caption{flex-wrap:wrap;gap:2px}.rz-a-live-controls>.rz-a-note{margin-left:0}.rz-a-dashboard .rz-a-note{font-size:12px!important}.rz-a-control input{width:100%}}
 @media(prefers-reduced-motion:reduce){.rz-a-dashboard *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.rz-a-dashboard,.rz-a-grid{display:block}.rz-a-panel{break-inside:avoid;margin:10px 0;box-shadow:none}.rz-a-control,.rz-a-live-controls{display:none}.rz-a-data,.rz-a-support{break-inside:auto}.rz-a-table-wrap{overflow:visible}.rz-a-chart{max-height:240px}}
+
+/* Consolidate repeated context once a mounted, authorized analytics surface exists. */
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 4px}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-heading>span,
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-heading>p{display:none}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-heading>h1{font-size:17px!important;line-height:1.4;margin:0}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-breadcrumb{margin:0 0 6px;padding:0;font-size:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-v13-region-heading{display:flex;align-items:center;gap:8px;padding:0 0 7px;margin:0 0 7px}
+body[data-rz-surface=portal] #rzLiveV13Workspace:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-v13-region-heading>:is(span,p){display:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-v13-region-heading>h2{font-size:16px!important;line-height:1.4;margin:0}
+body[data-rz-surface=portal] #rzLiveV13Workspace #rzLiveResultsAnchor:has(.rz-a-dashboard)>.rz-v5-results-heading{order:2;margin:8px 0 0}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-root,.rz-s02-root,.rz-h03-root):has(>.rz-a-dashboard){padding:0;border:0;background:transparent;box-shadow:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard){padding:0 0 8px;margin:0 0 8px;gap:8px;align-items:center}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) :is(.rz-i01-eyebrow,.rz-s02-eyebrow,.rz-h03-kicker){display:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) h2{font-size:16px!important;margin:0 0 3px;line-height:1.4}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) p{margin:0;font-size:12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace tr.rz-a-filtered{display:none!important}
+@media(max-width:760px){body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) :is(.rz-i01-actions,.rz-s02-actions,.rz-h03-actions){display:flex;flex-wrap:wrap;width:auto}body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) button{width:auto;flex:1}}

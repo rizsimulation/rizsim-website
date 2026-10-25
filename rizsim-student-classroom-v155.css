@@ -150,3 +150,5 @@
 /* Design Code 1.4: invalid Practice code, entire field; one animation per failed submit. */
 #rzPracticeCode[aria-invalid=true]{border:2px solid #b4233a!important;background:#fff4f5!important;box-shadow:0 0 0 2px #b4233a15!important}
 .rz-practice-error-settled .rz-dc-outcome path{animation:none!important}
+
+@media(prefers-reduced-motion:reduce){#rzPracticeCodeMessage .rz-dc-outcome path{animation:none!important;stroke-dashoffset:0!important}}

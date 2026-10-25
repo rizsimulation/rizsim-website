@@ -19,7 +19,8 @@ def presentation_equivalent(old, new, path):
    'rizsim-hotel-faculty.js':"   root.RizSimAnalytics?.upgrade('hotel',panel,studentHost,{sessionId,rows,revealed});\n"}
   new=new.replace(allowed[path],'')
  elif path=='rizsim-student-workspace.js':
-  new=new.replace(' let practiceInvalid=false,practiceErrorFresh=false;\n','').replace("practiceMessage='';practiceInvalid=false;practiceErrorFresh=false;", "practiceMessage='';")
+  new=new.replace(' let practiceInvalid=false,practiceErrorAt=0;\n','').replace("practiceMessage='';practiceInvalid=false;practiceErrorAt=0;", "practiceMessage='';")
+  new=new.replace("  const target=$('rzStudentPractice');if(!target)return;\n  const focused=$('rzPracticeCode'),selection=focused===document.activeElement?[focused.selectionStart,focused.selectionEnd]:null;target.replaceChildren();","  const target=$('rzStudentPractice');if(!target)return;target.replaceChildren();").replace("  target.append(joinForm);if(selection){input.focus({preventScroll:true});input.setSelectionRange(...selection);}","  target.append(joinForm);")
   start="  const joinForm=el('form','rz-v15-practice-join')"
   end='  target.append(joinForm);'
   a,b=new.index(start),new.index(end)

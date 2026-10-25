@@ -3,6 +3,7 @@ All sign-ins and report insertions are synthetic and intercepted locally.
 """
 import http.server
 import threading
+from datetime import datetime, timezone
 from playwright.sync_api import sync_playwright
 
 import test_v15_classroom as v15
@@ -60,7 +61,12 @@ def student_library(browser,base):
         assert not page.locator('#rzStudentLibraryMaterials').count()
         page.wait_for_selector('#rzV15LibraryLaunch')
         assert page.locator('#rzV15LibraryTime').inner_text().strip()
+        page.clock.set_fixed_time(datetime(2026,10,24,0,0,tzinfo=timezone.utc))
+        page.wait_for_function("document.querySelector('#rzV15LibraryLaunch').textContent.includes('Sunday 25 October 2026')")
         assert 'Sunday 25 October 2026' in page.locator('#rzV15LibraryLaunch').inner_text()
+        page.clock.set_fixed_time(datetime(2026,10,26,0,0,tzinfo=timezone.utc))
+        page.wait_for_function("document.querySelector('#rzV15LibraryTime').textContent==='Launch date reached'")
+        assert 'Publication Update' in page.locator('#rzV15LibraryLaunch').inner_text()
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+3'),'Mobile Student Library has horizontal overflow'
         page.locator('#rzStudentSimulationLibrary').get_by_role('button',name='Open RizSimulation Player').click()
         page.wait_for_selector('#view-player.active')

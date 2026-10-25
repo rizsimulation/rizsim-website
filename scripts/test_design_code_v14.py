@@ -18,7 +18,8 @@ def check(name,value,detail=None):
  (OUT/'report.json').write_text(json.dumps({'checks':CHECKS,'states':STATES},indent=2))
 def shot(p,label):
  p.screenshot(path=str(OUT/(label+'.png')),full_page=False,animations='disabled')
- width=p.evaluate('document.documentElement.scrollWidth');check(label+' no horizontal overflow',width<=p.viewport_size['width']+2,width)
+ diagnostic=p.evaluate("""()=>({width:document.documentElement.scrollWidth,client:document.documentElement.clientWidth,inner:innerWidth,offenders:[...document.querySelectorAll('body *')].filter(n=>{const b=n.getBoundingClientRect();return b.width&&b.height&&(b.right>innerWidth+1||b.left< -1)&&!n.closest('[hidden]')}).slice(0,20).map(n=>({tag:n.tagName,id:n.id,cls:typeof n.className==='string'?n.className:'svg',left:n.getBoundingClientRect().left,right:n.getBoundingClientRect().right,width:n.getBoundingClientRect().width,position:getComputedStyle(n).position}))})""")
+ check(label+' no horizontal overflow',diagnostic['width']<=p.viewport_size['width']+2,diagnostic)
  STATES.append(label)
 def submit(p,code):
  p.locator('#rzPracticeCode').fill(code);p.locator('.rz-v15-practice-join button[type=submit]').click()
@@ -28,6 +29,7 @@ def practice(browser,url):
   label='practice-'+('mobile' if mobile else 'desktop')
   try:
    p.emulate_media(reduced_motion='no-preference')
+   p.evaluate("window.__practiceAnimated=false;document.addEventListener('animationstart',e=>{if(e.target.closest('#rzPracticeCodeMessage')&&e.animationName==='rzDcDraw')window.__practiceAnimated=true;},true)")
    submit(p,'ZZZZ9999');p.wait_for_function("document.querySelector('#rzPracticeCodeMessage')?.textContent==='Session not found'")
    field=p.locator('#rzPracticeCode');note=p.locator('#rzPracticeCodeMessage')
    check(label+' exact unknown-code message',note.inner_text()=='Session not found')
@@ -36,8 +38,9 @@ def practice(browser,url):
    check(label+' accessible invalid field',field.get_attribute('aria-invalid')=='true' and field.get_attribute('aria-describedby')=='rzPracticeCodeMessage')
    check(label+' entire border red',field.evaluate('n=>getComputedStyle(n).borderTopColor')=='rgb(180, 35, 58)')
    check(label+' circled cross present',note.locator('svg.rz-dc-outcome').count()==1 and note.locator('svg circle').count()>0)
-   check(label+' error path animated',note.locator('svg path').first.evaluate('n=>getComputedStyle(n).animationName')!='none')
+   check(label+' error path animated',p.evaluate('window.__practiceAnimated'))
    check(label+' no unauthorized join',p.evaluate("!__studentFixture.calls.some(c=>c.name==='join_rizsim_classroom_session')"))
+   p.wait_for_timeout(1200);check(label+' focus survives async refresh',field.evaluate('n=>n===document.activeElement'))
    shot(p,label+'-unknown')
    field.fill('ZZZZ9998');check(label+' edit clears message and invalid state',note.inner_text()=='' and field.get_attribute('aria-invalid')=='false')
    submit(p,'BAD');p.wait_for_function("document.querySelector('#rzPracticeCodeMessage')?.textContent.includes('8-character')")
@@ -151,6 +154,7 @@ def analytics(browser,url,kind,size):
   p.locator(rootid+' > .rz-a-support > summary').click()
   tab('students');p.wait_for_selector('#rzV13SimulationStudentResults tbody tr')
   search=p.locator('.rz-a-live input[type=search]');search.fill('no matching person');check(label+' live search filters with empty state',p.locator('.rz-a-live-controls [role=status]').inner_text().startswith('0 of'))
+  check(label+' filtered rows actually concealed',p.locator('#rzV13SimulationStudentResults tbody tr:visible').count()==0)
   search.fill('');f=p.locator('.rz-a-live-controls select');f.select_option('submitted');check(label+' live submission filter works','0 of' not in p.locator('.rz-a-live-controls [role=status]').inner_text());f.select_option('all')
   p.evaluate('scrollTo(0,0)');shot(p,label+'-live')
   p.locator('#rzV13SimulationStudentResults').get_by_role('button',name='View student result').first.click();p.wait_for_timeout(100)
@@ -196,7 +200,7 @@ def main():
    jobs=[]
    if scope in ['all','navigation']:jobs=[('practice',lambda:practice(browser,url)),('tabs',lambda:tabs(browser,url))]
    if scope in ['all','analytics']:
-    for size in [(1366,900),(768,1024),(390,844)]:
+    for size in [(1366,768),(768,1024),(390,844)]:
      for kind in ['insight','systems','hotel']:jobs.append((kind+str(size),lambda k=kind,s=size:analytics(browser,url,k,s)))
    for label,fn in jobs:
     try:fn()

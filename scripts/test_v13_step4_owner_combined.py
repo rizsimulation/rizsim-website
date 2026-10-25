@@ -189,7 +189,8 @@ def run(browser,base):
     capture(page,'step4-integrated-sim03-sealed-class-insights-desktop.png')
     page.evaluate("window.__step4.closed=true; window.RizSimHotelFaculty.refresh()")
     page.wait_for_function('RizSimHotelFaculty.state().revealed===true',timeout=15000)
-    assert page.locator('#'+insight_id+' svg[role=img]').count()==1,'Original A/B dot plot'
+    assert page.locator('#'+insight_id+' .rz-a-dashboard svg[role=img]').count()==1,'Released source-backed A/B distribution'
+    assert page.locator('#'+insight_id+' .rz-a-support svg[role=img]').count()==1,'Original A/B dot plot retained in detailed report'
    capture(page,'step4-integrated-sim'+code+'-class-insights-desktop.png')
    if code=='03':
     page.locator('#rzV13Tabstudents').click()
