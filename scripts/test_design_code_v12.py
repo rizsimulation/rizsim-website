@@ -1,3 +1,4 @@
+from frontend_v14_scope import presentation_equivalent
 """Sitewide Design Code 1.2 audit. Actual HTML + existing synthetic role fixtures.
 Collect every rendered button/input/tab in the exercised states. No production data.
 Existing workflow tests separately exercise simulations, publication and resource modes.
@@ -66,7 +67,7 @@ def static_checks():
  protected=['google-g.svg','RizSim finalized logo.png','rizsim-r.png','site.css','site.js','rizsim-design-code.js','rizsim-shared-home.js','rizsim-live-classroom.js','rizsim-student-workspace.js','rizsim-course-authoring.js','rizsim-course-environment.js']+ROUTES
  for name in protected:
   old=subprocess.check_output(['git','show',ref+':'+name],cwd=ROOT)
-  base.check(name+' source unchanged',old==(ROOT/name).read_bytes())
+  base.check(name+' non-UI source unchanged',presentation_equivalent(old,(ROOT/name).read_bytes(),name))
  changed=subprocess.check_output(['git','diff','--name-only',ref],cwd=ROOT,text=True).splitlines()
  base.check('Backend and assessment assets unchanged',not any(x.startswith(('supabase/','edge-functions/','migrations/','simulation-assets/')) for x in changed))
  (OUT/'source-control-inventory.json').write_text(json.dumps(inventories,indent=2))

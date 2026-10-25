@@ -1,4 +1,4 @@
-/* V15.5: single official RizSim brand, origin-tab return and resource notifications. */
+/* Design Code 1.4: preserve the runner; request the original Classroom tab. */
 (()=>{'use strict';
  const start=()=>{
   if(document.querySelector('[data-rz-runner-brand]'))return;
@@ -10,8 +10,12 @@
    header.topbar .topbar-inner{min-height:50px;align-items:center;justify-content:flex-end}
    .rz-v154-runner-brand .rz-v155-count{display:none;flex:none;min-width:20px;height:20px;border-radius:50px;background:#d52b39;color:white;font-size:10px;font-weight:900;line-height:20px;text-align:center;padding:0 4px;margin-left:5px}
    .rz-v154-runner-brand .rz-v155-resource-return{font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px}
-   .rz-v155-return-notice{position:fixed;top:65px;right:18px;z-index:9999;max-width:min(370px,calc(100vw - 28px));padding:13px 36px 13px 15px;border:1px solid #b6ddd5;border-radius:13px;background:#f3faf8;color:#145b5d;box-shadow:0 14px 37px #143b482e;font:650 12px/1.5 system-ui,sans-serif}
-   .rz-v155-return-notice button{position:absolute;right:9px;top:7px;border:0;background:transparent;color:inherit;font-size:20px;cursor:pointer;padding:0 4px}
+   .rz-v154-runner-brand{flex-wrap:wrap}
+   .rz-v14-return-status{flex:1 0 100%;display:flex;align-items:center;justify-content:flex-end;gap:8px;color:#24565a;font:500 12px/1.4 system-ui,sans-serif;overflow-wrap:anywhere}
+   .rz-v14-return-status[hidden]{display:none!important}
+   .rz-v14-return-status button{font:inherit;border:1px solid #bdd7d1;border-radius:7px;background:#f3faf8;color:#145b5d;padding:5px 9px;cursor:pointer;flex:none}
+   .rz-v14-return-status button:focus-visible{outline:3px solid #327b84;outline-offset:2px}
+   @media(max-width:540px){.rz-v14-return-status{justify-content:flex-start;flex-wrap:wrap}}
    .rz-v154-runner-brand .rz-v155-count[data-visible=true]{display:inline-block}
    @media(prefers-reduced-motion:reduce){.rz-v155-count{animation:none!important}}
   `;document.head.append(css);
@@ -22,62 +26,77 @@
   resources.textContent='Class Resources';resources.setAttribute('aria-label','Return to the original RizSim Classroom tab without closing this simulation');
   const count=document.createElement('span');count.className='rz-v155-count';count.dataset.visible='false';count.setAttribute('aria-label','New class resources');
   resources.append(count);bar.append(image,label,resources);document.body.prepend(bar);
-  let channel=null,returnAcknowledged=false;
-  function notice(message){
-   document.querySelector('.rz-v155-return-notice')?.remove();
-   const panel=document.createElement('div');panel.className='rz-v155-return-notice';panel.setAttribute('role','status');
-   panel.textContent=message;
-   const close=document.createElement('button');close.type='button';close.setAttribute('aria-label','Dismiss notice');close.textContent='×';close.addEventListener('click',()=>panel.remove());panel.append(close);
-   document.body.append(panel);return panel;
+  // This hint identifies a browsing context, not an authorization credential.
+  const validName=n=>/^rz-classroom-[a-z0-9-]{8,80}$/i.test(n||'');
+  let originalName='',original=null,channel=null,request='',ack=false,settleTimer=0,originalLookupMissing=false;
+  try{const h=JSON.parse(sessionStorage.getItem('rizsim:classroom-return')||'null');
+   if(h&&String(h.session)===session&&validName(h.name))originalName=h.name;
+  }catch(_){}
+  const status=document.createElement('div');status.className='rz-v14-return-status';status.hidden=true;
+  const message=document.createElement('span');message.setAttribute('role','status');message.setAttribute('aria-live','polite');
+  const retry=document.createElement('button');retry.type='button';
+  const dismiss=document.createElement('button');dismiss.type='button';dismiss.textContent='Dismiss';
+  dismiss.addEventListener('click',()=>{status.hidden=true;});status.append(message,retry,dismiss);bar.append(status);
+  function alive(w){try{return !!w&&!w.closed&&w!==window&&w.location.origin===location.origin&&!!w.RizSimStudentClassroom;}catch(_){return false;}}
+  function remember(w){
+   if(!alive(w))return false;
+   const n=w.RizSimStudentClassroom.tabName;
+   if(validName(n)){originalName=n;try{sessionStorage.setItem('rizsim:classroom-return',JSON.stringify({name:n,session}));}catch(_){}}
+   original=w;originalLookupMissing=false;return true;
   }
+  remember(window.opener);
+  function compact(ready){
+   message.textContent=ready?'Classroom is ready. Select its browser tab if switching was blocked.':'Select your Classroom tab, or reopen Student Classroom. This simulation stays open.';
+   retry.textContent=ready?'Try switching':'Open Classroom';retry.dataset.ready=String(ready);status.hidden=false;
+  }
+  function namedOriginal(){
+   // No URL is supplied: never navigate/reload an existing Classroom.
+   // A severed browsing-context group may yield an empty new tab; close ONLY that empty tab.
+   if(originalLookupMissing||!validName(originalName))return null;
+   let w;try{w=window.open('',originalName);if(alive(w)&&w.RizSimStudentClassroom.tabName===originalName)return w;
+    if(w&&w!==window&&!w.closed&&w.location.href==='about:blank'){w.close();originalLookupMissing=true;}
+   }catch(_){}return null;
+  }
+  function requestReturn(){
+   clearTimeout(settleTimer);request=String(Date.now())+'-'+Math.random().toString(36).slice(2);ack=false;
+   let direct=false;
+   try{
+    if(!alive(original))remember(window.opener);
+    // Synchronous focus in the learner's click, before rendering work, preserves activation.
+    const w=alive(original)?original:namedOriginal();
+    if(w){w.focus();direct=w.RizSimStudentClassroom.openResources(session)===true;remember(w);}
+   }catch(_){}
+   try{if(originalName)channel?.postMessage({kind:'open-resources',session,target:originalName,request});}catch(_){}
+   settleTimer=setTimeout(()=>{
+    if(document.hidden||!document.hasFocus()){status.hidden=true;return;}
+    compact(direct||ack);
+   },350);
+  }
+  retry.addEventListener('click',()=>{
+   if(retry.dataset.ready==='true'){requestReturn();return;}
+   // Explicit recovery only; no automatic duplicate Classroom navigation.
+   const existing=alive(original)?original:namedOriginal();
+   if(existing){original=existing;requestReturn();return;}
+   try{const w=window.open('/access-in.html#player',validName(originalName)?originalName:'rz-classroom-'+crypto.randomUUID());
+    if(w){original=w;message.textContent='Student Classroom opened. Your simulation and selected answers remain here.';retry.textContent='Try switching';retry.dataset.ready='true';}
+    else message.textContent='Your browser blocked opening a tab. Select an existing RizSim tab or allow this site to open one.';
+   }catch(_){message.textContent='Select your RizSim Classroom browser tab. Your simulation stays open.';}
+  });
   if(session&&typeof BroadcastChannel==='function'){
    try{channel=new BroadcastChannel('rizsim:classroom:'+session);
     channel.onmessage=e=>{
-     if(String(e.data?.session)!==session)return;
-     if(e.data.kind==='resources-return-ack'){returnAcknowledged=e.data.accepted===true;return;}
-     if(e.data.kind!=='resources-count')return;
-     const n=Math.max(0,Math.floor(Number(e.data.count)||0));
-     count.dataset.visible=String(n>0);count.textContent=n>99?'99+':String(n);count.setAttribute('aria-label',n+' new class resources');
+     const m=e.data;if(String(m?.session)!==session)return;
+     if(originalName&&m.tabName&&m.tabName!==originalName)return;
+     if(m.kind==='resources-return-ack'&&m.request===request){ack=m.accepted===true;return;}
+     if(m.kind!=='resources-count')return;
+     const n=Math.max(0,Math.floor(Number(m.count)||0));count.dataset.visible=String(n>0);count.textContent=n>99?'99+':String(n);count.setAttribute('aria-label',n+' new class resources');
     };
-    channel.postMessage({kind:'resources-request'});
-    // Presenter resources may be published after the learner enters the simulation.
-    // Ask the still-open original Classroom to refresh even when that tab is hidden.
-    const requestTimer=window.setInterval(()=>{
-     if(!document.hidden)channel?.postMessage({kind:'resources-request'});
-    },20000);
-    window.addEventListener('pagehide',()=>{clearInterval(requestTimer);channel?.close();},{once:true});
+    const ask=()=>channel?.postMessage({kind:'resources-request',session,target:originalName});ask();
+    const requestTimer=setInterval(()=>{if(!document.hidden)ask();},20000);
+    window.addEventListener('pagehide',()=>{clearInterval(requestTimer);clearTimeout(settleTimer);channel?.close();},{once:true});
    }catch(_){}
   }
-  resources.addEventListener('click',()=>{
-   // Chrome may sever window.opener on navigation/security policy. Always
-   // prepare the original Classroom over the same-origin session channel.
-   // Do not open or replace any tab and do not interrupt this simulation.
-   returnAcknowledged=false;
-   let direct=false;
-   try{
-    const original=window.opener;
-    if(original&&original!==window&&!original.closed&&original.location.origin===location.origin){
-     direct=original.RizSimStudentClassroom?.openResources?.(session)===true;
-     // Calling focus synchronously in this CLICK (transient activation)
-     // is the best-supported way to select an existing tab.
-     original.focus();
-    }
-   }catch(_){/* Opener is unavailable; use the channel return request. */}
-   try{channel?.postMessage({kind:'open-resources',session});}catch(_){}
-   if(!direct&&!channel){
-    notice('Your RizSim Classroom is already open in its original browser tab. Switch to that tab to view Class Resources; your simulation stays open.');
-   }else{
-    // Browsers that disallow tab focusing still give an actionable response.
-    window.setTimeout(()=>{
-     if(!document.hidden && !document.hasFocus())return;
-     if(document.visibilityState==='visible'){
-      notice(returnAcknowledged||direct?
-       'Classroom resources are ready in your original RizSim tab. Select that tab if your browser did not switch automatically; this simulation remains open.':
-       'Return to your original RizSim tab to view Class Resources. Your simulation is still open and your answers are preserved.');
-     }
-    },850);
-   }
-  });
+  resources.addEventListener('click',requestReturn);
   // Do not decode large hidden images before they enter the viewport.
   for(const img of document.querySelectorAll('img:not(.rz-v154-runner-brand img)')){
    if(!img.hasAttribute('loading'))img.loading='lazy';img.decoding='async';

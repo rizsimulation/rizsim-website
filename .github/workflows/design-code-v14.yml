@@ -1,0 +1,132 @@
+name: RizSim Design Code 1.4 and Analytics Dashboard 1.0
+on:
+  pull_request:
+    branches: [main]
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'RIZSIM*CODE.md', 'RizSim_Master_Status.md', 'docs/design-code-v1.4-analytics.md', '.github/workflows/design-code-v14.yml']
+  push:
+    branches: [main]
+    paths: ['**.html', '**.css', '**.js', 'scripts/**', 'RIZSIM*CODE.md', 'RizSim_Master_Status.md', 'docs/design-code-v1.4-analytics.md', '.github/workflows/design-code-v14.yml']
+permissions:
+  contents: read
+concurrency:
+  group: design-code-v14-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-and-calculations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source and calculation contracts
+        env:
+          RIZSIM_V14_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          mkdir -p test-results/design-code-v14-source
+          node scripts/test_analytics_v1.cjs | tee test-results/design-code-v14-source/calculations.txt
+          node scripts/test_insight_core_v1.js
+          node scripts/validate_design_code_v1.cjs
+          node scripts/validate_v155_release.cjs
+          for file in rizsim-analytics-v1.js rizsim-v154-runner-shell.js rizsim-student-classroom-v155.js rizsim-student-workspace.js rizsim-insight-faculty.js rizsim-system-faculty.js rizsim-hotel-faculty.js; do node --check "$file"; done
+          python -m py_compile scripts/frontend_v14_scope.py scripts/test_design_code_v14.py scripts/test_analytics_layout_v1.py scripts/verify_design_code_v14_release.py
+          python - <<'PY'
+          import os,subprocess,sys,json
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from frontend_v14_scope import presentation_equivalent,runner_suffix_equivalent
+          base=os.environ['RIZSIM_V14_BASE']
+          paths=['access-in.html','access-out.html','rizsim-student-workspace.js','rizsim-insight-faculty.js','rizsim-system-faculty.js','rizsim-hotel-faculty.js']
+          checks=[]
+          for path in paths:
+              old=subprocess.check_output(['git','show',base+':'+path])
+              assert presentation_equivalent(old,Path(path).read_bytes(),path),path
+              checks.append({'path':path,'original_contract_preserved':True})
+          old=subprocess.check_output(['git','show',base+':rizsim-v154-runner-shell.js']).decode()
+          assert runner_suffix_equivalent(old,Path('rizsim-v154-runner-shell.js').read_text())
+          changed=subprocess.check_output(['git','diff','--name-only',base,'HEAD']).decode().splitlines()
+          assert not any(p.startswith(('sql/','supabase/','migrations/','edge-functions/','simulation-assets/')) for p in changed),'Backend or academic source unexpectedly changed'
+          assert not list(Path('scripts').glob('.v14-*')),'Temporary review/transport files must not ship'
+          assert not Path('.github/workflows/frontend-v14-review.yml').exists(),'Temporary write-enabled review workflow must not ship'
+          Path('test-results/design-code-v14-source/contracts.json').write_text(json.dumps({'base':base,'head':subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),'checks':checks,'backend_and_academic_sources_unchanged':True},indent=2))
+          PY
+          git diff --check
+      - name: Preserve reproducible source snapshot
+        if: always()
+        run: |
+          mkdir -p test-results/design-code-v14-source
+          git bundle create test-results/design-code-v14-source/source.bundle --all
+          git rev-parse HEAD > test-results/design-code-v14-source/head.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v14-source-calculations
+          path: test-results/design-code-v14-source/
+          retention-days: 7
+  mounted:
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [navigation, analytics]
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned isolated Chromium
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Mounted interfaces and real separate tabs with synthetic adapters
+        env:
+          RIZSIM_V14_SCOPE: ${{ matrix.scope }}
+          RIZSIM_HEADED: '1'
+        run: xvfb-run -a python scripts/test_analytics_layout_v1.py
+      - name: Existing valid, closed and authorization Practice regressions
+        if: matrix.scope == 'navigation'
+        run: python scripts/test_practice_code_v155.py
+      - name: Record exact tested commit
+        if: always()
+        run: |
+          mkdir -p test-results/design-code-v14
+          git rev-parse HEAD > test-results/design-code-v14/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v14-${{ matrix.scope }}
+          path: test-results/design-code-v14/
+          retention-days: 7
+  verify-production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [source-and-calculations, mounted]
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read-only exact hashes for every active runtime asset
+        env:
+          RIZSIM_RELEASE_SHA: ${{ github.sha }}
+        run: python scripts/verify_design_code_v14_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v14-production
+          path: test-results/design-code-v14-production/
+          retention-days: 14

@@ -302,6 +302,7 @@
    if(revealed)summary(content);
    else content.append(dom('p','rz-h03-sealed-note','The original hotel-judgment experiment reveals group medians, distributions and explanations after collection closes—not while students are still making independent price judgments.'));
    panel.append(content);
+   root.RizSimAnalytics?.upgrade('hotel',panel,studentHost,{sessionId,rows,revealed});
  }
  root.RizSimHotelFaculty=Object.freeze({
    draw,refresh:()=>refresh(true),

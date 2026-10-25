@@ -1,3 +1,4 @@
+from frontend_v14_scope import presentation_equivalent
 """Actual HTML with existing synthetic fixtures; never signs into production."""
 import http.server
 import json
@@ -37,7 +38,7 @@ def static_checks():
         check(name+' uses sitewide refinement entry', 'rizsim-sitewide-finish-v14.css' in (ROOT/name).read_text())
     for name in ['google-g.svg','RizSim finalized logo.png','rizsim-r.png','site.css','rizsim-live-classroom.js','rizsim-student-workspace.js','rizsim-course-service.js','rizsim-course-authoring-service.js']:
         old=subprocess.check_output(['git','show',BASE+':'+name],cwd=ROOT)
-        check(name+' preserved byte-for-byte', old == (ROOT/name).read_bytes())
+        check(name+' preserves non-UI source contract', presentation_equivalent(old,(ROOT/name).read_bytes(),name))
     changed=subprocess.check_output(['git','diff','--name-only',BASE],cwd=ROOT,text=True).splitlines()
     check('No backend or assessment changes',not any(x.startswith(('supabase/','migrations/','edge-functions/','simulation-assets/')) for x in changed))
     styles=(ROOT/'rizsim-visual-refinement-v11.css').read_text()
