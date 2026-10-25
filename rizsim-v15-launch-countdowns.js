@@ -40,6 +40,12 @@
    // must also work when that authorized dashboard is mounted asynchronously.
    const anchor=document.getElementById('rzStudentSimulationLibrary');
    if(!anchor||!anchor.isConnected)return false;
+   // The publication date has passed. Retire the banner; publication remains controlled separately.
+   if(ended(LIBRARY)){
+     document.getElementById('rzV15LibraryLaunch')?.remove();
+     if(libraryTimer){clearInterval(libraryTimer);libraryTimer=null;}
+     return true;
+   }
    if(document.getElementById('rzV15LibraryLaunch'))return true;
    if(libraryTimer){clearInterval(libraryTimer);libraryTimer=null;}
    const strip=node('section','rz-v15-library-countdown');strip.id='rzV15LibraryLaunch';
