@@ -77,7 +77,7 @@
   stats(p,items,legacy?{insight:'rz-i01-stat-grid',systems:'rz-s02-metrics',hotel:'rz-h03-metrics'}[m.kind]:'');return p;
  }
  function pairedMeans(p,m){
-  stats(p,[['Mean KR',fmt(m.krMean===null?null:m.krMean/6*100)+'%',m.pairs.length+' matched learners'],['Mean KG',fmt(m.kgMean===null?null:m.kgMean/6*100)+'%','Same matched learners'],['Change',sign(m.changePP)+' pp','KG minus KR; scale 0-100%']]);
+  stats(p,[['Mean KR',fmt(m.krMean===null?null:m.krMean/6*100)+'%','n = '+m.pairs.length+' paired'],['Mean KG',fmt(m.kgMean===null?null:m.kgMean/6*100)+'%','Same learners'],['Change',sign(m.changePP)+' pp','KG minus KR (pp)']]);
   if(!m.pairs.length){empty(p,'Paired scores appear after both reviews are locked. Missing scores are not zero.');return;}
   const g=svg(p,'Paired mean review scores on a fixed 0 to 100 percent scale',440,112),left=80,width=320;
   [0,25,50,75,100].forEach(v=>{const x=left+v/100*width;line(g,x,16,x,78);text(g,x,100,v+'%',{'text-anchor':'middle'});});
@@ -171,7 +171,20 @@
   const filterLabel=E('label','rz-a-control','Show '),filter=E('select');[['all','All participants'],['submitted','Submitted'],['working','Not yet submitted']].forEach(([v,t])=>{const o=E('option','',t);o.value=v;filter.append(o);});filter.value=view.filter||'all';filterLabel.append(filter);const result=E('span','rz-a-note');result.setAttribute('role','status');controls.append(label,filterLabel,result);top.append(controls);host.prepend(top);
   function apply(){view.search=search.value;view.filter=filter.value;const trs=[...host.querySelectorAll('table tbody tr')].filter(tr=>tr.querySelector('button'));
    let visible=0;for(const [i,tr]of trs.entries()){const submitted=m.statuses[i]==='submitted';const show=tr.textContent.toLowerCase().includes(search.value.trim().toLowerCase())&&(filter.value==='all'||(filter.value==='submitted'?submitted:!submitted));tr.hidden=!show;tr.classList.toggle('rz-a-filtered',!show);if(show)visible++;}result.textContent=visible+' of '+trs.length+' participant rows';
-  }search.addEventListener('input',apply);filter.addEventListener('change',apply);apply();
+  }
+  for(const [key,node]of [['search',search],['filter',filter]]){
+   node.addEventListener('focus',()=>{view.liveFocus=key;});
+   node.addEventListener('blur',()=>{if(node.isConnected&&view.liveFocus===key)view.liveFocus=null;});
+  }
+  search.addEventListener('input',()=>{view.selection=[search.selectionStart,search.selectionEnd];apply();});
+  for(const event of ['select','keyup','mouseup'])search.addEventListener(event,()=>{view.selection=[search.selectionStart,search.selectionEnd];});
+  filter.addEventListener('change',apply);apply();
+  // Native refresh rebuilds this subtree. Restore only a removed active control,
+  // never steal focus from another control or a different workspace.
+  if(view.liveFocus&&document.activeElement===document.body&&host.getClientRects().length){
+   const node=view.liveFocus==='search'?search:filter;node.focus({preventScroll:true});
+   if(node===search&&view.selection)search.setSelectionRange(...view.selection);
+  }
  }
  function upgrade(kind,host,studentHost,opts){
   if(!host||host.hidden)return;
@@ -182,7 +195,7 @@
   participation(dash,m,true);
   if(kind==='hotel')hotel(dash,m);
   else{
-   const priority=E('div','rz-a-grid rz-a-priority');const shift=panel(priority,'Learning shift','Paired means only. Observed change is not proof of causal or lasting learning.');pairedMeans(shift,m);
+   const priority=E('div','rz-a-grid rz-a-priority');const shift=panel(priority,'Learning shift','Paired learners only; descriptive, not causal.');pairedMeans(shift,m);
    pathways(panel(priority,'Learning Transfer','Four source-to-transfer response pathways.'),m);dash.append(priority);
    const deeper=E('div','rz-a-grid');transitions(deeper,m);histogram(deeper,m);dash.append(deeper);
    const distributions=E('div','rz-a-grid');scatter(distributions,m);choices(distributions,m);dash.append(distributions);groups(dash,m,view);

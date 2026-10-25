@@ -74,3 +74,8 @@ body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-panel{padding:10px 12px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-caution{padding:5px 7px;margin-top:5px;font-size:11px!important;line-height:1.4}
 }
+
+@media(min-width:1050px){
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority>.rz-a-panel>.rz-a-chart{margin-top:5px;margin-bottom:3px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-legend{gap:6px}
+}

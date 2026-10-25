@@ -146,7 +146,10 @@ def analytics(browser,url,kind,size):
    check(label+' small-sample cautions visible',p.locator(dash+' .rz-a-caution').first.is_visible())
    control=p.locator(dash+' select[aria-label="Group comparison dimension"]');control.select_option('group')
    check(label+' group dimension interactive',control.input_value()=='group')
-  p.evaluate('scrollTo(0,0)');shot(p,label+'-presenter')
+  summary=p.locator(dash+' .rz-a-data > summary').first
+  summary.focus();summary.press('Enter');check(label+' chart table keyboard expansion',summary.locator('..').get_attribute('open') is not None)
+  summary.press('Enter');check(label+' chart table keyboard collapse',summary.locator('..').get_attribute('open') is None)
+  p.evaluate('document.activeElement.blur();scrollTo(0,0)');shot(p,label+'-presenter')
   if size[0]>=1000:
    for selector in [dash+' > .rz-a-panel',dash+' .rz-a-priority'] if kind!='hotel' else [dash+' > .rz-a-panel']:
     b=p.locator(selector).first.bounding_box();check(label+' priority content fits first screen '+selector,b['y']>=0 and b['y']+b['height']<=size[1]+2,b)
@@ -155,6 +158,11 @@ def analytics(browser,url,kind,size):
   tab('students');p.wait_for_selector('#rzV13SimulationStudentResults tbody tr')
   search=p.locator('.rz-a-live input[type=search]');search.fill('no matching person');check(label+' live search filters with empty state',p.locator('.rz-a-live-controls [role=status]').inner_text().startswith('0 of'))
   check(label+' filtered rows actually concealed',p.locator('#rzV13SimulationStudentResults tbody tr:visible').count()==0)
+  search.focus();search.evaluate('n=>n.setSelectionRange(3,7)');search.dispatch_event('select')
+  p.evaluate('window.'+module+'.refresh()');p.wait_for_timeout(100)
+  check(label+' live search survives native refresh',search.input_value()=='no matching person' and search.evaluate('n=>n===document.activeElement'))
+  check(label+' live search cursor survives native refresh',search.evaluate('n=>[n.selectionStart,n.selectionEnd]')==[3,7])
+  search.press('Tab');check(label+' keyboard reaches live status filter',p.locator('.rz-a-live-controls select').evaluate('n=>n===document.activeElement'))
   search.fill('');f=p.locator('.rz-a-live-controls select');f.select_option('submitted');check(label+' live submission filter works','0 of' not in p.locator('.rz-a-live-controls [role=status]').inner_text());f.select_option('all')
   p.evaluate('scrollTo(0,0)');shot(p,label+'-live')
   p.locator('#rzV13SimulationStudentResults').get_by_role('button',name='View student result').first.click();p.wait_for_timeout(100)
