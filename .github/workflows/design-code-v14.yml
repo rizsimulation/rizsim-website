@@ -36,7 +36,7 @@ jobs:
           node scripts/validate_design_code_v1.cjs
           node scripts/validate_v155_release.cjs
           for file in rizsim-analytics-v1.js rizsim-v154-runner-shell.js rizsim-student-classroom-v155.js rizsim-student-workspace.js rizsim-insight-faculty.js rizsim-system-faculty.js rizsim-hotel-faculty.js; do node --check "$file"; done
-          python -m py_compile scripts/frontend_v14_scope.py scripts/test_design_code_v14.py scripts/verify_design_code_v14_release.py
+          python -m py_compile scripts/frontend_v14_scope.py scripts/test_design_code_v14.py scripts/test_analytics_layout_v1.py scripts/verify_design_code_v14_release.py
           python - <<'PY'
           import os,subprocess,sys,json
           from pathlib import Path
@@ -93,7 +93,7 @@ jobs:
         env:
           RIZSIM_V14_SCOPE: ${{ matrix.scope }}
           RIZSIM_HEADED: '1'
-        run: xvfb-run -a python scripts/test_design_code_v14.py
+        run: xvfb-run -a python scripts/test_analytics_layout_v1.py
       - name: Existing valid, closed and authorization Practice regressions
         if: matrix.scope == 'navigation'
         run: python scripts/test_practice_code_v155.py
