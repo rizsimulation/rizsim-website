@@ -58,3 +58,19 @@ body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header
 body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) p{margin:0;font-size:12px}
 body[data-rz-surface=portal] #rzLiveV13Workspace tr.rz-a-filtered{display:none!important}
 @media(max-width:760px){body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) :is(.rz-i01-actions,.rz-s02-actions,.rz-h03-actions){display:flex;flex-wrap:wrap;width:auto}body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-head,.rz-s02-header,.rz-h03-head):has(+.rz-a-dashboard) button{width:auto;flex:1}}
+
+@media(max-width:550px){body[data-rz-surface=portal] .nav-glow{max-width:100%;box-sizing:border-box}}
+
+/* The generic reload heading is a sibling of the native result anchor. Keep it below the report. */
+body[data-rz-surface=portal] #rzLiveV13Workspace #rzV13InsightsContent:has(.rz-a-dashboard)>.rz-v5-results-heading{order:2;margin:8px 0 0}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard>.rz-a-panel:first-child{padding:10px 12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard>.rz-a-panel:first-child>.rz-a-note{display:none}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard>.rz-a-panel:first-child .rz-a-metric{padding:7px 10px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard>.rz-a-panel:first-child .rz-a-metric strong{font-size:23px!important;line-height:1.15}
+@media(min-width:1050px){
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard)>.content-shell{padding-top:14px!important}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-heading{float:left;margin-right:18px!important;margin-bottom:0!important}
+body[data-rz-surface=portal] #view-classroom:has(.rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-live-breadcrumb{min-height:24px;margin-bottom:6px!important;align-items:center}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-panel{padding:10px 12px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-caution{padding:5px 7px;margin-top:5px;font-size:11px!important;line-height:1.4}
+}

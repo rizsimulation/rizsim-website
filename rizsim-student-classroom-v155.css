@@ -152,3 +152,5 @@
 .rz-practice-error-settled .rz-dc-outcome path{animation:none!important}
 
 @media(prefers-reduced-motion:reduce){#rzPracticeCodeMessage .rz-dc-outcome path{animation:none!important;stroke-dashoffset:0!important}}
+
+@media(max-width:550px){body[data-rz-surface=portal] .nav-glow{max-width:100%;box-sizing:border-box}}
