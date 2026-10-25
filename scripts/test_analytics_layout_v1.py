@@ -9,7 +9,9 @@ def reviewed_shot(page, label):
     original_shot(page, label)
     if not label.startswith('hotel-'):
         return
-    metrics = page.locator('.rz-a-dashboard[data-simulation=hotel] > .rz-a-panel:nth-child(2) > .rz-a-stats > .rz-a-metric')
+    metrics = page.locator('.rz-a-dashboard[data-simulation=hotel] > .rz-a-panel:nth-child(2) > .rz-a-stats > .rz-a-metric:visible')
+    if label.endswith(('-populated', '-text200')):
+        suite.check(label + ' both released median cards visible', metrics.count() == 2)
     for index in range(metrics.count()):
         metric = metrics.nth(index)
         bounds = metric.bounding_box()
