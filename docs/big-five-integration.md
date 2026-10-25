@@ -1,87 +1,57 @@
-# Big Five native integration - release candidate
+# Big Five Personality - verified native integration
 
-Workstream: Frontend. Base checked: `bd161b3be6543afc337c2a7a44402f33c5e35518`.
-User requested the same source-preserving native deployment as Greenwashing and
-explicit access for their existing Course Lead account to both simulations.
+Workstream: Frontend, plus explicitly requested own-account access using existing records. Standard: RizSim Design Code1.4 / Analytics Dashboard Code1.0.
 
-## Supplied material and learning contract
+## Release identity and evidence
 
-The supplied Student and Faculty Big Five HTML dashboards are the academic sources.
-`big-five-source-manifest.json` records both uploaded hashes and the exact academic
-constant hashes. Preserve all ten repeated review questions, five paired source/new
-transfer cases, options, score keys, concepts, factual feedback, adaptive feedback,
-conceptual remediation/examples, bibliography and complete Faculty answer rationales.
-These measure **understanding of personality concepts, not participants' personalities**.
+Baseline main: `bd161b3be6543afc337c2a7a44402f33c5e35518`; fresh baseline run40184419904 matched105 runtime files.
 
-Flow: ten independent committed KR judgments; five shuffled LT pairs, each source
-judgment -> factual explanation -> transfer judgment -> outcome-specific feedback;
-ten KG judgments in the same review order, each starting blank; automatic RGA.
-Every choice requires confidence 25/50/75/100. Optional LT notes remain unscored.
-Incorrect transfer triggers a reviewed-concept acknowledgment, not a changed or
-second scored answer. No forced final mastery or fabricated correction is introduced.
+[Application PR65](https://github.com/rizsimulation/rizsim-website/pull/65) deployed commit **`33fddd531220ec943bbc1ec7f264dc050cc35b34`**. Reviewed final head `587e539b7ff27ea46b5ca9906c1c05e033db83fd`; tested PR merge `bf5a498dc465b4bf149b75762dcec48a970317f1`. All share tree `2e29d916aed5841e2b3f2258cdae54adb80ab6f2`. Exact-head source review5642841045 is assistant review, not independent human approval.
 
-## Native website integration
+**33/33 final-head workflows succeeded.** [Big Five run40186667242](https://github.com/rizsimulation/rizsim-website/actions/runs/40186667242): **117 Student+129 Faculty assertions**,39 screenshot states. Source/state/calculation checks36; Greenwashing core42; Design Code74; V15.5 invariants36. Greenwashing regression40186667283 passed, including96 Faculty assertions. Original simulation/site/course/session/roles regressions passed.
 
-Remove the duplicated standalone identity gate, oversized hero and footer, arbitrary
-restart and import-first workflow. Reuse authenticated Student identity/ERP handoff,
-Classroom Live/Practice, the existing runner shell and Class Resources, autosave,
-resume, presenter pause and confirmed Classroom submission. Unsaved tentative choices
-remain only in this user's tab/attempt recovery store. Failed committed saves do not
-show success or reveal later feedback; explicit retry preserves the chosen answer.
-Optimistic updated-at checks prevent silent concurrent overwrite.
+[Pages40187169798](https://github.com/rizsimulation/rizsim-website/actions/runs/40187169798) built and deployed successfully. [Post-merge40187170109](https://github.com/rizsimulation/rizsim-website/actions/runs/40187170109) passed source/mounted/production gates. Artifact12596329479 `big-five-production`: **complete=true,114/114 HTTP200 runtime files with exact expected/actual SHA-256 equality**, attempt3, uploaded25October2026 at16:03:44PKT. Every hash was independently reconciled with reviewed source. Verification includes all root runtime assets and active simulation assets, not just a version label.
 
-Faculty Presenter Dashboard and Live Responses use the native running-session mounts.
-The existing roster RPC authorizes the chosen session. Response queries include only
-submitted IDs in that roster and are independently subject to existing RLS. Missing
-or inaccessible responses are not zero scores. No raw in-progress answer query occurs.
-Presentation-safe mode is on by default: it hides all scores while any learner in the
-session is still working. Completed-group projection shows aggregates, not names,
-ERP numbers, individual answers or keys. Private Live Responses is separate.
+Catalogue: product `fb12159b-2f4a-48c2-a1ca-23b89a1b6813`, slug `big-five-personality`, route `/simulation-big-five.html`, active Learning category, **published/restricted** at25October2026 16:05:13PKT. Publication journal `f2193ef8-d1c8-4875-9d5a-aaee3cd350dd`; read-back16:05:22PKT confirmed catalogue and requested account grants. No public-free publication or price/billing change.
 
-Charts: paired mean KR/KG and percentage-point change, four LT pathways with 5*n
-case-pair denominators, five conceptual dimensions (2*n items per phase), confidence
-vs accuracy, signed gain histogram, paired review scatter, matched item transitions,
-source/transfer option distributions, recorded section comparisons and descriptive
-mean/median/sample SD. Small samples and empty states remain explicit. No personality
-profile, diagnosis, psychometric validity, significance or causal/lasting-learning claim.
+This record describes the application release. A documentation-only follow-up may advance main while preserving all114 runtime bytes; its actual commit and final deployment must be checked separately.
 
-## Final-key release and exports
+## Uploaded source and academic fidelity
 
-RGA opens automatically after KG and is independent of the final answer key.
-The supplied per-completed-attempt release/revoke file contract is preserved. Faculty
-exports a control matching the attempt, identity, response fingerprint and instrument;
-Student imports it. Stale or incompatible revisions are rejected. The new native
-integration does not claim that a downloaded control was delivered or applied remotely.
-Revocation cannot recall answers already viewed/exported. A synchronized, server-
-enforced cross-device release service requires separately approved Backend work.
-The formative scoring key remains inspectable as in the source; not a secure exam.
+Both supplied Student and Faculty HTML files were opened and previewed. `big-five-source-manifest.json` records original file hashes and canonical content/key/remediation hashes. The checked-in compressed original-preview fixture permits reproducible visual comparison without a live production account.
 
-Completed response JSON and RGA exports and printable responses remain. Optional
-Faculty JSON/archive import is local-only, validates completed raw records, re-scores
-choices, rejects conflicting duplicates and uses latest ERP/section attempts for
-analysis without changing or uploading live learner records.
+Preserve the source's10 Knowledge Review decisions,5 source/new-case Learning Transfer pairs,10 matched Knowledge Gain decisions, exact options/correctness/rationales, confidence25/50/75/100, optional unscored note, once-shuffled stable order, mandatory feedback acknowledgements and source export/key-control schema. KG starts without copied answers. First committed responses cannot be rewritten through normal actions. Transfer feedback and required conceptual review are preserved; the learner is not forced to overwrite the committed transfer answer with a correct one.
 
-## Access and boundaries
+This assesses conceptual understanding of the Big Five, **not a personality inventory of the learner**. Charts labeled by concept show knowledge accuracy, not trait scores. No new psychometric validity, clinical meaning, causal effect, significance or normative cutoff is asserted. Review Gain Analytics are matched within-session observations, not evidence of durable learning.
 
-Grant only the user's verified existing Course Lead account access to Big Five and
-Greenwashing, aligned to their existing semester expiry. Do not change the account's
-role or other users' access. Use existing published/restricted catalogue entries,
-license options, direct license records and specifically authorized product-scoped
-report permissions; no platform-wide/category-wide permission is needed. Record
-what actually changed and verify active dates and scope after any grant. No learner
-records are inspected to verify access configuration.
+## Native Student workflow
 
-No schema, RLS, authentication, privileged server function or payment change is part
-of this release. Existing four simulation engines and brand assets stay unchanged.
-Source academic stage rules are formative client checks, not new server grading.
-No TinyFish. Tests must mount actual pages with synthetic adapters; record Chromium
-coverage separately from real-account production acceptance and other browsers.
+The hosted page removes duplicate Name/ERP/class entry, oversized standalone hero/footer and restart controls. Existing authenticated website identity, ERP handoff and Classroom context are authoritative. Reuse existing Live/Practice checks, original Class Resources shell, save/resume/retry and server-confirmed submission.
 
-## Completion gates
+The cloud adapter checks authenticated user/attempt ownership, expected product slug/path, session/access type and the existing access RPC before writes. Stable order and committed answers survive reload. Optimistic updated-at matching rejects concurrent overwrite. Failed saves retain a tab-scoped retry copy and do not falsely claim cloud success. Tentative radio/confidence selections are drafts, not analytical observations. Completion uses the existing submit RPC. No new backend contract is introduced.
 
-Preview both uploads and native dashboards; run core/state/source and actual browser
-checks plus the existing site regressions; source-review the exact final head; recheck
-main before merge; verify Pages and exact deployed runtime assets; publish the
-restricted catalogue record only after code verification; verify both account grants;
-update Master Status and this release record with actual PR/commit/run evidence.
-A candidate or merged source alone is not a completed deployment.
+Automatic personal RGA after KG is separate from the source's answer-key control. Faculty exports a source-compatible per-attempt release/revoke file; the learner imports it through its labelled control. Exporting a file is **not** remote publication or a broadcast. Revocation cannot erase already-seen information. This formative client mechanism is not authenticated server-controlled key secrecy.
+
+## Faculty integration and metrics
+
+The module mounts inside the existing Presenter Dashboard and private Live Responses; it is not a publicly accessible standalone Faculty app. Existing authorized roster RPC supplies the permitted session. Detailed query uses only submitted attempt IDs returned by that roster and remains subject to unchanged response RLS. Live roster/progress is available before submission; detailed answer analytics are submitted-only.
+
+Default projection-safe mode hides scores while any learner is working. Private search/status controls preserve text, focus and cursor during refresh. Source-compatible completed JSON or archived responses are optionally reviewed locally, separately labelled and re-scored from raw choices; import never creates server records. Stale async loads/imports do not cross principal/session changes.
+
+Metrics include paired mean KR/KG, percentage-point change, matched answer transitions, five-concept mastery, four LT response pathways, source and transfer choices, confidence-versus-observed-accuracy calibration, score-change histogram, paired score scatter, item distributions and recorded-section comparisons. Transfer pathway denominator is5 completed pairs per analyzed learner. Scales, legends, denominators, missing/empty states and small-sample cautions are explicit; descriptive mean/median/sampleSD replace unsupported inferential conclusions.
+
+Final visual review detected delayed generic V15 participation cards duplicating native summaries. Presence-scoped CSS suppresses only those duplicates while the respective native module is active. Big Five teardown restores shared controls. A small shared CSS extension fixes the same Greenwashing refresh condition without editing its academic assets. Wrapper tests retain all original scenarios and assertions, wait for the actual delayed widgets and verify first-screen chart fit.
+
+## Explicit Course Lead access request
+
+The user separately requested access to this and previous Greenwashing for their existing Course Lead account. The uniquely verified active account received two direct semester licenses and only existing product-scoped `view_submissions` reads. Both were read back active; expiry aligns with the account's existing semester licenses: **18April2027 04:12PKT**. Account email, user UUID and license receipts are retained only in private delivery evidence, not this public repository.
+
+No role elevation, all/category grant, management permission, other-account change or pricing/payment mutation. Existing `view_submissions` RLS is product-scoped for submitted records; the native interface additionally restricts to the authorized session roster. This release does not claim new server-enforced session-only raw-data permission. Changing that model requires a separately authorized Backend contract.
+
+## Acceptance and boundaries
+
+Mounted headed Chromium checks use real portal/runner pages and synthetic adapters, including complete KR/LT/KG progression, required confidence, locked choices, blank KG, saved-state recovery, failed save/submission, concurrent conflict, denied/closed access, actual separate tabs, key-file release/revoke, exports/imports, empty/populated/single/small groups, long labels, live refresh/cursor, keyboard, reduced motion, enlarged text and responsive1366x768/768x1024/390x844 layouts. Original source previews use a separate headless compositor. Final desktop/mobile images were inspected.
+
+No schemas, RLS, authentication mechanisms, privileged server functions, payment infrastructure, existing academic engines or production learner records were changed. The existing four simulation academic assets are byte-identical. Only explicitly requested new catalogue/publication and own-account access records were written. Original logo/splash/sea-glass/teal branding retained; no TinyFish. Temporary staging scripts/workflows were removed; permanent CI is read-only.
+
+Synthetic acceptance is not independent logged-in production classroom, physical-device or Safari/Firefox certification. Formative client locks are not tamper-proof summative grading. Server-enforced stage protection, detailed pre-submission response analytics or authenticated remote key broadcast need separate Backend authorization. Backend Phase9F security/recovery gates remain unchanged. Repository documentation does not automatically replace older ChatGPT Project attachments.
