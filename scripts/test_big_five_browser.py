@@ -235,10 +235,12 @@ def tabs(browser,base):
 
 def original_previews(browser,base,which):
  html=json.loads((ROOT/'scripts/fixtures/big-five-originals.json').read_text())[which]
- ctx=browser.new_context(viewport={'width':1366,'height':900});ctx.route('**/__bigfive_original_'+which,lambda r:r.fulfill(content_type='text/html',body=html));p=ctx.new_page();errors=[];p.on('pageerror',lambda e:errors.append(str(e)))
+ # Source previews use a separate headless compositor; mounted acceptance remains headed.
+ preview=browser.browser_type.launch(headless=True)
+ ctx=preview.new_context(viewport={'width':1366,'height':900});ctx.route('**/__bigfive_original_'+which,lambda r:r.fulfill(content_type='text/html',body=html));p=ctx.new_page();errors=[];p.on('pageerror',lambda e:errors.append(str(e)))
  try:
-  p.goto(base+'/__bigfive_original_'+which,wait_until='domcontentloaded');p.wait_for_timeout(150);shot(p,'original-'+which);check('Original '+which+' uploaded source renders',not errors,errors)
- finally:ctx.close()
+  p.goto(base+'/__bigfive_original_'+which,wait_until='domcontentloaded');p.locator('.wrap').wait_for();p.evaluate('async()=>{await document.fonts.ready;await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}');shot(p,'original-'+which);check('Original '+which+' uploaded source renders',not errors,errors)
+ finally:ctx.close();preview.close()
 
 def main():
  server=http.server.ThreadingHTTPServer(('127.0.0.1',0),portal.Handler);threading.Thread(target=server.serve_forever,daemon=True).start();base='http://127.0.0.1:'+str(server.server_port)
