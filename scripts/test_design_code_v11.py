@@ -1,3 +1,4 @@
+from greenwashing_scope import forbidden_change
 from frontend_v14_scope import presentation_equivalent
 """Actual HTML with existing synthetic fixtures; never signs into production."""
 import http.server
@@ -40,7 +41,7 @@ def static_checks():
         old=subprocess.check_output(['git','show',BASE+':'+name],cwd=ROOT)
         check(name+' preserves non-UI source contract', presentation_equivalent(old,(ROOT/name).read_bytes(),name))
     changed=subprocess.check_output(['git','diff','--name-only',BASE],cwd=ROOT,text=True).splitlines()
-    check('No backend or assessment changes',not any(x.startswith(('supabase/','migrations/','edge-functions/','simulation-assets/')) for x in changed))
+    check('No backend or assessment changes',not any(forbidden_change(x,BASE,ROOT) for x in changed))
     styles=(ROOT/'rizsim-visual-refinement-v11.css').read_text()
     check('No scale or clipping to manufacture compactness',not re.search(r'\bzoom\s*:|scale\(|overflow[^:]*:\s*hidden',styles))
     check('Hover has keyboard and touch equivalents',':focus-within' in styles and '(hover:none),(pointer:coarse)' in styles)

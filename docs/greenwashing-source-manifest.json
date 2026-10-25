@@ -1,0 +1,17 @@
+{
+  "source_files": [
+    {
+      "name": "Student - Greenwashing.html",
+      "sha256": "3e6af763f04267c3e604ba9b5bbb4bbe7bed7def4cb97838bfa4ae1d0e11d170"
+    },
+    {
+      "name": "Faculty - Greenwashing.html",
+      "sha256": "4a5c553f07d6a3ca791a71765c99ae53bef49817896aaa642166073d2c231fc2"
+    }
+  ],
+  "academic_preservation": "All 10 baseline and 14 lab questions, options, keys, explanations and Ladder rungs are copied verbatim. UI workflow is integrated with existing RizSim authorization.",
+  "simulation_id": "msmkt-seven-sins-ladder-transfer",
+  "content_version": "3.0",
+  "catalogue_slug": "seven-sins-greenwashing",
+  "academic_sha256": "ba90acf6df1271799ef893f048e11803c223d132c7dc66b8854b901f82b9a7ef"
+}

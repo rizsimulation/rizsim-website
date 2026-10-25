@@ -224,7 +224,8 @@ def faculty(browser,url,kind,size,role='faculty'):
 def static():
  ref=os.environ.get('RIZSIM_V13_BASE','origin/main')
  protected=['simulation-insight-to-implication.html','simulation-system-1-system-2.html','simulation-hotel-judgment.html','access-out.html','access-in.html','google-g.svg','RizSim finalized logo.png','rizsim-insight-faculty.js','rizsim-system-faculty.js','rizsim-hotel-faculty.js','rizsim-live-workspace.js','rizsim-live-classroom.js']
- protected += [str(p.relative_to(ROOT)) for p in (ROOT/'simulation-assets').rglob('*') if p.is_file()]
+ # Retain every pre-existing assessment; new Greenwashing source has its own fidelity gate.
+ protected += subprocess.check_output(['git','ls-tree','-r','--name-only',ref,'simulation-assets/'],cwd=ROOT,text=True).splitlines()
  for path in protected:check('Unchanged '+path,presentation_equivalent(subprocess.check_output(['git','show',ref+':'+path],cwd=ROOT),(ROOT/path).read_bytes(),path))
  old=subprocess.check_output(['git','show',ref+':rizsim-v154-runner-shell.js'],cwd=ROOT,text=True)
  check('Original participant handoff and assessment feedback retained',runner_suffix_equivalent(old,(ROOT/'rizsim-v154-runner-shell.js').read_text()))

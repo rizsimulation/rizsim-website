@@ -148,7 +148,7 @@
     if(!session?.product_id)return false;
     const modules={'insight-to-implication-bystander':'RizSimInsightFaculty',
       'system-1-system-2-thinking':'RizSimSystemFaculty',
-      'hotel-judgment-lab':'RizSimHotelFaculty'};
+      'hotel-judgment-lab':'RizSimHotelFaculty','seven-sins-greenwashing':'RizSimGreenwashingFaculty'};
     return [...(s.licensed||[]),...(s.products||[]),...(s.simulations||[])].some(p=>
       String(p.id||p.product_id)===String(session.product_id)&&
       Boolean(modules[p.slug]&&window[modules[p.slug]]));

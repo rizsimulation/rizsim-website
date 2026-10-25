@@ -1,3 +1,4 @@
+from greenwashing_scope import forbidden_change
 from frontend_v14_scope import presentation_equivalent
 """Sitewide Design Code 1.2 audit. Actual HTML + existing synthetic role fixtures.
 Collect every rendered button/input/tab in the exercised states. No production data.
@@ -69,7 +70,7 @@ def static_checks():
   old=subprocess.check_output(['git','show',ref+':'+name],cwd=ROOT)
   base.check(name+' non-UI source unchanged',presentation_equivalent(old,(ROOT/name).read_bytes(),name))
  changed=subprocess.check_output(['git','diff','--name-only',ref],cwd=ROOT,text=True).splitlines()
- base.check('Backend and assessment assets unchanged',not any(x.startswith(('supabase/','edge-functions/','migrations/','simulation-assets/')) for x in changed))
+ base.check('Backend and assessment assets unchanged',not any(forbidden_change(x,ref,ROOT) for x in changed))
  (OUT/'source-control-inventory.json').write_text(json.dumps(inventories,indent=2))
 
 if __name__=='__main__':
