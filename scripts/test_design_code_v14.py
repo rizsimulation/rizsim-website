@@ -140,6 +140,8 @@ def analytics(browser,url,kind,size):
    check(label+' no private prices before release',p.locator(dash+' svg').count()==0 and '12,000' not in p.locator(rootid).inner_text())
    p.evaluate('window.__hotel03Closed=true;window.RizSimHotelFaculty.refresh()');p.wait_for_function('RizSimHotelFaculty.state().revealed')
    check(label+' released real-data price chart',p.locator(dash+' svg').count()==1)
+   if size[0]>=1050:
+    b=p.locator(dash+' svg').bounding_box();check(label+' complete priority price plot fits first screen',b['y']>=0 and b['y']+b['height']<=size[1]+2,b)
   else:
    check(label+' paired means and correct pp',p.locator(dash+' [data-metric="Change"] strong').inner_text()==('+'+'100' if kind=='insight' else '+50')+' pp')
    check(label+' distribution scatter and histogram present',p.locator(dash+' svg').count()==4)
