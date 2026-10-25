@@ -44,3 +44,12 @@ snapshots, not automatically synchronized.
 ### Analytics and learner UI extension
 
 Read `RIZSIM_ANALYTICS_DASHBOARD_CODE.md` before changing Presenter or Live Responses screens. Preserve its session-scoped data contracts, paired denominators, Hotel sealing, chart scales and accessible empty states. Read `RizSim_Master_Status.md` for evidence, then recheck current main. Design Code 1.4 source exceptions are narrow UI-only insertions; do not relax academic, authorization or backend preservation tests.
+
+### Greenwashing simulation
+
+The additive Greenwashing module uses Design Code 1.4 and Analytics Code 1.0.
+Read `docs/greenwashing-integration.md` and its source manifest before changes.
+Run `scripts/test_greenwashing_core.cjs`, `scripts/validate_greenwashing_source.py`
+and the mounted `scripts/test_greenwashing_browser.py`. Existing assessments remain
+protected by the old guards; the narrow new-asset allowance is not permission to
+change old engines, permissions or scoring.

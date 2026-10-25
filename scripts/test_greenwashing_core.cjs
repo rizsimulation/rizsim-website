@@ -1,0 +1,51 @@
+/* Deterministic academic fidelity, state-machine, descriptive and import contracts. */
+const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),vm=require('node:vm');
+const D=require('../simulation-assets/greenwashing/questions.js'),C=require('../simulation-assets/greenwashing/engine.js');let checks=0;
+function ok(label,fn){fn();checks++;console.log('PASS '+label);}
+const rnd=()=>.37,student={name:'Synthetic Learner',studentId:'GW-QA',classSection:'Class A',organization:'Synthetic University'},context={attemptId:'11111111-1111-4111-8111-111111111111',sessionId:'22222222-2222-4222-8222-222222222222'};
+function baseline(correct=5){let r=C.action(C.create(student,context,rnd),'begin');for(let i=0;i<10;i++){r=C.action(r,'audit-choice',i<correct?0:1);if(i<9)r=C.action(r,'audit-index',i+1);}return C.action(r,'audit-submit');}
+function complete(a=5,first=7){let r=C.action(baseline(a),'continue');for(let i=0;i<14;i++){r=C.action(r,'check',i<first?0:1);if(i>=first)r=C.action(r,'check',0);r=C.action(r,'next');}return r;}
+ok('exact source item and rung counts',()=>assert.deepEqual([D.audit.length,D.lab.length,D.rungs.length],[10,14,7]));
+ok('source diagnosis precedes transfer',()=>{const r=C.create(student,context,rnd);assert(r.order.slice(0,7).every(id=>id[0]==='D'));assert(r.order.slice(7).every(id=>id[0]==='T'));});
+ok('stable randomized option ordering',()=>{const r=C.create(student,context,rnd);assert.notDeepEqual(r.optionOrder.A1,[0,1,2,3]);assert.deepEqual(JSON.parse(JSON.stringify(r)).optionOrder,r.optionOrder);});
+ok('new attempt valid and no invented observations',()=>{const r=C.create(student,context,rnd);assert(C.valid(r));assert.deepEqual(C.observations(r),{audit:[],lab:[]});assert.equal(C.summarize(C.observations(r)).auditAccuracy,null);});
+ok('audit cannot skip required answers',()=>assert.throws(()=>C.action(C.action(C.create(student,context,rnd),'begin'),'audit-submit'),/10/));
+ok('draft audit choice remains analytically missing',()=>{const r=C.action(C.action(C.create(student,context,rnd),'begin'),'audit-choice',0);assert.equal(C.observations(r).audit.length,0);assert.equal(C.progress(r).count,0);});
+ok('all audit choices lock together and score accurately',()=>{const r=baseline();const s=C.summarize(C.observations(r));assert.equal(s.auditN,10);assert.equal(s.auditAccuracy,.5);assert.equal(C.progress(r).count,10);});
+ok('locked audit cannot be edited through actions',()=>assert.throws(()=>C.action(baseline(),'audit-choice',2),/valid/));
+ok('locked audit mutations fail transition check',()=>{const old=baseline(),next=C.action(old,'continue');next.auditSelections[old.auditOrder[0]]=3;assert.equal(C.compatible(old,next),false);});
+ok('wrong reasoning prevents advance',()=>{let r=C.action(baseline(),'continue');r=C.action(r,'check',1);assert.throws(()=>C.action(r,'next'),/defensible/);});
+ok('first judgment survives repeated checks',()=>{let r=C.action(baseline(),'continue'),id=r.order[0];r=C.action(C.action(r,'check',1),'check',0);assert.equal(r.lab[id].initial,1);assert.equal(r.lab[id].final,0);assert.equal(r.lab[id].attempts,2);});
+ok('checked not advanced does not inflate final denominator',()=>{let r=C.action(C.action(baseline(),'continue'),'check',0);const s=C.summarize(C.observations(r));assert.equal(s.initialN,1);assert.equal(s.finalN,0);assert.equal(s.modes[0].n,0);});
+ok('finalized same-item correction has precise paired denominator',()=>{let r=C.action(baseline(),'continue');r=C.action(C.action(C.action(r,'check',2),'check',0),'next');const s=C.summarize(C.observations(r));assert.equal(s.initialErrors,1);assert.equal(s.correctedErrors,1);assert.equal(s.correctionRate,1);assert.equal(s.modes[0].changePP,100);});
+ok('no initial errors means correction not applicable',()=>{const s=C.summarize(C.observations(complete(10,14)));assert.equal(s.initialErrors,0);assert.equal(s.correctionRate,null);});
+ok('completion requires all 24 committed observations',()=>{const r=complete();assert(C.valid(r));assert.equal(r.stage,'results');assert.deepEqual(C.progress(r),{count:24,percent:100});});
+ok('completed attempt read-only',()=>assert.throws(()=>C.action(complete(),'check',1),/read-only/));
+ok('mean mode values reflect different tasks not assumed pairing',()=>{const s=C.summarize(C.observations(complete()));assert.equal(s.modes[0].initial,1);assert.equal(s.modes[1].initial,0);assert.equal(s.modes[1].n,7);});
+ok('source final 100 percent is mastery requirement',()=>assert.equal(C.summarize(C.observations(complete())).finalAccuracy,1));
+ok('negative revision rejected',()=>{const r=baseline();r.revision=-1;assert.equal(C.valid(r),false);});
+ok('duplicate audit IDs rejected',()=>{const r=baseline();r.auditOrder[0]=r.auditOrder[1];assert.equal(C.valid(r),false);});
+ok('invalid choices rejected',()=>{const r=baseline();r.auditSelections.A1=4;assert.equal(C.valid(r),false);});
+ok('malformed randomization rejected',()=>{const r=baseline();r.optionOrder.A1=[0,0,1,2];assert.equal(C.valid(r),false);});
+ok('impossible stage rejected',()=>{const r=complete();r.stage='lab';r.completedAt=null;assert.equal(C.valid(r),false);});
+ok('future items cannot appear before current stage',()=>{const r=C.action(baseline(),'continue');r.lab.T7={initial:0,final:0,attempts:1,checks:[0],done:false};assert.equal(C.valid(r),false);});
+ok('completed timestamps required',()=>{const r=complete();r.completedAt=null;assert.equal(C.valid(r),false);});
+ok('stale revision rejected',()=>{const r=baseline(),n=C.action(r,'continue');n.revision=r.revision;assert.equal(C.compatible(r,n),false);});
+ok('changing attempt identity rejected',()=>{const r=baseline(),n=C.action(r,'continue');n.context.attemptId='other';assert.equal(C.compatible(r,n),false);});
+ok('changing randomized order rejected',()=>{const r=baseline(),n=C.action(r,'continue');n.order.reverse();assert.equal(C.compatible(r,n),false);});
+ok('overwriting initial response fails compatibility',()=>{const r=C.action(C.action(baseline(),'continue'),'check',1),n=C.action(r,'check',0);n.lab[n.order[0]].initial=0;n.lab[n.order[0]].checks[0]=0;assert.equal(C.compatible(r,n),false);});
+ok('old completed response cannot be rewritten',()=>{const r=complete(),n=C.clone(r);n.revision++;assert.equal(C.compatible(r,n),false);});
+ok('export retains original completed schema and metadata',()=>{const x=C.exportRecord(complete());assert.equal(x.schema,'educational-simulation-response');assert.equal(x.version,'1.0');assert.equal(x.simulation.contentVersion,'3.0');assert.equal(x.auditResponses.length,10);assert.equal(x.responses.length,14);assert(x.scores.lab.byMode.diagnosis);assert.equal(x.scores.audit.bySin.length,7);});
+ok('export cannot leak a partial audit',()=>assert.throws(()=>C.exportRecord(baseline()),/Finish/));
+ok('completed JSON imports and recomputes',()=>{const x=C.exportRecord(complete());const s=C.summarize(C.imported(x));assert.equal(s.auditAccuracy,.5);assert.equal(s.initialAccuracy,.5);});
+ok('forged client correctness and score flags are ignored',()=>{const x=C.exportRecord(complete());x.scores.audit.accuracy=1;x.auditResponses.forEach(r=>r.correct=true);x.responses.forEach(r=>{r.initialCorrect=true;r.correctResponse=3;r.mode='transfer';r.sin='Fake';});const s=C.summarize(C.imported(x));assert.equal(s.auditAccuracy,.5);assert.equal(s.initialAccuracy,.5);assert.equal(s.modes[0].n,7);});
+ok('incomplete import rejected rather than scoring missing wrong',()=>{const x=C.exportRecord(complete());x.responses.pop();assert.throws(()=>C.imported(x));});
+ok('duplicate imported items rejected',()=>{const x=C.exportRecord(complete());x.auditResponses[0]=x.auditResponses[1];assert.throws(()=>C.imported(x));});
+ok('incompatible source version rejected',()=>{const x=C.exportRecord(complete());x.simulation.contentVersion='4.0';assert.throws(()=>C.imported(x));});
+ok('noncorrect final completed import rejected',()=>{const x=C.exportRecord(complete());x.responses[0].finalResponse=2;assert.throws(()=>C.imported(x));});
+ok('source booleans cannot replace raw choices',()=>{const x=C.exportRecord(complete());delete x.responses[0].initialResponse;assert.throws(()=>C.imported(x));});
+ok('zero errors legacy export convention has explicit denominator',()=>{const x=C.exportRecord(complete(10,14));assert.equal(x.scores.lab.correctionRate,1);assert.equal(x.metadata.correctionDenominator,0);assert.equal(C.summarize(C.imported(x)).correctionRate,null);});
+ok('revision increases only committed actions',()=>{let r=C.create(student,context,rnd),old=r.revision;r=C.action(r,'begin');assert.equal(r.revision,old+1);C.observations(r);assert.equal(r.revision,old+1);});
+ok('source academic hash matches reviewed manifest',()=>{const m=JSON.parse(fs.readFileSync('docs/greenwashing-source-manifest.json'));const hash=crypto.createHash('sha256').update(JSON.stringify({audit:D.audit,lab:D.lab,rungs:D.rungs})).digest('hex');assert.equal(hash,m.academic_sha256);});
+console.log('Greenwashing core contracts: '+checks+' passed');
+module.exports={baseline,complete,student,context};

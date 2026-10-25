@@ -2,12 +2,15 @@
 No backend/RPC/scoring exception. Each unchanged prefix/suffix is compared exactly.
 """
 import re
+from greenwashing_scope import normalize_hook
 
 def presentation_equivalent(old, new, path):
  if old == new:
   return True
  old=old.decode() if isinstance(old,bytes) else old
  new=new.decode() if isinstance(new,bytes) else new
+ old=normalize_hook(old,path);new=normalize_hook(new,path)
+ if old==new:return True
  if path=='access-in.html':
   new=new.replace(' window.RizSimStudentClassroom?.prepareRunner?.(tab,sessionId);\n','')
  elif path=='access-out.html':

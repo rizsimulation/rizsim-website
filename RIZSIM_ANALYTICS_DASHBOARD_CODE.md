@@ -44,3 +44,32 @@ Regression evidence must include independently reconciled arithmetic, actual mou
 ## Benchmark availability
 
 The written approved benchmark is the implementation specification. The three referenced screenshot image files and original approved mockup were not present in the retrieved attachments or current repository. Exact pixel correspondence to those images is therefore not certified. Their absence does not authorize new branding or changes to the protected academic instruments.
+
+
+## Greenwashing native extension - source content 3.0
+
+The Seven Sins Greenwashing module preserves the uploaded 10-item no-feedback audit,
+7 diagnosis and 7 transfer items. Audit answers lock together before feedback.
+First checked judgments remain distinct from final corrected judgments. Final lab
+accuracy is forced to 100% by the source completion rule: never describe it as an
+independent post-test, durable learning, or a causal treatment effect.
+
+Use native Presenter Dashboard / Live Responses containers. Live participation and
+progress use the existing authorized roster RPC. Detailed response analysis requests
+only submitted attempt IDs from that roster and is further limited by existing RLS.
+Show analyzed versus submitted counts when some data are not accessible. Do not add
+permissions or use another simulation's RPC as a workaround.
+
+Appropriate views are matched same-item initial/final bars, baseline accuracy by sin,
+0-10 baseline score distribution, 0-7 diagnosis/transfer first-attempt scatter, item
+mastery, recorded section comparisons and descriptive correction mean/median/SD.
+Keep unanswered data missing; correction rate is not applicable when initial errors
+are zero. Different audit/diagnosis/transfer items are not matched pre/post measures.
+Imported source JSON is re-scored from raw choices in a separate local-only review;
+never merge it silently into live session records or upload it as production data.
+
+Use the official shared runner/Class Resources header, website identity and Classroom
+submission. Omit duplicate registration, oversized branding, restart and destructive
+server-data buttons. Retain private learner JSON/print exports and original Faculty
+teaching note/debrief below priority analytics. No new summative-security claim:
+this Frontend module does not add server-enforced stage/key protection.

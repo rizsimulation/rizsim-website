@@ -42,6 +42,7 @@ jobs:
           from pathlib import Path
           sys.path.insert(0,'scripts')
           from frontend_v14_scope import presentation_equivalent,runner_suffix_equivalent
+          from greenwashing_scope import forbidden_change
           base=os.environ['RIZSIM_V14_BASE']
           paths=['access-in.html','access-out.html','rizsim-student-workspace.js','rizsim-insight-faculty.js','rizsim-system-faculty.js','rizsim-hotel-faculty.js']
           checks=[]
@@ -52,10 +53,10 @@ jobs:
           old=subprocess.check_output(['git','show',base+':rizsim-v154-runner-shell.js']).decode()
           assert runner_suffix_equivalent(old,Path('rizsim-v154-runner-shell.js').read_text())
           changed=subprocess.check_output(['git','diff','--name-only',base,'HEAD']).decode().splitlines()
-          assert not any(p.startswith(('sql/','supabase/','migrations/','edge-functions/','simulation-assets/')) for p in changed),'Backend or academic source unexpectedly changed'
+          assert not any(forbidden_change(p,base,Path.cwd()) for p in changed),'Backend or academic source unexpectedly changed'
           assert not list(Path('scripts').glob('.v14-*')),'Temporary review/transport files must not ship'
           assert not Path('.github/workflows/frontend-v14-review.yml').exists(),'Temporary write-enabled review workflow must not ship'
-          Path('test-results/design-code-v14-source/contracts.json').write_text(json.dumps({'base':base,'head':subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),'checks':checks,'backend_and_academic_sources_unchanged':True},indent=2))
+          Path('test-results/design-code-v14-source/contracts.json').write_text(json.dumps({'base':base,'head':subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),'checks':checks,'backend_and_existing_academic_sources_unchanged':True},indent=2))
           PY
           git diff --check
       - name: Preserve reproducible source snapshot
