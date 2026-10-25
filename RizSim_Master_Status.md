@@ -1,12 +1,27 @@
 # RizSim Master Status
 
-**Version:** 1.3 - verified Big Five deployment and requested Course Lead access  
+**Version:** 1.4 - verified Frontend 1.6 premium choices and empty-state release  
 **As of:** 25 October 2026 (Asia/Karachi)  
 **Scope:** Frontend release and existing account/catalogue operations; not a Backend security or recovery certificate.
 
 GitHub main, merged PRs and verified deployment evidence are authoritative. Historical handoffs do not override current repository evidence. Recheck current main before every new implementation.
 
-## 1. Latest verified application release
+## 0. Latest verified Frontend 1.6 presentation release
+
+| Item | Verified state |
+|---|---|
+| Workstream | Frontend design only; no Backend changes |
+| PR | [#67](https://github.com/rizsimulation/rizsim-website/pull/67) |
+| Deployed application commit | `b924852eba2fd948a589ed64d9b4a14509fcd7d6` |
+| Source checks and mounted tests | **22/22 PR workflows passed**, plus [dedicated Frontend workflow 40196475993](https://github.com/rizsimulation/rizsim-website/actions/runs/40196475993) with 24 Faculty, 12 Student, 4 analytics assertions and 314/314 existing dashboard checks across 48 states |
+| GitHub Pages | [Workflow run 40196917425](https://github.com/rizsimulation/rizsim-website/actions/runs/40196917425) |
+| Production hash verification | **115/115 runtime files, HTTP 200, exact SHA-256**; [workflow run 40196917666](https://github.com/rizsimulation/rizsim-website/actions/runs/40196917666), first verification attempt |
+
+The approved Live Session and Practice Session chooser now uses differentiated professional iconography and colors; Course Lead resource/simulation authoring cards use warm complementary surfaces. The approved learning-space illustration remains compact in empty resource/catalogue areas. Empty Presenter/Live Response analytics contain CSS-only unmeasured chart outlines, never fabricated observations; all real graph counts, backend filters and source scoring remain unchanged. The learning illustration is decorative, not an actual completion indicator.
+
+Only Frontend JS modal presentation/CSS/vector assets and test automation changed. The protected Student Workspace JS and Analytics calculation JS are byte-for-byte unchanged from the prior main. Existing learner records, faculty licenses, all five simulations, privacy controls, server-side contracts, RLS and authentication remain unchanged. Browser regression uses synthetic authenticated/denied adapters, not independent signed-in production evaluation or Safari/Firefox certification.
+
+## 1. Prior verified native simulation release
 
 | Item | Verified state |
 |---|---|
@@ -74,6 +89,7 @@ Do not expose keys, MFA seeds, private backups or learner records. Do not run pr
 |25Oct2026|Frontend|Greenwashing|#63 / `d6b8fac`; record#64 / `bd161b3`|32 workflows;88 Student+79 Faculty;42 core;Pages40176708612;105 exact assets40176708382;restricted catalogue verified|
 |25Oct2026|Frontend + requested existing access records|**Big Five**|**#65 / `33fddd5`**|33 workflows;117 Student+129 Faculty;Pages40187169798;114 exact assets40187170109;restricted publication and both own-account grants verified|
 |25Oct2026|Frontend documentation|Big Five verified release record|`frontend/big-five-release-record`|Two Markdown files only; associated PR records follow-up checks and deployment|
+|25Oct2026|Frontend|**Design Code 1.6 (UI/empty states)**|**#67 / `b924852`**|Source/visual checks 40196475993; Pages 40196917425; production hashes 40196917666; Backend unaffected|
 
 ## 6. Acceptance boundaries and remaining limitations
 

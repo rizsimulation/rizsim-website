@@ -88,3 +88,8 @@ Presentation-safe mode hides scores while the visible session still has unfinish
 learners. Final key control is separate from automatic RGA. Native authorization and
 source-compatible per-attempt key file controls must not be represented as a new
 server-enforced release service. See `docs/big-five-integration.md`.
+
+
+## Frontend 1.6 — visual placeholders before data exists
+
+Do not leave an unexplained white void when a native chart has no eligible observations. Show a restrained outline-only plot (dashed axes, unfilled illustrative bars) in the *empty state* together with the existing explicit reason. Implement the decoration as CSS, not as an extra measured SVG chart node: existing Presenter graph counts and private Hotel-release checks must remain exact. Do not render numerical labels, fictitious records, denominators or causal claims. When authorized data become available, the original computation and true charts take precedence without reinterpreting missing values as zero. Reduced-motion and narrow layouts must remain readable.
