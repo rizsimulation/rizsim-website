@@ -12,10 +12,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Export public source history for offline regression testing
+        run: |
+          mkdir -p test-results/source
+          git bundle create test-results/source/rizsim-source.bundle --all
+          git rev-parse HEAD > test-results/source/head.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: design-code-v14-public-source
+          path: test-results/source/
+          retention-days: 3
       - name: Read-only production baseline verification
         env:
           RIZSIM_RELEASE_SHA: 997c064f5f6e2e2628d3973b36a3b974a8951d6e
