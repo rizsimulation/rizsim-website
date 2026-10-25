@@ -160,3 +160,23 @@
 .rz-catalog-empty::before{content:'';display:block;width:min(100%,330px);height:158px;margin:0 auto 5px;background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat}
 .rz-catalog-empty strong{font-size:1rem}.rz-catalog-empty p{font-size:.84rem;max-width:430px;margin:6px auto;line-height:1.5}
 @media(max-width:600px){.rz-catalog-empty::before{width:min(100%,260px);height:124px}.rz-catalog-empty{min-height:190px;padding:13px 12px 20px}}
+
+
+/* Frontend 1.6.1: the category-empty motif is atmospheric UI decoration, not a photo tile. */
+.rz-catalog-empty{
+  position:relative;isolation:isolate;overflow:hidden;min-height:145px;text-align:left;
+  padding:23px clamp(17px,2.5vw,28px);background:linear-gradient(125deg,#f1f9f7,#f9f9fc);
+}
+.rz-catalog-empty::before{content:none}
+.rz-catalog-empty:has(>strong)::before{
+  content:'';display:block;position:absolute;right:1%;top:0;width:min(39%,240px);height:100%;
+  margin:0;pointer-events:none;z-index:0;opacity:.29;
+  background:url('/rizsim-learning-space-illustration.svg') center/contain no-repeat;
+}
+.rz-catalog-empty>*{position:relative;z-index:1}
+.rz-catalog-empty strong,.rz-catalog-empty p{max-width:min(67%,430px);margin-left:0}
+@media(max-width:600px){
+  .rz-catalog-empty{min-height:120px;padding:18px 16px;text-align:center}
+  .rz-catalog-empty strong,.rz-catalog-empty p{max-width:100%;margin-left:auto;margin-right:auto}
+  .rz-catalog-empty:has(>strong)::before{width:125px;right:-20px;opacity:.11}
+}
