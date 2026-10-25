@@ -59,11 +59,7 @@
  const S=(tag,attrs={},text)=>{const n=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));if(text!==undefined)n.textContent=text;return n;};
  let serial=0;const state=new WeakMap();
  function panel(parent,title,sub){const n=E('section','rz-a-panel'),h=E('h3','',title);n.append(h);if(sub)n.append(E('p','rz-a-note',sub));parent.append(n);return n;}
- function empty(p,text='No completed observations yet.'){
-  const ghost=E('div','rz-a-ghost-chart');ghost.setAttribute('aria-hidden','true');
-  ghost.innerHTML='<svg viewBox="0 0 330 92" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 7V73H319" stroke="#b2c9d1" stroke-width="1.5"/><path d="M27 25H319M27 49H319" stroke="#deebec" stroke-dasharray="3 6"/><rect x="57" y="14" width="41" height="59" rx="7" fill="#f2f8f7" stroke="#a8d1cc" stroke-dasharray="4 5"/><rect x="120" y="14" width="41" height="59" rx="7" fill="#f7f4fc" stroke="#c5b6dd" stroke-dasharray="4 5"/><rect x="183" y="14" width="41" height="59" rx="7" fill="#f2f8f7" stroke="#a8d1cc" stroke-dasharray="4 5"/><rect x="246" y="14" width="41" height="59" rx="7" fill="#f7f4fc" stroke="#c5b6dd" stroke-dasharray="4 5"/><path d="M27 84H319" stroke="#ecf2f3"/></svg>';
-  p.append(ghost,E('p','rz-a-empty',text));
- }
+ function empty(p,text='No completed observations yet.'){p.append(E('p','rz-a-empty',text));}
  function caution(p,n,unit='matched learners'){if(n>0&&n<5)p.append(E('p','rz-a-caution','Small sample: n = '+n+' '+unit+'. Describe these responses; do not generalize.'));}
  function table(p,headers,rows,caption='Chart data'){
   const details=E('details','rz-a-data');details.append(E('summary','',caption));const wrap=E('div','rz-a-table-wrap'),t=E('table'),head=E('thead'),tr=E('tr');headers.forEach(h=>{const th=E('th','',h);th.scope='col';tr.append(th);});head.append(tr);t.append(head);const body=E('tbody');rows.forEach(row=>{const tr=E('tr');row.forEach(v=>tr.append(E('td','',v)));body.append(tr);});t.append(body);wrap.append(t);details.append(wrap);p.append(details);return details;
