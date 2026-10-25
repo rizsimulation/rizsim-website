@@ -53,5 +53,5 @@ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region:has(.rz-v13-pane
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority>.rz-a-panel{padding:10px 12px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-note{margin-bottom:6px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-chart{margin:5px auto}
-body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-bars{gap:6px}
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-bars{gap:3px}
 }
