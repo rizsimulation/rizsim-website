@@ -381,3 +381,12 @@ Approved after the 25 October 2026 screenshot of the Student independent-learnin
 - **Sitewide integration:** keep official branding, typography, approved colors and existing genuine product/simulation state. No stock images, hard opaque backgrounds, oversized stickers, fabricated published entries or faux progress. Preserve labels, access logic, navigation and responsive behavior. Images remain decorative/pointer-transparent; headings and controls stay above them. Support reduced motion.
 
 This is a scoped visual Frontend-only correction to the existing four real artwork-use contexts: `rizsim-learning-space-illustration.svg`, `rizsim-student-workspace.css`, `rizsim-experiences.css`, and `rizsim-course-authoring.css`. It changes no HTML structure, Student/Faculty app JavaScript, Supabase authorization, score, learner data, analytics contract or published assets beyond the shared decorative SVG. Verify with real mounted desktop/mobile Chromium and production-asset hashes. The merge SHA and deployed verification belong in Master Status only after evidence is available.
+
+
+## Frontend refinement — preserve the approved Course Lead animated glow (25 October 2026)
+
+The existing Faculty Course Lead upgrade CTA (`#rzCourseLeadUpgradeButton`, `.rz-clu-upgrade-button`) is an approved **intentional animated-glow exception** to the subdued supporting-button defaults. The original flowing multi-hue gradient, soft pulsing shadow and sweeping shine are retained; the shared Design Code must not override them with `animation:none`, flat amber fill or a square-corner quiet-button treatment under ordinary motion settings.
+
+Respect the original click handler and permission contracts; restoring its appearance must not activate a paid entitlement, change billing, modify Backend checks or convert an informational launch action into a different destination. Keep keyboard focus visible, mobile fit, accessible control name, and `prefers-reduced-motion: reduce` (no decorative animations). This exception is specific to this CTA; do not apply heavy animations to all buttons.
+
+Verified implementation: Frontend [PR #72](https://github.com/rizsimulation/rizsim-website/pull/72), production app `a30df5c8b41e1c6b4645fe3d20381626be99eb7b`, exact source/production asset verification in Master Status. Test via mounted real Faculty Course Lead view with synthetic adapters, not markup inspection alone.
