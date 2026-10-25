@@ -153,6 +153,10 @@ def analytics(browser,url,kind,size):
   if size[0]>=1000:
    for selector in [dash+' > .rz-a-panel',dash+' .rz-a-priority'] if kind!='hotel' else [dash+' > .rz-a-panel']:
     b=p.locator(selector).first.bounding_box();check(label+' priority content fits first screen '+selector,b['y']>=0 and b['y']+b['height']<=size[1]+2,b)
+  if size[0]>=1050:
+   manager=p.locator('.rz-v15-manager.is-minimized:not([hidden])')
+   if manager.count():
+    a=manager.bounding_box();b=p.locator(dash).bounding_box();check(label+' session control does not cover priority analytics',a['y']+a['height']<=b['y'] or a['x']+a['width']<=b['x'],a)
   p.locator(rootid+' > .rz-a-support > summary').click();check(label+' original detail controls retained',p.locator(rootid+' > .rz-a-support').get_attribute('open') is not None)
   p.locator(rootid+' > .rz-a-support > summary').click()
   tab('students');p.wait_for_selector('#rzV13SimulationStudentResults tbody tr')
@@ -160,7 +164,7 @@ def analytics(browser,url,kind,size):
   check(label+' filtered rows actually concealed',p.locator('#rzV13SimulationStudentResults tbody tr:visible').count()==0)
   search.focus();search.evaluate('n=>n.setSelectionRange(3,7)');search.dispatch_event('select')
   p.evaluate('window.'+module+'.refresh()');p.wait_for_timeout(100)
-  check(label+' live search survives native refresh',search.input_value()=='no matching person' and search.evaluate('n=>n===document.activeElement'))
+  check(label+' live search survives native refresh',search.input_value()=='no matching person' and search.evaluate('n=>n===document.activeElement'),search.evaluate('n=>({value:n.value,focused:n===document.activeElement,active:document.activeElement.outerHTML.slice(0,300),selection:[n.selectionStart,n.selectionEnd],visible:!!n.getClientRects().length})'))
   check(label+' live search cursor survives native refresh',search.evaluate('n=>[n.selectionStart,n.selectionEnd]')==[3,7])
   search.press('Tab');check(label+' keyboard reaches live status filter',p.locator('.rz-a-live-controls select').evaluate('n=>n===document.activeElement'))
   search.fill('');f=p.locator('.rz-a-live-controls select');f.select_option('submitted');check(label+' live submission filter works','0 of' not in p.locator('.rz-a-live-controls [role=status]').inner_text());f.select_option('all')

@@ -174,7 +174,7 @@
   }
   for(const [key,node]of [['search',search],['filter',filter]]){
    node.addEventListener('focus',()=>{view.liveFocus=key;});
-   node.addEventListener('blur',()=>{if(node.isConnected&&view.liveFocus===key)view.liveFocus=null;});
+   node.addEventListener('blur',()=>{queueMicrotask(()=>{if(node.isConnected&&document.activeElement!==node&&view.liveFocus===key)view.liveFocus=null;});});
   }
   search.addEventListener('input',()=>{view.selection=[search.selectionStart,search.selectionEnd];apply();});
   for(const event of ['select','keyup','mouseup'])search.addEventListener(event,()=>{view.selection=[search.selectionStart,search.selectionEnd];});

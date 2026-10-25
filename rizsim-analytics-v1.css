@@ -79,3 +79,9 @@ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-caution{pa
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority>.rz-a-panel>.rz-a-chart{margin-top:5px;margin-bottom:3px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-priority .rz-a-legend{gap:6px}
 }
+
+@media(min-width:1050px){
+body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard{gap:8px}
+/* Keep the minimized live manager beside the heading, not over priority charts. */
+body[data-rz-surface=portal]:has(#view-classroom.active .rz-v13-pane:not([hidden]) .rz-a-dashboard) .rz-v15-manager.is-minimized{top:135px;bottom:auto;right:max(18px,calc((100vw - 1180px)/2))}
+}
