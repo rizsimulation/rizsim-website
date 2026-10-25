@@ -25,7 +25,7 @@ jobs:
           python - <<'PY'
           import subprocess,sys
           from pathlib import Path
-          allowed={'rizsim-analytics-v1.css','rizsim-student-classroom-v155.css','rizsim-student-workspace.js','rizsim-v154-runner-shell.js','scripts/frontend_v14_scope.py','scripts/test_design_code_v14.py','scripts/test_v15_3_focus.py','scripts/test_v13_step4_owner_combined.py'}
+          allowed={'rizsim-analytics-v1.js','rizsim-analytics-v1.css','rizsim-student-classroom-v155.css','rizsim-student-workspace.js','rizsim-v154-runner-shell.js','scripts/frontend_v14_scope.py','scripts/test_design_code_v14.py','scripts/test_v15_3_focus.py','scripts/test_v13_step4_owner_combined.py'}
           changed=set(subprocess.check_output(['git','diff','--name-only']).decode().splitlines())
           assert changed <= allowed,changed-allowed
           sys.path.insert(0,'scripts')
@@ -36,6 +36,7 @@ jobs:
           assert runner_suffix_equivalent(old,Path('rizsim-v154-runner-shell.js').read_text())
           PY
           node scripts/test_analytics_v1.cjs
+          node --check rizsim-analytics-v1.js
           node --check rizsim-student-workspace.js
           node --check rizsim-v154-runner-shell.js
           python -m py_compile scripts/test_design_code_v14.py
@@ -45,8 +46,8 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add rizsim-analytics-v1.css rizsim-student-classroom-v155.css rizsim-student-workspace.js rizsim-v154-runner-shell.js scripts/frontend_v14_scope.py scripts/test_design_code_v14.py scripts/test_v15_3_focus.py scripts/test_v13_step4_owner_combined.py
-          git commit -m 'Fix mounted review findings: durable input focus, compact analytics and explicit tab recovery'
+          git add rizsim-analytics-v1.js rizsim-analytics-v1.css rizsim-student-classroom-v155.css rizsim-student-workspace.js rizsim-v154-runner-shell.js scripts/frontend_v14_scope.py scripts/test_design_code_v14.py scripts/test_v15_3_focus.py scripts/test_v13_step4_owner_combined.py
+          git commit -m 'Finish priority-panel fit and preserve keyboard focus across live analytics refresh'
           git push origin HEAD:frontend/design-code-1-4-analytics-1-0
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Source evidence
