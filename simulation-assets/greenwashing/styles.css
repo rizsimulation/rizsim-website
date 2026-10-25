@@ -52,6 +52,8 @@ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-v13-region:has(.rz-v13-pane
 @media(min-width:1050px){
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority>.rz-a-panel{padding:10px 12px}
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-note{margin-bottom:6px}
+/* Keep the explicit methodological caution below; omit its duplicated subtitle. */
+body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority>.rz-a-panel:first-child>.rz-a-note{display:none}
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-chart{margin:5px auto}
 body[data-rz-surface=portal] #rzLiveV13Workspace .gw-dashboard .gw-priority .rz-a-bars{gap:3px}
 }
