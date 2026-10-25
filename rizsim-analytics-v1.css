@@ -94,3 +94,7 @@ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard[data-simulation
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard[data-simulation=hotel]>.rz-a-panel:nth-child(2)>.rz-a-stats{grid-column:1;grid-row:3;grid-template-columns:1fr!important;margin:6px 0!important}
 body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard[data-simulation=hotel]>.rz-a-panel:nth-child(2)>.rz-a-chart{grid-column:2;grid-row:3;max-height:220px;margin:6px 0}
 }
+
+/* Native Greenwashing summaries supersede the delayed generic V15 widgets. */
+body[data-rz-surface=portal] #rzV13Paneinsights:has(.gw-dashboard)>:is(#rzV15insightsMetrics,#rzV151PresenterProgress),
+body[data-rz-surface=portal] #rzV13Panestudents:has(#rzGreenwashingStudentResults:not([hidden]))>#rzV15studentsMetrics{display:none!important}
