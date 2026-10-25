@@ -1,0 +1,28 @@
+name: RizSim Design Code 1.4 and Analytics Dashboard 1.0
+on:
+  push:
+    branches: [frontend/design-code-1-4-analytics-1-0]
+    paths: [.github/workflows/design-code-v14.yml]
+permissions:
+  contents: read
+jobs:
+  baseline-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read-only production baseline verification
+        env:
+          RIZSIM_RELEASE_SHA: 997c064f5f6e2e2628d3973b36a3b974a8951d6e
+        run: python scripts/verify_design_code_v13_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-code-v14-baseline-production
+          path: test-results/design-code-v13-production/
+          retention-days: 7
