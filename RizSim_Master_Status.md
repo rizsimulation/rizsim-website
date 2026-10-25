@@ -1,12 +1,30 @@
 # RizSim Master Status
 
-**Version:** 1.4 - verified Frontend 1.6 premium choices and empty-state release  
+**Version:** 1.5 - verified Frontend 1.6.1 integrated learning illustration  
 **As of:** 25 October 2026 (Asia/Karachi)  
 **Scope:** Frontend release and existing account/catalogue operations; not a Backend security or recovery certificate.
 
 GitHub main, merged PRs and verified deployment evidence are authoritative. Historical handoffs do not override current repository evidence. Recheck current main before every new implementation.
 
-## 0. Latest verified Frontend 1.6 presentation release
+## 0. Latest verified Frontend 1.6.1 integrated-artwork correction
+
+| Item | Verified evidence |
+|---|---|
+| Scope / user report | Student Library screenshot on 25 Oct 2026 exposed a white rectangular illustration disconnected from the website; the same asset appeared across Student learning empties, public category empties and Course Lead authoring |
+| Owning workstream | Frontend visual presentation only; no Backend contract changes |
+| Implementation and reviewed PR | [#69](https://github.com/rizsimulation/rizsim-website/pull/69), reviewed head `aed968702f376bb9fdde2cb7df960d95320cf21a` |
+| Merged/deployed application commit | `065d13b577961d58534afdd2853d602c9fbe0b84` |
+| Review / CI | **23/23 final-head PR workflows passed**; scoped source review recorded on PR. Independent human approval is not claimed. |
+| Mounted visual verification | **39/39 dedicated assertions** across **8 real mounted desktop/mobile scenes**: 23 Student, 9 Course Lead, 7 public catalogue; opaque SVG background removed; no extra page overflow introduced. Original Frontend 1.6, Design Code 1.4, session, authorization-boundary and prior simulated-learning regression workflows passed. |
+| GitHub Pages | [40208953245](https://github.com/rizsimulation/rizsim-website/actions/runs/40208953245): build/deploy **success** on the exact merged SHA |
+| Production source-to-site asset verification | [40208953319](https://github.com/rizsimulation/rizsim-website/actions/runs/40208953319): **115/115 live runtime assets, HTTP 200, exact source hashes matched on attempt 4** after CDN propagation |
+| Design Code | Frontend Design Code **1.6.1** integrated illustration addendum committed within PR #69; this record is its documentation-only closure |
+
+The approved `rizsim-learning-space-illustration.svg` now has **a transparent artboard** and appears as an absolutely positioned, non-interactive, responsive part of existing backgrounds rather than a separate image row. The Student Library uses restrained sea-glass editorial treatment, mobile receives a faint watermark, and Student, catalogue and Course Lead empty states use contained accents. Ordinary catalogue loading states no longer display the illustration. All genuine text, headings, product visibility and interactions remain present.
+
+Only the shared SVG, three CSS files, Design Code documentation, a dedicated test file and CI workflow changed. Simulation answers, Student/Faculty JavaScript application and analytics contracts, original brand/logo, authentication, RLS, published resources, payment and protected backend logic were not modified. Tests use isolated Chromium plus synthetic authorized adapters; physical-device, Safari/Firefox and independent authenticated real-user acceptance remain outside this proof. Backend Phase 9F Gate 4B/Gate 5 are unchanged.
+
+## 0A. Prior verified Frontend 1.6 presentation release
 
 | Item | Verified state |
 |---|---|
@@ -90,6 +108,7 @@ Do not expose keys, MFA seeds, private backups or learner records. Do not run pr
 |25Oct2026|Frontend + requested existing access records|**Big Five**|**#65 / `33fddd5`**|33 workflows;117 Student+129 Faculty;Pages40187169798;114 exact assets40187170109;restricted publication and both own-account grants verified|
 |25Oct2026|Frontend documentation|Big Five verified release record|`frontend/big-five-release-record`|Two Markdown files only; associated PR records follow-up checks and deployment|
 |25Oct2026|Frontend|**Design Code 1.6 (UI/empty states)**|**#67 / `b924852`**|Source/visual checks 40196475993; Pages 40196917425; production hashes 40196917666; Backend unaffected|
+|25Oct2026|Frontend|**Design Code 1.6.1 (integrated transparent illustration)**|**#69 / `065d13b`**|23/23 PR workflows, 39/39 dedicated visual assertions across 8 scenes; Pages 40208953245; 115/115 exact live assets 40208953319; no Backend impact|
 
 ## 6. Acceptance boundaries and remaining limitations
 
