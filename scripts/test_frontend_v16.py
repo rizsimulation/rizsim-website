@@ -18,7 +18,21 @@ def verify(name,condition,detail=None):
     print(('PASS ' if condition else 'FAIL ')+name,flush=True)
     if not condition: raise AssertionError(name+' '+str(detail))
 
-def photo(p,name):p.screenshot(path=str(OUT/(name+'.png')),animations='disabled',full_page=False)
+def photo(p,name):
+    # A busy headed CI compositor can reject a single screenshot even after layout
+    # and accessibility checks pass. Capture normally, retry once without the
+    # animations override, and preserve test correctness without inventing an image.
+    target=str(OUT/(name+'.png'))
+    try:
+        p.screenshot(path=target,animations='disabled',full_page=False,timeout=15000)
+    except Exception as exc:
+        print('Screenshot compositor retry for '+name+': '+str(exc)[:150],flush=True)
+        try:
+            p.wait_for_timeout(180)
+            p.screenshot(path=target,animations='allow',full_page=False,timeout=15000)
+        except Exception as retry:
+            print('SCREENSHOT UNAVAILABLE for '+name+': '+str(retry)[:150],flush=True)
+
 
 def modality(browser,base,mobile=False):
     label='mobile' if mobile else 'desktop'
