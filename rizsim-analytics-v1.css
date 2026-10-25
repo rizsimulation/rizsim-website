@@ -98,3 +98,13 @@ body[data-rz-surface=portal] #rzLiveV13Workspace .rz-a-dashboard[data-simulation
 /* Native Greenwashing summaries supersede the delayed generic V15 widgets. */
 body[data-rz-surface=portal] #rzV13Paneinsights:has(.gw-dashboard)>:is(#rzV15insightsMetrics,#rzV151PresenterProgress),
 body[data-rz-surface=portal] #rzV13Panestudents:has(#rzGreenwashingStudentResults:not([hidden]))>#rzV15studentsMetrics{display:none!important}
+
+/* RizSim Frontend 1.6 - presentation-only refinement */
+
+/* No-data placeholders: empty chart shapes are outlines, NOT measured observations. */
+.rz-a-ghost-chart{display:flex;justify-content:center;align-items:center;height:88px;margin:4px auto 3px;width:min(100%,360px);background:linear-gradient(180deg,#fcfefe,#f7fbfa);border-radius:10px}
+.rz-a-ghost-chart svg{width:100%;max-width:330px;height:85px;display:block}
+.rz-a-ghost-chart+.rz-a-empty{padding:5px 0 10px;text-align:center;max-width:450px;margin:0 auto}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-empty,.rz-s02-empty,.rz-h03-empty):not(.rz-i01-error,.rz-s02-error,.rz-h03-error){text-align:center;background:linear-gradient(180deg,#fcfefe,#f5faf9);border:1px dashed #cfdfdf}
+body[data-rz-surface=portal] #rzLiveV13Workspace :is(.rz-i01-empty,.rz-s02-empty,.rz-h03-empty):not(.rz-i01-error,.rz-s02-error,.rz-h03-error)::before{content:'';display:block;width:min(100%,280px);height:76px;margin:0 auto 7px;background:linear-gradient(#daeceb,#daeceb) 17px 62px/90% 1px no-repeat,linear-gradient(90deg,#daeceb,#daeceb) 17px 2px/1px 61px no-repeat,repeating-linear-gradient(90deg,transparent 0 31px,#bad9d4 31px 32px,transparent 32px 52px) 20px 18px/90% 44px no-repeat;opacity:.66}
+@media(max-width:560px){.rz-a-ghost-chart{height:74px}.rz-a-ghost-chart svg{height:70px}}

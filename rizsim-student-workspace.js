@@ -300,7 +300,7 @@
    const title=el('div','rz-st-section-title');title.append(icon('file'),el('h2','','Class resources'));target.append(title);
    if(snap.errors.materials){empty(target,'Resources could not be refreshed','Your access has not changed. Refresh to try again.','warning','warning',['Refresh resources',()=>bridge().refresh().then(renderMaterials)]);continue;}
    const materials=selected?snap.materials.filter(m=>m.course_id===a.course_id||m.course_id===a.classroom_session_id):snap.materials;
-   if(!materials.length){target.append(el('p','rz-st-support','No published class resources are available in your current access window.'));continue;}
+   if(!materials.length){target.append(el('p','rz-st-support rz-v16-materials-empty','No published class resources are available in your current access window.'));continue;}
    const grid=el('div','rz-st-resource-grid');materials.forEach(m=>grid.append(materialCard(m)));target.append(grid);
   }
  }
@@ -317,6 +317,11 @@
     el('h2','','Learn independently. Discover what comes next.'),
     el('p','','Explore a new collection designed for learners who want to discover, practice and apply ideas at their own pace — no Faculty classroom invitation required.'));
   target.append(lead);
+  // Independent collection is forthcoming; this is not a learner progress meter.
+  const art=el('figure','rz-v16-library-art');
+  const image=el('img');image.src='/rizsim-learning-space-illustration.svg';image.alt='';image.loading='lazy';image.decoding='async';
+  art.append(image,el('figcaption','','More independent learning experiences are in development.'));
+  target.append(art);
   const categories=el('div','rz-v153-library-categories');
   for(const [glyph,label,title,description] of [
     ['spark','01 · LEARN BY DOING','Independent Simulations','Play, choose and reflect in self-paced simulations created for individual learners.'],
