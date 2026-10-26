@@ -1,0 +1,1 @@
+grant select on table public.rizsim_course_materials to service_role;
